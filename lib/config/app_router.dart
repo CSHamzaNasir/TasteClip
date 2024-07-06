@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:tasteclip/core/auth/role.dart';
 import 'package:tasteclip/modules/onboarding/onboarding.dart';
+import 'package:tasteclip/modules/onboarding/onboarding1.dart';
+import 'package:tasteclip/modules/onboarding/onboarding2.dart';
 import 'package:tasteclip/modules/splash/splash_logo.dart';
 import 'package:tasteclip/modules/splash/splash_text.dart';
 
@@ -9,6 +12,9 @@ class AppRouter {
   static const splashLogo = "/splashLogo";
   static const splashText = "/splashText";
   static const onboarding = "/onboarding";
+  static const onboarding1 = "/onboarding1";
+  static const onboarding2 = "/onboarding2";
+  static const role = "/role";
 
   static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
@@ -30,6 +36,24 @@ class AppRouter {
 
       case onboarding:
         return GetPageRoute(page: () => const Onboarding());
+
+      case onboarding1:
+        return GetPageRoute(
+          page: () => const Onboarding1(),
+          transition: Transition.rightToLeft,
+        );
+
+      case onboarding2:
+        return GetPageRoute(
+          page: () => const Onboarding2(),
+          transition: Transition.rightToLeft,
+        );
+
+      case role:
+        return GetPageRoute(
+          page: () => const Role(),
+          transition: Transition.rightToLeft,
+        );
 
       default:
         return _errorRoute();

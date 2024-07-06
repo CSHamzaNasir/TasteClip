@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: AppRouter.key,
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.onboarding,
+      initialRoute: AppRouter.splashLogo,
     );
   }
 }

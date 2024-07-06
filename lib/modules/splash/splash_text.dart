@@ -8,8 +8,12 @@ class SplashText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.to(() => const Onboarding(), transition: Transition.rightToLeft);
+    Future.delayed(const Duration(seconds: 1), () {
+      Get.to(
+        () => const Onboarding(),
+        transition: Transition.fadeIn,
+        duration: const Duration(seconds: 1),
+      );
     });
 
     return Scaffold(

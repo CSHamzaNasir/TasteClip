@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/theme/style.dart';
 
 class OnBoardingButtton extends StatelessWidget {
@@ -9,7 +10,9 @@ class OnBoardingButtton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Get.toNamed('/role');
+      },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6.0),

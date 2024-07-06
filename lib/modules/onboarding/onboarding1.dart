@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/widgets/onboarding_button.dart';
-import 'package:tasteclip/core/widgets/onboarding_icon.dart';
 import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/core/widgets/onboarding_icon.dart';
 
-class Onboarding extends StatelessWidget {
-  const Onboarding({super.key});
+class Onboarding1 extends StatelessWidget {
+  const Onboarding1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +19,15 @@ class Onboarding extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(height: Get.height * 0.1),
+                  SizedBox(height: Get.height * 0.02),
                   const OnBoardingButtton()
                 ],
               ),
-              Text('Welcome to TasteClip', style: AppTextStyles.style4),
+              Text('Our Mission', style: AppTextStyles.style4),
               SizedBox(height: Get.height * 0.02),
               Center(
                 child: Text(
-                  'Lets make your feedback matter. Get started in seconds and share your experiences effortlessly.',
+                  'We are on a mission to empower your voice. Join us in shaping better dining experiences together.',
                   style: AppTextStyles.style5,
                   textAlign: TextAlign.center,
                 ),
@@ -37,16 +37,15 @@ class Onboarding extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Step 1 of 3', style: AppTextStyles.style7),
+                    Text('Step 2 of 3', style: AppTextStyles.style7),
                     SizedBox(width: Get.width * 0.05),
                     GestureDetector(
-                      onTap: () => Get.toNamed('/onboarding1'),
-                      child: const OnboardingNextIcon(),
-                    ),
+                        onTap: () => Get.toNamed('/onboarding2'),
+                        child: const OnboardingNextIcon())
                   ],
                 ),
               ),
-              SizedBox(height: Get.height * 0.02),
+              SizedBox(height: Get.height * 0.02)
             ],
           ),
         ),
