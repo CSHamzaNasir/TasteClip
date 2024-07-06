@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:tasteclip/modules/onboarding/onboarding.dart';
 import 'package:tasteclip/modules/splash/splash_logo.dart';
+import 'package:tasteclip/modules/splash/splash_text.dart';
 
 class AppRouter {
-  static const splashScreen = "/splashScreen";
+  static const splashLogo = "/splashLogo";
+  static const splashText = "/splashText";
+  static const onboarding = "/onboarding";
 
   static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
@@ -18,8 +22,14 @@ class AppRouter {
           page: () => const Scaffold(),
         );
 
-      case splashScreen:
-        return GetPageRoute(page: () => const SplashScreen());
+      case splashLogo:
+        return GetPageRoute(page: () => const SplashLogo());
+
+      case splashText:
+        return GetPageRoute(page: () => const SplashText());
+
+      case onboarding:
+        return GetPageRoute(page: () => const Onboarding());
 
       default:
         return _errorRoute();

@@ -13,9 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: AppRouter.key,
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.splashScreen,
+      initialRoute: AppRouter.onboarding,
     );
   }
 }
