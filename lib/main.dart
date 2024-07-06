@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       navigatorKey: AppRouter.key,
       onGenerateRoute: AppRouter.onGenerateRoute,
-      // initialRoute: AppRouter.forgetPassword,
+      initialRoute: AppRouter.splashScreen,
     );
   }
 }

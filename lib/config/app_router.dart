@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:tasteclip/modules/splash/splash_logo.dart';
 
 class AppRouter {
-  // static const dataInputScreen = "/dataInputScreen";
+  static const splashScreen = "/splashScreen";
 
   static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
@@ -17,8 +18,8 @@ class AppRouter {
           page: () => const Scaffold(),
         );
 
-      // case dataInputScreen:
-      //   return GetPageRoute(page: () => const DataInputScreen());
+      case splashScreen:
+        return GetPageRoute(page: () => const SplashScreen());
 
       default:
         return _errorRoute();
