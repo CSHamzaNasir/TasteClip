@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/modules/onboarding/onboarding.dart';
+import 'package:tasteclip/theme/gradient.dart';
 import '../../theme/style.dart';
 
 class SplashText extends StatelessWidget {
@@ -17,23 +18,26 @@ class SplashText extends StatelessWidget {
     });
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const Spacer(),
-          Center(
-            child: Text(
-              'Taste Clip',
-              style: AppTextStyles.style3,
+      body: Container(
+        decoration: const BoxDecoration(gradient: lightWhiteGradient),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Spacer(),
+            Center(
+              child: Text(
+                'Taste Clip',
+                style: AppTextStyles.style3,
+              ),
             ),
-          ),
-          const Spacer(),
-          Text(
-            'Version 1.0',
-            style: AppTextStyles.style2,
-          ),
-          const SizedBox(height: 20),
-        ],
+            const Spacer(),
+            Text(
+              'Version 1.0',
+              style: AppTextStyles.style2,
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

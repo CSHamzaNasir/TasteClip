@@ -51,7 +51,16 @@ class RoleButton extends StatelessWidget {
           ),
           child: Text('Guest', style: AppTextStyles.style9),
         ),
-        SizedBox(height: Get.height * 0.02),
+        SizedBox(height: Get.height * 0.03),
+        Row(children: [
+          const Expanded(child: Divider(color: primaryColor)),
+          Text(
+            " or continue with ",
+            style: AppTextStyles.style2,
+          ),
+          const Expanded(child: Divider(color: primaryColor)),
+        ]),
+        SizedBox(height: Get.height * 0.03),
         ElevatedButton(
           onPressed: () {
             Get.toNamed('/');

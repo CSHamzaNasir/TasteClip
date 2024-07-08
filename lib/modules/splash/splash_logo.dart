@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/modules/splash/splash_text.dart';
+import 'package:tasteclip/theme/gradient.dart';
 import 'package:tasteclip/theme/style.dart';
 
 class SplashLogo extends StatelessWidget {
@@ -28,29 +29,32 @@ class SplashLogo extends StatelessWidget {
     });
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Spacer(),
-            SizedBox(
-              width: imgWidth,
-              height: imgHeight,
-              child: Image.asset(appLogo),
-            ),
-            const Spacer(),
-            Text(
-              'TasteClip',
-              style: AppTextStyles.style1,
-            ),
-            Text(
-              'Version 1.0',
-              style: AppTextStyles.style2,
-            ),
-            SizedBox(
-              height: Get.height * 0.03,
-            )
-          ],
+      body: Container(
+        decoration: const BoxDecoration(gradient: lightWhiteGradient),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(),
+              SizedBox(
+                width: imgWidth,
+                height: imgHeight,
+                child: Image.asset(appLogo),
+              ),
+              const Spacer(),
+              Text(
+                'TasteClip',
+                style: AppTextStyles.style1,
+              ),
+              Text(
+                'Version 1.0',
+                style: AppTextStyles.style2,
+              ),
+              SizedBox(
+                height: Get.height * 0.03,
+              )
+            ],
+          ),
         ),
       ),
     );

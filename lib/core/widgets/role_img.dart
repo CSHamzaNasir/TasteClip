@@ -18,8 +18,8 @@ class RoleImg extends StatelessWidget {
       imgWidth = 250.0;
       imgHeight = 300.0;
     } else {
-      imgWidth = 200.0;
-      imgHeight = 200.0;
+      imgWidth = 250.0;
+      imgHeight = 250.0;
     }
 
     return SizedBox(
