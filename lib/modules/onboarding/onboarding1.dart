@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/core/widgets/onboarding_button.dart';
 import 'package:tasteclip/theme/style.dart';
 import 'package:tasteclip/core/widgets/onboarding_icon.dart';
@@ -19,10 +21,19 @@ class Onboarding1 extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(height: Get.height * 0.02),
+                  SizedBox(height: Get.height * 0.1),
                   const OnBoardingButtton()
                 ],
               ),
+              const Spacer(),
+              Center(
+                child: SvgPicture.asset(
+                  mission,
+                  height: 250,
+                  width: 250,
+                ),
+              ),
+              const Spacer(),
               Text('Our Mission', style: AppTextStyles.style4),
               SizedBox(height: Get.height * 0.02),
               Center(

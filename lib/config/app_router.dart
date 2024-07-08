@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:tasteclip/core/auth/authentication.dart';
 import 'package:tasteclip/core/auth/role.dart';
 import 'package:tasteclip/modules/onboarding/onboarding.dart';
 import 'package:tasteclip/modules/onboarding/onboarding1.dart';
@@ -15,6 +16,7 @@ class AppRouter {
   static const onboarding1 = "/onboarding1";
   static const onboarding2 = "/onboarding2";
   static const role = "/role";
+  static const authentication = "/authentication";
 
   static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
@@ -52,7 +54,14 @@ class AppRouter {
       case role:
         return GetPageRoute(
           page: () => const Role(),
-          transition: Transition.rightToLeft,
+          transition: Transition.fadeIn,
+          transitionDuration: const Duration(milliseconds: 600),
+        );
+
+      case authentication:
+        return GetPageRoute(
+          page: () => const Authentication(),
+          transition: Transition.fadeIn,
         );
 
       default:

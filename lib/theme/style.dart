@@ -117,4 +117,9 @@ class AppTextStyles {
     fontWeight: FontWeight.w300,
     fontSize: h6,
   );
+  static TextStyle style20 = const TextStyle(
+    color: textColor,
+    fontWeight: FontWeight.w500,
+    fontSize: h4,
+  );
 }

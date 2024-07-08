@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/core/widgets/onboarding_elevatedbutton.dart';
 import 'package:tasteclip/theme/style.dart';
 
@@ -18,6 +20,14 @@ class Onboarding2 extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [],
+              ),
+              const Spacer(),
+              Center(
+                child: SvgPicture.asset(
+                  vision,
+                  height: 250,
+                  width: 250,
+                ),
               ),
               Text('Our Vision', style: AppTextStyles.style4),
               SizedBox(height: Get.height * 0.02),
