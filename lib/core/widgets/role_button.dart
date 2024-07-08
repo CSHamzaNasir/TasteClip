@@ -10,17 +10,17 @@ class RoleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    double imgWidth;
-    double imgHeight;
+    double loginSignupBtnWidth;
+    double loginSignupBtnHeight;
     if (screenWidth < 300) {
-      imgWidth = 200.0;
-      imgHeight = 40.0;
+      loginSignupBtnWidth = 200.0;
+      loginSignupBtnHeight = 40.0;
     } else if (screenWidth < 350) {
-      imgWidth = 300.0;
-      imgHeight = 45.0;
+      loginSignupBtnWidth = 300.0;
+      loginSignupBtnHeight = 45.0;
     } else {
-      imgWidth = 360.0;
-      imgHeight = 50.0;
+      loginSignupBtnWidth = 360.0;
+      loginSignupBtnHeight = 50.0;
     }
     return Column(
       children: [
@@ -33,7 +33,7 @@ class RoleButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.0),
             ),
             backgroundColor: secondaryColor,
-            minimumSize: Size(imgWidth, imgHeight),
+            minimumSize: Size(loginSignupBtnWidth, loginSignupBtnHeight),
           ),
           child: Text('User', style: AppTextStyles.style9),
         ),
@@ -47,7 +47,7 @@ class RoleButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.0),
             ),
             backgroundColor: primaryColor,
-            minimumSize: Size(imgWidth, imgHeight),
+            minimumSize: Size(loginSignupBtnWidth, loginSignupBtnHeight),
           ),
           child: Text('Guest', style: AppTextStyles.style9),
         ),
@@ -71,7 +71,7 @@ class RoleButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.0),
             ),
             backgroundColor: lightColor,
-            minimumSize: Size(imgWidth, imgHeight),
+            minimumSize: Size(loginSignupBtnWidth, loginSignupBtnHeight),
           ),
           child: Text('Restaurant Manager', style: AppTextStyles.style10),
         ),

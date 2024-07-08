@@ -1,6 +1,6 @@
 // gradient_styles.dart
 import 'package:flutter/material.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 const lightWhiteGradient = LinearGradient(
   colors: [lightColor, whiteColor],
