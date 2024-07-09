@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/core/widgets/role_button.dart';
 import 'package:tasteclip/core/widgets/role_img.dart';
 import 'package:tasteclip/theme/gradient.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 class Role extends StatelessWidget {
   const Role({super.key});

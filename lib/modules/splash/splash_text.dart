@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/modules/onboarding/onboarding.dart';
 import 'package:tasteclip/theme/gradient.dart';
-import '../../theme/style.dart';
+import '../../theme/text_style.dart';
 
 class SplashText extends StatelessWidget {
   const SplashText({super.key});

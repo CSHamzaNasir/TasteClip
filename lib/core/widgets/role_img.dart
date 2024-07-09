@@ -9,11 +9,13 @@ class RoleImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     double imgWidth;
     double imgHeight;
-    if (screenWidth < 300) {
-      imgWidth = 120.0;
-      imgHeight = 80.0;
+    if (screenWidth < 300 || screenHeight < 600) {
+      imgWidth = double.infinity;
+      imgHeight = 150.0;
     } else if (screenWidth < 350) {
       imgWidth = 250.0;
       imgHeight = 300.0;

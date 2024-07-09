@@ -4,7 +4,7 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/core/widgets/onboarding_button.dart';
 import 'package:tasteclip/theme/gradient.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 import 'package:tasteclip/core/widgets/onboarding_icon.dart';
 
 class Onboarding1 extends StatelessWidget {

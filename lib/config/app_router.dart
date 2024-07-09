@@ -5,6 +5,8 @@ import 'package:tasteclip/core/auth/authentication.dart';
 import 'package:tasteclip/core/auth/email/login.dart';
 import 'package:tasteclip/core/auth/email/signup.dart';
 import 'package:tasteclip/core/auth/role.dart';
+import 'package:tasteclip/modules/guest/guest.dart';
+import 'package:tasteclip/modules/manager/manager_auth.dart';
 import 'package:tasteclip/modules/onboarding/onboarding.dart';
 import 'package:tasteclip/modules/onboarding/onboarding1.dart';
 import 'package:tasteclip/modules/onboarding/onboarding2.dart';
@@ -21,6 +23,8 @@ class AppRouter {
   static const authentication = "/authentication";
   static const login = "/login";
   static const signup = "/signup";
+  static const guest = "/guest";
+  static const managerAuth = "/managerAuth";
 
   static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
@@ -66,6 +70,7 @@ class AppRouter {
         return GetPageRoute(
           page: () => const Authentication(),
           transition: Transition.fadeIn,
+          transitionDuration: const Duration(milliseconds: 600),
         );
 
       case login:
@@ -73,6 +78,12 @@ class AppRouter {
 
       case signup:
         return GetPageRoute(page: () => const Signup());
+
+      case guest:
+        return GetPageRoute(page: () => const Guest());
+
+      case managerAuth:
+        return GetPageRoute(page: () => const ManagerAuth());
 
       default:
         return _errorRoute();

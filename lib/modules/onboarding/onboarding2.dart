@@ -4,7 +4,7 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/core/widgets/onboarding_elevatedbutton.dart';
 import 'package:tasteclip/theme/gradient.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 class Onboarding2 extends StatelessWidget {
   const Onboarding2({super.key});

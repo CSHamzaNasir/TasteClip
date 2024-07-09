@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 class OnboardingNextIcon extends StatelessWidget {
   const OnboardingNextIcon({

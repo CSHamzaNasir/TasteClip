@@ -2,21 +2,72 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/theme/text_style.dart';
 
-class AppBars {
-  static PreferredSizeWidget authAppbar() {
-    return AppBar(
-      backgroundColor: lightColor,
-      leading: GestureDetector(
-        onTap: () => Get.toNamed('/role'),
+class CardAppBar extends StatefulWidget {
+  final Color iconColor;
+  final Color? containerColor;
+  final String? route;
+  final bool shadowOpacity;
+
+  const CardAppBar({
+    super.key,
+    required this.iconColor,
+    required this.containerColor,
+    this.route,
+    this.shadowOpacity = true,
+  });
+
+  @override
+  State<CardAppBar> createState() => CardAppBarState();
+}
+
+class CardAppBarState extends State<CardAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    double paddingTop;
+    double cardRadius;
+
+    if (screenWidth < 300 || screenHeight < 600) {
+      paddingTop = 25;
+      cardRadius = 10;
+    } else if (screenWidth < 350 || screenHeight < 700) {
+      paddingTop = 38;
+      cardRadius = 12;
+    } else {
+      paddingTop = 45;
+      cardRadius = 15;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: paddingTop),
+      child: GestureDetector(
+        onTap: () {
+          if (widget.route != null) {
+            Get.toNamed(widget.route!);
+          }
+        },
         child: Container(
           height: Get.height * 0.06,
           width: Get.height * 0.06,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            color: widget.containerColor,
+            borderRadius: BorderRadius.circular(cardRadius),
+            boxShadow: widget.shadowOpacity
+                ? [
+                    BoxShadow(
+                      color: textColor.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ]
+                : [],
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new_sharp,
-            color: secondaryColor,
+            color: widget.iconColor,
+            size: 20,
           ),
         ),
       ),
@@ -24,46 +75,49 @@ class AppBars {
   }
 }
 
+class CustomAppBar extends StatefulWidget {
+  final Color iconColor;
+  final String? route;
 
+  const CustomAppBar({
+    super.key,
+    required this.iconColor,
+    this.route,
+  });
 
+  @override
+  State<CustomAppBar> createState() => CustomAppBarState();
+}
 
-// import 'package:flutter/material.dart';
-// class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-//   const CustomAppBar({
-//     super.key,
-//     this.title,
-//     this.action1IconButton,
-//     this.customBackButton,
-//   });
-//   final String? title;
-//   final Widget? action1IconButton;
-//   final Widget? customBackButton;
-//   @override
-//   Widget build(BuildContext context) {
-//     return AppBar(
-//       centerTitle: true,
-//       title: Text(
-//         title ?? "",
-//         style: const TextStyle(
-//             fontSize: 16,
-//             fontWeight: AppFontWeight.fontWeight600,
-//             fontFamily: AppFontFamily.poppinsMedium),
-//       ),
-//       elevation: 0.0,
-//       leadingWidth: 70,
-//       backgroundColor: AppColors.transparent,
-//       leading: Padding(
-//           padding: const EdgeInsets.all(10),
-//           child: customBackButton ?? const GoBackBtn()),
-//       actions: [
-//         if (action1IconButton != null)
-//           Padding(
-//             padding: const EdgeInsets.all(10.0),
-//             child: action1IconButton!,
-//           )
-//       ],
-//     );
-//   }
-//   @override
-//   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-// }
+class CustomAppBarState extends State<CustomAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    double paddingTop;
+
+    if (screenWidth < 300 || screenHeight < 600) {
+      paddingTop = 30;
+    } else if (screenWidth < 350 || screenHeight < 700) {
+      paddingTop = 38;
+    } else {
+      paddingTop = 45;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: paddingTop),
+      child: GestureDetector(
+        onTap: () {
+          if (widget.route != null) {
+            Get.toNamed(widget.route!);
+          }
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: widget.iconColor,
+          size: 20,
+        ),
+      ),
+    );
+  }
+}

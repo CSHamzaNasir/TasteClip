@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 class AuthButton extends StatelessWidget {
   const AuthButton({
@@ -10,25 +10,31 @@ class AuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     double loginSignupBtnWidth;
     double loginSignupBtnHeight;
     double googlePhoneBtnWidth;
     double googlePhoneBtnHeight;
-    if (screenWidth < 300) {
-      loginSignupBtnWidth = 200.0;
+    double screenSpacing;
+    if (screenWidth < 300 || screenHeight < 600) {
+      loginSignupBtnWidth = double.infinity;
       loginSignupBtnHeight = 40.0;
       googlePhoneBtnWidth = 100.0;
       googlePhoneBtnHeight = 37.0;
+      screenSpacing = Get.height * 0.02;
     } else if (screenWidth < 350) {
-      loginSignupBtnWidth = 300.0;
+      loginSignupBtnWidth = double.infinity;
       loginSignupBtnHeight = 45.0;
       googlePhoneBtnWidth = 120.0;
       googlePhoneBtnHeight = 40.0;
+      screenSpacing = Get.height * 0.03;
     } else {
-      loginSignupBtnWidth = 360.0;
+      loginSignupBtnWidth = double.infinity;
       loginSignupBtnHeight = 50.0;
       googlePhoneBtnWidth = 150.0;
       googlePhoneBtnHeight = 48.0;
+      screenSpacing = Get.height * 0.05;
     }
     return Column(
       children: [
@@ -59,7 +65,7 @@ class AuthButton extends StatelessWidget {
           ),
           child: Text('Sign Up', style: AppTextStyles.style9),
         ),
-        SizedBox(height: Get.height * 0.05),
+        SizedBox(height: screenSpacing),
         Row(children: [
           const Expanded(child: Divider(color: primaryColor)),
           Text(
@@ -68,9 +74,9 @@ class AuthButton extends StatelessWidget {
           ),
           const Expanded(child: Divider(color: primaryColor)),
         ]),
-        SizedBox(height: Get.height * 0.05),
+        SizedBox(height: screenSpacing),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
               onPressed: () {

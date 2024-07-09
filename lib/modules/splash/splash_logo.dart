@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/modules/splash/splash_text.dart';
 import 'package:tasteclip/theme/gradient.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 class SplashLogo extends StatelessWidget {
   const SplashLogo({super.key});

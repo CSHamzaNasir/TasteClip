@@ -12,17 +12,19 @@ class Authentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBars.authAppbar(),
       body: Container(
         decoration: const BoxDecoration(
           gradient: lightWhiteGradient,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(22.0),
+          padding: const EdgeInsets.only(left: 22.0, right: 22),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const CustomAppBar(
+                iconColor: secondaryColor,
+                route: ('/role'),
+              ),
               Center(
                 child: Text(
                   'Welcome to the \n Taste Clip',
@@ -31,7 +33,7 @@ class Authentication extends StatelessWidget {
                 ),
               ),
               const Center(child: RoleImg()),
-              SizedBox(height: Get.height * 0.03),
+              SizedBox(height: Get.height * 0.01),
               const AuthButton()
             ],
           ),

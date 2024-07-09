@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/theme/style.dart';
+import 'package:tasteclip/theme/text_style.dart';
 
 class RoleButton extends StatelessWidget {
   const RoleButton({
@@ -10,18 +10,21 @@ class RoleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     double loginSignupBtnWidth;
     double loginSignupBtnHeight;
-    if (screenWidth < 300) {
-      loginSignupBtnWidth = 200.0;
+
+    if (screenWidth < 300 || screenHeight < 600) {
+      loginSignupBtnWidth = double.infinity;
       loginSignupBtnHeight = 40.0;
-    } else if (screenWidth < 350) {
-      loginSignupBtnWidth = 300.0;
+    } else if (screenWidth < 350 || screenHeight < 700) {
+      loginSignupBtnWidth = double.infinity;
       loginSignupBtnHeight = 45.0;
     } else {
-      loginSignupBtnWidth = 360.0;
+      loginSignupBtnWidth = double.infinity;
       loginSignupBtnHeight = 50.0;
     }
+
     return Column(
       children: [
         ElevatedButton(
@@ -40,7 +43,7 @@ class RoleButton extends StatelessWidget {
         SizedBox(height: Get.height * 0.02),
         ElevatedButton(
           onPressed: () {
-            Get.toNamed('/');
+            Get.toNamed('/guest');
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -63,7 +66,7 @@ class RoleButton extends StatelessWidget {
         SizedBox(height: Get.height * 0.03),
         ElevatedButton(
           onPressed: () {
-            Get.toNamed('/');
+            Get.toNamed('/managerAuth');
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
