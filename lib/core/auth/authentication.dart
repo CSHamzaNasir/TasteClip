@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/widgets/auth_button.dart';
@@ -26,10 +27,11 @@ class Authentication extends StatelessWidget {
                 route: ('/role'),
               ),
               Center(
-                child: Text(
-                  'Welcome to the \n Taste Clip',
+                child: AutoSizeText(
+                  'Welcome to the\nTaste Clip',
                   style: AppTextStyles.style4,
                   textAlign: TextAlign.center,
+                  maxLines: 2,
                 ),
               ),
               const Center(child: RoleImg()),

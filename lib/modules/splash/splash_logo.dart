@@ -5,24 +5,15 @@ import 'package:tasteclip/modules/splash/splash_text.dart';
 import 'package:tasteclip/theme/gradient.dart';
 import 'package:tasteclip/theme/text_style.dart';
 
+import '../../responsive/splash_logo_responsive.dart';
+
 class SplashLogo extends StatelessWidget {
   const SplashLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    double imgWidth;
-    double imgHeight;
-    if (screenWidth < 300) {
-      imgWidth = 120.0;
-      imgHeight = 80.0;
-    } else if (screenWidth < 350) {
-      imgWidth = 250.0;
-      imgHeight = 300.0;
-    } else {
-      imgWidth = 200.0;
-      imgHeight = 200.0;
-    }
+    final screenSizeConfig = SplashLogoResponsive(screenWidth);
 
     Future.delayed(const Duration(seconds: 3), () {
       Get.to(() => const SplashText(), transition: Transition.rightToLeft);
@@ -37,8 +28,8 @@ class SplashLogo extends StatelessWidget {
             children: [
               const Spacer(),
               SizedBox(
-                width: imgWidth,
-                height: imgHeight,
+                width: screenSizeConfig.imgWidth,
+                height: screenSizeConfig.imgHeight,
                 child: Image.asset(appLogo),
               ),
               const Spacer(),
@@ -52,7 +43,7 @@ class SplashLogo extends StatelessWidget {
               ),
               SizedBox(
                 height: Get.height * 0.03,
-              )
+              ),
             ],
           ),
         ),

@@ -7,3 +7,8 @@ const lightWhiteGradient = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
 );
+const primaryWhiteGradient = LinearGradient(
+  colors: [primaryColor, whiteColor],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);

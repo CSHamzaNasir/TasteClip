@@ -28,7 +28,7 @@ class AppTextStyles {
     fontSize: h3,
   );
   static TextStyle style2 = const TextStyle(
-    color: primaryColor,
+    color: mainColor,
     fontWeight: FontWeight.w300,
     fontSize: h5,
   );
@@ -74,7 +74,7 @@ class AppTextStyles {
   );
   static TextStyle style11 = const TextStyle(
     color: secondaryColor,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.bold,
     fontSize: h5,
   );
   static TextStyle loading = const TextStyle(

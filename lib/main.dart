@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'config/app_router.dart';
@@ -12,11 +13,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: AppRouter.key,
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.authentication,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: AppRouter.key,
+        onGenerateRoute: AppRouter.onGenerateRoute,
+        initialRoute: AppRouter.authentication,
+      ),
     );
   }
 }

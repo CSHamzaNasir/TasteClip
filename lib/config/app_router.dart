@@ -77,10 +77,16 @@ class AppRouter {
         return GetPageRoute(page: () => const Login());
 
       case signup:
-        return GetPageRoute(page: () => const Signup());
+        return GetPageRoute(
+          page: () => const Signup(),
+          transition: Transition.fadeIn,
+          transitionDuration: const Duration(milliseconds: 600),
+        );
 
       case guest:
-        return GetPageRoute(page: () => const Guest());
+        return GetPageRoute(
+          page: () => const Guest(),
+        );
 
       case managerAuth:
         return GetPageRoute(page: () => const ManagerAuth());
