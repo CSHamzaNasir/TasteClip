@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tasteclip/theme/text_style.dart';
+import 'package:tasteclip/constant/app_text.dart';
+import '../config/app_router.dart';
 
 class CardAppBar extends StatefulWidget {
   final Color iconColor;
@@ -44,12 +44,12 @@ class CardAppBarState extends State<CardAppBar> {
       child: GestureDetector(
         onTap: () {
           if (widget.route != null) {
-            Get.toNamed(widget.route!);
+            AppRouter.push(widget.route!);
           }
         },
         child: Container(
-          height: Get.height * 0.06,
-          width: Get.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.06,
+          width: MediaQuery.of(context).size.height * 0.06,
           decoration: BoxDecoration(
             color: widget.containerColor,
             borderRadius: BorderRadius.circular(cardRadius),
@@ -109,7 +109,7 @@ class CustomAppBarState extends State<CustomAppBar> {
       child: GestureDetector(
         onTap: () {
           if (widget.route != null) {
-            Get.toNamed(widget.route!);
+            AppRouter.push(widget.route!);
           }
         },
         child: Icon(

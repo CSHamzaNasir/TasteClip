@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tasteclip/modules/onboarding/onboarding.dart';
-import 'package:tasteclip/theme/gradient.dart';
-import '../../theme/text_style.dart';
+import 'package:tasteclip/constant/app_gradient.dart';
+import '../../config/app_router.dart';
+import '../../constant/app_text.dart';
 
 class SplashText extends StatelessWidget {
   const SplashText({super.key});
@@ -10,32 +9,31 @@ class SplashText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {
-      Get.to(
-        () => const Onboarding(),
-        transition: Transition.fadeIn,
-        duration: const Duration(seconds: 1),
-      );
+      AppRouter.push(AppRouter.onboarding);
     });
 
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(gradient: lightWhiteGradient),
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Spacer(),
+            Spacer(),
             Center(
               child: Text(
                 'Taste Clip',
-                style: AppTextStyles.style3,
+                style: TextStyle(
+                    fontSize: h1,
+                    color: textColor,
+                    fontWeight: FontWeight.bold),
               ),
             ),
-            const Spacer(),
+            Spacer(),
             Text(
               'Version 1.0',
-              style: AppTextStyles.style2,
+              style: TextStyle(fontSize: h5, color: primaryColor),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
           ],
         ),
       ),

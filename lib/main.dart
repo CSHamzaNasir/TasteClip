@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-
+import 'package:tasteclip/loader.dart';
 import 'config/app_router.dart';
 
 void main() {
@@ -15,11 +14,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      child: GetMaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: AppRouter.key,
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute: AppRouter.authentication,
+        // initialRoute: AppRouter.splashLogo,
+        home: const FirstScreen(),
       ),
     );
   }

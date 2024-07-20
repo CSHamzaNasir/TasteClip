@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tasteclip/theme/text_style.dart';
+import '../../config/app_router.dart';
+import '../../constant/app_text.dart';
 
-class OnBoardingButtton extends StatelessWidget {
-  const OnBoardingButtton({
+class BoardingSkipBtn extends StatelessWidget {
+  const BoardingSkipBtn({
     super.key,
   });
 
@@ -11,7 +11,7 @@ class OnBoardingButtton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Get.toNamed('/role');
+        AppRouter.push(AppRouter.role);
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -20,7 +20,8 @@ class OnBoardingButtton extends StatelessWidget {
         backgroundColor: mainColor,
         minimumSize: const Size(80, 30),
       ),
-      child: Text('skip', style: AppTextStyles.style6),
+      child:
+          const Text('skip', style: TextStyle(fontSize: h6, color: lightColor)),
     );
   }
 }

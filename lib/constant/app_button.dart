@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasteclip/theme/text_style.dart';
+import 'package:tasteclip/constant/app_text.dart';
 
-class CustomButton extends StatelessWidget {
+class AppButton extends StatelessWidget {
   final String text;
   final IconData? icon;
   final Color? backgroundColor;
@@ -9,7 +9,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool btnSideClr;
 
-  const CustomButton({
+  const AppButton({
     super.key,
     required this.text,
     this.icon,
@@ -21,6 +21,8 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ButtonResponsiveProperties properties =
+        ButtonResponsive.btnResponsive(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: foregroundColor,
@@ -32,7 +34,7 @@ class CustomButton extends StatelessWidget {
             width: 1,
           ),
         ),
-        minimumSize: const Size.fromHeight(50),
+        minimumSize: Size.fromHeight(properties.btnHeight),
       ),
       onPressed: onPressed,
       child: Row(
@@ -47,6 +49,34 @@ class CustomButton extends StatelessWidget {
           Text(text),
         ],
       ),
+    );
+  }
+}
+
+class ButtonResponsiveProperties {
+  final double btnHeight;
+
+  ButtonResponsiveProperties({
+    required this.btnHeight,
+  });
+}
+
+class ButtonResponsive {
+  static ButtonResponsiveProperties btnResponsive(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    double btnHeight;
+
+    if (screenWidth < 300 || screenHeight < 400) {
+      btnHeight = 35;
+    } else if (screenWidth < 350 || screenHeight < 500) {
+      btnHeight = 40;
+    } else {
+      btnHeight = 50;
+    }
+
+    return ButtonResponsiveProperties(
+      btnHeight: btnHeight,
     );
   }
 }

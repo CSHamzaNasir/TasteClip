@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/constant/assets_path.dart';
-import 'package:tasteclip/core/widgets/onboarding_button.dart';
 import 'package:tasteclip/core/widgets/onboarding_icon.dart';
-import 'package:tasteclip/theme/gradient.dart';
-import 'package:tasteclip/theme/text_style.dart';
+import 'package:tasteclip/constant/app_gradient.dart';
+import 'package:tasteclip/constant/app_text.dart';
+import '../../../config/app_router.dart';
+import '../../../core/widgets/boarding_skip_btn.dart';
+import '../../../responsive/boarding.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
 
   @override
   Widget build(BuildContext context) {
+    BoardingResponsiveProperties properties =
+        BoardingResponsive.boardingImgSize(context);
+
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -26,24 +30,32 @@ class Onboarding extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SizedBox(height: Get.height * 0.1),
-                      const OnBoardingButtton()
+                      SizedBox(height: MediaQuery.of(context).size.height / 6),
+                      const BoardingSkipBtn()
                     ],
                   ),
                   const Spacer(),
                   Center(
                     child: SvgPicture.asset(
                       welcome,
-                      height: 250,
-                      width: 250,
+                      height: properties.height,
+                      width: properties.width,
                     ),
                   ),
-                  Text('Welcome to TasteClip', style: AppTextStyles.style4),
-                  SizedBox(height: Get.height * 0.02),
+                  Text(
+                    'Welcome to TasteClip',
+                    style: TextStyle(
+                        fontSize: properties.title,
+                        color: textColor,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 18),
                   Center(
                     child: Text(
                       'Lets make your feedback matter. Get started in seconds and share your experiences effortlessly.',
-                      style: AppTextStyles.style5,
+                      style: TextStyle(
+                          fontSize: properties.subTitle, color: mainColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -52,16 +64,19 @@ class Onboarding extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Step 1 of 3', style: AppTextStyles.style7),
-                        SizedBox(width: Get.width * 0.05),
+                        Text('Step 1 of 3',
+                            style: TextStyle(
+                                fontSize: properties.subTitle,
+                                color: mainColor,
+                                fontWeight: FontWeight.bold)),
+                        const SizedBox(width: 20),
                         GestureDetector(
-                          onTap: () => Get.toNamed('/onboarding1'),
+                          onTap: () => AppRouter.push(AppRouter.onboarding1),
                           child: const OnboardingNextIcon(),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: Get.height * 0.02),
                 ],
               ),
             ),

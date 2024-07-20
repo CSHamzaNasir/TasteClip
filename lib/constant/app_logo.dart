@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 
-class RoleImg extends StatelessWidget {
-  const RoleImg({
+class AppLogo extends StatelessWidget {
+  const AppLogo({
     super.key,
   });
 

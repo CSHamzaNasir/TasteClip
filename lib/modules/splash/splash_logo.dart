@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tasteclip/constant/assets_path.dart';
-import 'package:tasteclip/modules/splash/splash_text.dart';
-import 'package:tasteclip/theme/gradient.dart';
-import 'package:tasteclip/theme/text_style.dart';
-
-import '../../responsive/splash_logo_responsive.dart';
+import 'package:tasteclip/constant/app_logo.dart';
+import 'package:tasteclip/constant/app_gradient.dart';
+import 'package:tasteclip/constant/app_text.dart';
+import 'package:tasteclip/responsive/splash.dart';
+import '../../config/app_router.dart';
 
 class SplashLogo extends StatelessWidget {
   const SplashLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenSizeConfig = SplashLogoResponsive(screenWidth);
-
+    SplashResponsiveProperties properties =
+        SplashResponsive.boardingImgSize(context);
     Future.delayed(const Duration(seconds: 3), () {
-      Get.to(() => const SplashText(), transition: Transition.rightToLeft);
+      AppRouter.push(AppRouter.splashText);
     });
 
     return Scaffold(
@@ -27,22 +24,22 @@ class SplashLogo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              SizedBox(
-                width: screenSizeConfig.imgWidth,
-                height: screenSizeConfig.imgHeight,
-                child: Image.asset(appLogo),
-              ),
+              const AppLogo(),
               const Spacer(),
               Text(
                 'TasteClip',
-                style: AppTextStyles.style1,
+                style: TextStyle(
+                    fontSize: properties.title,
+                    color: textColor,
+                    fontWeight: FontWeight.w600),
               ),
-              Text(
-                'Version 1.0',
-                style: AppTextStyles.style2,
-              ),
+              Text('Version 1.0',
+                  style: TextStyle(
+                    fontSize: properties.subTitle,
+                    color: primaryColor,
+                  )),
               SizedBox(
-                height: Get.height * 0.03,
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
             ],
           ),

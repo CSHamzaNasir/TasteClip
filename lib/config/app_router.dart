@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:tasteclip/core/auth/authentication.dart';
-import 'package:tasteclip/core/auth/email/login.dart';
 import 'package:tasteclip/core/auth/email/signup.dart';
-import 'package:tasteclip/core/auth/role.dart';
+import 'package:tasteclip/core/auth/screens/authentication.dart';
+import 'package:tasteclip/core/auth/screens/role.dart';
 import 'package:tasteclip/modules/guest/guest.dart';
 import 'package:tasteclip/modules/manager/manager_auth.dart';
-import 'package:tasteclip/modules/onboarding/onboarding.dart';
-import 'package:tasteclip/modules/onboarding/onboarding1.dart';
-import 'package:tasteclip/modules/onboarding/onboarding2.dart';
+import 'package:tasteclip/modules/onboarding/screens/onboarding.dart';
+import 'package:tasteclip/modules/onboarding/screens/onboarding1.dart';
+import 'package:tasteclip/modules/onboarding/screens/onboarding2.dart';
 import 'package:tasteclip/modules/splash/splash_logo.dart';
 import 'package:tasteclip/modules/splash/splash_text.dart';
+
+import '../utils/app_alert.dart';
 
 class AppRouter {
   static const splashLogo = "/splashLogo";
@@ -26,80 +25,57 @@ class AppRouter {
   static const guest = "/guest";
   static const managerAuth = "/managerAuth";
 
-  static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
+  static final key = GlobalKey<NavigatorState>();
 
-  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+  static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Current Route: ${settings.name}');
-
     switch (settings.name) {
       case '/':
-        return GetPageRoute(
+        return MaterialPageRoute(
           settings: const RouteSettings(name: '/'),
-          page: () => const Scaffold(),
+          builder: (_) => const Scaffold(),
         );
+      case AppRouter.splashLogo:
+        return _navigate(const SplashLogo());
 
-      case splashLogo:
-        return GetPageRoute(page: () => const SplashLogo());
+      case AppRouter.splashText:
+        return _navigate(const SplashText());
 
-      case splashText:
-        return GetPageRoute(page: () => const SplashText());
+      case AppRouter.onboarding:
+        return _navigate(const Onboarding());
 
-      case onboarding:
-        return GetPageRoute(page: () => const Onboarding());
+      case AppRouter.onboarding1:
+        return _customNavigate(const Onboarding1(),
+            transition: _rightToLeftTransition);
 
-      case onboarding1:
-        return GetPageRoute(
-          page: () => const Onboarding1(),
-          transition: Transition.rightToLeft,
-        );
+      case AppRouter.onboarding2:
+        return _customNavigate(const Onboarding2(),
+            transition: _fadeInTransition);
 
-      case onboarding2:
-        return GetPageRoute(
-          page: () => const Onboarding2(),
-          transition: Transition.rightToLeft,
-        );
+      case AppRouter.role:
+        return _navigate(const Role());
 
-      case role:
-        return GetPageRoute(
-          page: () => const Role(),
-          transition: Transition.fadeIn,
-          transitionDuration: const Duration(milliseconds: 600),
-        );
+      case AppRouter.authentication:
+        return _navigate(const Authentication());
 
-      case authentication:
-        return GetPageRoute(
-          page: () => const Authentication(),
-          transition: Transition.fadeIn,
-          transitionDuration: const Duration(milliseconds: 600),
-        );
+      case AppRouter.signup:
+        return _navigate(const Signup());
 
-      case login:
-        return GetPageRoute(page: () => const Login());
+      case AppRouter.guest:
+        return _navigate(const Guest());
 
-      case signup:
-        return GetPageRoute(
-          page: () => const Signup(),
-          transition: Transition.fadeIn,
-          transitionDuration: const Duration(milliseconds: 600),
-        );
-
-      case guest:
-        return GetPageRoute(
-          page: () => const Guest(),
-        );
-
-      case managerAuth:
-        return GetPageRoute(page: () => const ManagerAuth());
+      case AppRouter.managerAuth:
+        return _navigate(const ManagerAuth());
 
       default:
         return _errorRoute();
     }
   }
 
-  static Route<dynamic> _errorRoute() {
-    return GetPageRoute(
+  static Route _errorRoute() {
+    return MaterialPageRoute(
       settings: const RouteSettings(name: '/error'),
-      page: () => Scaffold(
+      builder: (_) => Scaffold(
         appBar: AppBar(
           title: const Text('Under development'),
         ),
@@ -113,20 +89,74 @@ class AppRouter {
     );
   }
 
-  static void pushAndReplace(String route, {Map<String, dynamic>? arguments}) {
+  static _navigate(Widget widget) {
+    return MaterialPageRoute(builder: (_) => widget);
+  }
+
+  static Route _customNavigate(Widget widget,
+      {required RouteTransitionsBuilder transition}) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => widget,
+      transitionsBuilder: transition,
+      transitionDuration: const Duration(milliseconds: 600),
+    );
+  }
+
+  static Widget _rightToLeftTransition(
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    const begin = Offset(1.0, 0.0);
+    const end = Offset.zero;
+    const curve = Curves.ease;
+
+    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    var offsetAnimation = animation.drive(tween);
+
+    return SlideTransition(
+      position: offsetAnimation,
+      child: child,
+    );
+  }
+
+  static Widget _fadeInTransition(
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    return FadeTransition(
+      opacity: animation,
+      child: child,
+    );
+  }
+
+  static pushAndReplace(String route) {
+    key.currentState!
+        .pushNamedAndRemoveUntil(route, (Route<dynamic> route) => false);
+  }
+
+  static push(String route, {Object? arguments}) {
+    key.currentState!.pushNamed(route, arguments: arguments);
+  }
+
+  static pushReplacementNamed(String route, {Object? arguments}) {
     key.currentState!.pushReplacementNamed(route, arguments: arguments);
   }
 
-  static void popAndPush(String route, {Map<String, dynamic>? arguments}) {
-    Get.back();
-    Get.toNamed(route, arguments: arguments);
+  static pop() {
+    key.currentState!.pop();
   }
 
-  static void push(String route, {Map<String, dynamic>? arguments}) {
-    Get.toNamed(route, arguments: arguments);
-  }
-
-  static void pop({dynamic value}) {
-    Get.back(result: value);
+  static showAlertWithTitle(String title, String description) {
+    AppAlerts().showOSDialog(
+      key.currentContext!,
+      title,
+      description,
+      'Ok',
+      () => {},
+      secondButtonText: "",
+      secondCallback: () => {},
+    );
   }
 }
