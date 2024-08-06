@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tasteclip/loader.dart';
 import 'config/app_router.dart';
 
 void main() {
@@ -18,8 +17,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: AppRouter.key,
         onGenerateRoute: AppRouter.onGenerateRoute,
-        // initialRoute: AppRouter.splashLogo,
-        home: const FirstScreen(),
+        initialRoute: AppRouter.splashLogo,
+        // home: const Demo(),
       ),
     );
   }

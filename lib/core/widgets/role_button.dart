@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasteclip/constant/app_text.dart';
 import 'package:tasteclip/constant/app_button.dart';
+import 'package:tasteclip/core/auth/screens/authentication.dart';
 
 class RoleButton extends StatelessWidget {
   const RoleButton({super.key});
@@ -11,7 +12,10 @@ class RoleButton extends StatelessWidget {
       children: [
         AppButton(
           text: 'User',
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => const Authentication()));
+          },
           backgroundColor: secondaryColor,
           foregroundColor: lightColor,
         ),

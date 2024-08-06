@@ -8,3 +8,5 @@ const String appLogo = "${_imageFolderPath}applogo.png";
 const String welcome = "${_imageFolderPath}welcome.svg";
 const String vision = "${_imageFolderPath}vision.svg";
 const String mission = "${_imageFolderPath}mission.svg";
+const String logo = "${_imageFolderPath}logo.png";
+const String logo1 = "${_imageFolderPath}logo1.svg";
