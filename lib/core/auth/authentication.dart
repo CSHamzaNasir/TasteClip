@@ -86,7 +86,9 @@ class Authentication extends StatelessWidget {
                           text: 'Phone',
                           foregroundColor: lightColor,
                           backgroundColor: primaryColor,
-                          onPressed: () {},
+                          onPressed: () {
+                            AppRouter.push(AppRouter.phoneAuth);
+                          },
                         ),
                       ),
                     ],

@@ -44,13 +44,12 @@ class SigninState extends ConsumerState<Signin> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   const Text(
                     'Welcome Back!',
                     style: TextStyle(
                         color: secondaryColor, fontSize: h2, fontWeight: bold),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.09),
                   Hero(
                     tag: 'textlogo',
                     child: SvgPicture.asset(
@@ -160,37 +159,33 @@ class SigninState extends ConsumerState<Signin> {
                             text: 'Phone',
                             foregroundColor: lightColor,
                             backgroundColor: mainColor,
-                            onPressed: () {},
+                            onPressed: () {
+                              AppRouter.push(AppRouter.phoneAuth);
+                            },
                           ),
                         ),
                       ],
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Don't have an account? ",
-                        style: TextStyle(
-                            fontSize: h5,
-                            color: secondaryColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          AppRouter.push(AppRouter.signup);
-                        },
-                        child: const Text(
-                          'Sign up',
-                          style: TextStyle(
+                  RichText(
+                      text: TextSpan(
+                          text: "Don't have an account? ",
+                          style:
+                              const TextStyle(fontSize: h5, color: mainColor),
+                          children: [
+                        TextSpan(
+                          text: 'Sign up',
+                          style: const TextStyle(
                               fontSize: h5,
-                              color: mainColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ],
-                  ),
+                              color: secondaryColor,
+                              fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              AppRouter.push(AppRouter.signup);
+                            },
+                        )
+                      ])),
                 ],
               ),
             ),

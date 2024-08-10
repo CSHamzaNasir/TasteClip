@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasteclip/core/auth/phone.dart';
 import 'package:tasteclip/core/auth/signin.dart';
 import 'package:tasteclip/core/auth/signup.dart';
 import 'package:tasteclip/core/auth/authentication.dart';
@@ -25,6 +26,7 @@ class AppRouter {
   static const guest = "/guest";
   static const managerAuth = "/managerAuth";
   static const firstScreen = "/firstScreen";
+  static const phoneAuth = "/phoneAuth";
 
   static final key = GlobalKey<NavigatorState>();
 
@@ -73,6 +75,9 @@ class AppRouter {
 
       case AppRouter.firstScreen:
         return _navigate(const FirstScreen());
+
+      case AppRouter.phoneAuth:
+        return _navigate(const PhoneAuth());
 
       default:
         return _errorRoute();
