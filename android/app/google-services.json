@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "966465668140",
+    "project_id": "tasteclip-21160",
+    "storage_bucket": "tasteclip-21160.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966465668140:android:3f6c63c080b9b5bfadbd89",
+        "android_client_info": {
+          "package_name": "com.example.tasteclip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB66zQ2NmI8izLgVGFSfxJcCesN2Dcipo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

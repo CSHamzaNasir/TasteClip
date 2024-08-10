@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tasteclip/core/auth/email/signup.dart';
-import 'package:tasteclip/core/auth/screens/authentication.dart';
-import 'package:tasteclip/core/auth/screens/role.dart';
+import 'package:tasteclip/core/auth/signin.dart';
+import 'package:tasteclip/core/auth/signup.dart';
+import 'package:tasteclip/core/auth/authentication.dart';
+import 'package:tasteclip/core/auth/role.dart';
 import 'package:tasteclip/modules/guest/guest.dart';
 import 'package:tasteclip/modules/manager/manager_auth.dart';
-import 'package:tasteclip/modules/onboarding/screens/onboarding.dart';
-import 'package:tasteclip/modules/onboarding/screens/onboarding1.dart';
-import 'package:tasteclip/modules/onboarding/screens/onboarding2.dart';
+import 'package:tasteclip/modules/onboarding/onboarding.dart';
+import 'package:tasteclip/modules/onboarding/onboarding1.dart';
+import 'package:tasteclip/modules/onboarding/onboarding2.dart';
 import 'package:tasteclip/modules/splash/splash_logo.dart';
 import 'package:tasteclip/modules/splash/splash_text.dart';
-
-import '../utils/app_alert.dart';
+import 'package:tasteclip/utils/loader.dart';
 
 class AppRouter {
   static const splashLogo = "/splashLogo";
@@ -24,6 +24,7 @@ class AppRouter {
   static const signup = "/signup";
   static const guest = "/guest";
   static const managerAuth = "/managerAuth";
+  static const firstScreen = "/firstScreen";
 
   static final key = GlobalKey<NavigatorState>();
 
@@ -59,13 +60,19 @@ class AppRouter {
         return _navigate(const Authentication());
 
       case AppRouter.signup:
-        return _navigate(const Signup());
+        return _customNavigate(const Signup(), transition: _fadeInTransition);
 
       case AppRouter.guest:
         return _navigate(const Guest());
 
       case AppRouter.managerAuth:
         return _navigate(const ManagerAuth());
+
+      case AppRouter.login:
+        return _customNavigate(const Signin(), transition: _fadeInTransition);
+
+      case AppRouter.firstScreen:
+        return _navigate(const FirstScreen());
 
       default:
         return _errorRoute();
@@ -146,17 +153,5 @@ class AppRouter {
 
   static pop() {
     key.currentState!.pop();
-  }
-
-  static showAlertWithTitle(String title, String description) {
-    AppAlerts().showOSDialog(
-      key.currentContext!,
-      title,
-      description,
-      'Ok',
-      () => {},
-      secondButtonText: "",
-      secondCallback: () => {},
-    );
   }
 }

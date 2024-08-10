@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../config/app_router.dart';
-import '../../constant/app_text.dart';
+import 'package:tasteclip/config/app_router.dart';
+import 'package:tasteclip/constant/app_text.dart';
 
-class BoardingSkipBtn extends StatelessWidget {
-  const BoardingSkipBtn({
-    super.key,
-  });
+class SkipBtn extends StatelessWidget {
+  const SkipBtn({super.key});
 
   @override
   Widget build(BuildContext context) {

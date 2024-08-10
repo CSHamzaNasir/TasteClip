@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/constant/assets_path.dart';
-import 'package:tasteclip/core/widgets/onboarding_icon.dart';
 import 'package:tasteclip/constant/app_gradient.dart';
 import 'package:tasteclip/constant/app_text.dart';
-import '../../../config/app_router.dart';
-import '../../../core/widgets/boarding_skip_btn.dart';
-import '../../../responsive/boarding.dart';
+import 'package:tasteclip/utils/skip_btn.dart';
+import '../../config/app_router.dart';
+import '../../responsive/boarding.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
@@ -31,7 +30,7 @@ class Onboarding extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 6),
-                      const BoardingSkipBtn()
+                      const SkipBtn()
                     ],
                   ),
                   const Spacer(),
@@ -70,9 +69,18 @@ class Onboarding extends StatelessWidget {
                                 color: mainColor,
                                 fontWeight: FontWeight.bold)),
                         const SizedBox(width: 20),
-                        GestureDetector(
-                          onTap: () => AppRouter.push(AppRouter.onboarding1),
-                          child: const OnboardingNextIcon(),
+                        MaterialButton(
+                          minWidth: 10,
+                          color: secondaryColor,
+                          shape: const CircleBorder(),
+                          onPressed: () {
+                            AppRouter.push(AppRouter.onboarding1);
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward,
+                            color: lightColor,
+                            size: 17,
+                          ),
                         ),
                       ],
                     ),

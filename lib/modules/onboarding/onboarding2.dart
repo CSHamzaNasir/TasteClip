@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/constant/app_button.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/constant/app_gradient.dart';
 import 'package:tasteclip/constant/app_text.dart';
-import 'package:tasteclip/core/widgets/onboarding_icon.dart';
-import '../../../config/app_router.dart';
-import '../../../core/widgets/boarding_skip_btn.dart';
-import '../../../responsive/boarding.dart';
+import '../../config/app_router.dart';
+import '../../responsive/boarding.dart';
 
-class Onboarding1 extends StatelessWidget {
-  const Onboarding1({super.key});
+class Onboarding2 extends StatelessWidget {
+  const Onboarding2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +23,19 @@ class Onboarding1 extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height / 6),
-                    const BoardingSkipBtn()
-                  ],
+                  children: [],
                 ),
                 const Spacer(),
                 Center(
                   child: SvgPicture.asset(
-                    mission,
+                    vision,
                     height: properties.height,
                     width: properties.width,
                   ),
                 ),
-                Text('Our Mission',
+                Text('Our Vision',
                     style: TextStyle(
                         fontSize: properties.title,
                         color: textColor,
@@ -54,22 +50,13 @@ class Onboarding1 extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Step 2 of 3',
-                          style: TextStyle(
-                              fontSize: properties.subTitle,
-                              color: mainColor,
-                              fontWeight: FontWeight.bold)),
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                          onTap: () => AppRouter.push(AppRouter.onboarding2),
-                          child: const OnboardingNextIcon())
-                    ],
-                  ),
-                ),
+                AppButton(
+                    foregroundColor: lightColor,
+                    backgroundColor: secondaryColor,
+                    text: 'Get Started',
+                    onPressed: () {
+                      AppRouter.push(AppRouter.role);
+                    }),
               ],
             ),
           ),

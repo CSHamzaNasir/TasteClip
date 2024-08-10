@@ -3,11 +3,12 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/constant/app_gradient.dart';
 import 'package:tasteclip/constant/app_text.dart';
-import '../../../config/app_router.dart';
-import '../../../responsive/boarding.dart';
+import 'package:tasteclip/utils/skip_btn.dart';
+import '../../config/app_router.dart';
+import '../../responsive/boarding.dart';
 
-class Onboarding2 extends StatelessWidget {
-  const Onboarding2({super.key});
+class Onboarding1 extends StatelessWidget {
+  const Onboarding1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +23,22 @@ class Onboarding2 extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [],
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height / 6),
+                    const SkipBtn()
+                  ],
                 ),
                 const Spacer(),
                 Center(
                   child: SvgPicture.asset(
-                    vision,
+                    mission,
                     height: properties.height,
                     width: properties.width,
                   ),
                 ),
-                Text('Our Vision',
+                Text('Our Mission',
                     style: TextStyle(
                         fontSize: properties.title,
                         color: textColor,
@@ -49,24 +53,32 @@ class Onboarding2 extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    AppRouter.push(AppRouter.role);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    backgroundColor: mainColor,
-                    minimumSize:
-                        (Size(properties.btnWidth, properties.btnHeight)),
-                  ),
-                  child: Text('Get Started',
-                      style: TextStyle(
-                          fontSize: properties.btnText,
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Step 2 of 3',
+                          style: TextStyle(
+                              fontSize: properties.subTitle,
+                              color: mainColor,
+                              fontWeight: FontWeight.bold)),
+                      const SizedBox(width: 20),
+                      MaterialButton(
+                        minWidth: 10,
+                        color: secondaryColor,
+                        shape: const CircleBorder(),
+                        onPressed: () {
+                          AppRouter.push(AppRouter.onboarding2);
+                        },
+                        child: const Icon(
+                          Icons.arrow_forward,
                           color: lightColor,
-                          fontWeight: FontWeight.normal)),
-                )
+                          size: 17,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

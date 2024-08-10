@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasteclip/core/auth/screens/role.dart';
+import 'package:tasteclip/constant/app_button.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -16,13 +16,13 @@ class FirstScreenState extends State<FirstScreen> {
       _isLoading = true;
     });
 
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const Role()));
-    });
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    //   Navigator.of(context)
+    //       .push(MaterialPageRoute(builder: (context) => const Role()));
+    // });
   }
 
   @override
@@ -31,12 +31,11 @@ class FirstScreenState extends State<FirstScreen> {
       body: Stack(
         children: [
           Center(
-            child: ElevatedButton(
+            child: AppButton(
               onPressed: _showLoaderAndNavigate,
-              child: const Text('Show Loader and Navigate'),
+              text: 'Google',
             ),
           ),
-          //*786*4*2#cc
           if (_isLoading)
             Container(
               color: Colors.black.withOpacity(0.8),

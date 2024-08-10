@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasteclip/constant/app_text.dart';
 
-class FieldContainer extends StatefulWidget {
+class AppFeild extends StatefulWidget {
   final TextEditingController? controller;
   final Key? fieldKey;
   final bool? isPasswordField;
@@ -18,7 +18,7 @@ class FieldContainer extends StatefulWidget {
   final bool feildSideClr;
   final bool feildFocusClr;
 
-  const FieldContainer({
+  const AppFeild({
     super.key,
     this.controller,
     this.isPasswordField,
@@ -38,10 +38,10 @@ class FieldContainer extends StatefulWidget {
   });
 
   @override
-  FieldContainerState createState() => FieldContainerState();
+  AppFeildState createState() => AppFeildState();
 }
 
-class FieldContainerState extends State<FieldContainer> {
+class AppFeildState extends State<AppFeild> {
   bool _obscureText = true;
 
   @override

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tasteclip/core/widgets/role_button.dart';
+import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/constant/app_logo.dart';
 import 'package:tasteclip/constant/app_gradient.dart';
 import 'package:tasteclip/constant/app_text.dart';
-import '../../../responsive/role.dart';
+import '../../constant/app_button.dart';
+import '../../responsive/role.dart';
 
 class Role extends StatelessWidget {
   const Role({super.key});
@@ -36,7 +37,7 @@ class Role extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const Center(child: AppLogo()),
+                  const Hero(tag: 'applogo', child: Center(child: AppLogo())),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Text(
                     'Get Started with...',
@@ -46,7 +47,38 @@ class Role extends StatelessWidget {
                         fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 19),
-                  const RoleButton(),
+                  AppButton(
+                    text: 'User',
+                    onPressed: () {
+                      AppRouter.push(AppRouter.authentication);
+                    },
+                    backgroundColor: secondaryColor,
+                    foregroundColor: lightColor,
+                  ),
+                  const SizedBox(height: 15),
+                  AppButton(
+                    text: 'Guest',
+                    onPressed: () {},
+                    backgroundColor: primaryColor,
+                    foregroundColor: lightColor,
+                  ),
+                  const SizedBox(height: 36),
+                  const Row(children: [
+                    Expanded(child: Divider(color: primaryColor)),
+                    Text(
+                      " or continue with ",
+                      style: TextStyle(fontSize: h5, color: primaryColor),
+                    ),
+                    Expanded(child: Divider(color: primaryColor)),
+                  ]),
+                  const SizedBox(height: 25),
+                  AppButton(
+                    text: 'Restaurant Manager',
+                    onPressed: () {},
+                    backgroundColor: lightColor,
+                    btnSideClr: true,
+                    foregroundColor: mainColor,
+                  ),
                 ],
               ),
             ),
