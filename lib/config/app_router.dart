@@ -77,7 +77,8 @@ class AppRouter {
         return _navigate(const FirstScreen());
 
       case AppRouter.phoneAuth:
-        return _navigate(const PhoneAuth());
+        return _customNavigate(const PhoneAuth(),
+            transition: _fadeInTransition);
 
       default:
         return _errorRoute();

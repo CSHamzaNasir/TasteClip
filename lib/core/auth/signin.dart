@@ -60,40 +60,36 @@ class SigninState extends ConsumerState<Signin> {
                   ),
                   const SizedBox(height: 15),
                   RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                           text: 'Taste',
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: h3,
                               color: secondaryColor,
                               fontWeight: bold),
                           children: <TextSpan>[
                         TextSpan(
                           text: 'Clip',
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: h3,
                               color: mainColor,
                               fontWeight: semibold),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              AppRouter.push(AppRouter.login);
-                            },
                         )
                       ])),
                   const SizedBox(height: 36),
                   AppFeild(
                     controller: _emailController,
-                    prefixIcon: Icons.email_outlined,
+                    prefixIcon: Icons.email,
                     hintText: 'email',
                     iconColor: mainColor,
-                    iconSize: 21,
+                    iconSize: 14,
                   ),
                   const SizedBox(height: 15),
                   AppFeild(
                     controller: _passwordController,
                     isPasswordField: true,
                     iconColor: mainColor,
-                    iconSize: 21,
-                    prefixIcon: Icons.lock_outline,
+                    iconSize: 14,
+                    prefixIcon: Icons.lock,
                     hintText: 'Password',
                   ),
                   const SizedBox(height: 5),
@@ -158,7 +154,7 @@ class SigninState extends ConsumerState<Signin> {
                             icon: Icons.phone,
                             text: 'Phone',
                             foregroundColor: lightColor,
-                            backgroundColor: mainColor,
+                            backgroundColor: primaryColor,
                             onPressed: () {
                               AppRouter.push(AppRouter.phoneAuth);
                             },

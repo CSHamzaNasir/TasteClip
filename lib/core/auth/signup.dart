@@ -136,7 +136,7 @@ class _SignupState extends ConsumerState<Signup> {
                         icon: Icons.phone,
                         text: 'Phone',
                         foregroundColor: lightColor,
-                        backgroundColor: mainColor,
+                        backgroundColor: primaryColor,
                         onPressed: () {
                           AppRouter.push(AppRouter.phoneAuth);
                         },

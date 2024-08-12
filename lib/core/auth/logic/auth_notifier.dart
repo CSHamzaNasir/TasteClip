@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +61,7 @@ class AuthNotifier extends StateNotifier<ApiResponse<UserModel?>> {
             ),
           ),
         ),
-      ).show(context);
+      ).show(AppRouter.key.currentContext!);
       updateState(ApiResponse.error(errorMessage));
     }
   }
@@ -102,7 +100,7 @@ class AuthNotifier extends StateNotifier<ApiResponse<UserModel?>> {
             ),
           ),
         ),
-      ).show(context);
+      ).show(AppRouter.key.currentContext!);
       updateState(ApiResponse.error(errorMessage));
     }
   }

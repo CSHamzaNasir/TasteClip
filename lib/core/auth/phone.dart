@@ -1,17 +1,15 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/constant/app_button.dart';
 import 'package:tasteclip/constant/app_feild.dart';
 import 'package:tasteclip/constant/app_gradient.dart';
 import 'package:tasteclip/constant/app_text.dart';
+import 'package:tasteclip/constant/assets_path.dart';
 import 'package:tasteclip/utils/loader.dart';
 
 class PhoneAuth extends ConsumerStatefulWidget {
@@ -36,21 +34,46 @@ class _PhoneAuthState extends ConsumerState<PhoneAuth> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(),
                 const Text('Verify Your Phone Number',
                     style: TextStyle(
                         fontSize: h2, fontWeight: bold, color: secondaryColor)),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                Hero(
+                  tag: 'textlogo',
+                  child: SvgPicture.asset(
+                    appLogo1,
+                    height: 58,
+                    width: 58,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                RichText(
+                    text: const TextSpan(
+                        text: 'Taste',
+                        style: TextStyle(
+                            fontSize: h3,
+                            color: secondaryColor,
+                            fontWeight: bold),
+                        children: <TextSpan>[
+                      TextSpan(
+                        text: 'Clip',
+                        style: TextStyle(
+                            fontSize: h3,
+                            color: mainColor,
+                            fontWeight: semibold),
+                      )
+                    ])),
+                const SizedBox(height: 36),
                 const AppFeild(
                   prefixIcon: Icons.person,
-                  iconSize: 20,
+                  iconSize: 14,
                   iconColor: mainColor,
                   hintText: 'Username',
                 ),
                 const SizedBox(height: 15),
                 AppFeild(
-                  prefixIcon: Icons.phone_android_outlined,
-                  iconSize: 20,
+                  prefixIcon: Icons.phone,
+                  iconSize: 14,
                   iconColor: mainColor,
                   controller: phoneAuthController,
                   hintText: 'Phone no',
@@ -116,35 +139,18 @@ class _PhoneAuthState extends ConsumerState<PhoneAuth> {
                       SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                       Expanded(
                         child: AppButton(
-                          icon: Icons.phone,
-                          text: 'Phone',
+                          icon: Icons.mail,
+                          text: 'Email',
                           foregroundColor: lightColor,
-                          backgroundColor: mainColor,
-                          onPressed: () {},
+                          backgroundColor: primaryColor,
+                          onPressed: () {
+                            AppRouter.push(AppRouter.signup);
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Spacer(),
-                RichText(
-                    text: TextSpan(
-                        text: 'Register with email? ',
-                        style: const TextStyle(fontSize: h5, color: mainColor),
-                        children: [
-                      TextSpan(
-                        text: 'Sign up',
-                        style: const TextStyle(
-                            fontSize: h5,
-                            color: secondaryColor,
-                            fontWeight: FontWeight.bold),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            AppRouter.push(AppRouter.signup);
-                          },
-                      )
-                    ])),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               ],
             ),
           ),
@@ -195,7 +201,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         .signInWithCredential(credential);
 
                     Navigator.push(
-                      context,
+                      AppRouter.key.currentContext!,
                       MaterialPageRoute(
                         builder: (BuildContext context) => const FirstScreen(),
                       ),
