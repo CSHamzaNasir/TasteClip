@@ -1,14 +1,14 @@
-/// To Access Icons
-const String _iconFolderPath = "assets/icons/";
-const String homeIcon = "${_iconFolderPath}homeIcon.png";
-
-/// To Acccess Images
-const String _imageFolderPath = "assets/images/";
-const String appLogo = "${_imageFolderPath}applogo.png";
-const String appLogo1 = "${_imageFolderPath}logo1.svg";
-const String welcome = "${_imageFolderPath}welcome.svg";
-const String vision = "${_imageFolderPath}vision.svg";
-const String mission = "${_imageFolderPath}mission.svg";
-const String logo = "${_imageFolderPath}logo.png";
-const String logo1 = "${_imageFolderPath}logo1.svg";
-const String loginImg = "${_imageFolderPath}login.svg";
+class AppAssets {
+  //images
+  static const String darkBg = "assets/images/dark_bg.png";
+  static const String lightBg = "assets/images/light_bg.png";
+  static const String appLogo = "assets/images/applogo.png";
+  static const String coinLogo = "assets/images/coin-logo.svg";
+  static const String welcome = "assets/images/welcome.svg";
+  static const String vision = "assets/images/vision.svg";
+  static const String mission = "assets/images/mission.svg";
+  static const String logo = "assets/images/logo.png";
+  static const String logo1 = "assets/images/logo1.svg";
+  static const String loginImg = "assets/images/login.svg";
+  //icons
+}

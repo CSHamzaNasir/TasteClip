@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasteclip/firebase_options.dart';
+import 'package:tasteclip/modules/splash/splash_screen.dart';
 
 import 'config/app_router.dart';
 import 'config/theme.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      initialRoute: AppRouter.splashScreen,
+      // initialRoute: AppRouter.splashScreen,
+      home: SplashScreen(),
     );
   }
 }

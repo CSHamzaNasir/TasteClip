@@ -3,25 +3,21 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 
-class AppButton extends StatelessWidget {
+class AppIconButton extends StatelessWidget {
   final String text;
   final IconData? icon;
   final VoidCallback onPressed;
-  final bool btnSideClr;
   final bool isLoading;
   final double? btnRadius;
-  final bool isGradient;
   final Color? btnColor;
 
-  const AppButton({
+  const AppIconButton({
     super.key,
     required this.text,
     this.icon,
     required this.onPressed,
-    this.btnSideClr = false,
     this.isLoading = false,
     this.btnRadius,
-    this.isGradient = true,
     this.btnColor,
   });
 
@@ -35,17 +31,7 @@ class AppButton extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        gradient: isGradient
-            ? const LinearGradient(
-                colors: [
-                  AppColors.textColor,
-                  AppColors.mainColor,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
-            : null,
-        color: !isGradient ? btnColor : null,
+        color: btnColor,
         borderRadius: BorderRadius.circular(btnRadius ?? 12),
       ),
       child: ElevatedButton(
@@ -54,10 +40,6 @@ class AppButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(btnRadius ?? 12),
-            side: BorderSide(
-              color: btnSideClr ? AppColors.primaryColor : Colors.transparent,
-              width: 1,
-            ),
           ),
           minimumSize: Size.fromHeight(properties.btnHeight),
         ),
