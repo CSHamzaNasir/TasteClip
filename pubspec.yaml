@@ -39,9 +39,6 @@ dependencies:
   get: ^4.6.6
   svg_flutter: ^0.0.1 
   font_awesome_flutter: ^10.7.0
-  flutter_screenutil: ^5.9.3
-  auto_size_text: ^3.0.0
-  flutter_riverpod: ^2.5.1
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
   cloud_firestore: ^4.14.0
@@ -75,6 +72,7 @@ flutter:
   assets: 
     - assets/images/
     - assets/icons/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -87,10 +85,26 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Popins-Black
+      fonts:
+        - asset: assets\fonts\Poppins-Black.ttf
+    - family: Popins-Italic
+      fonts:
+        - asset: assets\fonts\Poppins-BlackItalic.ttf
+    - family: Popins-Bold
+      fonts:
+        - asset: assets\fonts\Poppins-Bold.ttf
+    - family: Popins-Medium
+      fonts:
+        - asset: assets\fonts\Poppins-Medium.ttf
+    - family: Popins-Regular
+      fonts:
+        - asset: assets\fonts\Poppins-Regular.ttf
+    - family: Poppins-SemiBold
+      fonts:
+        - asset: assets\fonts\Poppins-SemiBold.ttf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
