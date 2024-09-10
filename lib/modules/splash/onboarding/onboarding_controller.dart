@@ -23,9 +23,9 @@ class OnboardingController extends GetxController {
 
   void goToRoleScreen({required bool isSkip}) {
     if (isSkip) {
-      Get.off(() => const RoleScreen(), transition: Transition.fadeIn);
+      Get.off(() => RoleScreen(), transition: Transition.fadeIn);
     } else {
-      Get.off(() => const RoleScreen(), transition: Transition.downToUp);
+      Get.off(() => RoleScreen(), transition: Transition.downToUp);
     }
   }
 }
