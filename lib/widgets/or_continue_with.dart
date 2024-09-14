@@ -5,30 +5,37 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import '../constant/app_colors.dart';
 
 class OrContinueWith extends StatelessWidget {
+  final bool isDarkMode;
+
   const OrContinueWith({
     super.key,
+    this.isDarkMode = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final textColor = isDarkMode ? AppColors.mainColor : AppColors.lightColor;
+    final dividerColor =
+        isDarkMode ? AppColors.primaryColor : AppColors.lightColor;
+
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Divider(
-            color: AppColors.primaryColor,
+            color: dividerColor,
           ),
         ),
         8.horizontal,
         Text(
           'Or Continue with',
           style: AppTextStyles.buttonStyle1.copyWith(
-            color: AppColors.mainColor,
+            color: textColor,
           ),
         ),
         8.horizontal,
-        const Expanded(
+        Expanded(
           child: Divider(
-            color: AppColors.primaryColor,
+            color: dividerColor,
           ),
         ),
       ],

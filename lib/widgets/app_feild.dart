@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 
 class AppFeild extends StatefulWidget {
   final TextEditingController? controller;
   final Key? fieldKey;
   final bool? isPasswordField;
-  final String? hintText;
+  final String hintText;
   final String? labelText;
   final String? helperText;
   final FormFieldSetter<String>? onSaved;
@@ -23,7 +24,7 @@ class AppFeild extends StatefulWidget {
     this.controller,
     this.isPasswordField,
     this.fieldKey,
-    this.hintText,
+    required this.hintText,
     this.labelText,
     this.helperText,
     this.onSaved,
@@ -49,10 +50,10 @@ class AppFeildState extends State<AppFeild> {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
-          color: AppColors.lightColor,
+          color: AppColors.transparent,
           borderRadius: BorderRadius.all(Radius.circular(12))),
       child: TextFormField(
-        style: const TextStyle(color: Colors.black),
+        style: AppTextStyles.thinStyle,
         controller: widget.controller,
         keyboardType: widget.inputType,
         key: widget.fieldKey,
@@ -64,17 +65,17 @@ class AppFeildState extends State<AppFeild> {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: widget.feildFocusClr
-                  ? AppColors.primaryColor
-                  : Colors.transparent,
+                  ? AppColors.mainColor
+                  : AppColors.greyColor,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
           ),
           enabledBorder: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               borderSide: BorderSide(
                 color: widget.feildSideClr
-                    ? AppColors.primaryColor
-                    : Colors.transparent,
+                    ? AppColors.mainColor
+                    : AppColors.greyColor,
               )),
           border: InputBorder.none,
           hintText: widget.hintText,

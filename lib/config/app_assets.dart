@@ -11,4 +11,7 @@ class AppAssets {
   static const String logo1 = "assets/images/logo1.svg";
   static const String loginImg = "assets/images/login.svg";
   //icons
+  static const String googleIcon = "assets/icons/google-icon.svg";
+  static const String phoneIcon = "assets/icons/phone-icon.svg";
+  static const String mailIcon = "assets/icons/mail-icon.svg";
 }
