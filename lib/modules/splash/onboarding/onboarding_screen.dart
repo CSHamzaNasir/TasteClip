@@ -5,6 +5,7 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/modules/splash/onboarding/onboarding_controller.dart';
+import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../config/app_text_styles.dart';
@@ -37,7 +38,7 @@ class OnboardingScreen extends StatelessWidget {
                             onPressed: () =>
                                 controller.goToRoleScreen(isSkip: true),
                             child: Text(
-                              'Skip',
+                              AppString.skip,
                               style: AppTextStyles.thinStyle.copyWith(
                                 color: AppColors.lightColor,
                               ),
@@ -66,7 +67,7 @@ class OnboardingScreen extends StatelessWidget {
                 controller.selectedPage == 2
                     ? AppButton(
                         btnRadius: 100,
-                        text: 'Get Started',
+                        text: AppString.getStarted,
                         onPressed: () =>
                             controller.goToRoleScreen(isSkip: false),
                       )

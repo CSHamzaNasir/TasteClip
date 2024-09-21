@@ -4,6 +4,7 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/modules/splash/splash_controller.dart';
+import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class SplashScreen extends StatelessWidget {
                         Visibility(
                           visible: controller.splashText,
                           child: const Text(
-                            'TasteClip',
+                            AppString.tasteClip,
                             style: AppTextStyles.boldStyle,
                           ),
                         ),
@@ -45,13 +46,13 @@ class SplashScreen extends StatelessWidget {
                   Visibility(
                     visible: !controller.splashText,
                     child: const Text(
-                      'TasteClip',
+                      AppString.tasteClip,
                       style: AppTextStyles.semiBoldStyle,
                     ),
                   ),
                   6.vertical,
                   const Text(
-                    'Version 1.0',
+                    AppString.version,
                     style: AppTextStyles.thinStyle,
                   ),
                   30.vertical,

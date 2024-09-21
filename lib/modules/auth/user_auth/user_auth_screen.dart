@@ -5,6 +5,7 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/modules/auth/user_auth/user_auth_controller.dart';
+import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 
@@ -30,7 +31,7 @@ class UserAuthScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Welcome to\nTaste Clip',
+                          AppString.welcomeToTaste,
                           style: AppTextStyles.mediumStyle,
                           textAlign: TextAlign.center,
                         ),
@@ -41,12 +42,12 @@ class UserAuthScreen extends StatelessWidget {
                         ),
                         14.vertical,
                         AppButton(
-                          text: 'Login',
+                          text: AppString.login,
                           onPressed: controller.goToLoginScreen,
                         ),
                         15.vertical,
                         AppButton(
-                          text: 'Register',
+                          text: AppString.register,
                           onPressed: controller.goToRegisterScreen,
                         ),
                         30.vertical,
@@ -64,7 +65,7 @@ class UserAuthScreen extends StatelessWidget {
                       child: AppButton(
                         isGradient: false,
                         btnColor: AppColors.primaryColor,
-                        text: 'Google',
+                        text: AppString.google,
                         onPressed: () {},
                       ),
                     ),
@@ -74,7 +75,7 @@ class UserAuthScreen extends StatelessWidget {
                         icon: Icons.phone,
                         isGradient: false,
                         btnColor: AppColors.primaryColor,
-                        text: 'Phone',
+                        text: AppString.phone,
                         onPressed: () {},
                       ),
                     ),

@@ -3,6 +3,7 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/utils/app_string.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
@@ -19,12 +20,12 @@ class Onboarding extends StatelessWidget {
         ),
         50.vertical,
         const Text(
-          'Welcome to TasteClip',
+          AppString.welcomeToTaste,
           style: AppTextStyles.semiBoldStyle,
         ),
         16.vertical,
         const Text(
-          'Let\'s make your feedback matter. Get started in seconds and share your experiences effortlessly.',
+          AppString.letMakeYourFeedback,
           textAlign: TextAlign.center,
           style: AppTextStyles.thinStyle,
         )

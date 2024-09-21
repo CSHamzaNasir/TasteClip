@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/modules/auth/email/login_controller.dart';
+import 'package:tasteclip/modules/auth/auth_controller.dart';
+import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_box.dart';
-import 'package:tasteclip/widgets/or_continue_with.dart';
 
 import '../../../widgets/social_button.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  final controller = Get.put(LoginController());
+  final controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(builder: (_) {
+    return GetBuilder<AuthController>(builder: (_) {
       return AppBackground(
         isDark: true,
         child: SafeArea(
@@ -28,77 +29,88 @@ class LoginScreen extends StatelessWidget {
             body: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        children: [
-                          SizedBox(height: Get.height * .1),
-                          Text(
-                            'Login',
-                            style: AppTextStyles.boldStyle.copyWith(
-                              color: AppColors.whiteColor,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppString.login,
+                              style: AppTextStyles.boldStyle.copyWith(
+                                color: AppColors.whiteColor,
+                              ),
                             ),
-                          ),
-                          10.horizontal,
-                          Row(
+                            10.horizontal,
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Don\'t have an account? ',
+                                  AppString.dontHaveAnAccount,
                                   style: AppTextStyles.thinStyle.copyWith(
                                     color: AppColors.lightColor,
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: controller.goToLoginScreen,
+                                  onTap: controller.goToRegisterScreen,
                                   child: Text(
-                                    'Register',
+                                    AppString.register,
                                     style: AppTextStyles.thinStyle.copyWith(
                                       color: AppColors.lightColor,
                                       fontFamily: AppFonts.popinsBold,
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),
-                                )
-                              ]),
-                          20.vertical,
-                          CustomBox(
-                            child: Column(
-                              children: [
-                                const AppFeild(hintText: 'Email'),
-                                15.vertical,
-                                const AppFeild(
-                                  hintText: 'Password',
-                                  isPasswordField: true,
                                 ),
-                                20.vertical,
-                                AppButton(text: 'Login', onPressed: () {})
                               ],
                             ),
-                          ),
-                          30.vertical,
-                          const OrContinueWith(
-                            isDarkMode: false,
-                          ),
-                        ],
+                            20.vertical,
+                            CustomBox(
+                              child: Column(
+                                children: [
+                                  AppFeild(
+                                    hintText: AppString.email,
+                                    controller: controller.emailController,
+                                  ),
+                                  15.vertical,
+                                  AppFeild(
+                                    hintText: AppString.password,
+                                    isPasswordField: true,
+                                    controller: controller.passwordController,
+                                  ),
+                                  20.vertical,
+                                  controller.isLoading
+                                      ? const SpinKitThreeBounce(
+                                          color: AppColors.textColor,
+                                          size: 25.0,
+                                        )
+                                      : AppButton(
+                                          text: AppString.login,
+                                          onPressed: controller.login,
+                                        ),
+                                ],
+                              ),
+                            ),
+                            30.vertical,
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-                20.vertical,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const SocialButton(
-                      title: 'Google',
+                      title: AppString.google,
                       icon: AppAssets.googleIcon,
                     ),
                     SocialButton(
                       onTap: controller.goToPhoneVerifyScreen,
-                      title: 'Phone',
+                      title: AppString.phone,
                       icon: AppAssets.phoneIcon,
-                    )
+                    ),
                   ],
                 ),
                 30.vertical,
