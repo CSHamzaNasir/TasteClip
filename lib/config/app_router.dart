@@ -19,6 +19,7 @@ class AppRouter {
 
   static final routes = [
     //////////////////////////////////////////////////////////////////////////////// splash section
+
     GetPage(
       name: splashScreen,
       page: () => SplashScreen(),
