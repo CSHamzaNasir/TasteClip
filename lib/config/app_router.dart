@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:tasteclip/modules/auth/email/login_screen.dart';
-import 'package:tasteclip/modules/auth/phone/phone_verify_screen.dart';
+import 'package:tasteclip/modules/auth/phone/phone_auth_screen.dart';
+import 'package:tasteclip/modules/auth/phone/phone_otp_screen.dart';
 import 'package:tasteclip/modules/auth/role/role_screen.dart';
 import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/modules/splash/splash_screen.dart';
@@ -15,7 +16,8 @@ class AppRouter {
   static const userAuthScreen = "/userAuthScreen";
   static const registerScreen = "/registerScreen";
   static const loginScreen = "/loginScreen";
-  static const phoneVerifyScreen = "/phoneVerifyScreen";
+  static const phoneAuthScreen = "/phoneAuthScreen";
+  static const otpScreen = "/otpScreen";
 
   static final routes = [
     //////////////////////////////////////////////////////////////////////////////// splash section
@@ -56,8 +58,14 @@ class AppRouter {
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
-      name: phoneVerifyScreen,
-      page: () => PhoneVerifyScreen(),
+      name: phoneAuthScreen,
+      page: () => PhoneAuthScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: otpScreen,
+      page: () => OtpScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),

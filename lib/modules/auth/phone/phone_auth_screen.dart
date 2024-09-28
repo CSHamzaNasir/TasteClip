@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/modules/auth/phone/phone_verify_controller.dart';
+import 'package:tasteclip/modules/auth/phone/phone_auth_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 
 import '../../../config/app_assets.dart';
@@ -14,8 +14,8 @@ import '../../../widgets/custom_box.dart';
 import '../../../widgets/or_continue_with.dart';
 import '../../../widgets/social_button.dart';
 
-class PhoneVerifyScreen extends StatelessWidget {
-  PhoneVerifyScreen({super.key});
+class PhoneAuthScreen extends StatelessWidget {
+  PhoneAuthScreen({super.key});
   final controller = Get.put(PhoneVerifyController());
   @override
   Widget build(BuildContext context) {
@@ -48,12 +48,16 @@ class PhoneVerifyScreen extends StatelessWidget {
                                 children: [
                                   const AppFeild(hintText: AppString.username),
                                   15.vertical,
-                                  const AppFeild(
-                                    hintText: AppString.phoneNumber,
-                                  ),
+                                  AppFeild(
+                                      hintText: AppString.phoneNumber,
+                                      controller:
+                                          controller.phoneAuthController),
                                   20.vertical,
                                   AppButton(
-                                      text: AppString.verify, onPressed: () {})
+                                    text: AppString.verify,
+                                    onPressed: () =>
+                                        controller.verifyPhoneNumber(),
+                                  )
                                 ],
                               ),
                             ),

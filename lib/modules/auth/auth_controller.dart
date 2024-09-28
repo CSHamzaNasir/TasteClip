@@ -125,7 +125,7 @@ class AuthController extends GetxController {
   }
 
   void goToPhoneVerifyScreen() {
-    Get.toNamed(AppRouter.phoneVerifyScreen);
+    Get.toNamed(AppRouter.phoneAuthScreen);
   }
 
   void goToRegisterScreen() {
