@@ -24,4 +24,12 @@ class AppString {
   static const String verifyYourNumber = 'Verify Your Number';
   static const String fullName = 'Full Name';
   static const String phoneNumber = 'Phone Number';
+  //---------------------------------------------------------------------------- MANAGER AUTH SECTION STRINGS //
+  static const String loginChannel = 'Login';
+  static const String registerChannel = 'Register Channel';
+  static const String createChannel = 'Create Your Channel Now.';
+  static const String createChannelDescription =
+      "You will have access to a variety of customer feedback, which includes video reviews, image uploads, and text-based comments. This comprehensive feedback will help you understand customer preferences, address any concerns, and continuously improve your restaurant's offerings.";
+  static const String channelFeatures = 'See Channel Features. ';
+  static const String now = 'Now';
 }

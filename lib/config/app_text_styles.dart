@@ -41,7 +41,7 @@ class AppTextStyles {
 
   static const TextStyle lightStyle = TextStyle(
     fontSize: 12,
-    color: AppColors.lightColor,
+    color: AppColors.mainColor,
     fontFamily: AppFonts.popinsRegular,
   );
 }
