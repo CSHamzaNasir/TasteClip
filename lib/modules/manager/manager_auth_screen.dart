@@ -14,7 +14,6 @@ class ManagerAuthScreen extends StatelessWidget {
   final controller = Get.put(ManagerAuthController());
   @override
   Widget build(BuildContext context) {
-    var copyWith = AppTextStyles.thinStyle.copyWith(color: AppColors.mainColor);
     return AppBackground(
       isLight: true,
       child: SafeArea(
@@ -66,7 +65,8 @@ class ManagerAuthScreen extends StatelessWidget {
                             ),
                             Text(
                               AppString.now,
-                              style: copyWith,
+                              style: AppTextStyles.thinStyle
+                                  .copyWith(color: AppColors.mainColor),
                               textAlign: TextAlign.center,
                             ),
                           ],
