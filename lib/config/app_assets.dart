@@ -10,6 +10,7 @@ class AppAssets {
   static const String logo = "assets/images/logo.png";
   static const String logo1 = "assets/images/logo1.svg";
   static const String loginImg = "assets/images/login.svg";
+  static const String resturentLogo = "assets/images/resturentlogo.png";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
   static const String phoneIcon = "assets/icons/phone-icon.svg";

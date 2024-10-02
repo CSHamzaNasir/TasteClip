@@ -32,4 +32,14 @@ class AppString {
       "You will have access to a variety of customer feedback, which includes video reviews, image uploads, and text-based comments. This comprehensive feedback will help you understand customer preferences, address any concerns, and continuously improve your restaurant's offerings.";
   static const String channelFeatures = 'See Channel Features. ';
   static const String now = 'Now';
+  static const String welcome = 'Welcome';
+  static const String alreadyHaveAnAccount = 'Already have an account?';
+  static const String resturentName = 'Restaurant Name';
+  static const String address = 'Address';
+  static const String businessEmail = 'Business Email';
+  static const String passkey = 'Passkey';
+  static const String uploadLogo = '+Upload Logo';
+  static const String welcomeBack = 'Welcome Back';
+  static const String forgetpasskey = 'Forget Passkey?';
+  //---------------------------------------------------------------------------- Chanel Register Screen //
 }
