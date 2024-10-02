@@ -20,10 +20,20 @@ class AppString {
   static const String google = 'Google';
   static const String phone = 'Phone';
   static const String username = 'Username';
+  static const String otp = 'Otp';
   static const String verify = 'Verify';
   static const String verifyYourNumber = 'Verify Your Number';
   static const String fullName = 'Full Name';
   static const String phoneNumber = 'Phone Number';
+  static const String enterYourOtp = 'Enter Your Otp';
+  static const String recoverPassword = 'Recover Password';
+  static const String forgetPassword = 'Forget Password';
+  static const String enterYourRegisteredEmail =
+      'Enter your registered email below to receive password reset instruction';
+  static const String yourEmail = 'your@email.com';
+  static const String rememberThePassword = 'Remember The Password ';
+  static const String weHaveSent =
+      'We have sent a password recover intsructions to your email';
   //---------------------------------------------------------------------------- MANAGER AUTH SECTION STRINGS //
   static const String loginChannel = 'Login';
   static const String registerChannel = 'Register Channel';
