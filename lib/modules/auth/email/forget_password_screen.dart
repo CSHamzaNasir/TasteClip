@@ -34,6 +34,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         30.vertical,
+                        //
                         Text(
                           AppString.forgetPassword,
                           style: AppTextStyles.mediumStyle.copyWith(
