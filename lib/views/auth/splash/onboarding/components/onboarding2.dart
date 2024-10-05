@@ -3,8 +3,8 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/utils/app_string.dart';
 
-import '../../../../config/app_assets.dart';
-import '../../../../config/app_text_styles.dart';
+import '../../../../../config/app_assets.dart';
+import '../../../../../config/app_text_styles.dart';
 
 class Onboarding2 extends StatelessWidget {
   const Onboarding2({super.key});

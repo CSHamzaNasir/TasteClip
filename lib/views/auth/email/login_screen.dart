@@ -6,7 +6,7 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/modules/auth/auth_controller.dart';
+import 'package:tasteclip/views/auth/auth_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
@@ -89,6 +89,20 @@ class LoginScreen extends StatelessWidget {
                                           text: AppString.login,
                                           onPressed: controller.login,
                                         ),
+                                  10.vertical,
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: GestureDetector(
+                                      onTap: () =>
+                                          controller.goToForgetPasswordScreen(),
+                                      child: Text(
+                                        AppString.forgetPassword,
+                                        style: AppTextStyles.thinStyle.copyWith(
+                                          color: AppColors.mainColor,
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/views/auth/auth_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/custom_appbar.dart';
 
@@ -8,14 +10,15 @@ import '../../../constant/app_colors.dart';
 import '../../../utils/app_string.dart';
 
 class RecoverPasswordScreen extends StatelessWidget {
-  const RecoverPasswordScreen({super.key});
-
+  RecoverPasswordScreen({super.key});
+  final controller = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return AppBackground(
         isDark: true,
         child: Scaffold(
-          appBar: const CustomAppBar(
+          appBar: CustomAppBar(
+            onTap: () => controller.goToLoginScreen,
             title: AppString.recoverPassword,
             isDark: 'true',
           ),

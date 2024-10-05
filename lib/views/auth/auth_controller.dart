@@ -119,6 +119,23 @@ class AuthController extends GetxController {
     }
   }
 
+  void resetPassword() async {
+    try {
+      isLoading = true;
+      update();
+      await _authRepository.resetPassword(emailController.text.trim());
+      AppAlerts.showSnackbar(
+          isSuccess: true, message: "Password reset email sent!");
+      goToRecoveryPasswordScreen();
+    } catch (e) {
+      AppAlerts.showSnackbar(
+          isSuccess: false, message: "Error: ${e.toString()}");
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
   // Navigation functions
   void goToLoginScreen() {
     Get.toNamed(AppRouter.loginScreen);
@@ -130,6 +147,16 @@ class AuthController extends GetxController {
 
   void goToRegisterScreen() {
     Get.toNamed(AppRouter.registerScreen);
+  }
+
+  void goToForgetPasswordScreen() {
+    Get.toNamed(AppRouter.forgetPasswordScreen);
+  }
+
+  void goToRecoveryPasswordScreen() {
+    Get.toNamed(
+      AppRouter.recoverPasswordScreen,
+    );
   }
 
   @override

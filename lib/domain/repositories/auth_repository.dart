@@ -5,4 +5,5 @@ abstract class AuthRepository {
   Future<User?> createUserWithEmail(String email, String password);
   Future<void> storeUserDataFirestore(AuthModel user);
   Future<User?> loginUserWithEmail(String email, String password);
+  Future<void> resetPassword(String email);
 }

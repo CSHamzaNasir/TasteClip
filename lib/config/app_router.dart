@@ -1,16 +1,18 @@
 import 'package:get/get.dart';
-import 'package:tasteclip/modules/auth/email/login_screen.dart';
-import 'package:tasteclip/modules/auth/phone/phone_auth_screen.dart';
-import 'package:tasteclip/modules/auth/phone/phone_otp_screen.dart';
-import 'package:tasteclip/modules/auth/role/role_screen.dart';
-import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
-import 'package:tasteclip/modules/manager/auth/channel_register_screen.dart';
-import 'package:tasteclip/modules/manager/manager_auth_screen.dart';
-import 'package:tasteclip/modules/splash/splash_screen.dart';
+import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart';
+import 'package:tasteclip/views/auth/change_password/recover_password_screen.dart';
+import 'package:tasteclip/views/auth/email/login_screen.dart';
+import 'package:tasteclip/views/auth/phone/phone_otp_screen.dart';
+import 'package:tasteclip/views/auth/role/role_screen.dart';
+import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
+import 'package:tasteclip/views/manager/channel/channel_register_screen.dart';
+import 'package:tasteclip/views/manager/manager_auth_screen.dart';
+import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 
-import '../modules/auth/email/register_screen.dart';
-import '../modules/manager/auth/channel_login_screen.dart';
-import '../modules/splash/onboarding/onboarding_screen.dart';
+import '../views/auth/email/register_screen.dart';
+import '../views/auth/phone/phone_auth_screen.dart';
+import '../views/manager/channel/channel_login_screen.dart';
+import '../views/auth/splash/onboarding/onboarding_screen.dart';
 
 class AppRouter {
   static const splashScreen = "/splashScreen";
@@ -21,10 +23,11 @@ class AppRouter {
   static const loginScreen = "/loginScreen";
   static const phoneAuthScreen = "/phoneAuthScreen";
   static const otpScreen = "/otpScreen";
-  static const phoneVerifyScreen = "/phoneVerifyScreen";
   static const managerAuthScreen = "/managerAuthScreen";
   static const channelRegisterScreen = "/channelRegisterScreen";
   static const channelLoginScreen = "/channelLoginScreen";
+  static const forgetPasswordScreen = "/forgetPasswordScreen";
+  static const recoverPasswordScreen = "/recoverPasswordScreen";
   static final routes = [
     //////////////////////////////////////////////////////////////////////////////// splash section
 
@@ -91,6 +94,18 @@ class AppRouter {
     GetPage(
       name: channelLoginScreen,
       page: () => ChannelLoginScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: forgetPasswordScreen,
+      page: () => const ForgetPasswordScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: recoverPasswordScreen,
+      page: () => RecoverPasswordScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),

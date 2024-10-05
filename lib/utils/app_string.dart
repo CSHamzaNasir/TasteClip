@@ -31,7 +31,7 @@ class AppString {
   static const String enterYourRegisteredEmail =
       'Enter your registered email below to receive password reset instruction';
   static const String yourEmail = 'your@email.com';
-  static const String rememberThePassword = 'Remember The Password ';
+  static const String rememberThePassword = 'Remember The Password  ';
   static const String weHaveSent =
       'We have sent a password recover intsructions to your email';
   //---------------------------------------------------------------------------- MANAGER AUTH SECTION STRINGS //
@@ -51,5 +51,9 @@ class AppString {
   static const String uploadLogo = '+Upload Logo';
   static const String welcomeBack = 'Welcome Back';
   static const String forgetpasskey = 'Forget Passkey?';
-  //---------------------------------------------------------------------------- Chanel Register Screen //
+  //---------------------------------------------------------------------------- APP ALERTS //
+  static const String congratulations = 'Congratulations';
+  static const String error = 'Error';
+  static const String warning = 'Warning';
+  static const String wait = 'Wait';
 }

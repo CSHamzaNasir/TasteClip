@@ -1,30 +1,31 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_router.dart';
-import 'package:tasteclip/modules/auth/phone/phone_otp_screen.dart';
+import 'package:tasteclip/views/auth/phone/phone_otp_screen.dart';
 
-class PhoneVerifyController extends GetxController {
+class PhoneAuthController extends GetxController {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final phoneAuthController = TextEditingController();
   final otpController = TextEditingController();
 
-  var verificationId = ''.obs;
+  String? verificationId;
 
-  Future<void> verifyPhoneNumber() async {
+  void verifyPhoneNumber() async {
     String phoneNumber = phoneAuthController.text.trim();
     if (phoneNumber.isEmpty || !phoneNumber.startsWith('+')) {
+      log('Phone number is not in invalid format');
       return;
     }
 
-    await FirebaseAuth.instance.verifyPhoneNumber(
+    await _auth.verifyPhoneNumber(
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException ex) {
         log('Phone number verification failed: ${ex.message}');
       },
       codeSent: (String verificationId, int? resendToken) {
-        this.verificationId.value = verificationId;
+        this.verificationId = verificationId;
         Get.to(() => OtpScreen());
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
@@ -32,24 +33,21 @@ class PhoneVerifyController extends GetxController {
     );
   }
 
-  Future<void> verifyOtp() async {
-    if (verificationId.value.isEmpty) {
-      return;
-    }
-
+  void verifyOtp() async {
     try {
+      if (verificationId == null) {
+        log('verification id is null');
+        return;
+      }
       // ignore: unused_local_variable
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId.value,
+        verificationId: verificationId!,
         smsCode: otpController.text.trim(),
       );
-      Get.toNamed('/userScreen');
+
+      Get.toNamed(AppRouter.roleScreen);
     } catch (e) {
       log('Error during OTP verification: $e');
     }
-  }
-
-  void goToLoginScreen() {
-    Get.toNamed(AppRouter.loginScreen);
   }
 }

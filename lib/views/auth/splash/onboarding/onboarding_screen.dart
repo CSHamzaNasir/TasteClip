@@ -4,12 +4,12 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/modules/splash/onboarding/onboarding_controller.dart';
+import 'package:tasteclip/views/auth/splash/onboarding/onboarding_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import '../../../config/app_text_styles.dart';
-import '../../../widgets/app_button.dart';
+import '../../../../config/app_text_styles.dart';
+import '../../../../widgets/app_button.dart';
 
 class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/modules/splash/onboarding/components/onboarding1.dart';
+import 'package:tasteclip/views/auth/splash/onboarding/components/onboarding1.dart';
 
-import '../../auth/role/role_screen.dart';
+import '../../role/role_screen.dart';
 import 'components/onboarding.dart';
 import 'components/onboarding2.dart';
 

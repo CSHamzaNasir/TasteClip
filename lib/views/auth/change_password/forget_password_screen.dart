@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
@@ -10,12 +12,15 @@ import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_box.dart';
 
 import '../../../widgets/custom_appbar.dart';
+import '../auth_controller.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   const ForgetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AuthController());
+
     return AppBackground(
       isDark: true,
       child: Scaffold(
@@ -33,21 +38,20 @@ class ForgetPasswordScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        30.vertical,
-                        //
                         Text(
                           AppString.forgetPassword,
                           style: AppTextStyles.mediumStyle.copyWith(
-                            color: AppColors.lightColor,
+                            color: AppColors.whiteColor,
                           ),
                         ),
                         2.vertical,
-                        const Text(
+                        Text(
                           AppString.enterYourRegisteredEmail,
-                          style: AppTextStyles.thinStyle,
+                          style: AppTextStyles.thinStyle
+                              .copyWith(color: AppColors.greyColor),
                           textAlign: TextAlign.center,
                         ),
-                        20.vertical,
+                        30.vertical,
                         CustomBox(
                           child: Column(
                             children: [
@@ -55,10 +59,17 @@ class ForgetPasswordScreen extends StatelessWidget {
                                 hintText: AppString.yourEmail,
                               ),
                               20.vertical,
-                              AppButton(
-                                text: AppString.verify,
-                                onPressed: () {},
-                              ),
+                              controller.isLoading
+                                  ? const SpinKitThreeBounce(
+                                      color: AppColors.textColor,
+                                      size: 25.0,
+                                    )
+                                  : AppButton(
+                                      text: AppString.verify,
+                                      onPressed: () {
+                                        controller.resetPassword();
+                                      },
+                                    ),
                             ],
                           ),
                         ),
@@ -76,12 +87,15 @@ class ForgetPasswordScreen extends StatelessWidget {
                       color: AppColors.lightColor,
                     ),
                   ),
-                  Text(
-                    AppString.login,
-                    style: AppTextStyles.thinStyle.copyWith(
-                      color: AppColors.mainColor,
-                      fontFamily: AppFonts.popinsBold,
-                      decoration: TextDecoration.underline,
+                  GestureDetector(
+                    onTap: () => controller.goToLoginScreen(),
+                    child: Text(
+                      AppString.login,
+                      style: AppTextStyles.thinStyle.copyWith(
+                        color: AppColors.mainColor,
+                        fontFamily: AppFonts.popinsBold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ],

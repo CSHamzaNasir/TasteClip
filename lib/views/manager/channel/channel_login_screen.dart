@@ -4,7 +4,7 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/modules/manager/auth/channel_auth_controller.dart';
+import 'package:tasteclip/views/manager/channel/channel_auth_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
