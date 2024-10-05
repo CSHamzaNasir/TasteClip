@@ -29,8 +29,6 @@ class AppRouter {
   static const forgetPasswordScreen = "/forgetPasswordScreen";
   static const recoverPasswordScreen = "/recoverPasswordScreen";
   static final routes = [
-    //////////////////////////////////////////////////////////////////////////////// splash section
-
     GetPage(
       name: splashScreen,
       page: () => SplashScreen(),
@@ -41,7 +39,6 @@ class AppRouter {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
-    //////////////////////////////////////////////////////////////////////////////// user auth section
     GetPage(
       name: roleScreen,
       page: () => RoleScreen(),
@@ -78,12 +75,11 @@ class AppRouter {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
-    //////////////////////////////////////////////////////////////////////Manager Section
     GetPage(
       name: managerAuthScreen,
       page: () => ManagerAuthScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: channelRegisterScreen,

@@ -47,36 +47,36 @@ class ManagerAuthScreen extends StatelessWidget {
                         20.vertical,
                         AppButton(
                           text: AppString.registerChannel,
-                          onPressed: () {},
+                          onPressed: controller.goToChannelRegisterScreen,
                         ),
                         15.vertical,
                         AppButton(
                           text: AppString.loginChannel,
-                          onPressed: () {},
+                          onPressed: controller.goToChannelLogionScreen,
                         ),
                         12.vertical,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              AppString.channelFeatures,
-                              style: AppTextStyles.thinStyle,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              AppString.now,
-                              style: AppTextStyles.thinStyle
-                                  .copyWith(color: AppColors.mainColor),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        30.vertical
                       ],
                     ),
                   ),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    AppString.channelFeatures,
+                    style: AppTextStyles.thinStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    AppString.now,
+                    style: AppTextStyles.thinStyle
+                        .copyWith(color: AppColors.mainColor),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              30.vertical
             ],
           ),
         ),

@@ -61,7 +61,7 @@ class RoleScreen extends StatelessWidget {
                       isGradient: false,
                       btnColor: AppColors.primaryColor,
                       text: 'Restaurant Manager',
-                      onPressed: () {},
+                      onPressed: controller.goToManagerAuthSecreen,
                     ),
                   ],
                 ),

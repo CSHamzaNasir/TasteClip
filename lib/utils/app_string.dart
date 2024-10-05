@@ -36,7 +36,7 @@ class AppString {
       'We have sent a password recover intsructions to your email';
   //---------------------------------------------------------------------------- MANAGER AUTH SECTION STRINGS //
   static const String loginChannel = 'Login';
-  static const String registerChannel = 'Register Channel';
+  static const String registerChannel = 'New One\'s';
   static const String createChannel = 'Create Your Channel Now.';
   static const String createChannelDescription =
       "You will have access to a variety of customer feedback, which includes video reviews, image uploads, and text-based comments. This comprehensive feedback will help you understand customer preferences, address any concerns, and continuously improve your restaurant's offerings.";
