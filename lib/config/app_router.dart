@@ -4,10 +4,12 @@ import 'package:tasteclip/modules/auth/phone/phone_auth_screen.dart';
 import 'package:tasteclip/modules/auth/phone/phone_otp_screen.dart';
 import 'package:tasteclip/modules/auth/role/role_screen.dart';
 import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
+import 'package:tasteclip/modules/manager/auth/channel_register_screen.dart';
 import 'package:tasteclip/modules/manager/manager_auth_screen.dart';
 import 'package:tasteclip/modules/splash/splash_screen.dart';
 
 import '../modules/auth/email/register_screen.dart';
+import '../modules/manager/auth/channel_login_screen.dart';
 import '../modules/splash/onboarding/onboarding_screen.dart';
 
 class AppRouter {
@@ -21,7 +23,8 @@ class AppRouter {
   static const otpScreen = "/otpScreen";
   static const phoneVerifyScreen = "/phoneVerifyScreen";
   static const managerAuthScreen = "/managerAuthScreen";
-
+  static const channelRegisterScreen = "/channelRegisterScreen";
+  static const channelLoginScreen = "/channelLoginScreen";
   static final routes = [
     //////////////////////////////////////////////////////////////////////////////// splash section
 
@@ -76,6 +79,18 @@ class AppRouter {
     GetPage(
       name: managerAuthScreen,
       page: () => ManagerAuthScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: channelRegisterScreen,
+      page: () => ChannelRegisterScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: channelLoginScreen,
+      page: () => ChannelLoginScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
