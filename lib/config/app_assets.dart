@@ -13,8 +13,8 @@ class AppAssets {
   static const String resturentLogo = "assets/images/resturentlogo.png";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
-  static const String phoneIcon = "assets/icons/phone-icon.svg";
   static const String mailIcon = "assets/icons/mail-icon.svg";
   static const String errorIcon = "assets/icons/error-icon.svg";
   static const String successIcon = "assets/icons/success-icon.svg";
+  static const String guestIcon = "assets/icons/guest-icon.svg";
 }

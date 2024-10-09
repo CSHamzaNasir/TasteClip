@@ -14,6 +14,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+
       return credential.user;
     } catch (e) {}
     return null;

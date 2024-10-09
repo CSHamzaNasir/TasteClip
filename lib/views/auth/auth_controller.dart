@@ -5,7 +5,7 @@ import 'package:tasteclip/data/models/auth_models.dart';
 import 'package:tasteclip/data/repositories/auth_repository_impl.dart';
 import 'package:tasteclip/domain/repositories/auth_repository.dart';
 
-import '../../utils/app_alert.dart'; // Import AppAlerts
+import '../../utils/app_alert.dart';
 
 class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepositoryImpl();
@@ -17,7 +17,6 @@ class AuthController extends GetxController {
 
   bool isLoading = false;
 
-  // Registration function
   void register() async {
     if (fullNameController.text.isEmpty ||
         userNameController.text.isEmpty ||
@@ -74,7 +73,7 @@ class AuthController extends GetxController {
         await _authRepository.storeUserDataFirestore(authModel);
         AppAlerts.showSnackbar(
             isSuccess: true, message: "Registration successful!");
-        goToLoginScreen();
+        goToCompleteProfileScreen();
       } else {
         AppAlerts.showSnackbar(
             isSuccess: false, message: "Registration failed. Try again.");
@@ -88,7 +87,7 @@ class AuthController extends GetxController {
     }
   }
 
-// Login function
+  // Login function
   void login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       AppAlerts.showSnackbar(
@@ -141,10 +140,6 @@ class AuthController extends GetxController {
     Get.toNamed(AppRouter.loginScreen);
   }
 
-  void goToPhoneVerifyScreen() {
-    Get.toNamed(AppRouter.phoneAuthScreen);
-  }
-
   void goToRegisterScreen() {
     Get.toNamed(AppRouter.registerScreen);
   }
@@ -157,6 +152,10 @@ class AuthController extends GetxController {
     Get.toNamed(
       AppRouter.recoverPasswordScreen,
     );
+  }
+
+  void goToCompleteProfileScreen() {
+    Get.toNamed(AppRouter.completeProfileScreen);
   }
 
   @override

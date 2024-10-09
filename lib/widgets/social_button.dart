@@ -8,12 +8,16 @@ import '../constant/app_colors.dart';
 class SocialButton extends StatelessWidget {
   final String title;
   final String icon;
+  final Color? btnColor;
+  final Color? foregroundClr;
   final VoidCallback? onTap;
   const SocialButton({
     super.key,
     required this.title,
     required this.icon,
     this.onTap,
+    this.btnColor,
+    this.foregroundClr,
   });
 
   @override
@@ -22,14 +26,14 @@ class SocialButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-        decoration: const BoxDecoration(
-            color: AppColors.lightColor,
-            borderRadius: BorderRadius.all(Radius.circular(8))),
+        decoration: BoxDecoration(
+            color: btnColor ?? AppColors.lightColor,
+            borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Row(
           children: [
             SvgPicture.asset(
-              colorFilter:
-                  const ColorFilter.mode(AppColors.mainColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                  foregroundClr ?? AppColors.mainColor, BlendMode.srcIn),
               height: 20,
               icon,
             ),
@@ -37,7 +41,7 @@ class SocialButton extends StatelessWidget {
             Text(
               title,
               style: AppTextStyles.buttonStyle1.copyWith(
-                color: AppColors.mainColor,
+                color: foregroundClr ?? AppColors.mainColor,
               ),
             )
           ],

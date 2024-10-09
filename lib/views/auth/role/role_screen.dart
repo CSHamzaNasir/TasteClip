@@ -4,6 +4,7 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
+import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/views/auth/role/role_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
@@ -28,7 +29,7 @@ class RoleScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'Welcome to\nTaste Clip',
+                      AppString.welcomeToTaste,
                       style: AppTextStyles.mediumStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -40,18 +41,18 @@ class RoleScreen extends StatelessWidget {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Get Started with...',
+                        AppString.getStartedWith,
                         style: AppTextStyles.semiBoldStyle,
                       ),
                     ),
                     14.vertical,
                     AppButton(
-                      text: 'User',
+                      text: AppString.user,
                       onPressed: controller.goToUserAuthSecreen,
                     ),
                     15.vertical,
                     AppButton(
-                      text: 'Guest',
+                      text: AppString.guest,
                       onPressed: () {},
                     ),
                     30.vertical,
@@ -60,7 +61,7 @@ class RoleScreen extends StatelessWidget {
                     AppButton(
                       isGradient: false,
                       btnColor: AppColors.primaryColor,
-                      text: 'Restaurant Manager',
+                      text: AppString.restaurantManager,
                       onPressed: controller.goToManagerAuthSecreen,
                     ),
                   ],

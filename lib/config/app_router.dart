@@ -2,15 +2,14 @@ import 'package:get/get.dart';
 import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart';
 import 'package:tasteclip/views/auth/change_password/recover_password_screen.dart';
 import 'package:tasteclip/views/auth/email/login_screen.dart';
-import 'package:tasteclip/views/auth/phone/phone_otp_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
+import 'package:tasteclip/views/main/profile/complete_profile_screen.dart';
 import 'package:tasteclip/views/manager/channel/channel_register_screen.dart';
 import 'package:tasteclip/views/manager/manager_auth_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 
 import '../views/auth/email/register_screen.dart';
-import '../views/auth/phone/phone_auth_screen.dart';
 import '../views/manager/channel/channel_login_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
 
@@ -21,13 +20,12 @@ class AppRouter {
   static const userAuthScreen = "/userAuthScreen";
   static const registerScreen = "/registerScreen";
   static const loginScreen = "/loginScreen";
-  static const phoneAuthScreen = "/phoneAuthScreen";
-  static const otpScreen = "/otpScreen";
   static const managerAuthScreen = "/managerAuthScreen";
   static const channelRegisterScreen = "/channelRegisterScreen";
   static const channelLoginScreen = "/channelLoginScreen";
   static const forgetPasswordScreen = "/forgetPasswordScreen";
   static const recoverPasswordScreen = "/recoverPasswordScreen";
+  static const completeProfileScreen = "/completeProfileScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -64,18 +62,6 @@ class AppRouter {
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
-      name: phoneAuthScreen,
-      page: () => PhoneAuthScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
-    GetPage(
-      name: otpScreen,
-      page: () => OtpScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
-    GetPage(
       name: managerAuthScreen,
       page: () => ManagerAuthScreen(),
       transition: Transition.downToUp,
@@ -102,6 +88,12 @@ class AppRouter {
     GetPage(
       name: recoverPasswordScreen,
       page: () => RecoverPasswordScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: completeProfileScreen,
+      page: () => const CompleteProfileScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),

@@ -19,7 +19,11 @@ class AppString {
   static const String password = 'Password';
   static const String google = 'Google';
   static const String phone = 'Phone';
+  static const String getStartedWith = 'Get Started with...';
   static const String username = 'Username';
+  static const String user = 'User';
+  static const String guest = 'Guest';
+  static const String restaurantManager = 'Restaurant Manager';
   static const String otp = 'Otp';
   static const String verify = 'Verify';
   static const String verifyYourNumber = 'Verify Your Number';
@@ -56,4 +60,8 @@ class AppString {
   static const String error = 'Error';
   static const String warning = 'Warning';
   static const String wait = 'Wait';
+  //---------------------------------------------------------------------------- PROFILE SECTION //
+  static const String createProfile = 'Create Profile';
+  static const String completeYourProfile = 'Complete Your\nProfile';
+  static const String submit = 'Submit';
 }

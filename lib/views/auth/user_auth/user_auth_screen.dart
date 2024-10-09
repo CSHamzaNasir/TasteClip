@@ -9,6 +9,7 @@ import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import '../../../../widgets/or_continue_with.dart';
+import '../../../widgets/social_button.dart';
 
 class UserAuthScreen extends StatelessWidget {
   UserAuthScreen({super.key});
@@ -52,24 +53,20 @@ class UserAuthScreen extends StatelessWidget {
                     const OrContinueWith(),
                     20.vertical,
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
-                          child: AppButton(
-                            isGradient: false,
-                            btnColor: AppColors.primaryColor,
-                            text: AppString.google,
-                            onPressed: () {},
-                          ),
+                        const SocialButton(
+                          btnColor: AppColors.primaryColor,
+                          foregroundClr: AppColors.whiteColor,
+                          title: AppString.google,
+                          icon: AppAssets.googleIcon,
                         ),
                         18.horizontal,
-                        Expanded(
-                          child: AppButton(
-                            icon: Icons.phone,
-                            isGradient: false,
-                            btnColor: AppColors.primaryColor,
-                            text: AppString.phone,
-                            onPressed: () {},
-                          ),
+                        const SocialButton(
+                          btnColor: AppColors.primaryColor,
+                          foregroundClr: AppColors.whiteColor,
+                          title: AppString.guest,
+                          icon: AppAssets.guestIcon,
                         ),
                       ],
                     ),

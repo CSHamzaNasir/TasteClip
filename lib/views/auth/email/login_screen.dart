@@ -113,17 +113,16 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const SocialButton(
+                    SocialButton(
                       title: AppString.google,
                       icon: AppAssets.googleIcon,
                     ),
                     SocialButton(
-                      onTap: controller.goToPhoneVerifyScreen,
-                      title: AppString.phone,
-                      icon: AppAssets.phoneIcon,
+                      title: AppString.guest,
+                      icon: AppAssets.guestIcon,
                     ),
                   ],
                 ),
