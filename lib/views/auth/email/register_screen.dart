@@ -126,14 +126,17 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
                 20.vertical,
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SocialButton(
+                      onTap: () async {
+                        controller.signInWithGoogle();
+                      },
                       title: AppString.google,
                       icon: AppAssets.googleIcon,
                     ),
-                    SocialButton(
+                    const SocialButton(
                       title: AppString.guest,
                       icon: AppAssets.guestIcon,
                     ),
