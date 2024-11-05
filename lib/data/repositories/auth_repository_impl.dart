@@ -15,7 +15,6 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-
       return credential.user;
     } catch (e) {}
     return null;
@@ -24,7 +23,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> storeUserDataFirestore(AuthModel user) async {
     try {
-      _firestore.collection("email_user").doc(user.uid).set(user.toMap());
+      await _firestore.collection("email_user").doc(user.uid).set(user.toMap());
     } catch (e) {}
   }
 
@@ -64,11 +63,27 @@ class AuthRepositoryImpl implements AuthRepository {
 
         final UserCredential userCredential =
             await _auth.signInWithCredential(credential);
-        return userCredential; // Correctly return the UserCredential
+        return userCredential;
       }
-    } catch (e) {
-      // Handle exceptions if necessary
-    }
-    return null; // Return null if the user canceled the sign-in or an error occurred
+    } catch (e) {}
+    return null;
+  }
+
+  @override
+  Future<AuthModel?> fetchCurrentUserData() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+            .collection("email_user")
+            .doc(currentUser.uid)
+            .get();
+
+        if (snapshot.exists) {
+          return AuthModel.fromMap(snapshot.data()!);
+        }
+      }
+    } catch (e) {}
+    return null;
   }
 }

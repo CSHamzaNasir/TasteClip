@@ -74,7 +74,6 @@ class AuthController extends GetxController {
         await _authRepository.storeUserDataFirestore(authModel);
         AppAlerts.showSnackbar(
             isSuccess: true, message: "Registration successful!");
-        goToCompleteProfileScreen();
       } else {
         AppAlerts.showSnackbar(
             isSuccess: false, message: "Registration failed. Try again.");
@@ -146,7 +145,6 @@ class AuthController extends GetxController {
       if (userCredential != null) {
         AppAlerts.showSnackbar(
             isSuccess: true, message: "Google sign-in successful!");
-        goToCompleteProfileScreen();
       } else {
         AppAlerts.showSnackbar(
             isSuccess: false, message: "Google sign-in failed. Try again.");
@@ -177,10 +175,6 @@ class AuthController extends GetxController {
     Get.toNamed(
       AppRouter.recoverPasswordScreen,
     );
-  }
-
-  void goToCompleteProfileScreen() {
-    Get.toNamed(AppRouter.completeProfileScreen);
   }
 
   @override
