@@ -28,14 +28,14 @@ class RecoverPasswordScreen extends StatelessWidget {
               children: [
                 Text(
                   AppString.forgetPassword,
-                  style: AppTextStyles.mediumStyle.copyWith(
+                  style: AppTextStyles.bodyStyle.copyWith(
                     color: AppColors.lightColor,
                   ),
                 ),
                 16.vertical,
                 Text(
                   AppString.weHaveSent,
-                  style: AppTextStyles.thinStyle.copyWith(
+                  style: AppTextStyles.lightStyle.copyWith(
                     color: AppColors.greyColor,
                   ),
                   textAlign: TextAlign.center,

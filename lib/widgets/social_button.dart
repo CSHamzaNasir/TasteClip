@@ -40,7 +40,7 @@ class SocialButton extends StatelessWidget {
             10.horizontal,
             Text(
               title,
-              style: AppTextStyles.buttonStyle1.copyWith(
+              style: AppTextStyles.bodyStyle.copyWith(
                 color: foregroundClr ?? AppColors.mainColor,
               ),
             )

@@ -28,22 +28,16 @@ class RoleScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      AppString.welcomeToTaste,
-                      style: AppTextStyles.mediumStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    40.vertical,
                     Image.asset(
                       AppAssets.appLogo,
                       width: 200,
                     ),
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        AppString.getStartedWith,
-                        style: AppTextStyles.semiBoldStyle,
-                      ),
+                      child: Text(AppString.getStartedWith,
+                          style: AppTextStyles.boldBodyStyle.copyWith(
+                            color: AppColors.textColor,
+                          )),
                     ),
                     14.vertical,
                     AppButton(

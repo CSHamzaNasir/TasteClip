@@ -30,7 +30,7 @@ class ManagerAuthScreen extends StatelessWidget {
                         50.vertical,
                         const Text(
                           AppString.createChannel,
-                          style: AppTextStyles.boldStyle,
+                          style: AppTextStyles.bodyStyle,
                           textAlign: TextAlign.left,
                         ),
                         30.vertical,
@@ -65,12 +65,12 @@ class ManagerAuthScreen extends StatelessWidget {
                 children: [
                   const Text(
                     AppString.channelFeatures,
-                    style: AppTextStyles.thinStyle,
+                    style: AppTextStyles.lightStyle,
                     textAlign: TextAlign.center,
                   ),
                   Text(
                     AppString.now,
-                    style: AppTextStyles.thinStyle
+                    style: AppTextStyles.lightStyle
                         .copyWith(color: AppColors.mainColor),
                     textAlign: TextAlign.center,
                   ),

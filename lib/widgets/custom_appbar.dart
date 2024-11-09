@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: Text(
         title,
-        style: AppTextStyles.buttonStyle.copyWith(
+        style: AppTextStyles.bodyStyle.copyWith(
           color: isDark == 'true' ? AppColors.whiteColor : AppColors.textColor,
         ),
       ),

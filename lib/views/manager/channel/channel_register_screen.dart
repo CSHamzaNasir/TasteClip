@@ -40,7 +40,7 @@ class ChannelRegisterScreen extends StatelessWidget {
                           children: [
                             Text(
                               AppString.welcome,
-                              style: AppTextStyles.boldStyle
+                              style: AppTextStyles.bodyStyle
                                   .copyWith(color: AppColors.lightColor),
                             ),
                             10.vertical,
@@ -49,7 +49,7 @@ class ChannelRegisterScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   AppString.alreadyHaveAnAccount,
-                                  style: AppTextStyles.thinStyle
+                                  style: AppTextStyles.lightStyle
                                       .copyWith(color: AppColors.lightColor),
                                 ),
                                 5.horizontal,
@@ -57,7 +57,7 @@ class ChannelRegisterScreen extends StatelessWidget {
                                   onTap: controller.goToChanelLoginScreen,
                                   child: Text(
                                     AppString.login,
-                                    style: AppTextStyles.thinStyle.copyWith(
+                                    style: AppTextStyles.lightStyle.copyWith(
                                       color: AppColors.lightColor,
                                       decoration: TextDecoration.underline,
                                     ),

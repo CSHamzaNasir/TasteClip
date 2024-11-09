@@ -36,7 +36,7 @@ class ChannelLoginScreen extends StatelessWidget {
                         children: [
                           Text(
                             AppString.welcomeBack,
-                            style: AppTextStyles.boldStyle.copyWith(
+                            style: AppTextStyles.bodyStyle.copyWith(
                               color: AppColors.lightColor,
                             ),
                           ),
@@ -46,7 +46,7 @@ class ChannelLoginScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppString.dontHaveAnAccount,
-                                style: AppTextStyles.thinStyle
+                                style: AppTextStyles.lightStyle
                                     .copyWith(color: AppColors.lightColor),
                               ),
                               5.horizontal,
@@ -54,7 +54,7 @@ class ChannelLoginScreen extends StatelessWidget {
                                 onTap: controller.goToChanelRegisterScreen,
                                 child: Text(
                                   AppString.register,
-                                  style: AppTextStyles.thinStyle.copyWith(
+                                  style: AppTextStyles.lightStyle.copyWith(
                                     color: AppColors.lightColor,
                                     decoration: TextDecoration.underline,
                                   ),
@@ -84,7 +84,7 @@ class ChannelLoginScreen extends StatelessWidget {
                                   alignment: Alignment.centerRight,
                                   child: Text(
                                     AppString.forgetpasskey,
-                                    style: AppTextStyles.thinStyle.copyWith(
+                                    style: AppTextStyles.lightStyle.copyWith(
                                       color: AppColors.mainColor,
                                     ),
                                   ),

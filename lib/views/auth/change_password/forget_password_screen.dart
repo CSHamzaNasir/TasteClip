@@ -40,14 +40,14 @@ class ForgetPasswordScreen extends StatelessWidget {
                       children: [
                         Text(
                           AppString.forgetPassword,
-                          style: AppTextStyles.mediumStyle.copyWith(
+                          style: AppTextStyles.bodyStyle.copyWith(
                             color: AppColors.whiteColor,
                           ),
                         ),
                         2.vertical,
                         Text(
                           AppString.enterYourRegisteredEmail,
-                          style: AppTextStyles.thinStyle
+                          style: AppTextStyles.lightStyle
                               .copyWith(color: AppColors.greyColor),
                           textAlign: TextAlign.center,
                         ),
@@ -83,7 +83,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                 children: [
                   Text(
                     AppString.rememberThePassword,
-                    style: AppTextStyles.thinStyle.copyWith(
+                    style: AppTextStyles.lightStyle.copyWith(
                       color: AppColors.lightColor,
                     ),
                   ),
@@ -91,7 +91,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                     onTap: () => controller.goToLoginScreen(),
                     child: Text(
                       AppString.login,
-                      style: AppTextStyles.thinStyle.copyWith(
+                      style: AppTextStyles.lightStyle.copyWith(
                         color: AppColors.mainColor,
                         fontFamily: AppFonts.popinsBold,
                         decoration: TextDecoration.underline,

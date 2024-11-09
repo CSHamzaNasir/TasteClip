@@ -27,14 +27,14 @@ class CustomDialog extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             isSuccess ? AppString.congratulations : AppString.error,
-            style: AppTextStyles.mediumStyle,
+            style: AppTextStyles.bodyStyle,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: AppTextStyles.thinStyle,
+            style: AppTextStyles.bodyStyle,
           ),
         ],
       ),

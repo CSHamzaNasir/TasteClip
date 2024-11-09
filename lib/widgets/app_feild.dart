@@ -53,7 +53,7 @@ class AppFeildState extends State<AppFeild> {
           color: AppColors.transparent,
           borderRadius: BorderRadius.all(Radius.circular(12))),
       child: TextFormField(
-        style: AppTextStyles.thinStyle,
+        style: AppTextStyles.lightStyle,
         controller: widget.controller,
         keyboardType: widget.inputType,
         key: widget.fieldKey,

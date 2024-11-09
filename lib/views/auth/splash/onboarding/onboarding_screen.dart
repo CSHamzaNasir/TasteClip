@@ -39,7 +39,7 @@ class OnboardingScreen extends StatelessWidget {
                                 controller.goToRoleScreen(isSkip: true),
                             child: Text(
                               AppString.skip,
-                              style: AppTextStyles.thinStyle.copyWith(
+                              style: AppTextStyles.lightStyle.copyWith(
                                 color: AppColors.lightColor,
                               ),
                             ),

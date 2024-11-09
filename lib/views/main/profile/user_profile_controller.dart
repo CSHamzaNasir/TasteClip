@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
+import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/data/models/auth_models.dart';
 import 'package:tasteclip/domain/repositories/auth_repository.dart';
 
-class ProfileController extends GetxController {
+class UserProfileController extends GetxController {
   var currentUserData = Rx<AuthModel?>(null);
   var isLoading = false.obs;
 
-  ProfileController({required this.authRepository});
+  UserProfileController({required this.authRepository});
 
   final AuthRepository authRepository;
   @override
@@ -19,8 +20,14 @@ class ProfileController extends GetxController {
     try {
       isLoading.value = true;
       currentUserData.value = await authRepository.fetchCurrentUserData();
+      update();
     } finally {
       isLoading.value = false;
+      update();
     }
+  }
+
+  void goToProfileDetailsScreen() {
+    Get.toNamed(AppRouter.profileDetailScreen);
   }
 }

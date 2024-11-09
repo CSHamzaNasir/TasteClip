@@ -64,4 +64,15 @@ class AppString {
   static const String createProfile = 'Create Profile';
   static const String completeYourProfile = 'Complete Your\nProfile';
   static const String submit = 'Submit';
+  static const String likes = 'Likes';
+  static const String comment = 'Comment';
+  static const String share = 'Share';
+  static const String profileDetails = 'Profile Details';
+  static const String clickToSeeProfile = 'click here to see profile';
+  static const String notifications = 'Notifications';
+  static const String setting = 'Setting';
+  static const String theme = 'Theme';
+  static const String logout = 'Logout';
+  static const String clickHereToSeeNotifications =
+      'Click here to see notifications.';
 }

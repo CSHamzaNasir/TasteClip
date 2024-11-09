@@ -5,7 +5,6 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/views/auth/auth_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
@@ -40,7 +39,7 @@ class RegisterScreen extends StatelessWidget {
                             SizedBox(height: Get.height * .1),
                             Text(
                               AppString.register,
-                              style: AppTextStyles.boldStyle.copyWith(
+                              style: AppTextStyles.headingStyle.copyWith(
                                 color: AppColors.whiteColor,
                               ),
                             ),
@@ -50,7 +49,7 @@ class RegisterScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   AppString.dontHaveAnAccount,
-                                  style: AppTextStyles.thinStyle.copyWith(
+                                  style: AppTextStyles.bodyStyle.copyWith(
                                     color: AppColors.lightColor,
                                   ),
                                 ),
@@ -58,9 +57,8 @@ class RegisterScreen extends StatelessWidget {
                                   onTap: controller.goToLoginScreen,
                                   child: Text(
                                     AppString.login,
-                                    style: AppTextStyles.thinStyle.copyWith(
+                                    style: AppTextStyles.boldBodyStyle.copyWith(
                                       color: AppColors.lightColor,
-                                      fontFamily: AppFonts.popinsBold,
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),

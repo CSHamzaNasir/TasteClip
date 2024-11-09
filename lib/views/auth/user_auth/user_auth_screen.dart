@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
-import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_controller.dart';
@@ -29,15 +28,9 @@ class UserAuthScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      AppString.welcomeToTaste,
-                      style: AppTextStyles.mediumStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    40.vertical,
                     Image.asset(
                       AppAssets.appLogo,
-                      width: 200,
+                      width: 250,
                     ),
                     14.vertical,
                     AppButton(

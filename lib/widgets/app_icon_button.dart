@@ -62,7 +62,7 @@ class AppIconButton extends StatelessWidget {
                   if (icon != null && showIcon) const SizedBox(width: 8),
                   Text(
                     text,
-                    style: AppTextStyles.buttonStyle1,
+                    style: AppTextStyles.boldBodyStyle,
                   ),
                 ],
         ),

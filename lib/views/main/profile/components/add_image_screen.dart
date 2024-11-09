@@ -32,7 +32,7 @@ class CompleteProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           AppString.completeYourProfile,
-                          style: AppTextStyles.mediumStyle.copyWith(
+                          style: AppTextStyles.bodyStyle.copyWith(
                             color: AppColors.lightColor,
                           ),
                           textAlign: TextAlign.center,

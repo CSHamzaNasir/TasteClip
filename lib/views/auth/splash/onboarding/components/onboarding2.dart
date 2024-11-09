@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
 
 import '../../../../../config/app_assets.dart';
@@ -19,15 +20,15 @@ class Onboarding2 extends StatelessWidget {
           width: 250,
         ),
         50.vertical,
-        const Text(
-          AppString.ourVision,
-          style: AppTextStyles.semiBoldStyle,
-        ),
+        Text(AppString.ourVision,
+            style: AppTextStyles.boldBodyStyle.copyWith(
+              color: AppColors.textColor,
+            )),
         16.vertical,
         const Text(
           AppString.weAreOnAMission,
           textAlign: TextAlign.center,
-          style: AppTextStyles.thinStyle,
+          style: AppTextStyles.lightStyle,
         ),
       ],
     );

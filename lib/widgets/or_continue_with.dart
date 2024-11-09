@@ -28,7 +28,7 @@ class OrContinueWith extends StatelessWidget {
         8.horizontal,
         Text(
           'Or Continue with',
-          style: AppTextStyles.buttonStyle1.copyWith(
+          style: AppTextStyles.bodyStyle.copyWith(
             color: textColor,
           ),
         ),
