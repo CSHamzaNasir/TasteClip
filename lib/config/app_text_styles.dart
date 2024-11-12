@@ -26,4 +26,10 @@ class AppTextStyles {
     color: AppColors.primaryColor,
     fontFamily: AppFonts.popinsSemiBold,
   );
+
+  static const TextStyle headingStyle1 = TextStyle(
+    fontSize: 22,
+    color: AppColors.primaryColor,
+    fontFamily: AppFonts.popinsSemiBold,
+  );
 }

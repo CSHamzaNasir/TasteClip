@@ -98,7 +98,7 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  20.vertical,
+                  12.vertical,
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(

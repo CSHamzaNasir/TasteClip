@@ -73,6 +73,9 @@ class AppString {
   static const String setting = 'Setting';
   static const String theme = 'Theme';
   static const String logout = 'Logout';
+  static const String text = 'Text';
+  static const String images = 'Images';
+  static const String videos = 'Videos';
   static const String clickHereToSeeNotifications =
       'Click here to see notifications.';
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart'; // Import Material package for Colors.
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/constant/app_colors.dart';
 
 class AppBackground extends StatelessWidget {
   final Widget child;
@@ -17,7 +19,7 @@ class AppBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String backgroundImage = '';
+    String? backgroundImage;
 
     if (isLight) {
       backgroundImage = AppAssets.lightBg;
@@ -28,10 +30,22 @@ class AppBackground extends StatelessWidget {
     return DecoratedBox(
       position: DecorationPosition.background,
       decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage(backgroundImage),
-        ),
+        image: backgroundImage != null
+            ? DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(backgroundImage),
+              )
+            : null,
+        gradient: isDefault
+            ? const LinearGradient(
+                colors: [
+                  AppColors.lightColor,
+                  AppColors.whiteColor,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )
+            : null,
       ),
       child: child,
     );

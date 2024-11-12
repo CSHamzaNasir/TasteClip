@@ -15,7 +15,7 @@ class ProfileNotifier extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientBox(
       widthFactor: 1,
-      heightFactor: 0.17,
+      heightFactor: 0.2,
       gradientColors: const [
         AppColors.primaryColor,
         AppColors.mainColor,
