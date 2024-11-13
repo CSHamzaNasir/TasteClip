@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
 import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart';
-import 'package:tasteclip/views/auth/change_password/recover_password_screen.dart';
 import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
-import 'package:tasteclip/views/main/profile/profile_binding.dart';
-import 'package:tasteclip/views/main/profile/user_profile_screen.dart';
-import 'package:tasteclip/views/main/profile_detail/profile_details_screen.dart';
 import 'package:tasteclip/views/manager/channel/channel_register_screen.dart';
 import 'package:tasteclip/views/manager/manager_auth_screen.dart';
 
+import '../modules/review/Image/upload_image_feedback_screen.dart';
+import '../modules/review/text/upload_text_feedback_screen.dart';
+import '../modules/review/upload_feedback_screen.dart';
+import '../modules/review/video/upload_video_feedback_screen.dart';
 import '../views/auth/email/register_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
 import '../views/manager/channel/channel_login_screen.dart';
@@ -29,6 +29,10 @@ class AppRouter {
   static const recoverPasswordScreen = "/recoverPasswordScreen";
   static const userProfileScreen = "/userProfileScreen";
   static const profileDetailScreen = "/profileDetailScreen";
+  static const uploadFeedbackScreen = "/uploadFeedbackScreen";
+  static const uploadTextFeedbackScreen = "/uploadTextFeedbackScreen";
+  static const uploadImageFeedbackScreen = "/uploadImageFeedbackScreen";
+  static const uploadVideoFeedbackScreen = "/uploadVideoFeedbackScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -88,25 +92,30 @@ class AppRouter {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
+    //////////////////////////////////////////////////////////////////////Upload Feedback
     GetPage(
-      name: recoverPasswordScreen,
-      page: () => RecoverPasswordScreen(),
+      name: uploadFeedbackScreen,
+      page: () => UploadFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
-      name: userProfileScreen,
-      page: () => const UserProfileScreen(),
+      name: uploadTextFeedbackScreen,
+      page: () => UploadTextFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
-      binding: ProfileBinding(),
     ),
     GetPage(
-      name: profileDetailScreen,
-      page: () => const ProfileDetailsScreen(),
+      name: uploadImageFeedbackScreen,
+      page: () => UploadImageFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
-      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: uploadVideoFeedbackScreen,
+      page: () => UploadVideoFeedbackScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
     ),
   ];
 }

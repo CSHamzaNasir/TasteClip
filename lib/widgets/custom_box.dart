@@ -18,6 +18,7 @@ class CustomBox extends StatelessWidget {
     this.bgColor,
     this.onTap,
     this.radius,
+    Color? color,
   });
 
   @override
