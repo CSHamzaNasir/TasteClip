@@ -6,6 +6,10 @@ import 'package:tasteclip/modules/auth/role/role_screen.dart';
 import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/modules/manager/auth/channel_register_screen.dart';
 import 'package:tasteclip/modules/manager/manager_auth_screen.dart';
+import 'package:tasteclip/modules/review/Image/upload_image_feedback_screen.dart';
+import 'package:tasteclip/modules/review/text/upload_text_feedback_screen.dart';
+import 'package:tasteclip/modules/review/upload_feedback_screen.dart';
+import 'package:tasteclip/modules/review/video/upload_video_feedback_screen.dart';
 import 'package:tasteclip/modules/splash/splash_screen.dart';
 
 import '../modules/auth/email/register_screen.dart';
@@ -25,6 +29,10 @@ class AppRouter {
   static const managerAuthScreen = "/managerAuthScreen";
   static const channelRegisterScreen = "/channelRegisterScreen";
   static const channelLoginScreen = "/channelLoginScreen";
+  static const uploadFeedbackScreen = "/uploadFeedbackScreen";
+  static const uploadTextFeedbackScreen = "/uploadTextFeedbackScreen";
+  static const uploadImageFeedbackScreen = "/uploadImageFeedbackScreen";
+  static const uploadVideoFeedbackScreen = "/uploadVideoFeedbackScreen";
   static final routes = [
     //////////////////////////////////////////////////////////////////////////////// splash section
 
@@ -91,6 +99,31 @@ class AppRouter {
     GetPage(
       name: channelLoginScreen,
       page: () => ChannelLoginScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    //////////////////////////////////////////////////////////////////////Upload Feedback
+    GetPage(
+      name: uploadFeedbackScreen,
+      page: () => UploadFeedbackScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: uploadTextFeedbackScreen,
+      page: () => UploadTextFeedbackScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: uploadImageFeedbackScreen,
+      page: () => UploadImageFeedbackScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: uploadVideoFeedbackScreen,
+      page: () => UploadVideoFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),

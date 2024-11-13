@@ -51,5 +51,25 @@ class AppString {
   static const String uploadLogo = '+Upload Logo';
   static const String welcomeBack = 'Welcome Back';
   static const String forgetpasskey = 'Forget Passkey?';
-  //---------------------------------------------------------------------------- Chanel Register Screen //
+  //---------------------------------------------------------------------------- Upload Feedback //
+  static const String feedback = 'Feedback';
+  static const String uploadfeedback = 'Upload Feedback';
+  static const String selectyourtype = 'Select Review Type';
+  static const String textbased = 'Text-Based';
+  static const String textbasedfeedback = 'Text Based Feedback';
+  static const String textbasedfeedbackdesc =
+      'Text feedback is straightforward, allowing users to quickly provide detailed responses or suggestions in a written format. It s ideal for capturing specific insights, step-by-step experiences, or addressing nuanced issues that require elaboration. This format is also easy to analyze and store for future reference.';
+  static const String imagebased = 'Image-Based';
+  static const String imagebasedfeedback = 'Image Based Feedback';
+  static const String imagebasedfeedbackdesc =
+      'Image feedback is straightforward, allowing users to quickly provide detailed responses or suggestions in a visual format. It s ideal for capturing specific insights, highlighting particular elements, or addressing issues that require visual clarification. This format is also easy to review and store for future reference.';
+  static const String videobased = 'Video-Based';
+  static const String videobasedfeedback = 'Video Based Feedback';
+  static const String videobasedfeedbackdesc =
+      'Video feedback is straightforward, allowing users to quickly provide detailed responses or suggestions in a visual format. It s ideal for capturing specific insights, demonstrating step-by-step experiences, or addressing nuanced issues that require visual elaboration. This format is also easy to review and store for future reference.';
+  static const String selectresturent = 'Select Restaurant';
+  static const String selectbranch = 'Select Restaurant Branch';
+  static const String selectresturentdesc =
+      'These restaurants are added just the admin , manager or user-based ';
+  static const String describeyourtought = 'Describe Your Thoughts';
 }
