@@ -3,17 +3,17 @@ import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart
 import 'package:tasteclip/views/auth/change_password/recover_password_screen.dart';
 import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
+import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/views/main/profile/profile_binding.dart';
 import 'package:tasteclip/views/main/profile/user_profile_screen.dart';
 import 'package:tasteclip/views/main/profile_detail/profile_details_screen.dart';
 import 'package:tasteclip/views/manager/channel/channel_register_screen.dart';
 import 'package:tasteclip/views/manager/manager_auth_screen.dart';
-import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 
 import '../views/auth/email/register_screen.dart';
-import '../views/manager/channel/channel_login_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
+import '../views/manager/channel/channel_login_screen.dart';
 
 class AppRouter {
   static const splashScreen = "/splashScreen";
@@ -73,14 +73,14 @@ class AppRouter {
     GetPage(
       name: channelRegisterScreen,
       page: () => ChannelRegisterScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: channelLoginScreen,
       page: () => ChannelLoginScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: forgetPasswordScreen,

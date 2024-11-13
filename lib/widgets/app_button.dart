@@ -106,9 +106,9 @@ class ButtonResponsive {
     if (screenWidth < 300 || screenHeight < 400) {
       btnHeight = 35;
     } else if (screenWidth < 350 || screenHeight < 500) {
-      btnHeight = 40;
-    } else {
       btnHeight = 50;
+    } else {
+      btnHeight = 60;
     }
 
     return ButtonResponsiveProperties(

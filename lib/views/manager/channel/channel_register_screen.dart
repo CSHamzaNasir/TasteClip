@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tasteclip/config/app_assets.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/views/manager/channel/channel_auth_controller.dart';
+import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/manager/channel/channel_auth_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
-import 'package:get/get.dart';
+
 import '../../../widgets/custom_appbar.dart';
 import '../../../widgets/custom_box.dart';
 
@@ -40,16 +41,15 @@ class ChannelRegisterScreen extends StatelessWidget {
                           children: [
                             Text(
                               AppString.welcome,
-                              style: AppTextStyles.bodyStyle
+                              style: AppTextStyles.headingStyle
                                   .copyWith(color: AppColors.lightColor),
                             ),
-                            10.vertical,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   AppString.alreadyHaveAnAccount,
-                                  style: AppTextStyles.lightStyle
+                                  style: AppTextStyles.bodyStyle
                                       .copyWith(color: AppColors.lightColor),
                                 ),
                                 5.horizontal,
@@ -57,8 +57,9 @@ class ChannelRegisterScreen extends StatelessWidget {
                                   onTap: controller.goToChanelLoginScreen,
                                   child: Text(
                                     AppString.login,
-                                    style: AppTextStyles.lightStyle.copyWith(
-                                      color: AppColors.lightColor,
+                                    style: AppTextStyles.bodyStyle.copyWith(
+                                      fontFamily: AppFonts.popinsMedium,
+                                      color: AppColors.whiteColor,
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),
@@ -69,18 +70,14 @@ class ChannelRegisterScreen extends StatelessWidget {
                             CustomBox(
                               child: Column(
                                 children: [
-                                  Image.asset(AppAssets.resturentLogo),
-                                  6.vertical,
-                                  const Text(AppString.uploadLogo),
-                                  7.vertical,
                                   const AppFeild(
                                       hintText: AppString.resturentName),
-                                  15.vertical,
+                                  16.vertical,
                                   const AppFeild(hintText: AppString.address),
-                                  15.vertical,
+                                  16.vertical,
                                   const AppFeild(
                                       hintText: AppString.businessEmail),
-                                  15.vertical,
+                                  16.vertical,
                                   const AppFeild(
                                     hintText: AppString.passkey,
                                     isPasswordField: true,

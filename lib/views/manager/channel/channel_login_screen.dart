@@ -4,13 +4,15 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/views/manager/channel/channel_auth_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/manager/channel/channel_auth_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_appbar.dart';
 import 'package:tasteclip/widgets/custom_box.dart';
+
+import '../../../constant/app_fonts.dart';
 
 class ChannelLoginScreen extends StatelessWidget {
   ChannelLoginScreen({super.key});
@@ -36,17 +38,16 @@ class ChannelLoginScreen extends StatelessWidget {
                         children: [
                           Text(
                             AppString.welcomeBack,
-                            style: AppTextStyles.bodyStyle.copyWith(
+                            style: AppTextStyles.headingStyle.copyWith(
                               color: AppColors.lightColor,
                             ),
                           ),
-                          10.vertical,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 AppString.dontHaveAnAccount,
-                                style: AppTextStyles.lightStyle
+                                style: AppTextStyles.bodyStyle
                                     .copyWith(color: AppColors.lightColor),
                               ),
                               5.horizontal,
@@ -54,7 +55,8 @@ class ChannelLoginScreen extends StatelessWidget {
                                 onTap: controller.goToChanelRegisterScreen,
                                 child: Text(
                                   AppString.register,
-                                  style: AppTextStyles.lightStyle.copyWith(
+                                  style: AppTextStyles.bodyStyle.copyWith(
+                                    fontFamily: AppFonts.popinsMedium,
                                     color: AppColors.lightColor,
                                     decoration: TextDecoration.underline,
                                   ),
@@ -84,7 +86,7 @@ class ChannelLoginScreen extends StatelessWidget {
                                   alignment: Alignment.centerRight,
                                   child: Text(
                                     AppString.forgetpasskey,
-                                    style: AppTextStyles.lightStyle.copyWith(
+                                    style: AppTextStyles.bodyStyle.copyWith(
                                       color: AppColors.mainColor,
                                     ),
                                   ),
