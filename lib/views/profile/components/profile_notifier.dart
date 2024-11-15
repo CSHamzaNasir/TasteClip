@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/views/main/profile/user_profile_controller.dart';
 
 import '../../../../config/app_text_styles.dart';
 import '../../../../constant/app_colors.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../widgets/gradient_box.dart';
+import '../../../constant/app_fonts.dart';
+import '../user_profile_controller.dart';
 
 class ProfileNotifier extends StatelessWidget {
-  const ProfileNotifier({super.key});
+  const ProfileNotifier({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
     return GradientBox(

@@ -4,8 +4,8 @@ import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
-import 'package:tasteclip/views/manager/channel/channel_register_screen.dart';
-import 'package:tasteclip/views/manager/manager_auth_screen.dart';
+import 'package:tasteclip/views/profile/profile_detail/profile_details_screen.dart';
+import 'package:tasteclip/views/profile/user_profile_screen.dart';
 
 import '../modules/review/Image/upload_image_feedback_screen.dart';
 import '../modules/review/text/upload_text_feedback_screen.dart';
@@ -13,7 +13,6 @@ import '../modules/review/upload_feedback_screen.dart';
 import '../modules/review/video/upload_video_feedback_screen.dart';
 import '../views/auth/email/register_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
-import '../views/manager/channel/channel_login_screen.dart';
 
 class AppRouter {
   static const splashScreen = "/splashScreen";
@@ -22,17 +21,16 @@ class AppRouter {
   static const userAuthScreen = "/userAuthScreen";
   static const registerScreen = "/registerScreen";
   static const loginScreen = "/loginScreen";
-  static const managerAuthScreen = "/managerAuthScreen";
   static const channelRegisterScreen = "/channelRegisterScreen";
   static const channelLoginScreen = "/channelLoginScreen";
   static const forgetPasswordScreen = "/forgetPasswordScreen";
   static const recoverPasswordScreen = "/recoverPasswordScreen";
   static const userProfileScreen = "/userProfileScreen";
-  static const profileDetailScreen = "/profileDetailScreen";
   static const uploadFeedbackScreen = "/uploadFeedbackScreen";
   static const uploadTextFeedbackScreen = "/uploadTextFeedbackScreen";
   static const uploadImageFeedbackScreen = "/uploadImageFeedbackScreen";
   static const uploadVideoFeedbackScreen = "/uploadVideoFeedbackScreen";
+  static const profileDetailScreen = "/profileDetailScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -68,24 +66,7 @@ class AppRouter {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
-    GetPage(
-      name: managerAuthScreen,
-      page: () => ManagerAuthScreen(),
-      transition: Transition.downToUp,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    GetPage(
-      name: channelRegisterScreen,
-      page: () => ChannelRegisterScreen(),
-      transition: Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    GetPage(
-      name: channelLoginScreen,
-      page: () => ChannelLoginScreen(),
-      transition: Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+
     GetPage(
       name: forgetPasswordScreen,
       page: () => const ForgetPasswordScreen(),
@@ -116,6 +97,18 @@ class AppRouter {
       page: () => UploadVideoFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: userProfileScreen,
+      page: () => const UserProfileScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: profileDetailScreen,
+      page: () => const ProfileDetailsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 200),
     ),
   ];
 }

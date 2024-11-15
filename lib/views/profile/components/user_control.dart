@@ -6,8 +6,10 @@ import '../../../../constant/app_colors.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../widgets/gradient_box.dart';
 
-class UserControl extends StatelessWidget {
-  const UserControl({super.key});
+class UserControll extends StatelessWidget {
+  const UserControll({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

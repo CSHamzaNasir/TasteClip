@@ -22,183 +22,195 @@ class UploadFeedbackScreen extends StatelessWidget {
                 appBar: const CustomAppBar(
                   title: AppString.feedback,
                 ),
-                body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      30.vertical,
-                      1000.horizontal,
-                      Image.asset(AppAssets.uploadFeedback),
-                      12.vertical,
-                      const Text(AppString.selectyourtype,
-                          style: AppTextStyles.bodyStyle),
-                      18.vertical,
-                      Container(
-                        width: 333,
-                        height: 85,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
-                            colors: [
-                              AppColors.primaryColor,
-                              AppColors.mainColor
-                            ], // Gradient colors
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        30.vertical,
+                        Image.asset(AppAssets.uploadFeedback),
+                        12.vertical,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(AppString.selectReviewType,
+                              style: AppTextStyles.headingStyle1
+                                  .copyWith(color: AppColors.mainColor)),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                        18.vertical,
+                        InkWell(
+                          onTap: () => controller.goToUploadTxtFbScreen(),
+                          child: Container(
+                            height: 85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  AppColors.primaryColor,
+                                  AppColors.mainColor
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(
-                                          0.2), // Circle background
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        AppAssets.fileIcon,
-                                        width: 20,
-                                        height: 20,
-                                        color: Colors.white, // Icon color
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            AppAssets.fileIcon,
+                                            width: 20,
+                                            height: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      16.horizontal,
+                                      Text(
+                                        AppString.textbased,
+                                        style: AppTextStyles.bodyStyle.copyWith(
+                                            color: AppColors.lightColor),
+                                      )
+                                    ],
                                   ),
-                                  16.horizontal,
-                                  Text(
-                                    AppString.textbased,
-                                    style: AppTextStyles.bodyStyle
-                                        .copyWith(color: AppColors.lightColor),
-                                  )
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
                                 ],
                               ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 16,
+                            ),
+                          ),
+                        ),
+                        16.vertical,
+                        InkWell(
+                          child: Container(
+                            height: 85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  AppColors.primaryColor,
+                                  AppColors.mainColor
+                                ], // Gradient colors
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      26.vertical,
-                      Container(
-                        width: 333,
-                        height: 85,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
-                            colors: [
-                              AppColors.primaryColor,
-                              AppColors.mainColor
-                            ], // Gradient colors
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(
-                                          0.2), // Circle background
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        AppAssets.imageIcon,
-                                        width: 20,
-                                        height: 20,
-                                        color: Colors.white, // Icon color
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            AppAssets.imageIcon,
+                                            width: 20,
+                                            height: 20,
+                                            color: AppColors
+                                                .whiteColor, // Icon color
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      16.horizontal,
+                                      Text(
+                                        AppString.imagebased,
+                                        style: AppTextStyles.bodyStyle.copyWith(
+                                            color: AppColors.lightColor),
+                                      )
+                                    ],
                                   ),
-                                  16.horizontal,
-                                  Text(
-                                    AppString.imagebased,
-                                    style: AppTextStyles.bodyStyle
-                                        .copyWith(color: AppColors.lightColor),
-                                  )
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: AppColors.whiteColor,
+                                    size: 16,
+                                  ),
                                 ],
                               ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                      25.vertical,
-                      Container(
-                        width: 333,
-                        height: 85,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
-                            colors: [
-                              AppColors.primaryColor,
-                              AppColors.mainColor
-                            ], // Gradient colors
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
+                        16.vertical,
+                        Container(
+                          height: 85,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: const LinearGradient(
+                              colors: [
+                                AppColors.primaryColor,
+                                AppColors.mainColor
+                              ], // Gradient colors
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(
-                                          0.2), // Circle background
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Image.asset(
-                                        AppAssets.videoIcon,
-                                        width: 20,
-                                        height: 20,
-                                        color: Colors.white, // Icon color
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(
+                                            0.2), // Circle background
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: Image.asset(
+                                          AppAssets.videoIcon,
+                                          width: 20,
+                                          height: 20,
+                                          color: AppColors.whiteColor,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  16.horizontal,
-                                  Text(
-                                    AppString.videobased,
-                                    style: AppTextStyles.bodyStyle
-                                        .copyWith(color: AppColors.lightColor),
-                                  )
-                                ],
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ],
+                                    16.horizontal,
+                                    Text(
+                                      AppString.videobased,
+                                      style: AppTextStyles.bodyStyle.copyWith(
+                                          color: AppColors.lightColor),
+                                    )
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: AppColors.whiteColor,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ]))));
+                      ]),
+                ))));
   }
 }

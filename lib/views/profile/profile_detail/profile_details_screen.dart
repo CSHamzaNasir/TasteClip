@@ -5,9 +5,10 @@ import 'package:tasteclip/widgets/app_background.dart';
 
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/views/main/profile/user_profile_controller.dart';
 
+import '../../../config/app_router.dart';
 import '../../../config/app_text_styles.dart';
+import '../user_profile_controller.dart';
 
 class ProfileDetailsScreen extends StatelessWidget {
   const ProfileDetailsScreen({super.key});
@@ -19,20 +20,19 @@ class ProfileDetailsScreen extends StatelessWidget {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.mainColor,
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed(AppRouter.uploadFeedbackScreen);
+          },
           child: const Icon(Icons.add),
         ),
         body: Center(
           child: GetBuilder<UserProfileController>(
             builder: (controller) {
-              if (controller.isLoading.value) {
-                return const CircularProgressIndicator();
+              if (controller.user.value == null) {
+                return const Center(child: CircularProgressIndicator());
               }
 
-              final userData = controller.currentUserData.value;
-              if (userData == null) {
-                return const Text('No user data available');
-              }
+              final userData = controller.user.value!;
 
               return Column(
                 children: [

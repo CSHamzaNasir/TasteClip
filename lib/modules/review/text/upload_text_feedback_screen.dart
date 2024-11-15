@@ -8,261 +8,13 @@ import 'package:tasteclip/modules/review/upload_feedback_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
-import 'package:tasteclip/widgets/app_feild.dart';
 
 import '../../../widgets/custom_appbar.dart';
+import 'components/select_restaurant_sheet.dart';
 
-// ignore: must_be_immutable
 class UploadTextFeedbackScreen extends StatelessWidget {
   UploadTextFeedbackScreen({super.key});
   final controller = Get.put(UploadFeedbackController());
-
-  void _showBottomSheetResturent(BuildContext context) {
-    int? selectedRestaurantIndex;
-
-    // Sample list of restaurants
-    List<String> restaurantNames = [
-      'Restaurant Name',
-      'Restaurant Name',
-      'Restaurant Name',
-      'Restaurant Name',
-    ];
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled:
-          true, // This allows controlling the size of the bottom sheet
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-      ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return SizedBox(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SingleChildScrollView(
-                  // Make the content scrollable
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        AppString.selectresturent,
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.mainColor,
-                        ),
-                      ),
-                      10.vertical,
-                      Text(
-                        AppString.selectresturentdesc,
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      20.vertical,
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: restaurantNames
-                            .length, // Use the length of the restaurant list
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(
-                                bottom: 8.0), // Space between items
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey, // Border color
-                                // Border width
-                              ),
-                              borderRadius:
-                                  BorderRadius.circular(8.0), // Border radius
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 12.0),
-                              title: Text(restaurantNames[index],
-                                  style: AppTextStyles.bodyStyle.copyWith(
-                                      color: AppColors
-                                          .primaryColor)), // Show the restaurant name
-                              trailing: Radio<int>(
-                                value: index,
-                                groupValue: selectedRestaurantIndex,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedRestaurantIndex = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      if (selectedRestaurantIndex != null)
-                        Column(
-                          children: [
-                            AppButton(
-                              text: 'Next',
-                              onPressed: () => _showBottomSheetBranch(context),
-                            )
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showBottomSheetBranch(BuildContext context) {
-    int? selectedRestaurantIndex;
-
-    // Sample list of restaurants
-    List<String> restaurantNames = [
-      'Branch Name',
-      'Branch Name',
-      'Branch Name',
-      'Branch Name',
-    ];
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled:
-          true, // This allows controlling the size of the bottom sheet
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-      ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return SizedBox(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SingleChildScrollView(
-                  // Make the content scrollable
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        AppString.selectbranch,
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.mainColor,
-                        ),
-                      ),
-                      10.vertical,
-                      Text(
-                        AppString.selectresturentdesc,
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      20.vertical,
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: restaurantNames
-                            .length, // Use the length of the restaurant list
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(
-                                bottom: 8.0), // Space between items
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey, // Border color
-                                // Border width
-                              ),
-                              borderRadius:
-                                  BorderRadius.circular(8.0), // Border radius
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 12.0),
-                              title: Text(restaurantNames[index],
-                                  style: AppTextStyles.bodyStyle.copyWith(
-                                      color: AppColors
-                                          .primaryColor)), // Show the restaurant name
-                              trailing: Radio<int>(
-                                value: index,
-                                groupValue: selectedRestaurantIndex,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedRestaurantIndex = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      if (selectedRestaurantIndex != null)
-                        Column(
-                          children: [
-                            AppButton(
-                                text: 'Next',
-                                onPressed: () =>
-                                    _showBottomSheetToughts(context)),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showBottomSheetToughts(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled:
-          true, // This allows controlling the size of the bottom sheet
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-      ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return SizedBox(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      AppString.describeyourtought,
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.mainColor,
-                      ),
-                    ),
-                    10.vertical,
-                    Text(
-                      AppString.selectresturentdesc,
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    20.vertical,
-                    const AppFeild(hintText: 'Enter your feedback here...'),
-                    15.vertical,
-                    const AppFeild(hintText: 'Select Date'),
-                    110.vertical,
-                    AppButton(
-                      text: 'Submit',
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -273,58 +25,72 @@ class UploadTextFeedbackScreen extends StatelessWidget {
           appBar: const CustomAppBar(
             title: AppString.uploadfeedback,
           ),
-          body: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                children: [
-                  45.vertical,
-                  100.horizontal,
-                  Text(
-                    AppString.textbasedfeedback,
-                    style: AppTextStyles.bodyStyle
-                        .copyWith(color: AppColors.mainColor),
-                  ),
-                  23.vertical,
-                  Image.asset(AppAssets.textbased),
-                  Padding(
-                    padding: const EdgeInsets.all(35.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text:
-                                    '${AppString.textbasedfeedbackdesc.split(' ').take(2).join(' ')} ',
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      45.vertical,
+                      100.horizontal,
+                      Text(
+                        AppString.textbasedfeedback,
+                        style: AppTextStyles.headingStyle1
+                            .copyWith(color: AppColors.mainColor),
+                      ),
+                      23.vertical,
+                      Image.asset(AppAssets.textbased),
+                      Padding(
+                        padding: const EdgeInsets.all(35.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        '${AppString.textbasedfeedbackdesc.split(' ').take(2).join(' ')} ',
+                                    style: AppTextStyles.boldBodyStyle.copyWith(
+                                      color: AppColors.mainColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: AppString.textbasedfeedbackdesc
+                                        .split(' ')
+                                        .skip(2)
+                                        .join(' '),
+                                    style: AppTextStyles.lightStyle.copyWith(
+                                      color: AppColors.mainColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              TextSpan(
-                                text: AppString.textbasedfeedbackdesc
-                                    .split(' ')
-                                    .skip(2)
-                                    .join(' '),
-                                style: AppTextStyles.lightStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            38.vertical,
+                          ],
                         ),
-                        38.vertical,
-                        AppButton(
-                          text: 'Continue',
-                          onPressed: () => _showBottomSheetResturent(context),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: AppButton(
+                  text: 'Continue',
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => const SelectRestaurantSheet(),
+                    );
+                  },
+                ),
+              ),
+              30.vertical,
+            ],
           ),
         ),
       ),

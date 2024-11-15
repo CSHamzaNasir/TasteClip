@@ -4,8 +4,10 @@ import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/gradient_box.dart';
 
-class SocialActionBar extends StatelessWidget {
-  const SocialActionBar({super.key});
+class SocialActionCard extends StatelessWidget {
+  const SocialActionCard({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

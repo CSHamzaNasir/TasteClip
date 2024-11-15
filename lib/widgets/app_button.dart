@@ -27,9 +27,6 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ButtonResponsiveProperties properties =
-        ButtonResponsive.btnResponsive(context);
-
     final screenWidth = MediaQuery.of(context).size.width;
     final bool showIcon = screenWidth > 300;
 
@@ -59,7 +56,7 @@ class AppButton extends StatelessWidget {
               width: 1,
             ),
           ),
-          minimumSize: Size.fromHeight(properties.btnHeight),
+          minimumSize: const Size.fromHeight(50),
         ),
         onPressed: isLoading ? null : onPressed,
         child: Row(
@@ -85,34 +82,6 @@ class AppButton extends StatelessWidget {
                 ],
         ),
       ),
-    );
-  }
-}
-
-class ButtonResponsiveProperties {
-  final double btnHeight;
-
-  ButtonResponsiveProperties({
-    required this.btnHeight,
-  });
-}
-
-class ButtonResponsive {
-  static ButtonResponsiveProperties btnResponsive(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    double btnHeight;
-
-    if (screenWidth < 300 || screenHeight < 400) {
-      btnHeight = 35;
-    } else if (screenWidth < 350 || screenHeight < 500) {
-      btnHeight = 50;
-    } else {
-      btnHeight = 60;
-    }
-
-    return ButtonResponsiveProperties(
-      btnHeight: btnHeight,
     );
   }
 }

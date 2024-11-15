@@ -2,7 +2,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/data/models/auth_models.dart';
 import 'package:tasteclip/domain/repositories/auth_repository.dart';
 
@@ -15,6 +18,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      Get.toNamed(AppRouter.userProfileScreen);
       return credential.user;
     } catch (e) {}
     return null;
@@ -32,6 +36,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      Get.toNamed(AppRouter.userProfileScreen);
       return credential.user;
     } catch (e) {}
     return null;
