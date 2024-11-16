@@ -1,5 +1,7 @@
 // ignore_for_file: empty_catches
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_core/get_core.dart';
@@ -38,7 +40,9 @@ class AuthRepositoryImpl implements AuthRepository {
           email: email, password: password);
       Get.toNamed(AppRouter.userProfileScreen);
       return credential.user;
-    } catch (e) {}
+    } catch (e) {
+      log("Login error: $e"); // Added for debugging
+    }
     return null;
   }
 

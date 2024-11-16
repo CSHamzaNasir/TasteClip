@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
@@ -11,8 +16,51 @@ import 'components/social_action_bar.dart';
 import 'components/user_control.dart';
 import 'user_profile_controller.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
+
+  @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  PlatformFile? pickedFile;
+
+  Future<void> selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+    });
+  }
+
+  Future<void> uploadFile() async {
+    if (pickedFile?.path == null) {
+      if (kDebugMode) {
+        print("No file selected.");
+      }
+      return;
+    }
+
+    try {
+      final file = File(pickedFile!.path!);
+      final path = 'user_images/${pickedFile!.name}';
+
+      final ref = FirebaseStorage.instance.ref().child(path);
+      await ref.putFile(file);
+
+      // Optionally, handle success feedback
+      if (kDebugMode) {
+        print("Upload successful: ${pickedFile!.name}");
+      }
+    } catch (e) {
+      // Error handling
+      if (kDebugMode) {
+        print("Error uploading file: $e");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +142,52 @@ class UserProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    ElevatedButton(
+                        onPressed: uploadFile, child: const Text('upload')),
+                    Positioned(
+                      top: 35,
+                      right: 22,
+                      child: InkWell(
+                        onTap: () {
+                          selectFile();
+                        },
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            color: AppColors.lightColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Icon(
+                            Icons.edit,
+                            color: AppColors.mainColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 20.vertical,
+                if (pickedFile != null)
+                  Expanded(
+                    child: Container(
+                      color: Colors.amber,
+                      child: Center(
+                        child: Text(pickedFile!.name),
+                      ),
+                    ),
+                  ),
+                if (pickedFile != null)
+                  Expanded(
+                    child: Container(
+                      color: Colors.amber,
+                      child: Image.file(
+                        File(pickedFile!.path!),
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -108,7 +199,7 @@ class UserProfileScreen extends StatelessWidget {
                       const ProfileNotifier(),
                     ],
                   ),
-                )
+                ),
               ],
             );
           },
