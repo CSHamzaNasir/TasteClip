@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class AuthModel {
@@ -5,11 +6,13 @@ class AuthModel {
   final String fullName;
   final String userName;
   final String email;
+  final String? profileImageUrl;
   AuthModel({
     required this.uid,
     required this.fullName,
     required this.userName,
     required this.email,
+    this.profileImageUrl,
   });
 
   AuthModel copyWith({
@@ -17,12 +20,14 @@ class AuthModel {
     String? fullName,
     String? userName,
     String? email,
+    String? profileImageUrl,
   }) {
     return AuthModel(
       uid: uid ?? this.uid,
       fullName: fullName ?? this.fullName,
       userName: userName ?? this.userName,
       email: email ?? this.email,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }
 
@@ -32,6 +37,7 @@ class AuthModel {
       'fullName': fullName,
       'userName': userName,
       'email': email,
+      'profileImageUrl': profileImageUrl,
     };
   }
 
@@ -41,6 +47,9 @@ class AuthModel {
       fullName: map['fullName'] as String,
       userName: map['userName'] as String,
       email: map['email'] as String,
+      profileImageUrl: map['profileImageUrl'] != null
+          ? map['profileImageUrl'] as String
+          : null,
     );
   }
 
@@ -51,7 +60,7 @@ class AuthModel {
 
   @override
   String toString() {
-    return 'AuthModels(uid: $uid, fullName: $fullName, userName: $userName, email: $email)';
+    return 'AuthModel(uid: $uid, fullName: $fullName, userName: $userName, email: $email, profileImageUrl: $profileImageUrl)';
   }
 
   @override
@@ -61,7 +70,8 @@ class AuthModel {
     return other.uid == uid &&
         other.fullName == fullName &&
         other.userName == userName &&
-        other.email == email;
+        other.email == email &&
+        other.profileImageUrl == profileImageUrl;
   }
 
   @override
@@ -69,6 +79,7 @@ class AuthModel {
     return uid.hashCode ^
         fullName.hashCode ^
         userName.hashCode ^
-        email.hashCode;
+        email.hashCode ^
+        profileImageUrl.hashCode;
   }
 }

@@ -1,75 +1,26 @@
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/data/repositories/auth_repository_impl.dart';
+import 'package:tasteclip/views/profile/components/profile_notifier.dart';
 import 'package:tasteclip/widgets/app_background.dart';
-
-import 'components/profile_notifier.dart';
+import '../../data/repositories/auth_repository_impl.dart';
 import 'components/social_action_bar.dart';
 import 'components/user_control.dart';
 import 'user_profile_controller.dart';
 
-class UserProfileScreen extends StatefulWidget {
+class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
-}
-
-class _UserProfileScreenState extends State<UserProfileScreen> {
-  PlatformFile? pickedFile;
-
-  Future<void> selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
-
-    setState(() {
-      pickedFile = result.files.first;
-    });
-  }
-
-  Future<void> uploadFile() async {
-    if (pickedFile?.path == null) {
-      if (kDebugMode) {
-        print("No file selected.");
-      }
-      return;
-    }
-
-    try {
-      final file = File(pickedFile!.path!);
-      final path = 'user_images/${pickedFile!.name}';
-
-      final ref = FirebaseStorage.instance.ref().child(path);
-      await ref.putFile(file);
-
-      // Optionally, handle success feedback
-      if (kDebugMode) {
-        print("Upload successful: ${pickedFile!.name}");
-      }
-    } catch (e) {
-      // Error handling
-      if (kDebugMode) {
-        print("Error uploading file: $e");
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    Get.put(UserProfileController(authRepository: AuthRepositoryImpl()));
-
     return AppBackground(
       isLight: true,
       child: Scaffold(
-        body: GetX<UserProfileController>(
+        body: GetBuilder<UserProfileController>(
+          init: UserProfileController(authRepository: AuthRepositoryImpl()),
           builder: (controller) {
             if (controller.user.value == null) {
               return const Center(child: CircularProgressIndicator());
@@ -82,38 +33,49 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   children: [
                     Container(
                       alignment: Alignment.center,
-                      child: Image.network(
-                        'https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM=',
-                        fit: BoxFit.cover,
-                      ),
+                      child: controller.user.value!.profileImageUrl != null
+                          ? Image.network(
+                              controller.user.value!.profileImageUrl!,
+                              height: 250,
+                              width: double.infinity,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                } else {
+                                  return SizedBox(
+                                    height: 250,
+                                    width: double.infinity,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.lightColor,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                (loadingProgress
+                                                        .expectedTotalBytes ??
+                                                    1)
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.account_circle, size: 60),
+                            )
+                          : const Icon(
+                              Icons.account_circle,
+                              size: 60,
+                              color: AppColors.lightColor,
+                            ),
                     ),
                     Positioned.fill(
                       child: Container(
                         color: AppColors.textColor.withOpacity(.50),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 70,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColors.primaryColor, width: 2),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              width: 60,
-                              height: 60,
-                              'https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM=',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                     Positioned(
@@ -142,14 +104,119 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: uploadFile, child: const Text('upload')),
+                    Positioned(
+                      bottom: 70,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppColors.primaryColor, width: 2),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: controller.pickedFile != null
+                                ? Image.file(
+                                    File(controller.pickedFile!.path!),
+                                    height: 60,
+                                    width: 60,
+                                    fit: BoxFit.cover,
+                                  )
+                                : controller.user.value!.profileImageUrl != null
+                                    ? Image.network(
+                                        controller.user.value!.profileImageUrl!,
+                                        height: 60,
+                                        width: 60,
+                                      )
+                                    : const Icon(
+                                        Icons.account_circle,
+                                        size: 60,
+                                        color: AppColors.lightColor,
+                                      ),
+                          ),
+                        ),
+                      ),
+                    ),
                     Positioned(
                       top: 35,
                       right: 22,
                       child: InkWell(
                         onTap: () {
-                          selectFile();
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Add Profile Image"),
+                              content: SizedBox(
+                                height: 150,
+                                child: Center(
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Obx(() {
+                                        if (controller.isLoading.value) {
+                                          return const CircularProgressIndicator(
+                                            strokeWidth: 1,
+                                            color: AppColors.primaryColor,
+                                          );
+                                        }
+                                        return controller.pickedFile != null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                child: Image.file(
+                                                  File(controller
+                                                      .pickedFile!.path!),
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : Icon(
+                                                Icons.account_circle,
+                                                color: AppColors.mainColor,
+                                                size: 100,
+                                              );
+                                      }),
+                                      Positioned(
+                                        bottom: 2,
+                                        right: 5,
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            color: AppColors.lightColor,
+                                          ),
+                                          child: IconButton(
+                                            onPressed: controller.selectFile,
+                                            icon: Icon(
+                                              Icons.camera_alt,
+                                              color: AppColors.mainColor,
+                                              size: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                if (controller.pickedFile != null)
+                                  TextButton(
+                                    onPressed: () {
+                                      controller.uploadFile();
+                                      Navigator.pop(ctx);
+                                    },
+                                    child: const Text('Upload'),
+                                  ),
+                              ],
+                            ),
+                          );
                         },
                         child: Container(
                           height: 35,
@@ -168,26 +235,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ],
                 ),
                 20.vertical,
-                if (pickedFile != null)
-                  Expanded(
-                    child: Container(
-                      color: Colors.amber,
-                      child: Center(
-                        child: Text(pickedFile!.name),
-                      ),
-                    ),
-                  ),
-                if (pickedFile != null)
-                  Expanded(
-                    child: Container(
-                      color: Colors.amber,
-                      child: Image.file(
-                        File(pickedFile!.path!),
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -196,7 +243,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       16.vertical,
                       const UserControll(),
                       16.vertical,
-                      const ProfileNotifier(),
+                      ProfileNotifier()
                     ],
                   ),
                 ),

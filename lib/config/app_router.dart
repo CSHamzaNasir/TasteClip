@@ -7,10 +7,10 @@ import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/views/profile/profile_detail/profile_details_screen.dart';
 import 'package:tasteclip/views/profile/user_profile_screen.dart';
 
-import '../modules/review/Image/upload_image_feedback_screen.dart';
-import '../modules/review/text/upload_text_feedback_screen.dart';
-import '../modules/review/upload_feedback_screen.dart';
-import '../modules/review/video/upload_video_feedback_screen.dart';
+import '../views/review/Image/upload_image_feedback_screen.dart';
+import '../views/review/text/upload_text_feedback_screen.dart';
+import '../views/review/upload_feedback_screen.dart';
+import '../views/review/video/upload_video_feedback_screen.dart';
 import '../views/auth/email/register_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
 

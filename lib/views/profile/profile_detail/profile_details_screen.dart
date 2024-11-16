@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
@@ -40,13 +42,46 @@ class ProfileDetailsScreen extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Container(
-                        height: 200,
-                        width: double.infinity,
                         alignment: Alignment.center,
-                        child: Image.network(
-                          'https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM=',
-                          fit: BoxFit.cover,
-                        ),
+                        child: controller.user.value!.profileImageUrl != null
+                            ? Image.network(
+                                controller.user.value!.profileImageUrl!,
+                                height: 250,
+                                width: double.infinity,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return SizedBox(
+                                      height: 250,
+                                      width: double.infinity,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.lightColor,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.account_circle, size: 60),
+                              )
+                            : const Icon(
+                                Icons.account_circle,
+                                size: 60,
+                                color: AppColors.lightColor,
+                              ),
                       ),
                       Positioned.fill(
                         child: Container(
@@ -67,12 +102,26 @@ class ProfileDetailsScreen extends StatelessWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: Image.network(
-                                width: 60,
-                                height: 60,
-                                'https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM=',
-                                fit: BoxFit.cover,
-                              ),
+                              child: controller.pickedFile != null
+                                  ? Image.file(
+                                      File(controller.pickedFile!.path!),
+                                      height: 60,
+                                      width: 60,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : controller.user.value!.profileImageUrl !=
+                                          null
+                                      ? Image.network(
+                                          controller
+                                              .user.value!.profileImageUrl!,
+                                          height: 60,
+                                          width: 60,
+                                        )
+                                      : const Icon(
+                                          Icons.account_circle,
+                                          size: 60,
+                                          color: AppColors.lightColor,
+                                        ),
                             ),
                           ),
                         ),

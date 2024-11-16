@@ -46,7 +46,10 @@ class PostTextFeedbackScreenState extends State<PostTextFeedbackScreen> {
               16.vertical,
               const AppFeild(hintText: AppString.enterYourFeedbackHere),
               16.vertical,
-              const AppFeild(hintText: 'Enter your rating'),
+              const AppFeild(
+                hintText: 'Enter your rating',
+                inputType: TextInputType.number,
+              ),
               20.vertical,
               AppButton(
                 isGradient: _isChecked,
