@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:tasteclip/config/app_router.dart';
 
 class UploadTextFeedbackController extends GetxController {
   final textFeedback = TextEditingController();
@@ -27,5 +28,9 @@ class UploadTextFeedbackController extends GetxController {
     } catch (e) {
       log("Error saving feedback: $e");
     }
+  }
+
+  void goToHomeScreen() {
+    Get.offAllNamed(AppRouter.homeScreen);
   }
 }

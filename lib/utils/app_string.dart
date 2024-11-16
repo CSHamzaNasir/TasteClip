@@ -75,6 +75,7 @@ class AppString {
   static const String logout = 'Logout';
   static const String text = 'Text';
   static const String images = 'Images';
+  static const String backToHome = 'back to home';
   static const String videos = 'Videos';
   static const String clickHereToSeeNotifications =
       'Click here to see notifications.';
@@ -102,7 +103,7 @@ class AppString {
       'These restaurants are added just the admin, manager or user-based ';
   static const String describeYourThoughts = 'Describe Your Thoughts';
 
-  //---------------------------------------------------------------------------- Upload Feedback //
+  //---------------------------------------------------------------------------- Home Section //
   static const String capturingExpMotion =
       'Capturing Experience Product in Motion.';
 

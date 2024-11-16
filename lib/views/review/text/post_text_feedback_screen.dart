@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
@@ -78,7 +79,7 @@ class PostTextFeedbackScreen extends StatelessWidget {
                           restaurantName: restaurantName,
                           branchName: branchName,
                         );
-                        // Get.toNamed('/login');
+                        Get.offAllNamed(AppRouter.homeScreen);
                       }
                     : () {},
                 btnColor: controller.textFeedback.text.isNotEmpty &&

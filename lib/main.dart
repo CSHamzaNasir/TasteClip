@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      initialRoute: AppRouter.homeScreen,
-      // home: ChannelRegisterScreen(),
+      initialRoute: AppRouter.userProfileScreen,
     );
   }
 }

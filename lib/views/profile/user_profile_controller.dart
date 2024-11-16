@@ -82,4 +82,8 @@ class UserProfileController extends GetxController {
   void goToProfileDetailsScreen() {
     Get.toNamed(AppRouter.profileDetailScreen);
   }
+
+  void goToHomeScreen() {
+    Get.offAllNamed(AppRouter.homeScreen);
+  }
 }

@@ -14,6 +14,7 @@ import 'package:tasteclip/widgets/custom_box.dart';
 import 'package:tasteclip/widgets/or_continue_with.dart';
 
 import '../../../widgets/social_button.dart';
+import '../../../widgets/under_dev.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -128,13 +129,17 @@ class RegisterScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SocialButton(
-                      onTap: () async {
-                        controller.signInWithGoogle();
-                      },
+                      onTap: () => showUnderDevelopmentDialog(
+                          context, "This feature is under development."),
+                      // onTap: () async {
+                      //   controller.signInWithGoogle();
+                      // },
                       title: AppString.google,
                       icon: AppAssets.googleIcon,
                     ),
-                    const SocialButton(
+                    SocialButton(
+                      onTap: () => showUnderDevelopmentDialog(
+                          context, "This feature is under development."),
                       title: AppString.guest,
                       icon: AppAssets.guestIcon,
                     ),

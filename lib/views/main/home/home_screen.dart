@@ -9,6 +9,7 @@ import 'package:tasteclip/data/repositories/auth_repository_impl.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/views/main/home/home_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+import '../../../widgets/under_dev.dart';
 import 'components/content_card.dart';
 import 'components/home_topbar.dart';
 
@@ -21,9 +22,13 @@ class HomeScreen extends StatelessWidget {
       isLight: true,
       child: SafeArea(
         child: Scaffold(
-            body: GetBuilder<HomeController>(
+            body: GetX<HomeController>(
                 init: HomeController(authRepository: AuthRepositoryImpl()),
                 builder: (controller) {
+                  if (controller.user.value == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
                   final userData = controller.user.value!;
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -33,55 +38,66 @@ class HomeScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.menu,
+                            IconButton(
+                              onPressed: () {
+                                showUnderDevelopmentDialog(context,
+                                    "This feature is under development.");
+                              },
+                              icon: Icon(Icons.menu),
                               color: AppColors.mainColor,
                             ),
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Container(
-                                  height: 35,
-                                  width: 115,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    userData.userName.length > 8
-                                        ? '${userData.userName.substring(0, 8)}...'
-                                        : userData.userName,
-                                    style: AppTextStyles.lightStyle.copyWith(
-                                      color: AppColors.lightColor,
-                                    ),
-                                  )),
-                                ),
-                                Positioned(
-                                  left: -17,
-                                  top: 0,
-                                  bottom: 0,
-                                  child: Container(
-                                    width: 35,
+                            InkWell(
+                              onTap: controller.goToProfileScreen,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    height: 35,
+                                    width: 115,
                                     decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg'), // Replace with your image source
-                                        fit: BoxFit.cover,
+                                      color: AppColors.primaryColor,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      userData.userName.length > 8
+                                          ? '${userData.userName.substring(0, 8)}...'
+                                          : userData.userName,
+                                      style: AppTextStyles.lightStyle.copyWith(
+                                        color: AppColors.lightColor,
+                                      ),
+                                    )),
+                                  ),
+                                  Positioned(
+                                    left: -17,
+                                    top: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg'), // Replace with your image source
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            Icon(
-                              Icons.notifications_outlined,
+                            IconButton(
+                              onPressed: () {
+                                showUnderDevelopmentDialog(context,
+                                    "This feature is under development.");
+                              },
+                              icon: Icon(Icons.notifications_outlined),
                               color: AppColors.mainColor,
                             ),
                           ],
                         ),
-                        32.vertical,
+                        20.vertical,
                         Text(
                           AppString.capturingExpMotion,
                           style: AppTextStyles.headingStyle1.copyWith(
@@ -94,18 +110,26 @@ class HomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             HomeTopBar(
+                              onTap: () => showUnderDevelopmentDialog(context,
+                                  "This feature is under development."),
                               icon: Icons.person,
                               title: AppString.profile,
                             ),
                             HomeTopBar(
+                              onTap: () => showUnderDevelopmentDialog(context,
+                                  "This feature is under development."),
                               icon: Icons.currency_exchange,
                               title: AppString.reward,
                             ),
                             HomeTopBar(
+                              onTap: () => showUnderDevelopmentDialog(context,
+                                  "This feature is under development."),
                               icon: Icons.favorite_outline,
                               title: AppString.favourite,
                             ),
                             HomeTopBar(
+                              onTap: () => showUnderDevelopmentDialog(context,
+                                  "This feature is under development."),
                               icon: Icons.settings,
                               title: AppString.setting,
                             ),
@@ -123,6 +147,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         24.vertical,
                         HomeContentCard(
+                          onTap: () => showUnderDevelopmentDialog(
+                              context, "This feature is under development."),
                           width: 1,
                           imageIcon: AppAssets.shineStar,
                           title: AppString.clickHereForEssentailFood,
@@ -139,6 +165,8 @@ class HomeScreen extends StatelessWidget {
                             12.horizontal,
                             Expanded(
                               child: HomeContentCard(
+                                onTap: () => showUnderDevelopmentDialog(context,
+                                    "This feature is under development."),
                                 imageIcon: AppAssets.shineStar,
                                 title: AppString.exploreRestaurant,
                               ),

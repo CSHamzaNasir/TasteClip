@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
+import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/views/profile/components/profile_notifier.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import '../../data/repositories/auth_repository_impl.dart';
@@ -232,6 +233,27 @@ class UserProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Positioned(
+                        top: 35,
+                        left: 4,
+                        child: InkWell(
+                          onTap: controller.goToHomeScreen,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.lightColor,
+                                borderRadius: BorderRadius.circular(6)),
+                            height: 30,
+                            width: 120,
+                            child: Row(
+                              children: [
+                                Icon(Icons.arrow_left),
+                                Text(AppString.backToHome,
+                                    style: AppTextStyles.lightStyle
+                                        .copyWith(color: AppColors.mainColor))
+                              ],
+                            ),
+                          ),
+                        ))
                   ],
                 ),
                 20.vertical,
