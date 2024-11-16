@@ -141,7 +141,7 @@ class HomeScreen extends StatelessWidget {
                           child: Text(
                             AppString.explore,
                             style: AppTextStyles.headingStyle1.copyWith(
-                              color: AppColors.mainColor,
+                              color: AppColors.textColor,
                             ),
                           ),
                         ),
