@@ -13,13 +13,18 @@ class AppString {
       'We\'re on a mission to empower your voice. Join us in shaping better dining experiences together.';
   //---------------------------------------------------------------------------- AUTH SECTION STRINGS //
   static const String login = 'Login';
+  static const String signin = 'Sign In';
+  static const String signup = 'Sign Up';
   static const String dontHaveAnAccount = 'Don\'t have an account? ';
   static const String register = 'Register';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String google = 'Google';
+  static const String continueAsGuest = 'Continue as Guest';
+  static const String continueWithGoogle = 'Continue with Google';
   static const String phone = 'Phone';
   static const String getStartedWith = 'Get Started with...';
+  static const String getStartedAs = 'Get Started as';
   static const String username = 'Username';
   static const String user = 'User';
   static const String guest = 'Guest';
