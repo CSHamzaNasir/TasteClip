@@ -24,4 +24,5 @@ class AppAssets {
   static const String fileIcon = "assets/icons/file.png";
   static const String imageIcon = "assets/icons/image.png";
   static const String videoIcon = "assets/icons/video.png";
+  static const String shineStar = "assets/icons/multiplestar.png";
 }

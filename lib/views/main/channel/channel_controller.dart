@@ -22,6 +22,7 @@ class ChannelController extends GetxController {
           restaurantName: restaurantName,
           branchName: branchName,
         );
+
         await _firestore.collection('channel-data').add(channelData.toMap());
         log('Data saved successfully!');
       } else {

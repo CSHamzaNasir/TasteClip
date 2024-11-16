@@ -111,12 +111,22 @@ class SelectRestaurantSheetState extends State<SelectRestaurantSheet> {
             text: 'Next',
             onPressed: () {
               if (_restaurants.any((restaurant) => restaurant['isChecked'])) {
-                Navigator.pop(context);
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => const SelectBranchSheet(),
-                );
+                String? restaurantName = _restaurants.firstWhere(
+                  (restaurant) => restaurant['isChecked'] == true,
+                )['name'];
+
+                if (restaurantName != null) {
+                  Navigator.pop(context);
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => SelectBranchSheet(
+                      restaurantName: restaurantName,
+                    ),
+                  );
+                } else {
+                  log('No restaurant selected!');
+                }
               }
             },
             btnColor: _restaurants.any((restaurant) => restaurant['isChecked'])

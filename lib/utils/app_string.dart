@@ -101,4 +101,17 @@ class AppString {
   static const String selectResturentDes =
       'These restaurants are added just the admin, manager or user-based ';
   static const String describeYourThoughts = 'Describe Your Thoughts';
+
+  //---------------------------------------------------------------------------- Upload Feedback //
+  static const String capturingExpMotion =
+      'Capturing Experience Product in Motion.';
+
+  static const String profile = 'Profile';
+  static const String reward = 'Reward';
+  static const String favourite = 'Favorite';
+  static const String explore = 'Explore';
+  static const String watchFeedback = 'Watch\nFeedback';
+  static const String exploreRestaurant = 'Explore\nRestaurant';
+  static const String clickHereForEssentailFood =
+      'Click here for\nessential eating\nFood.';
 }

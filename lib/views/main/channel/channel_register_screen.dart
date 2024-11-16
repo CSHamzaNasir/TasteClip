@@ -35,7 +35,7 @@ class ChannelRegisterScreen extends StatelessWidget {
                 AppButton(
                   text: 'add',
                   onPressed: () {
-                    controller.saveChannelData(); // Save the data to Firebase
+                    controller.saveChannelData();
                   },
                 ),
               ],
