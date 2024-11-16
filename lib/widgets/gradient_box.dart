@@ -5,6 +5,8 @@ class GradientBox extends StatelessWidget {
   final List<Color> gradientColors;
   final double? widthFactor;
   final double? heightFactor;
+  final double? boxRadius;
+  final double? padding;
 
   const GradientBox({
     super.key,
@@ -12,6 +14,8 @@ class GradientBox extends StatelessWidget {
     this.gradientColors = const [Colors.blue, Colors.purple],
     this.widthFactor,
     this.heightFactor,
+    this.boxRadius,
+    this.padding,
   });
 
   @override
@@ -20,11 +24,12 @@ class GradientBox extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
+      padding: EdgeInsets.all(padding ?? 0),
       width: widthFactor != null ? screenWidth * widthFactor! : double.infinity,
       height:
           heightFactor != null ? screenHeight * heightFactor! : double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(boxRadius ?? 12),
         gradient: LinearGradient(
           colors: gradientColors,
           begin: Alignment.topCenter,

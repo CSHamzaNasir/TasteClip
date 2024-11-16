@@ -13,13 +13,18 @@ class AppString {
       'We\'re on a mission to empower your voice. Join us in shaping better dining experiences together.';
   //---------------------------------------------------------------------------- AUTH SECTION STRINGS //
   static const String login = 'Login';
+  static const String signin = 'Sign In';
+  static const String signup = 'Sign Up';
   static const String dontHaveAnAccount = 'Don\'t have an account? ';
   static const String register = 'Register';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String google = 'Google';
+  static const String continueAsGuest = 'Continue as Guest';
+  static const String continueWithGoogle = 'Continue with Google';
   static const String phone = 'Phone';
   static const String getStartedWith = 'Get Started with...';
+  static const String getStartedAs = 'Get Started as';
   static const String username = 'Username';
   static const String user = 'User';
   static const String guest = 'Guest';
@@ -75,6 +80,7 @@ class AppString {
   static const String logout = 'Logout';
   static const String text = 'Text';
   static const String images = 'Images';
+  static const String backToHome = 'back to home';
   static const String videos = 'Videos';
   static const String clickHereToSeeNotifications =
       'Click here to see notifications.';
@@ -101,4 +107,17 @@ class AppString {
   static const String selectResturentDes =
       'These restaurants are added just the admin, manager or user-based ';
   static const String describeYourThoughts = 'Describe Your Thoughts';
+
+  //---------------------------------------------------------------------------- Home Section //
+  static const String capturingExpMotion =
+      'Capturing Experience Product in Motion.';
+
+  static const String profile = 'Profile';
+  static const String reward = 'Reward';
+  static const String favourite = 'Favorite';
+  static const String explore = 'Explore';
+  static const String watchFeedback = 'Watch\nFeedback';
+  static const String exploreRestaurant = 'Explore\nRestaurant';
+  static const String clickHereForEssentailFood =
+      'Click here for\nessential eating\nFood.';
 }

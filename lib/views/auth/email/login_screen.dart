@@ -13,6 +13,7 @@ import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_box.dart';
 
 import '../../../widgets/social_button.dart';
+import '../../../widgets/under_dev.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -111,14 +112,18 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SocialButton(
+                      onTap: () => showUnderDevelopmentDialog(
+                          context, "This feature is under development."),
                       title: AppString.google,
                       icon: AppAssets.googleIcon,
                     ),
                     SocialButton(
+                      onTap: () => showUnderDevelopmentDialog(
+                          context, "This feature is under development."),
                       title: AppString.guest,
                       icon: AppAssets.guestIcon,
                     ),

@@ -4,11 +4,12 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/modules/review/upload_feedback_controller.dart';
+import 'package:tasteclip/views/review/upload_feedback_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../widgets/custom_appbar.dart';
+import '../../widgets/under_dev.dart';
 
 class UploadFeedbackScreen extends StatelessWidget {
   UploadFeedbackScreen({super.key});
@@ -97,6 +98,8 @@ class UploadFeedbackScreen extends StatelessWidget {
                         ),
                         16.vertical,
                         InkWell(
+                          onTap: () => showUnderDevelopmentDialog(
+                              context, "This feature is under development."),
                           child: Container(
                             height: 85,
                             decoration: BoxDecoration(
@@ -105,7 +108,7 @@ class UploadFeedbackScreen extends StatelessWidget {
                                 colors: [
                                   AppColors.primaryColor,
                                   AppColors.mainColor
-                                ], // Gradient colors
+                                ],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),
@@ -155,58 +158,62 @@ class UploadFeedbackScreen extends StatelessWidget {
                           ),
                         ),
                         16.vertical,
-                        Container(
-                          height: 85,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: const LinearGradient(
-                              colors: [
-                                AppColors.primaryColor,
-                                AppColors.mainColor
-                              ], // Gradient colors
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                        InkWell(
+                          onTap: () => showUnderDevelopmentDialog(
+                              context, "This feature is under development."),
+                          child: Container(
+                            height: 85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  AppColors.primaryColor,
+                                  AppColors.mainColor
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(
-                                            0.2), // Circle background
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          AppAssets.videoIcon,
-                                          width: 20,
-                                          height: 20,
-                                          color: AppColors.whiteColor,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            AppAssets.videoIcon,
+                                            width: 20,
+                                            height: 20,
+                                            color: AppColors.whiteColor,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    16.horizontal,
-                                    Text(
-                                      AppString.videobased,
-                                      style: AppTextStyles.bodyStyle.copyWith(
-                                          color: AppColors.lightColor),
-                                    )
-                                  ],
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.whiteColor,
-                                  size: 16,
-                                ),
-                              ],
+                                      16.horizontal,
+                                      Text(
+                                        AppString.videobased,
+                                        style: AppTextStyles.bodyStyle.copyWith(
+                                            color: AppColors.lightColor),
+                                      )
+                                    ],
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: AppColors.whiteColor,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

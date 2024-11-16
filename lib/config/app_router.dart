@@ -4,13 +4,14 @@ import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
+import 'package:tasteclip/views/main/home/home_screen.dart';
 import 'package:tasteclip/views/profile/profile_detail/profile_details_screen.dart';
 import 'package:tasteclip/views/profile/user_profile_screen.dart';
 
-import '../modules/review/Image/upload_image_feedback_screen.dart';
-import '../modules/review/text/upload_text_feedback_screen.dart';
-import '../modules/review/upload_feedback_screen.dart';
-import '../modules/review/video/upload_video_feedback_screen.dart';
+import '../views/review/Image/upload_image_feedback_screen.dart';
+import '../views/review/text/upload_text_feedback_screen.dart';
+import '../views/review/upload_feedback_screen.dart';
+import '../views/review/video/upload_video_feedback_screen.dart';
 import '../views/auth/email/register_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
 
@@ -31,6 +32,7 @@ class AppRouter {
   static const uploadImageFeedbackScreen = "/uploadImageFeedbackScreen";
   static const uploadVideoFeedbackScreen = "/uploadVideoFeedbackScreen";
   static const profileDetailScreen = "/profileDetailScreen";
+  static const homeScreen = "/homeScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -108,6 +110,12 @@ class AppRouter {
       name: profileDetailScreen,
       page: () => const ProfileDetailsScreen(),
       transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 200),
+    ),
+    GetPage(
+      name: homeScreen,
+      page: () => const HomeScreen(),
+      transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),
     ),
   ];

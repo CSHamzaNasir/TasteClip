@@ -7,6 +7,7 @@ import '../../../../constant/app_colors.dart';
 import '../../../../utils/app_string.dart';
 import '../../../../widgets/gradient_box.dart';
 import '../../../constant/app_fonts.dart';
+import '../../../widgets/under_dev.dart';
 import '../user_profile_controller.dart';
 
 class ProfileNotifier extends StatelessWidget {
@@ -58,28 +59,37 @@ class ProfileNotifier extends StatelessWidget {
               ),
             ),
             10.vertical,
-            Row(
-              children: [
-                const Icon(
-                  Icons.notifications_outlined,
-                  size: 20,
-                  color: AppColors.lightColor,
-                ),
-                12.horizontal,
-                Text(
-                  AppString.notifications,
-                  style: AppTextStyles.bodyStyle.copyWith(
-                    color: AppColors.lightColor,
+            GestureDetector(
+              onTap: () => showUnderDevelopmentDialog(
+                  context, "This feature is under development."),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.notifications_outlined,
+                        size: 20,
+                        color: AppColors.lightColor,
+                      ),
+                      12.horizontal,
+                      Text(
+                        AppString.notifications,
+                        style: AppTextStyles.bodyStyle.copyWith(
+                          color: AppColors.lightColor,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            2.vertical,
-            Text(
-              AppString.clickHereToSeeNotifications,
-              style: AppTextStyles.lightStyle.copyWith(
-                color: AppColors.greyColor,
-                fontFamily: AppFonts.popinsRegular,
+                  2.vertical,
+                  Text(
+                    AppString.clickHereToSeeNotifications,
+                    style: AppTextStyles.lightStyle.copyWith(
+                      color: AppColors.greyColor,
+                      fontFamily: AppFonts.popinsRegular,
+                    ),
+                  ),
+                ],
               ),
             )
           ],

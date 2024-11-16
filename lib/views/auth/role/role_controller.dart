@@ -5,4 +5,12 @@ class RoleController extends GetxController {
   void goToUserAuthSecreen() {
     Get.toNamed(AppRouter.userAuthScreen);
   }
+
+  void goToRegisterScreen() {
+    Get.toNamed(AppRouter.registerScreen);
+  }
+
+  void goToLoginScreen() {
+    Get.toNamed(AppRouter.loginScreen);
+  }
 }
