@@ -22,7 +22,7 @@ class HomeTopBar extends StatelessWidget {
       onTap: onTap,
       child: GradientBox(
         padding: 6,
-        gradientColors: [
+        gradientColors: const [
           AppColors.primaryColor,
           AppColors.mainColor,
         ],

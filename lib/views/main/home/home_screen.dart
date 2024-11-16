@@ -9,6 +9,7 @@ import 'package:tasteclip/data/repositories/auth_repository_impl.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/views/main/home/home_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+
 import '../../../widgets/under_dev.dart';
 import 'components/content_card.dart';
 import 'components/home_topbar.dart';
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                 init: HomeController(authRepository: AuthRepositoryImpl()),
                 builder: (controller) {
                   if (controller.user.value == null) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   final userData = controller.user.value!;
@@ -43,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                                 showUnderDevelopmentDialog(context,
                                     "This feature is under development.");
                               },
-                              icon: Icon(Icons.menu),
+                              icon: const Icon(Icons.menu),
                               color: AppColors.mainColor,
                             ),
                             InkWell(
@@ -74,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                                     bottom: 0,
                                     child: Container(
                                       width: 35,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
                                           image: NetworkImage(
@@ -92,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                                 showUnderDevelopmentDialog(context,
                                     "This feature is under development.");
                               },
-                              icon: Icon(Icons.notifications_outlined),
+                              icon: const Icon(Icons.notifications_outlined),
                               color: AppColors.mainColor,
                             ),
                           ],
@@ -156,7 +157,7 @@ class HomeScreen extends StatelessWidget {
                         16.vertical,
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               child: HomeContentCard(
                                 imageIcon: AppAssets.shineStar,
                                 title: AppString.watchFeedback,

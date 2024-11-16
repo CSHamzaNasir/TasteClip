@@ -8,7 +8,7 @@ class UnderDevelopmentDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Row(
+      title: const Row(
         children: [
           Icon(
             Icons.warning,
@@ -24,7 +24,7 @@ class UnderDevelopmentDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('OK'),
+          child: const Text('OK'),
         ),
       ],
     );

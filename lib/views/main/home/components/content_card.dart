@@ -25,7 +25,7 @@ class HomeContentCard extends StatelessWidget {
       onTap: onTap,
       child: GradientBox(
         padding: 10,
-        gradientColors: [
+        gradientColors: const [
           AppColors.primaryColor,
           AppColors.mainColor,
         ],
@@ -55,11 +55,11 @@ class HomeContentCard extends StatelessWidget {
                     color: AppColors.lightColor,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 if (screenWidth >= 350)
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_forward_ios,
                       color: AppColors.lightColor,
                     ),

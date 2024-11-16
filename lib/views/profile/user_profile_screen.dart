@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
@@ -7,6 +8,7 @@ import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/views/profile/components/profile_notifier.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+
 import '../../data/repositories/auth_repository_impl.dart';
 import 'components/social_action_bar.dart';
 import 'components/user_control.dart';
@@ -175,7 +177,7 @@ class UserProfileScreen extends StatelessWidget {
                                                   fit: BoxFit.cover,
                                                 ),
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.account_circle,
                                                 color: AppColors.mainColor,
                                                 size: 100,
@@ -194,7 +196,7 @@ class UserProfileScreen extends StatelessWidget {
                                           ),
                                           child: IconButton(
                                             onPressed: controller.selectFile,
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.camera_alt,
                                               color: AppColors.mainColor,
                                               size: 15,
@@ -246,7 +248,7 @@ class UserProfileScreen extends StatelessWidget {
                             width: 120,
                             child: Row(
                               children: [
-                                Icon(Icons.arrow_left),
+                                const Icon(Icons.arrow_left),
                                 Text(AppString.backToHome,
                                     style: AppTextStyles.lightStyle
                                         .copyWith(color: AppColors.mainColor))
@@ -265,7 +267,7 @@ class UserProfileScreen extends StatelessWidget {
                       16.vertical,
                       const UserControll(),
                       16.vertical,
-                      ProfileNotifier()
+                      const ProfileNotifier()
                     ],
                   ),
                 ),
