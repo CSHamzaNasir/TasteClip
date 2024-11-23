@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart';
 import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/manager_auth/manager_auth_screen.dart';
+import 'package:tasteclip/views/auth/manager_auth/manager_login_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
@@ -10,6 +11,7 @@ import 'package:tasteclip/views/profile/profile_detail/profile_details_screen.da
 import 'package:tasteclip/views/profile/user_profile_screen.dart';
 
 import '../views/auth/email/register_screen.dart';
+import '../views/auth/manager_auth/manager_register_screen.dart';
 import '../views/auth/splash/onboarding/onboarding_screen.dart';
 import '../views/review/Image/upload_image_feedback_screen.dart';
 import '../views/review/text/upload_text_feedback_screen.dart';
@@ -23,8 +25,6 @@ class AppRouter {
   static const userAuthScreen = "/userAuthScreen";
   static const registerScreen = "/registerScreen";
   static const loginScreen = "/loginScreen";
-  static const channelRegisterScreen = "/channelRegisterScreen";
-  static const channelLoginScreen = "/channelLoginScreen";
   static const forgetPasswordScreen = "/forgetPasswordScreen";
   static const recoverPasswordScreen = "/recoverPasswordScreen";
   static const userProfileScreen = "/userProfileScreen";
@@ -35,6 +35,8 @@ class AppRouter {
   static const profileDetailScreen = "/profileDetailScreen";
   static const homeScreen = "/homeScreen";
   static const managerAuthScreen = "/managerAuthScreen";
+  static const managerRegisterScreen = "/managerRegisterScreen";
+  static const managerLoginScreen = "/managerLoginScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -122,7 +124,19 @@ class AppRouter {
     ),
     GetPage(
       name: managerAuthScreen,
-      page: () => const ManagerAuthScreen(),
+      page: () => ManagerAuthScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 200),
+    ),
+    GetPage(
+      name: managerRegisterScreen,
+      page: () =>   ManagerRegisterScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 200),
+    ),
+    GetPage(
+      name: managerLoginScreen,
+      page: () => ManagerLoginScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),
     ),

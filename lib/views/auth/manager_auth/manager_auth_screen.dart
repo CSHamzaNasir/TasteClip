@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/auth/manager_auth/manager_auth_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 
 class ManagerAuthScreen extends StatelessWidget {
-  const ManagerAuthScreen({super.key});
-
+  ManagerAuthScreen({super.key});
+  final controller = Get.put(ManagerAuthController());
   @override
   Widget build(BuildContext context) {
     return AppBackground(
@@ -48,13 +50,13 @@ class ManagerAuthScreen extends StatelessWidget {
               AppButton(
                 text: AppString.register,
                 btnRadius: 100,
-                onPressed: () {},
+                onPressed: () => controller.goToRegisterScreen(),
               ),
               16.vertical,
               AppButton(
                 text: AppString.login,
                 btnRadius: 100,
-                onPressed: () {},
+                onPressed: () => controller.goToLoginScreen(),
               ),
               16.vertical,
               Row(
@@ -68,7 +70,8 @@ class ManagerAuthScreen extends StatelessWidget {
                       style: AppTextStyles.boldBodyStyle
                           .copyWith(color: AppColors.mainColor))
                 ],
-              )
+              ),
+              30.vertical,
             ],
           ),
         ),
