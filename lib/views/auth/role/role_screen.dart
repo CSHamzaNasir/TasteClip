@@ -131,8 +131,7 @@ class RoleScreen extends StatelessWidget {
                 16.vertical,
                 AppButton(
                   text: AppString.restaurantManager,
-                  onPressed: () => showUnderDevelopmentDialog(
-                      context, "This feature is under development."),
+                  onPressed: () => controller.goToManagerAuthScreen(),
                   btnRadius: 30,
                 ),
                 10.vertical,
