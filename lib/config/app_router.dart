@@ -6,6 +6,7 @@ import 'package:tasteclip/views/auth/manager_auth/manager_login_screen.dart';
 import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
+import 'package:tasteclip/views/channel/channel_home_screen.dart';
 import 'package:tasteclip/views/main/home/home_screen.dart';
 import 'package:tasteclip/views/profile/profile_detail/profile_details_screen.dart';
 import 'package:tasteclip/views/profile/user_profile_screen.dart';
@@ -37,6 +38,7 @@ class AppRouter {
   static const managerAuthScreen = "/managerAuthScreen";
   static const managerRegisterScreen = "/managerRegisterScreen";
   static const managerLoginScreen = "/managerLoginScreen";
+  static const channelHomeScreen = "/channelHomeScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -130,13 +132,19 @@ class AppRouter {
     ),
     GetPage(
       name: managerRegisterScreen,
-      page: () =>   ManagerRegisterScreen(),
+      page: () => ManagerRegisterScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),
     ),
     GetPage(
       name: managerLoginScreen,
       page: () => ManagerLoginScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 200),
+    ),
+    GetPage(
+      name: channelHomeScreen,
+      page: () => ChannelHomeScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),
     ),

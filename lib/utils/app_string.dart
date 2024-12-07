@@ -120,4 +120,6 @@ class AppString {
   static const String exploreRestaurant = 'Explore\nRestaurant';
   static const String clickHereForEssentailFood =
       'Click here for\nessential eating\nFood.';
+  //---------------------------------------------------------------------------- Channel Section //
+  // static const String videos = 'Videos';
 }
