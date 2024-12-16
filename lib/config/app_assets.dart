@@ -16,6 +16,7 @@ class AppAssets {
   static const String imagebased = "assets/images/imagebased.png";
   static const String videobased = "assets/images/videobased.png";
   static const String googleImg = "assets/images/google-img.png";
+  static const String dummyImg = "assets/images/dummy.png";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
   static const String mailIcon = "assets/icons/mail-icon.svg";
@@ -26,4 +27,6 @@ class AppAssets {
   static const String imageIcon = "assets/icons/image.png";
   static const String videoIcon = "assets/icons/video.png";
   static const String shineStar = "assets/icons/multiplestar.png";
+  static const String filterIcon = "assets/icons/filter-icon.svg";
+  static const String homeBold = "assets/icons/home-bold.svg";
 }
