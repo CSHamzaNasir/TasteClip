@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/views/channel/channel_home_screen.dart';
 
 import '../../config/app_assets.dart';
 import '../../constant/app_colors.dart';
@@ -16,25 +17,31 @@ class CustomBottomBarState extends State<CustomBottomBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    // HomeScreen(),
-    // PlanScreen(),
-    // UserProfileScreen(),
+    ChannelHomeScreen(),
+    ChannelHomeScreen(),
+    ChannelHomeScreen(),
+    ChannelHomeScreen(),
   ];
 
   final List<_BottomBarItem> _items = [
     _BottomBarItem(
-      selectedSvgPath: AppAssets.boldhomeIcon,
-      unselectedSvgPath: AppAssets.reghomeIcon,
+      selectedSvgPath: AppAssets.homeBold,
+      unselectedSvgPath: AppAssets.homeReg,
       label: 'Home',
     ),
     _BottomBarItem(
-      selectedSvgPath: AppAssets.boldPlanIcon,
-      unselectedSvgPath: AppAssets.regPlanIcon,
-      label: 'Plans',
+      selectedSvgPath: AppAssets.categBold,
+      unselectedSvgPath: AppAssets.categReg,
+      label: 'Category',
     ),
     _BottomBarItem(
-      selectedSvgPath: AppAssets.boldProfileIcon,
-      unselectedSvgPath: AppAssets.regProfileIcon,
+      selectedSvgPath: AppAssets.eventBold,
+      unselectedSvgPath: AppAssets.eventReg,
+      label: 'Event',
+    ),
+    _BottomBarItem(
+      selectedSvgPath: AppAssets.profileBold,
+      unselectedSvgPath: AppAssets.profileReg,
       label: 'Profile',
     ),
   ];
@@ -90,6 +97,10 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                           : item.unselectedSvgPath,
                       width: 24,
                       height: 24,
+                      colorFilter: ColorFilter.mode(
+                        isSelected ? AppColors.mainColor : Colors.grey,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     4.vertical,
                     if (isSelected)

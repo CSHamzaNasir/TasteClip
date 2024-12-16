@@ -29,4 +29,11 @@ class AppAssets {
   static const String shineStar = "assets/icons/multiplestar.png";
   static const String filterIcon = "assets/icons/filter-icon.svg";
   static const String homeBold = "assets/icons/home-bold.svg";
+  static const String eventBold = "assets/icons/event-bold.svg";
+  static const String profileBold = "assets/icons/profile-bold.svg";
+  static const String categBold = "assets/icons/category-bold.svg";
+  static const String homeReg = "assets/icons/home-reg.svg";
+  static const String eventReg = "assets/icons/event-reg.svg";
+  static const String profileReg = "assets/icons/profile-reg.svg";
+  static const String categReg = "assets/icons/category-reg.svg";
 }
