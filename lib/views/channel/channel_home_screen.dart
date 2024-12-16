@@ -153,6 +153,7 @@ class ChannelHomeScreen extends StatelessWidget {
                       AppAssets.dummyImg,
                       height: 191,
                     ),
+                    16.vertical,
                     Text(
                       "Video Title",
                       style: AppTextStyles.boldBodyStyle.copyWith(
