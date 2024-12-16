@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
@@ -91,11 +92,11 @@ class ChannelHomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // SvgPicture.asset(
-                  //   AppAssets.filterIcon,
-                  //   height: 60,
-                  // ),
+                  16.horizontal,
+                  SvgPicture.asset(
+                    AppAssets.filterIcon,
+                    height: 60,
+                  ),
                 ],
               ),
               20.vertical,
@@ -149,7 +150,7 @@ class ChannelHomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.asset(
-                      AppAssets.logo,
+                      AppAssets.dummyImg,
                       height: 191,
                     ),
                     Text(
