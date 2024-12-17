@@ -93,7 +93,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                       AppString.login,
                       style: AppTextStyles.lightStyle.copyWith(
                         color: AppColors.mainColor,
-                        fontFamily: AppFonts.popinsBold,
+                        fontFamily: AppFonts.sandBold,
                         decoration: TextDecoration.underline,
                       ),
                     ),

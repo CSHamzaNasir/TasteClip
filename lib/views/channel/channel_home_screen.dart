@@ -95,7 +95,7 @@ class ChannelHomeScreen extends StatelessWidget {
                   16.horizontal,
                   SvgPicture.asset(
                     AppAssets.filterIcon,
-                    height: 60,
+                    height: 50,
                   ),
                 ],
               ),
@@ -126,8 +126,8 @@ class ChannelHomeScreen extends StatelessWidget {
                               controller.labels[index],
                               style: AppTextStyles.bodyStyle.copyWith(
                                 fontFamily: isSelected
-                                    ? AppFonts.popinsMedium
-                                    : AppFonts.popinsRegular,
+                                    ? AppFonts.sandMedium
+                                    : AppFonts.sandRegular,
                                 color: isSelected
                                     ? Colors.white
                                     : AppColors.mainColor,
@@ -157,7 +157,7 @@ class ChannelHomeScreen extends StatelessWidget {
                     Text(
                       "Video Title",
                       style: AppTextStyles.boldBodyStyle.copyWith(
-                        fontFamily: AppFonts.popinsSemiBold,
+                        fontFamily: AppFonts.sandSemiBold,
                         color: AppColors.textColor,
                       ),
                     ),

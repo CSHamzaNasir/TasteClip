@@ -1,8 +1,7 @@
 class AppFonts {
-  static const String popinsLight = 'Popins-Black';
-  static const String popinsItalic = 'Popins-Italic';
-  static const String popinsBold = 'Popins-Bold';
-  static const String popinsMedium = 'Popins-Medium';
-  static const String popinsRegular = 'Popins-Regular';
-  static const String popinsSemiBold = 'Poppins-SemiBold';
+  static const String sandLight = 'Sand-Black';
+  static const String sandBold = 'Sand-Bold';
+  static const String sandMedium = 'Sand-Medium';
+  static const String sandRegular = 'Sand-Regular';
+  static const String sandSemiBold = 'Sand-SemiBold';
 }

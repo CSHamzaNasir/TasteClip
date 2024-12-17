@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tasteclip/modules/home/manager/restaurant_list_screen.dart';
 import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart';
 import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/manager_auth/manager_auth_screen.dart';
@@ -39,6 +40,7 @@ class AppRouter {
   static const managerRegisterScreen = "/managerRegisterScreen";
   static const managerLoginScreen = "/managerLoginScreen";
   static const channelHomeScreen = "/channelHomeScreen";
+  static const allRestaurantScreen = "/allRestaurantScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -147,6 +149,12 @@ class AppRouter {
       page: () => ChannelHomeScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),
+    ),
+    GetPage(
+      name: allRestaurantScreen,
+      page: () => RestaurantListScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
   ];
 }

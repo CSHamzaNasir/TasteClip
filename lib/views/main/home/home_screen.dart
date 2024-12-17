@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                           AppString.capturingExpMotion,
                           style: AppTextStyles.headingStyle1.copyWith(
                             color: AppColors.textColor,
-                            fontFamily: AppFonts.popinsBold,
+                            fontFamily: AppFonts.sandBold,
                           ),
                         ),
                         24.vertical,
@@ -157,17 +157,16 @@ class HomeScreen extends StatelessWidget {
                         16.vertical,
                         Row(
                           children: [
-                            const Expanded(
-                              child: HomeContentCard(
-                                imageIcon: AppAssets.shineStar,
-                                title: AppString.watchFeedback,
-                              ),
-                            ),
-                            12.horizontal,
+                            // const Expanded(
+                            //   child: HomeContentCard(
+                            //     imageIcon: AppAssets.shineStar,
+                            //     title: AppString.watchFeedback,
+                            //   ),
+                            // ),
+                            // 12.horizontal,
                             Expanded(
                               child: HomeContentCard(
-                                onTap: () => showUnderDevelopmentDialog(context,
-                                    "This feature is under development."),
+                                onTap: () => controller.goToAllRegisterScreen(),
                                 imageIcon: AppAssets.shineStar,
                                 title: AppString.exploreRestaurant,
                               ),

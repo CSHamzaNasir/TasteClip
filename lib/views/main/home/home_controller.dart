@@ -23,7 +23,7 @@ class HomeController extends GetxController {
     try {
       final fetchedUser = await authRepository.fetchCurrentUserData();
       user.value = fetchedUser;
-      update(); // Trigger the UI update
+      update();
     } catch (e) {
       log('Error fetching user data: $e');
     }
@@ -31,5 +31,9 @@ class HomeController extends GetxController {
 
   void goToProfileScreen() {
     Get.toNamed(AppRouter.userProfileScreen);
+  }
+
+  void goToAllRegisterScreen() {
+    Get.toNamed(AppRouter.allRestaurantScreen);
   }
 }

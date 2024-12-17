@@ -5,22 +5,23 @@ import 'package:tasteclip/views/channel/channel_home_screen.dart';
 
 import '../../config/app_assets.dart';
 import '../../constant/app_colors.dart';
+import '../channel/profile/channel_profile_screen.dart';
 
-class CustomBottomBar extends StatefulWidget {
-  const CustomBottomBar({super.key});
+class ChannelBottomBar extends StatefulWidget {
+  const ChannelBottomBar({super.key});
 
   @override
-  CustomBottomBarState createState() => CustomBottomBarState();
+  ChannelBottomBarState createState() => ChannelBottomBarState();
 }
 
-class CustomBottomBarState extends State<CustomBottomBar> {
+class ChannelBottomBarState extends State<ChannelBottomBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
     ChannelHomeScreen(),
     ChannelHomeScreen(),
     ChannelHomeScreen(),
-    ChannelHomeScreen(),
+    ChannelProfileScreen(),
   ];
 
   final List<_BottomBarItem> _items = [

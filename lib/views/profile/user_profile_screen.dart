@@ -34,6 +34,7 @@ class UserProfileScreen extends StatelessWidget {
               children: [
                 Stack(
                   children: [
+                    // Large Profile Background Image with Loader
                     Container(
                       alignment: Alignment.center,
                       child: controller.user.value!.profileImageUrl != null
@@ -41,11 +42,11 @@ class UserProfileScreen extends StatelessWidget {
                               controller.user.value!.profileImageUrl!,
                               height: 250,
                               width: double.infinity,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context, Widget child,
                                   ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
-                                  return child;
+                                  return child; // Image fully loaded
                                 } else {
                                   return SizedBox(
                                     height: 250,
@@ -53,22 +54,20 @@ class UserProfileScreen extends StatelessWidget {
                                     child: Center(
                                       child: CircularProgressIndicator(
                                         color: AppColors.lightColor,
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                (loadingProgress
-                                                        .expectedTotalBytes ??
-                                                    1)
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded /
+                                                (loadingProgress.expectedTotalBytes ?? 1)
                                             : null,
                                       ),
                                     ),
                                   );
                                 }
                               },
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.account_circle, size: 60),
+                              errorBuilder: (context, error, stackTrace) => const Icon(
+                                Icons.account_circle,
+                                size: 60,
+                                color: AppColors.lightColor,
+                              ),
                             )
                           : const Icon(
                               Icons.account_circle,
@@ -107,6 +106,7 @@ class UserProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // Small Circular Profile Image with Loader
                     Positioned(
                       bottom: 70,
                       left: 0,
@@ -115,8 +115,7 @@ class UserProfileScreen extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColors.primaryColor, width: 2),
+                            border: Border.all(color: AppColors.primaryColor, width: 2),
                             borderRadius: BorderRadius.circular(100),
                           ),
                           child: ClipRRect(
@@ -133,6 +132,30 @@ class UserProfileScreen extends StatelessWidget {
                                         controller.user.value!.profileImageUrl!,
                                         height: 60,
                                         width: 60,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return SizedBox(
+                                            height: 60,
+                                            width: 60,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.lightColor,
+                                                strokeWidth: 2,
+                                                value: loadingProgress.expectedTotalBytes != null
+                                                    ? loadingProgress.cumulativeBytesLoaded /
+                                                        (loadingProgress.expectedTotalBytes ?? 1)
+                                                    : null,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder: (context, error, stackTrace) =>
+                                            const Icon(
+                                          Icons.account_circle,
+                                          size: 60,
+                                          color: AppColors.lightColor,
+                                        ),
                                       )
                                     : const Icon(
                                         Icons.account_circle,
@@ -236,26 +259,27 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                        top: 35,
-                        left: 4,
-                        child: InkWell(
-                          onTap: controller.goToHomeScreen,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppColors.lightColor,
-                                borderRadius: BorderRadius.circular(6)),
-                            height: 30,
-                            width: 120,
-                            child: Row(
-                              children: [
-                                const Icon(Icons.arrow_left),
-                                Text(AppString.backToHome,
-                                    style: AppTextStyles.lightStyle
-                                        .copyWith(color: AppColors.mainColor))
-                              ],
-                            ),
+                      top: 35,
+                      left: 4,
+                      child: InkWell(
+                        onTap: controller.goToHomeScreen,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.lightColor,
+                              borderRadius: BorderRadius.circular(6)),
+                          height: 30,
+                          width: 120,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.arrow_left),
+                              Text(AppString.backToHome,
+                                  style: AppTextStyles.lightStyle
+                                      .copyWith(color: AppColors.mainColor))
+                            ],
                           ),
-                        ))
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 20.vertical,

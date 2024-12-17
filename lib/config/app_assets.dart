@@ -17,6 +17,8 @@ class AppAssets {
   static const String videobased = "assets/images/videobased.png";
   static const String googleImg = "assets/images/google-img.png";
   static const String dummyImg = "assets/images/dummy.png";
+  static const String cheeziousLogo = "assets/images/cheezious.png";
+  static const String channelbgImg = "assets/images/channel-profile-bg.png";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
   static const String mailIcon = "assets/icons/mail-icon.svg";
@@ -36,4 +38,5 @@ class AppAssets {
   static const String eventReg = "assets/icons/event-reg.svg";
   static const String profileReg = "assets/icons/profile-reg.svg";
   static const String categReg = "assets/icons/category-reg.svg";
+  static const String profileEdit = "assets/icons/edit-profile-channel.svg";
 }

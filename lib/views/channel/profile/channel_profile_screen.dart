@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/views/channel/profile/channel_profile_controller.dart';
 
 import '../../../config/app_assets.dart';
 import '../../../config/app_text_styles.dart';
@@ -8,9 +10,9 @@ import '../../../widgets/app_background.dart';
 import '../../../widgets/app_button.dart';
 import 'components/user_profile_card.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
-
+class ChannelProfileScreen extends StatelessWidget {
+  ChannelProfileScreen({super.key});
+  final controller = Get.put(ChannelProfileController());
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -34,7 +36,7 @@ class UserProfileScreen extends StatelessWidget {
                         clipBehavior: Clip.none,
                         children: [
                           Image.asset(
-                            AppAssets.dummyImg,
+                            AppAssets.channelbgImg,
                             width: double.infinity,
                             fit: BoxFit.cover,
                           ),
@@ -45,15 +47,15 @@ class UserProfileScreen extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
-                                padding: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: AppColors.mainColor, width: 1),
+                                      color: AppColors.whiteColor, width: 1),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: Image.asset(
                                   width: 72,
-                                  AppAssets.dummyImg,
+                                  AppAssets.cheeziousLogo,
                                 ),
                               ),
                             ),
@@ -66,8 +68,8 @@ class UserProfileScreen extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Text(
                                 'User Profile',
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                  color: AppColors.primaryColor,
+                                style: AppTextStyles.boldBodyStyle.copyWith(
+                                  color: AppColors.whiteColor,
                                 ),
                               ),
                             ),
@@ -81,35 +83,46 @@ class UserProfileScreen extends StatelessWidget {
                               child: Text(
                                 'johndoe@mail.com',
                                 style: AppTextStyles.bodyStyle.copyWith(
-                                  color: AppColors.primaryColor,
-                                ),
+                                    color:
+                                        AppColors.whiteColor.withOpacity(.8)),
                               ),
                             ),
                           ),
-                          Positioned(
-                            bottom: -65,
-                            left: 0,
-                            right: 0,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05),
-                              child: UserProfileCard(
-                                title1: 'Edit Profile',
-                                title2: 'Subscription Tracker',
-                                image1: AppAssets.appLogo,
-                                image2: AppAssets.appLogo,
-                              ),
-                            ),
-                          ),
+                          // Positioned(
+                          //   bottom: -165,
+                          //   left: 0,
+                          //   right: 0,
+                          //   child: Padding(
+                          //     padding: EdgeInsets.symmetric(
+                          //         horizontal: screenWidth * 0.05),
+                          //     child: UserProfileCard(
+                          //       title1: 'Edit Profile',
+                          //       title2: 'Subscription Tracker',
+                          //       image1: AppAssets.appLogo,
+                          //       image2: AppAssets.appLogo,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
-                      SizedBox(height: screenHeight * 0.1),
+                      SizedBox(height: screenHeight * 0.01),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.05),
                         child: UserProfileCard(
-                          title1: 'Notifications',
-                          title2: 'Settings',
+                          title1: 'Edit Profile',
+                          title2: 'Create Event',
+                          image1: AppAssets.profileEdit,
+                          image2: AppAssets.appLogo,
+                        ),
+                      ),
+                      SizedBox(height: cardSpacing),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05),
+                        child: UserProfileCard(
+                          title1: 'Add Products',
+                          title2: 'Dashboard',
                           image1: AppAssets.appLogo,
                           image2: AppAssets.appLogo,
                         ),
@@ -119,12 +132,13 @@ class UserProfileScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.05),
                         child: UserProfileCard(
-                          title1: 'Working History',
-                          title2: 'Switch role',
+                          title1: 'Theme',
+                          title2: 'Logout',
                           image1: AppAssets.appLogo,
                           image2: AppAssets.appLogo,
                         ),
                       ),
+                      SizedBox(height: cardSpacing),
                     ],
                   ),
                 ),
@@ -133,7 +147,7 @@ class UserProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: AppButton(
                   text: "Logout",
-                  onPressed: () {},
+                  onPressed: controller.goToRoleScreen,
                 ),
               ),
               20.vertical,

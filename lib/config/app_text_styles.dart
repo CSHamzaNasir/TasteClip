@@ -6,30 +6,30 @@ class AppTextStyles {
   static const TextStyle lightStyle = TextStyle(
     fontSize: 12,
     color: AppColors.primaryColor,
-    fontFamily: AppFonts.popinsRegular,
+    fontFamily: AppFonts.sandRegular,
   );
 
   static const TextStyle bodyStyle = TextStyle(
     fontSize: 16,
     color: AppColors.primaryColor,
-    fontFamily: AppFonts.popinsRegular,
+    fontFamily: AppFonts.sandRegular,
   );
 
   static const TextStyle boldBodyStyle = TextStyle(
     fontSize: 18,
     color: AppColors.primaryColor,
-    fontFamily: AppFonts.popinsBold,
+    fontFamily: AppFonts.sandBold,
   );
 
   static const TextStyle headingStyle = TextStyle(
     fontSize: 36,
     color: AppColors.primaryColor,
-    fontFamily: AppFonts.popinsSemiBold,
+    fontFamily: AppFonts.sandSemiBold,
   );
 
   static const TextStyle headingStyle1 = TextStyle(
     fontSize: 22,
     color: AppColors.primaryColor,
-    fontFamily: AppFonts.popinsSemiBold,
+    fontFamily: AppFonts.sandSemiBold,
   );
 }

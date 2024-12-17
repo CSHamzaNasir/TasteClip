@@ -55,7 +55,7 @@ class ProfileNotifier extends StatelessWidget {
               AppString.clickToSeeProfile,
               style: AppTextStyles.lightStyle.copyWith(
                 color: AppColors.greyColor,
-                fontFamily: AppFonts.popinsRegular,
+                fontFamily: AppFonts.sandRegular,
               ),
             ),
             10.vertical,
@@ -86,7 +86,7 @@ class ProfileNotifier extends StatelessWidget {
                     AppString.clickHereToSeeNotifications,
                     style: AppTextStyles.lightStyle.copyWith(
                       color: AppColors.greyColor,
-                      fontFamily: AppFonts.popinsRegular,
+                      fontFamily: AppFonts.sandRegular,
                     ),
                   ),
                 ],
