@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_router.dart';
-import 'package:tasteclip/views/bottombar/bottombar.dart';
+import 'package:tasteclip/views/bottombar/channel_bottombar.dart';
 
 class RoleController extends GetxController {
   void goToUserAuthSecreen() {

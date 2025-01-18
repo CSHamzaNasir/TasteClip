@@ -73,7 +73,10 @@ class AppString {
   static const String comment = 'Comment';
   static const String share = 'Share';
   static const String profileDetails = 'Profile Details';
-  static const String clickToSeeProfile = 'click here to see profile';
+  static const String clickToSeeProfile = 'Click here to see profile';
+  static const String clickToSeeSetting = 'Click here to see settings';
+  static const String clickTologout = 'Click here to logout the account';
+  static const String clickTochangeTheme = 'Click here to change the theme';
   static const String notifications = 'Notifications';
   static const String setting = 'Setting';
   static const String theme = 'Theme';

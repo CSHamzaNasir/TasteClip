@@ -15,12 +15,6 @@ class ChannelProfileScreen extends StatelessWidget {
   final controller = Get.put(ChannelProfileController());
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    // Adjust spacing dynamically based on screen height
-    final double cardSpacing = screenHeight < 600 ? 8.0 : 16.0;
-
     return AppBackground(
       isLight: true,
       child: SafeArea(
@@ -53,10 +47,22 @@ class ChannelProfileScreen extends StatelessWidget {
                                       color: AppColors.whiteColor, width: 1),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
-                                child: Image.asset(
-                                  width: 72,
-                                  AppAssets.cheeziousLogo,
-                                ),
+                                child: Obx(() => CircleAvatar(
+                                      backgroundColor: AppColors.mainColor,
+                                      radius: 40,
+                                      backgroundImage: controller
+                                              .profileImage.value.isNotEmpty
+                                          ? NetworkImage(
+                                              controller.profileImage.value)
+                                          : null,
+                                      child:
+                                          controller.profileImage.value.isEmpty
+                                              ? const Icon(
+                                                  Icons.person,
+                                                  size: 50,
+                                                )
+                                              : null,
+                                    )),
                               ),
                             ),
                           ),
@@ -66,79 +72,48 @@ class ChannelProfileScreen extends StatelessWidget {
                             right: 0,
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text(
-                                'User Profile',
-                                style: AppTextStyles.boldBodyStyle.copyWith(
-                                  color: AppColors.whiteColor,
-                                ),
-                              ),
+                              child: Obx(() => Text(
+                                    controller.channelName.isNotEmpty
+                                        ? controller.channelName.value
+                                        : "Loading...",
+                                    style: AppTextStyles.boldBodyStyle.copyWith(
+                                      color: AppColors.whiteColor,
+                                    ),
+                                  )),
                             ),
                           ),
                           Positioned(
-                            top: 200,
+                            top: 205,
                             left: 0,
                             right: 0,
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text(
-                                'johndoe@mail.com',
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                    color:
-                                        AppColors.whiteColor.withOpacity(.8)),
-                              ),
+                              child: Obx(() => Text(
+                                    controller.email.isNotEmpty
+                                        ? controller.email.value
+                                        : "Loading...",
+                                    style: AppTextStyles.bodyStyle
+                                        .copyWith(color: AppColors.whiteColor),
+                                  )),
                             ),
                           ),
-                          // Positioned(
-                          //   bottom: -165,
-                          //   left: 0,
-                          //   right: 0,
-                          //   child: Padding(
-                          //     padding: EdgeInsets.symmetric(
-                          //         horizontal: screenWidth * 0.05),
-                          //     child: UserProfileCard(
-                          //       title1: 'Edit Profile',
-                          //       title2: 'Subscription Tracker',
-                          //       image1: AppAssets.appLogo,
-                          //       image2: AppAssets.appLogo,
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
-                      SizedBox(height: screenHeight * 0.01),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: UserProfileCard(
-                          title1: 'Edit Profile',
-                          title2: 'Create Event',
-                          image1: AppAssets.profileEdit,
-                          image2: AppAssets.appLogo,
-                        ),
+                      12.vertical,
+                      UserProfileCard(
+                        onTap1: () => controller.goToEditScreen(),
+                        title1: 'Edit Profile',
+                        title2: 'Theme',
+                        image1: AppAssets.profileEdit,
+                        image2: AppAssets.theme,
                       ),
-                      SizedBox(height: cardSpacing),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: UserProfileCard(
-                          title1: 'Add Products',
-                          title2: 'Dashboard',
-                          image1: AppAssets.appLogo,
-                          image2: AppAssets.appLogo,
-                        ),
+                      12.vertical,
+                      UserProfileCard(
+                        title1: 'Legal',
+                        title2: 'Help & Support',
+                        image1: AppAssets.legal,
+                        image2: AppAssets.support,
                       ),
-                      SizedBox(height: cardSpacing),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: UserProfileCard(
-                          title1: 'Theme',
-                          title2: 'Logout',
-                          image1: AppAssets.appLogo,
-                          image2: AppAssets.appLogo,
-                        ),
-                      ),
-                      SizedBox(height: cardSpacing),
                     ],
                   ),
                 ),

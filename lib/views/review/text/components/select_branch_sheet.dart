@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
@@ -23,12 +24,14 @@ class SelectBranchSheetState extends State<SelectBranchSheet> {
 
   Future<void> _fetchBranches() async {
     try {
-      final snapshot =
-          await FirebaseFirestore.instance.collection('channel-data').get();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('manager_credentials')
+          .where('restaurant_name', isEqualTo: widget.restaurantName)
+          .get();
       setState(() {
         _branches = snapshot.docs.map((doc) {
           return {
-            'name': doc['branch_name'],
+            'name': doc['branch_address'],
             'isChecked': false,
           };
         }).toList();
@@ -67,41 +70,45 @@ class SelectBranchSheetState extends State<SelectBranchSheet> {
           ),
           16.vertical,
           _branches.isEmpty
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: CupertinoActivityIndicator())
               : Column(
                   children: _branches.map((branch) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 6),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.greyColor,
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 6),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.greyColor,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            branch['name'],
-                            style: AppTextStyles.bodyStyle.copyWith(
-                              color: AppColors.mainColor,
+                        child: Row(
+                          children: [
+                            Text(
+                              branch['name'],
+                              style: AppTextStyles.bodyStyle.copyWith(
+                                color: AppColors.mainColor,
+                              ),
                             ),
-                          ),
-                          const Spacer(),
-                          Checkbox(
-                            value: branch['isChecked'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                branch['isChecked'] = value ?? false;
-                              });
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
+                            const Spacer(),
+                            Checkbox(
+                              value: branch['isChecked'],
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  branch['isChecked'] = value ?? false;
+                                });
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              activeColor: AppColors.mainColor,
+                              side:
+                                  const BorderSide(color: AppColors.mainColor),
                             ),
-                            activeColor: AppColors.mainColor,
-                            side: const BorderSide(color: AppColors.mainColor),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   }).toList(),

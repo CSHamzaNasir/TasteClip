@@ -76,22 +76,4 @@ class AuthRepositoryImpl implements AuthRepository {
   //   } catch (e) {}
   //   return null;
   // }
-
-  @override
-  Future<AuthModel?> fetchCurrentUserData() async {
-    try {
-      User? currentUser = _auth.currentUser;
-      if (currentUser != null) {
-        DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
-            .collection("email_user")
-            .doc(currentUser.uid)
-            .get();
-
-        if (snapshot.exists) {
-          return AuthModel.fromMap(snapshot.data()!);
-        }
-      }
-    } catch (e) {}
-    return null;
-  }
 }

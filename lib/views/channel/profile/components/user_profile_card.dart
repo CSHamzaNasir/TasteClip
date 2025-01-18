@@ -10,12 +10,16 @@ class UserProfileCard extends StatelessWidget {
   final String title2;
   final String image1;
   final String image2;
+  final VoidCallback? onTap1;
+  final VoidCallback? onTap2;
   const UserProfileCard({
     super.key,
     required this.title1,
     required this.title2,
     required this.image1,
     required this.image2,
+    this.onTap1,
+    this.onTap2,
   });
 
   @override
@@ -31,38 +35,44 @@ class UserProfileCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                SvgPicture.asset(image1),
-                20.horizontal,
-                Text(title1,
-                    style: AppTextStyles.bodyStyle 
-                        .copyWith(color: AppColors.mainColor)),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.mainColor,
-                  size: 18,
-                )
-              ],
+            InkWell(
+              onTap: onTap1,
+              child: Row(
+                children: [
+                  SvgPicture.asset(image1),
+                  20.horizontal,
+                  Text(title1,
+                      style: AppTextStyles.bodyStyle
+                          .copyWith(color: AppColors.mainColor)),
+                  const Spacer(),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.mainColor,
+                    size: 18,
+                  )
+                ],
+              ),
             ),
             const Divider(
               color: AppColors.mainColor,
             ),
-            Row(
-              children: [
-                SvgPicture.asset(image2),
-                20.horizontal,
-                Text(title2,
-                    style: AppTextStyles.bodyStyle
-                        .copyWith(color: AppColors.mainColor)),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.mainColor,
-                  size: 18,
-                )
-              ],
+            InkWell(
+              onTap: onTap1,
+              child: Row(
+                children: [
+                  SvgPicture.asset(image2),
+                  20.horizontal,
+                  Text(title2,
+                      style: AppTextStyles.bodyStyle
+                          .copyWith(color: AppColors.mainColor)),
+                  const Spacer(),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.mainColor,
+                    size: 18,
+                  )
+                ],
+              ),
             ),
           ],
         ),

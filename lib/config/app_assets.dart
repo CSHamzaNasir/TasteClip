@@ -8,8 +8,6 @@ class AppAssets {
   static const String vision = "assets/images/vision.svg";
   static const String mission = "assets/images/mission.svg";
   static const String logo = "assets/images/logo.png";
-  static const String logo1 = "assets/images/logo1.svg";
-  static const String loginImg = "assets/images/login.svg";
   static const String resturentLogo = "assets/images/resturentlogo.png";
   static const String uploadFeedback = "assets/images/Finances.png";
   static const String textbased = "assets/images/textbased.png";
@@ -19,6 +17,8 @@ class AppAssets {
   static const String dummyImg = "assets/images/dummy.png";
   static const String cheeziousLogo = "assets/images/cheezious.png";
   static const String channelbgImg = "assets/images/channel-profile-bg.png";
+  static const String feedbackaUser = "assets/images/feedback-user.png";
+  static const String userBgImg = "assets/images/user_bg_img.jpg";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
   static const String mailIcon = "assets/icons/mail-icon.svg";
@@ -38,5 +38,15 @@ class AppAssets {
   static const String eventReg = "assets/icons/event-reg.svg";
   static const String profileReg = "assets/icons/profile-reg.svg";
   static const String categReg = "assets/icons/category-reg.svg";
-  static const String profileEdit = "assets/icons/edit-profile-channel.svg";
+  static const String profileEdit = "assets/icons/edit.svg";
+  static const String rightArrow = "assets/icons/arrow.svg";
+  static const String theme = "assets/icons/theme.svg";
+  static const String legal = "assets/icons/legal.svg";
+  static const String support = "assets/icons/support.svg";
+  static const String camera = "assets/icons/gallery.svg";
+  static const String message = "assets/icons/message.svg";
+  static const String video = "assets/icons/video.svg";
+  static const String setting = "assets/icons/setting.svg";
+  static const String logout = "assets/icons/logout.svg";
+  static const String arrowRight = "assets/icons/arrow-right.svg";
 }

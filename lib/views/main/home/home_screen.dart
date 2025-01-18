@@ -14,7 +14,6 @@ import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../widgets/under_dev.dart';
 import 'components/content_card.dart';
-import 'components/home_topbar.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -87,35 +86,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               24.vertical,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  HomeTopBar(
-                    onTap: () => showUnderDevelopmentDialog(
-                        context, "This feature is under development."),
-                    icon: Icons.person,
-                    title: AppString.profile,
-                  ),
-                  HomeTopBar(
-                    onTap: () => showUnderDevelopmentDialog(
-                        context, "This feature is under development."),
-                    icon: Icons.currency_exchange,
-                    title: AppString.reward,
-                  ),
-                  HomeTopBar(
-                    onTap: () => showUnderDevelopmentDialog(
-                        context, "This feature is under development."),
-                    icon: Icons.favorite_outline,
-                    title: AppString.favourite,
-                  ),
-                  HomeTopBar(
-                    onTap: () => showUnderDevelopmentDialog(
-                        context, "This feature is under development."),
-                    icon: Icons.settings,
-                    title: AppString.setting,
-                  ),
-                ],
-              ),
               24.vertical,
               Align(
                 alignment: Alignment.centerLeft,

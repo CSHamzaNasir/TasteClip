@@ -24,6 +24,7 @@ class UploadTextFeedbackScreen extends StatelessWidget {
         child: Scaffold(
           appBar: const CustomAppBar(
             title: AppString.uploadfeedback,
+            showBackIcon: false,
           ),
           body: Column(
             children: [
