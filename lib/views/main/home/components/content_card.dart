@@ -19,8 +19,6 @@ class HomeContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-
     return GestureDetector(
       onTap: onTap,
       child: GradientBox(
@@ -56,14 +54,13 @@ class HomeContentCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                if (screenWidth >= 350)
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.lightColor,
-                    ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.lightColor,
                   ),
+                ),
               ],
             ),
           ],

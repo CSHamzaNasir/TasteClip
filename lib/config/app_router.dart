@@ -122,7 +122,7 @@ class AppRouter {
     ),
     GetPage(
       name: homeScreen,
-      page: () => const HomeScreen(),
+      page: () => HomeScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),
     ),

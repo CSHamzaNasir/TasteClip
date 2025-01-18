@@ -1,5 +1,3 @@
-// ignore_for_file: empty_catches
-
 import 'package:tasteclip/data/models/auth_models.dart';
 import 'package:tasteclip/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -135,28 +133,28 @@ class AuthController extends GetxController {
     }
   }
 
-  // Google Sign-In function
-  void signInWithGoogle() async {
-    try {
-      isLoading = true;
-      update();
+  // // Google Sign-In function
+  // void signInWithGoogle() async {
+  //   try {
+  //     isLoading = true;
+  //     update();
 
-      final userCredential = await _authRepository.signInWithGoogle();
-      if (userCredential != null) {
-        AppAlerts.showSnackbar(
-            isSuccess: true, message: "Google sign-in successful!");
-      } else {
-        AppAlerts.showSnackbar(
-            isSuccess: false, message: "Google sign-in failed. Try again.");
-      }
-    } catch (e) {
-      AppAlerts.showSnackbar(
-          isSuccess: false, message: "Error: ${e.toString()}");
-    } finally {
-      isLoading = false;
-      update();
-    }
-  }
+  //     final userCredential = await _authRepository.signInWithGoogle();
+  //     if (userCredential != null) {
+  //       AppAlerts.showSnackbar(
+  //           isSuccess: true, message: "Google sign-in successful!");
+  //     } else {
+  //       AppAlerts.showSnackbar(
+  //           isSuccess: false, message: "Google sign-in failed. Try again.");
+  //     }
+  //   } catch (e) {
+  //     AppAlerts.showSnackbar(
+  //         isSuccess: false, message: "Error: ${e.toString()}");
+  //   } finally {
+  //     isLoading = false;
+  //     update();
+  //   }
+  // }
 
   // Navigation functions
   void goToLoginScreen() {

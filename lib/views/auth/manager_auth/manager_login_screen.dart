@@ -72,11 +72,7 @@ class ManagerLoginScreen extends StatelessWidget {
                       AppButton(
                         text: AppString.submit,
                         onPressed: () {
-                          controller.auth.signInWithEmailAndPassword(
-                            email:
-                                controller.businessEmailController.text.trim(),
-                            password: controller.passkeyController.text.trim(),
-                          );
+                          controller.loginManager();
                         },
                       )
                     ],

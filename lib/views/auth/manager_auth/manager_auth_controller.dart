@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
+import 'package:tasteclip/views/channel/channel_home_screen.dart';
 
 class ManagerAuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -63,6 +64,7 @@ class ManagerAuthController extends GetxController {
           .get();
 
       if (managerDoc.exists && managerDoc['status'] == 1) {
+        Get.to(ChannelHomeScreen());
         AppAlerts.showSnackbar(
             isSuccess: true, message: "Successfully Logged In");
       } else {
