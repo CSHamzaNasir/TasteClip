@@ -1,19 +1,16 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart'; // Import Material package for Colors.
+import 'package:flutter/material.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 
 class AppBackground extends StatelessWidget {
   final Widget child;
   final bool isLight;
-  final bool isDark;
   final bool isDefault;
 
   const AppBackground({
     super.key,
     required this.child,
     this.isLight = false,
-    this.isDark = false,
     this.isDefault = true,
   });
 
@@ -23,8 +20,8 @@ class AppBackground extends StatelessWidget {
 
     if (isLight) {
       backgroundImage = AppAssets.lightBg;
-    } else if (isDark) {
-      backgroundImage = AppAssets.darkBg;
+    } else {
+      backgroundImage = null;
     }
 
     return DecoratedBox(
@@ -46,6 +43,7 @@ class AppBackground extends StatelessWidget {
                 end: Alignment.bottomCenter,
               )
             : null,
+        color: !isDefault ? Colors.white : null,
       ),
       child: child,
     );

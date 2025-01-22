@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (_) {
       return AppBackground(
-        isDark: true,
+        isLight: false,
         child: SafeArea(
           child: Scaffold(
             body: Column(

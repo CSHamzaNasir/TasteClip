@@ -22,7 +22,7 @@ class ForgetPasswordScreen extends StatelessWidget {
     final controller = Get.put(AuthController());
 
     return AppBackground(
-      isDark: true,
+      isLight: false,
       child: Scaffold(
         appBar: const CustomAppBar(
           title: AppString.forgetPassword,

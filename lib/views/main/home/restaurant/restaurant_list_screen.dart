@@ -5,10 +5,10 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/views/manager/restaurant_list_controller.dart';
+import 'package:tasteclip/views/main/home/restaurant/restaurant_list_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import '../../config/app_assets.dart';
+import '../../../../config/app_assets.dart';
 
 class RestaurantListScreen extends StatelessWidget {
   const RestaurantListScreen({super.key});

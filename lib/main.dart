@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/firebase_options.dart';
-import 'package:tasteclip/views/review/text/upload_text_feedback_screen.dart';
+import 'package:tasteclip/views/channel/profile/channel_profile_screen.dart';
 
 import 'config/theme.dart';
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      home: UploadTextFeedbackScreen(),
+      home: ChannelProfileScreen(),
       // initialRoute: AppRouter.homeScreen,
     );
   }

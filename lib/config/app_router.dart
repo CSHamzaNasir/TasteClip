@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:tasteclip/views/main/profile/profile_detail/profile_detail_screen.dart';
-import 'package:tasteclip/views/manager/restaurant_list_screen.dart';
+import 'package:tasteclip/views/main/home/restaurant/restaurant_list_screen.dart';
 import 'package:tasteclip/views/auth/change_password/forget_password_screen.dart';
 import 'package:tasteclip/views/auth/email/login_screen.dart';
 import 'package:tasteclip/views/auth/manager_auth/manager_auth_screen.dart';

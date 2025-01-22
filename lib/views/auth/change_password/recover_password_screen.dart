@@ -15,7 +15,7 @@ class RecoverPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-        isDark: true,
+        isLight: false,
         child: Scaffold(
           appBar: CustomAppBar(
             onTap: () => controller.goToLoginScreen,

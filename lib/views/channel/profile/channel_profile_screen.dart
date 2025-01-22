@@ -13,6 +13,7 @@ import 'components/user_profile_card.dart';
 class ChannelProfileScreen extends StatelessWidget {
   ChannelProfileScreen({super.key});
   final controller = Get.put(ChannelProfileController());
+
   @override
   Widget build(BuildContext context) {
     return AppBackground(
@@ -47,39 +48,25 @@ class ChannelProfileScreen extends StatelessWidget {
                                       color: AppColors.whiteColor, width: 1),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
-                                child: Obx(() => CircleAvatar(
-                                      backgroundColor: AppColors.mainColor,
-                                      radius: 40,
-                                      backgroundImage: controller
-                                              .profileImage.value.isNotEmpty
-                                          ? NetworkImage(
-                                              controller.profileImage.value)
-                                          : null,
-                                      child:
-                                          controller.profileImage.value.isEmpty
-                                              ? const Icon(
-                                                  Icons.person,
-                                                  size: 50,
-                                                )
-                                              : null,
-                                    )),
+                                child: Obx(() {
+                                  var manager = controller.channelData.value;
+                                  return CircleAvatar(
+                                    backgroundColor: AppColors.mainColor,
+                                    radius: 40,
+                                    backgroundImage: manager != null &&
+                                            manager.restaurantThumb.isNotEmpty
+                                        ? NetworkImage(manager.restaurantThumb)
+                                        : null,
+                                    child: manager == null ||
+                                            manager.restaurantThumb.isEmpty
+                                        ? const Icon(
+                                            Icons.person,
+                                            size: 50,
+                                          )
+                                        : null,
+                                  );
+                                }),
                               ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 180,
-                            left: 0,
-                            right: 0,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Obx(() => Text(
-                                    controller.channelName.isNotEmpty
-                                        ? controller.channelName.value
-                                        : "Loading...",
-                                    style: AppTextStyles.boldBodyStyle.copyWith(
-                                      color: AppColors.whiteColor,
-                                    ),
-                                  )),
                             ),
                           ),
                           Positioned(
@@ -88,13 +75,14 @@ class ChannelProfileScreen extends StatelessWidget {
                             right: 0,
                             child: Align(
                               alignment: Alignment.center,
-                              child: Obx(() => Text(
-                                    controller.email.isNotEmpty
-                                        ? controller.email.value
-                                        : "Loading...",
-                                    style: AppTextStyles.bodyStyle
-                                        .copyWith(color: AppColors.whiteColor),
-                                  )),
+                              child: Obx(() {
+                                var manager = controller.channelData.value;
+                                return Text(
+                                  manager?.branchEmail ?? "Loading...",
+                                  style: AppTextStyles.bodyStyle
+                                      .copyWith(color: AppColors.whiteColor),
+                                );
+                              }),
                             ),
                           ),
                         ],

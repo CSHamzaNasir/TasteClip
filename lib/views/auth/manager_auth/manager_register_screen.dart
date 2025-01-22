@@ -18,7 +18,7 @@ class ManagerRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      isDark: true,
+      isLight: false,
       child: Scaffold(
         appBar: const CustomAppBar(
           showBackIcon: false,

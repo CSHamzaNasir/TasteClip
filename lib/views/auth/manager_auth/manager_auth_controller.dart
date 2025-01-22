@@ -6,6 +6,8 @@ import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
 import 'package:tasteclip/views/channel/channel_home_screen.dart';
 
+import 'model/channel_data.dart';
+
 class ManagerAuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -32,20 +34,26 @@ class ManagerAuthController extends GetxController {
         password: passkeyController.text.trim(),
       );
 
+      ChannelDataModel managerData = ChannelDataModel(
+        restaurantId: userCredential.user!.uid,
+        restaurantThumb: "",
+        branchId: "",
+        branchEmail: businessEmailController.text.trim(),
+        restaurantName: restaurantNameController.text.trim(),
+        branchAddress: branchAddressController.text.trim(),
+        status: 0,
+        createdAt: DateTime.now(),
+      );
+
       await firestore
           .collection('manager_credentials')
-          .doc(userCredential.user!.uid)
-          .set({
-        'email': businessEmailController.text.trim(),
-        'restaurant_name': restaurantNameController.text.trim(),
-        'branch_address': branchAddressController.text.trim(),
-        'status': 0,
-        'created_at': FieldValue.serverTimestamp(),
-      });
+          .doc(managerData.restaurantId)
+          .set(managerData.toMap());
 
       AppAlerts.showSnackbar(
-          isSuccess: true,
-          message: "Successfully registered. Awaiting approval.");
+        isSuccess: true,
+        message: "Successfully registered. Awaiting approval.",
+      );
     } catch (e) {
       AppAlerts.showSnackbar(isSuccess: false, message: e.toString());
     }
@@ -63,14 +71,28 @@ class ManagerAuthController extends GetxController {
           .doc(userCredential.user!.uid)
           .get();
 
-      if (managerDoc.exists && managerDoc['status'] == 1) {
-        Get.to(ChannelHomeScreen());
-        AppAlerts.showSnackbar(
-            isSuccess: true, message: "Successfully Logged In");
+      if (managerDoc.exists) {
+        ChannelDataModel managerData =
+            ChannelDataModel.fromMap(managerDoc.data() as Map<String, dynamic>);
+
+        if (managerData.status == 1) {
+          Get.to(ChannelHomeScreen());
+          AppAlerts.showSnackbar(
+            isSuccess: true,
+            message: "Successfully Logged In",
+          );
+        } else {
+          AppAlerts.showSnackbar(
+            isSuccess: false,
+            message: "Account not approved. Please contact admin.",
+          );
+          auth.signOut();
+        }
       } else {
         AppAlerts.showSnackbar(
-            isSuccess: false,
-            message: "Account not approved. Please contact admin.");
+          isSuccess: false,
+          message: "No account found. Please register.",
+        );
         auth.signOut();
       }
     } catch (e) {
