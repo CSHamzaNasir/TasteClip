@@ -15,6 +15,12 @@ class AppTextStyles {
     fontFamily: AppFonts.sandRegular,
   );
 
+  static const TextStyle regularStyle = TextStyle(
+    fontSize: 14,
+    color: AppColors.primaryColor,
+    fontFamily: AppFonts.sandMedium,
+  );
+
   static const TextStyle boldBodyStyle = TextStyle(
     fontSize: 18,
     color: AppColors.primaryColor,

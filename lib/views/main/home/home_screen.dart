@@ -86,7 +86,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               24.vertical,
-              24.vertical,
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -96,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              24.vertical,
+              8.vertical,
               HomeContentCard(
                 onTap: () => showUnderDevelopmentDialog(
                     context, "This feature is under development."),

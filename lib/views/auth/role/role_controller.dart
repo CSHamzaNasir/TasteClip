@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_router.dart';
-import 'package:tasteclip/views/bottombar/channel_bottombar.dart';
 
 class RoleController extends GetxController {
   void goToUserAuthSecreen() {
@@ -16,6 +15,6 @@ class RoleController extends GetxController {
   }
 
   void goToManagerAuthScreen() {
-    Get.to(ChannelBottomBar());
+    Get.toNamed(AppRouter.managerRegisterScreen);
   }
 }

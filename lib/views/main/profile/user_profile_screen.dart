@@ -100,7 +100,7 @@ class UserProfileScreen extends StatelessWidget {
               controller: controller,
               title: AppString.theme,
               subtitle: AppString.clickTochangeTheme,
-              icon: AppAssets.theme,
+              icon: AppAssets.setting,
               title1: AppString.logout,
               subtitle1: AppString.clickTologout,
               icon1: AppAssets.logout,

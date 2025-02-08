@@ -31,7 +31,7 @@ class ChannelBottomBarState extends State<ChannelBottomBar> {
       label: 'Home',
     ),
     _BottomBarItem(
-      selectedSvgPath: AppAssets.categBold,
+      selectedSvgPath: AppAssets.eventBold,
       unselectedSvgPath: AppAssets.categReg,
       label: 'Category',
     ),
@@ -60,7 +60,7 @@ class ChannelBottomBarState extends State<ChannelBottomBar> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withCustomOpacity(0.1),
               blurRadius: 10,
             ),
           ],

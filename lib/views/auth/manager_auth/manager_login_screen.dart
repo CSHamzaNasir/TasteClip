@@ -24,63 +24,81 @@ class ManagerLoginScreen extends StatelessWidget {
           title: AppString.login,
           isDark: "true",
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppString.welcomeBack,
-                style: AppTextStyles.headingStyle.copyWith(
-                  color: AppColors.lightColor,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppString.dontHaveAnAccount,
-                    style: AppTextStyles.bodyStyle.copyWith(
-                      color: AppColors.lightColor,
+        body: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppString.welcomeBack,
+                          style: AppTextStyles.headingStyle.copyWith(
+                            color: AppColors.lightColor,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppString.dontHaveAnAccount,
+                              style: AppTextStyles.bodyStyle.copyWith(
+                                color: AppColors.lightColor,
+                              ),
+                            ),
+                            3.horizontal,
+                            InkWell(
+                              onTap: () => controller.goToRegisterScreen(),
+                              child: Text(
+                                AppString.register,
+                                style: AppTextStyles.boldBodyStyle.copyWith(
+                                  color: AppColors.whiteColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        24.vertical,
+                        CustomBox(
+                          child: Form(
+                            key: controller.formKey,
+                            child: Column(
+                              children: [
+                                AppFeild(
+                                  controller:
+                                      controller.businessEmailController,
+                                  hintText: AppString.businessEmail,
+                                ),
+                                16.vertical,
+                                AppFeild(
+                                  controller: controller.passkeyController,
+                                  hintText: AppString.passkey,
+                                ),
+                                20.vertical,
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  3.horizontal,
-                  Text(
-                    AppString.login,
-                    style: AppTextStyles.boldBodyStyle.copyWith(
-                      color: AppColors.whiteColor,
-                    ),
-                  ),
-                ],
-              ),
-              24.vertical,
-              CustomBox(
-                child: Form(
-                  key: controller.formKey,
-                  child: Column(
-                    children: [
-                      AppFeild(
-                        controller: controller.businessEmailController,
-                        hintText: AppString.businessEmail,
-                      ),
-                      16.vertical,
-                      AppFeild(
-                        controller: controller.passkeyController,
-                        hintText: AppString.passkey,
-                      ),
-                      20.vertical,
-                      AppButton(
-                        text: AppString.submit,
-                        onPressed: () {
-                          controller.loginManager();
-                        },
-                      )
-                    ],
-                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24),
+              child: AppButton(
+                text: AppString.submit,
+                onPressed: () {
+                  controller.loginManager();
+                },
+              ),
+            )
+          ],
         ),
       ),
     );

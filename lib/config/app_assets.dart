@@ -12,12 +12,8 @@ class AppAssets {
   static const String uploadFeedback = "assets/images/Finances.png";
   static const String textbased = "assets/images/textbased.png";
   static const String imagebased = "assets/images/imagebased.png";
-  static const String videobased = "assets/images/videobased.png";
   static const String googleImg = "assets/images/google-img.png";
   static const String dummyImg = "assets/images/dummy.png";
-  static const String cheeziousLogo = "assets/images/cheezious.png";
-  static const String channelbgImg = "assets/images/channel-profile-bg.png";
-  static const String feedbackaUser = "assets/images/feedback-user.png";
   static const String userBgImg = "assets/images/user_bg_img.jpg";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
@@ -33,14 +29,12 @@ class AppAssets {
   static const String homeBold = "assets/icons/home-bold.svg";
   static const String eventBold = "assets/icons/event-bold.svg";
   static const String profileBold = "assets/icons/profile-bold.svg";
-  static const String categBold = "assets/icons/category-bold.svg";
   static const String homeReg = "assets/icons/home-reg.svg";
   static const String eventReg = "assets/icons/event-reg.svg";
   static const String profileReg = "assets/icons/profile-reg.svg";
   static const String categReg = "assets/icons/category-reg.svg";
   static const String profileEdit = "assets/icons/edit.svg";
   static const String rightArrow = "assets/icons/arrow.svg";
-  static const String theme = "assets/icons/theme.svg";
   static const String legal = "assets/icons/legal.svg";
   static const String support = "assets/icons/support.svg";
   static const String camera = "assets/icons/gallery.svg";
@@ -49,4 +43,7 @@ class AppAssets {
   static const String setting = "assets/icons/setting.svg";
   static const String logout = "assets/icons/logout.svg";
   static const String arrowRight = "assets/icons/arrow-right.svg";
+  static const String arrowNext = "assets/icons/next_arrow.svg";
+  static const String addIcon = "assets/icons/add_icon.svg";
+  static const String addBold = "assets/icons/add_bold.svg";
 }

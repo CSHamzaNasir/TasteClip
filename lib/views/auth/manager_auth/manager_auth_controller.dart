@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
-import 'package:tasteclip/views/channel/channel_home_screen.dart';
 
-import 'model/channel_data.dart';
+import '../../channel/profile/channel_profile_screen.dart';
 
 class ManagerAuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -34,26 +33,43 @@ class ManagerAuthController extends GetxController {
         password: passkeyController.text.trim(),
       );
 
-      ChannelDataModel managerData = ChannelDataModel(
-        restaurantId: userCredential.user!.uid,
-        restaurantThumb: "",
-        branchId: "",
-        branchEmail: businessEmailController.text.trim(),
-        restaurantName: restaurantNameController.text.trim(),
-        branchAddress: branchAddressController.text.trim(),
-        status: 0,
-        createdAt: DateTime.now(),
-      );
+      String restaurantName =
+          restaurantNameController.text.trim().toLowerCase();
 
-      await firestore
-          .collection('manager_credentials')
-          .doc(managerData.restaurantId)
-          .set(managerData.toMap());
+      Map<String, dynamic> branchData = {
+        "branchId": userCredential.user!.uid,
+        "branchEmail": businessEmailController.text.trim(),
+        "branchAddress": branchAddressController.text.trim(),
+        "status": 0,
+        "branchThumbnail": "",
+        "channelName": "",
+        "createdAt": DateTime.now(),
+      };
 
-      AppAlerts.showSnackbar(
-        isSuccess: true,
-        message: "Successfully registered. Awaiting approval.",
-      );
+      DocumentSnapshot restaurantDoc =
+          await firestore.collection('restaurants').doc(restaurantName).get();
+
+      if (restaurantDoc.exists) {
+        await firestore.collection('restaurants').doc(restaurantName).update({
+          "branches": FieldValue.arrayUnion([branchData])
+        });
+
+        AppAlerts.showSnackbar(
+          isSuccess: true,
+          message: "New branch added to existing restaurant.",
+        );
+      } else {
+        await firestore.collection('restaurants').doc(restaurantName).set({
+          "restaurantId": userCredential.user!.uid,
+          "restaurantName": restaurantNameController.text.trim(),
+          "branches": [branchData],
+        });
+
+        AppAlerts.showSnackbar(
+          isSuccess: true,
+          message: "Successfully registered. Awaiting approval.",
+        );
+      }
     } catch (e) {
       AppAlerts.showSnackbar(isSuccess: false, message: e.toString());
     }
@@ -66,45 +82,77 @@ class ManagerAuthController extends GetxController {
         password: passkeyController.text.trim(),
       );
 
-      DocumentSnapshot managerDoc = await firestore
-          .collection('manager_credentials')
-          .doc(userCredential.user!.uid)
-          .get();
+      String userId = userCredential.user!.uid;
+      String? restaurantName;
 
-      if (managerDoc.exists) {
-        ChannelDataModel managerData =
-            ChannelDataModel.fromMap(managerDoc.data() as Map<String, dynamic>);
+      QuerySnapshot restaurantQuery =
+          await firestore.collection('restaurants').get();
 
-        if (managerData.status == 1) {
-          Get.to(ChannelHomeScreen());
-          AppAlerts.showSnackbar(
-            isSuccess: true,
-            message: "Successfully Logged In",
-          );
-        } else {
-          AppAlerts.showSnackbar(
-            isSuccess: false,
-            message: "Account not approved. Please contact admin.",
-          );
-          auth.signOut();
+      for (var doc in restaurantQuery.docs) {
+        List<dynamic> branches = doc['branches'];
+        for (var branch in branches) {
+          if (branch['branchId'] == userId) {
+            restaurantName = doc.id;
+            break;
+          }
         }
-      } else {
+        if (restaurantName != null) break;
+      }
+
+      if (restaurantName == null) {
         AppAlerts.showSnackbar(
           isSuccess: false,
-          message: "No account found. Please register.",
+          message: "Branch data not found. Please contact support.",
         );
         auth.signOut();
+        return;
       }
+
+      DocumentSnapshot restaurantDoc =
+          await firestore.collection('restaurants').doc(restaurantName).get();
+
+      List<dynamic> branches = restaurantDoc['branches'];
+      Map<String, dynamic>? branchData;
+
+      for (var branch in branches) {
+        if (branch['branchId'] == userId) {
+          branchData = branch;
+          break;
+        }
+      }
+
+      if (branchData == null) {
+        AppAlerts.showSnackbar(
+          isSuccess: false,
+          message: "Branch details not found. Please contact admin.",
+        );
+        auth.signOut();
+        return;
+      }
+
+      Get.to(() => ChannelProfileScreen(), arguments: {
+        "restaurantName": restaurantDoc['restaurantName'],
+        "branchEmail": branchData['branchEmail'],
+        "branchAddress": branchData['branchAddress'],
+        "channelName": branchData['channelName'],
+      });
+
+      AppAlerts.showSnackbar(
+        isSuccess: true,
+        message: "Successfully Logged In",
+      );
     } catch (e) {
       AppAlerts.showSnackbar(isSuccess: false, message: e.toString());
     }
   }
 
   void goToRegisterScreen() {
+    Get.delete<ManagerAuthController>();
     Get.toNamed(AppRouter.managerRegisterScreen);
   }
 
   void goToLoginScreen() {
+    Get.delete<ManagerAuthController>();
     Get.toNamed(AppRouter.managerLoginScreen);
   }
 }

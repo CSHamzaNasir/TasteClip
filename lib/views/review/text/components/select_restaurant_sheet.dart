@@ -22,13 +22,12 @@ class SelectRestaurantSheetState extends State<SelectRestaurantSheet> {
 
   Future<void> _fetchRestaurants() async {
     try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('manager_credentials')
-          .get();
+      final snapshot =
+          await FirebaseFirestore.instance.collection('restaurants').get();
       setState(() {
         _restaurants = snapshot.docs.map((doc) {
           return {
-            'name': doc['restaurant_name'],
+            'name': doc.id,
             'isChecked': false,
           };
         }).toList();

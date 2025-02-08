@@ -25,75 +25,86 @@ class ManagerRegisterScreen extends StatelessWidget {
           title: AppString.register,
           isDark: "true",
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppString.welcome,
-                  style: AppTextStyles.headingStyle.copyWith(
-                    color: AppColors.lightColor,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppString.alreadyHaveAnAccount,
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.lightColor,
-                      ),
-                    ),
-                    6.horizontal,
-                    InkWell(
-                      onTap: () => controller.goToLoginScreen(),
-                      child: Text(
-                        AppString.login,
-                        style: AppTextStyles.boldBodyStyle.copyWith(
-                          color: AppColors.whiteColor,
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppString.welcome,
+                        style: AppTextStyles.headingStyle.copyWith(
+                          color: AppColors.lightColor,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                24.vertical,
-                CustomBox(
-                  child: Column(
-                    children: [
-                      AppFeild(
-                        controller: controller.restaurantNameController,
-                        hintText: AppString.resturentName,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            AppString.alreadyHaveAnAccount,
+                            style: AppTextStyles.bodyStyle.copyWith(
+                              color: AppColors.lightColor,
+                            ),
+                          ),
+                          6.horizontal,
+                          InkWell(
+                            onTap: () => controller.goToLoginScreen(),
+                            child: Text(
+                              AppString.login,
+                              style: AppTextStyles.boldBodyStyle.copyWith(
+                                color: AppColors.whiteColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      16.vertical,
-                      AppFeild(
-                        controller: controller.branchAddressController,
-                        hintText: AppString.address,
-                      ),
-                      16.vertical,
-                      AppFeild(
-                        controller: controller.businessEmailController,
-                        hintText: AppString.businessEmail,
-                      ),
-                      16.vertical,
-                      AppFeild(
-                        controller: controller.passkeyController,
-                        hintText: AppString.passkey,
-                      ),
-                      20.vertical,
-                      AppButton(
-                        text: AppString.submit,
-                        onPressed: () {
-                          controller.registerManager();
-                        },
+                      24.vertical,
+                      CustomBox(
+                        child: Column(
+                          children: [
+                            AppFeild(
+                              controller: controller.restaurantNameController,
+                              hintText: AppString.resturentName,
+                            ),
+                            16.vertical,
+                            AppFeild(
+                              controller: controller.branchAddressController,
+                              hintText: AppString.address,
+                            ),
+                            16.vertical,
+                            AppFeild(
+                              controller: controller.businessEmailController,
+                              hintText: AppString.businessEmail,
+                            ),
+                            16.vertical,
+                            AppFeild(
+                              controller: controller.passkeyController,
+                              hintText: AppString.passkey,
+                            ),
+                            20.vertical,
+                          ],
+                        ),
                       )
                     ],
                   ),
-                )
-              ],
+                ),
+              ),
             ),
-          ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24),
+              child: AppButton(
+                text: AppString.submit,
+                onPressed: () {
+                  controller.registerManager();
+                },
+              ),
+            )
+          ],
         ),
       ),
     );

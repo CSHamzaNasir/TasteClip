@@ -2,28 +2,48 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+
+import '../../../../config/app_assets.dart';
+import '../../../../utils/app_alert.dart';
 
 class RestaurantListController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  var approvedManagers = <QueryDocumentSnapshot>[].obs;
+  var restaurants = <Map<String, dynamic>>[].obs;
+  var isLoading = true.obs;
+  var hasError = false.obs;
+  var errorMessage = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchApprovedManagers();
+    fetchAllRestaurants();
   }
 
-  void fetchApprovedManagers() {
-    _firestore
-        .collection('manager_credentials')
-        .where('status', isEqualTo: 1)
-        .snapshots()
-        .listen((snapshot) {
-      approvedManagers.value = snapshot.docs;
-    });
+  void fetchAllRestaurants() async {
+    isLoading(true);
+    hasError(false);
+    restaurants.clear();
+
+    try {
+      QuerySnapshot restaurantQuery =
+          await _firestore.collection('restaurants').get();
+
+      restaurants.assignAll(restaurantQuery.docs.map((doc) {
+        return {
+          "restaurantId": doc.id,
+          "restaurantName": doc['restaurantName'],
+          "branches": doc['branches'],
+        };
+      }).toList());
+    } catch (e) {
+      hasError(true);
+      errorMessage(e.toString());
+      AppAlerts.showSnackbar(isSuccess: false, message: e.toString());
+    } finally {
+      isLoading(false);
+    }
   }
 
   void showFeedbackDialog(String restaurantName) {

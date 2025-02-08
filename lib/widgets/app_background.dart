@@ -34,11 +34,16 @@ class AppBackground extends StatelessWidget {
               )
             : null,
         gradient: isDefault
-            ? const LinearGradient(
-                colors: [
-                  AppColors.lightColor,
-                  AppColors.whiteColor,
-                ],
+            ? LinearGradient(
+                colors: isLight
+                    ? [
+                        AppColors.lightColor,
+                        AppColors.whiteColor,
+                      ]
+                    : [
+                        AppColors.mainColor,
+                        AppColors.primaryColor,
+                      ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               )

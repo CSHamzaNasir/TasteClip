@@ -56,7 +56,7 @@ class AppButton extends StatelessWidget {
               width: 1,
             ),
           ),
-          minimumSize: const Size.fromHeight(50),
+          minimumSize: const Size.fromHeight(55),
         ),
         onPressed: isLoading ? null : onPressed,
         child: Row(

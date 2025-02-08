@@ -21,21 +21,23 @@ class SelectBranchSheet extends StatefulWidget {
 
 class SelectBranchSheetState extends State<SelectBranchSheet> {
   List<Map<String, dynamic>> _branches = [];
+  String? _selectedBranch;
 
   Future<void> _fetchBranches() async {
     try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('manager_credentials')
-          .where('restaurant_name', isEqualTo: widget.restaurantName)
+      DocumentSnapshot restaurantDoc = await FirebaseFirestore.instance
+          .collection('restaurants')
+          .doc(widget.restaurantName.toLowerCase())
           .get();
-      setState(() {
-        _branches = snapshot.docs.map((doc) {
-          return {
-            'name': doc['branch_address'],
-            'isChecked': false,
-          };
-        }).toList();
-      });
+
+      if (restaurantDoc.exists) {
+        List<dynamic> branches = restaurantDoc['branches'] ?? [];
+        setState(() {
+          _branches = branches
+              .map((branch) => {'name': branch['branchAddress']})
+              .toList();
+        });
+      }
     } catch (e) {
       log("Error fetching branches: $e");
     }
@@ -93,19 +95,15 @@ class SelectBranchSheetState extends State<SelectBranchSheet> {
                               ),
                             ),
                             const Spacer(),
-                            Checkbox(
-                              value: branch['isChecked'],
-                              onChanged: (bool? value) {
+                            Radio<String>(
+                              value: branch['name'],
+                              groupValue: _selectedBranch,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  branch['isChecked'] = value ?? false;
+                                  _selectedBranch = value;
                                 });
                               },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
                               activeColor: AppColors.mainColor,
-                              side:
-                                  const BorderSide(color: AppColors.mainColor),
                             ),
                           ],
                         ),
@@ -115,32 +113,24 @@ class SelectBranchSheetState extends State<SelectBranchSheet> {
                 ),
           20.vertical,
           AppButton(
-            isGradient: _branches.any((branch) => branch['isChecked']),
+            isGradient: _selectedBranch != null,
             text: 'Next',
             onPressed: () {
-              if (_branches.any((branch) => branch['isChecked'])) {
-                String? branchName = _branches.firstWhere(
-                  (branch) => branch['isChecked'] == true,
-                )['name'];
-
-                if (branchName != null) {
-                  Navigator.pop(context);
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => PostTextFeedbackScreen(
-                      restaurantName: widget.restaurantName,
-                      branchName: branchName,
-                    ),
-                  );
-                } else {
-                  log('No branch selected!');
-                }
+              if (_selectedBranch != null) {
+                Navigator.pop(context);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => PostTextFeedbackScreen(
+                    restaurantName: widget.restaurantName,
+                    branchName: _selectedBranch!,
+                  ),
+                );
+              } else {
+                log('No branch selected!');
               }
             },
-            btnColor: _branches.any((branch) => branch['isChecked'])
-                ? null
-                : AppColors.greyColor,
+            btnColor: _selectedBranch != null ? null : AppColors.greyColor,
           )
         ],
       ),

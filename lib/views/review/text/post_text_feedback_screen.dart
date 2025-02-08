@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/bottombar/custom_bottom_bar.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'upload_text_feedback_controller.dart';
@@ -79,7 +79,7 @@ class PostTextFeedbackScreen extends StatelessWidget {
                           restaurantName: restaurantName,
                           branchName: branchName,
                         );
-                        Get.offAllNamed(AppRouter.homeScreen);
+                        Get.off(CustomBottomBarExample());
                       }
                     : () {},
                 btnColor: controller.textFeedback.text.isNotEmpty &&

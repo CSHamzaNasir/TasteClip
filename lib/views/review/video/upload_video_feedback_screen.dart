@@ -34,7 +34,7 @@ class UploadVideoFeedbackScreen extends StatelessWidget {
                       .copyWith(color: AppColors.mainColor),
                 ),
                 20.vertical,
-                Image.asset(AppAssets.videobased),
+                Image.asset(AppAssets.video),
                 Padding(
                   padding: const EdgeInsets.all(35.0),
                   child: Column(
