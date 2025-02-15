@@ -10,6 +10,8 @@ import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/data/models/auth_models.dart';
 import 'package:tasteclip/domain/repositories/auth_repository.dart';
 
+import '../../views/bottombar/custom_bottom_bar.dart';
+
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -37,7 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      Get.toNamed(AppRouter.homeScreen);
+      Get.to(CustomBottomBar());
       return credential.user;
     } catch (e) {
       log("Login error: $e");

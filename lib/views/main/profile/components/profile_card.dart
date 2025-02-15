@@ -11,6 +11,7 @@ import '../../../../config/app_text_styles.dart';
 import '../../../../constant/app_colors.dart';
 
 class ProfileCard extends StatelessWidget {
+  final VoidCallback? onTap;
   final String title;
   final String title1;
   final String subtitle;
@@ -26,63 +27,31 @@ class ProfileCard extends StatelessWidget {
     required this.title1,
     required this.subtitle1,
     required this.icon1,
+    this.onTap,
   });
 
   final UserProfileController controller;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: GradientBox(
-          widthFactor: 1,
-          heightFactor: 0.18,
-          gradientColors: const [
-            AppColors.primaryColor,
-            AppColors.mainColor,
-          ],
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () => controller.goToEditProfileScreen(),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        icon,
-                        height: 22,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.whiteColor,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      8.horizontal,
-                      Text(
-                        title,
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.lightColor,
-                          fontFamily: AppFonts.sandBold,
-                        ),
-                      ),
-                      Spacer(),
-                      SvgPicture.asset(AppAssets.arrowRight)
-                    ],
-                  ),
-                ),
-                4.vertical,
-                Text(
-                  subtitle,
-                  style: AppTextStyles.lightStyle.copyWith(
-                    color: AppColors.lightColor,
-                  ),
-                ),
-                16.vertical,
-                Row(
+    return GradientBox(
+        widthFactor: 1,
+        heightFactor: 0.18,
+        gradientColors: const [
+          AppColors.primaryColor,
+          AppColors.mainColor,
+        ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                onTap: onTap,
+                child: Row(
                   children: [
                     SvgPicture.asset(
-                      icon1,
+                      icon,
                       height: 22,
                       colorFilter: ColorFilter.mode(
                         AppColors.whiteColor,
@@ -91,7 +60,7 @@ class ProfileCard extends StatelessWidget {
                     ),
                     8.horizontal,
                     Text(
-                      title1,
+                      title,
                       style: AppTextStyles.bodyStyle.copyWith(
                         color: AppColors.lightColor,
                         fontFamily: AppFonts.sandBold,
@@ -101,16 +70,46 @@ class ProfileCard extends StatelessWidget {
                     SvgPicture.asset(AppAssets.arrowRight)
                   ],
                 ),
-                4.vertical,
-                Text(
-                  subtitle1,
-                  style: AppTextStyles.lightStyle.copyWith(
-                    color: AppColors.lightColor,
-                  ),
+              ),
+              4.vertical,
+              Text(
+                subtitle,
+                style: AppTextStyles.lightStyle.copyWith(
+                  color: AppColors.lightColor,
                 ),
-              ],
-            ),
-          )),
-    );
+              ),
+              16.vertical,
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    icon1,
+                    height: 22,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.whiteColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  8.horizontal,
+                  Text(
+                    title1,
+                    style: AppTextStyles.bodyStyle.copyWith(
+                      color: AppColors.lightColor,
+                      fontFamily: AppFonts.sandBold,
+                    ),
+                  ),
+                  Spacer(),
+                  SvgPicture.asset(AppAssets.arrowRight)
+                ],
+              ),
+              4.vertical,
+              Text(
+                subtitle1,
+                style: AppTextStyles.lightStyle.copyWith(
+                  color: AppColors.lightColor,
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }

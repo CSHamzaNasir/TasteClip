@@ -21,92 +21,89 @@ class UserProfileScreen extends StatelessWidget {
     return AppBackground(
       isLight: true,
       child: SafeArea(
-        child: Scaffold(
-            body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(AppAssets.userBgImg),
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withAlpha(180),
-                    BlendMode.darken,
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Column(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Scaffold(
+              body: Column(
+            spacing: 24,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              12.vertical,
+              Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Obx(() => Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                                width: 2, color: AppColors.primaryColor)),
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.mainColor,
-                          radius: 30,
-                          backgroundImage:
-                              controller.profile_image.value.isNotEmpty
-                                  ? NetworkImage(controller.profile_image.value)
-                                  : null,
-                          child: controller.profile_image.value.isEmpty
-                              ? const Icon(
-                                  Icons.person,
-                                  size: 50,
-                                )
-                              : null,
-                        ),
-                      )),
-                  12.vertical,
-                  Obx(() => Text(
-                        controller.fullName.isNotEmpty
-                            ? controller.fullName.value
-                            : "Loading...",
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.whiteColor,
-                          fontFamily: AppFonts.sandBold,
-                        ),
-                      )),
+                  CircleAvatar(
+                    radius: 75,
+                    backgroundImage: controller.profile_image.value.isNotEmpty
+                        ? NetworkImage(controller.profile_image.value)
+                        : null,
+                    child: controller.profile_image.value.isEmpty
+                        ? Text("loading")
+                        : null,
+                  ),
+                  Text(
+                    controller.fullName.isNotEmpty
+                        ? controller.fullName.value
+                        : "Loading...",
+                    style: AppTextStyles.bodyStyle.copyWith(
+                      color: AppColors.textColor,
+                      fontFamily: AppFonts.sandBold,
+                    ),
+                  ),
                   2.vertical,
-                  Obx(() => Text(
-                        controller.email.isNotEmpty
-                            ? controller.email.value
-                            : "Loading...",
-                        style: AppTextStyles.bodyStyle.copyWith(
-                            fontSize: 14,
-                            color: AppColors.whiteColor.withAlpha(200)),
-                      )),
-                  12.vertical,
+                  Text(
+                    controller.email.isNotEmpty
+                        ? controller.email.value
+                        : "Loading...",
+                    style: AppTextStyles.bodyStyle.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textColor.withAlpha(200)),
+                  ),
                 ],
               ),
-            ),
-            16.vertical,
-            ProfileCard(
-              controller: controller,
-              title: AppString.profileDetails,
-              subtitle: AppString.clickToSeeProfile,
-              icon: AppAssets.profileReg,
-              title1: AppString.setting,
-              subtitle1: AppString.clickToSeeSetting,
-              icon1: AppAssets.setting,
-            ),
-            16.vertical,
-            ProfileCard(
-              controller: controller,
-              title: AppString.theme,
-              subtitle: AppString.clickTochangeTheme,
-              icon: AppAssets.setting,
-              title1: AppString.logout,
-              subtitle1: AppString.clickTologout,
-              icon1: AppAssets.logout,
-            ),
-          ],
-        )),
+              ProfileCard(
+                onTap: controller.goToProfileDetailScreen,
+                controller: controller,
+                title: AppString.profileDetails,
+                subtitle: AppString.clickToSeeProfile,
+                icon: AppAssets.profileReg,
+                title1: AppString.setting,
+                subtitle1: AppString.clickToSeeSetting,
+                icon1: AppAssets.setting,
+              ),
+              ProfileCard(
+                controller: controller,
+                title: AppString.theme,
+                subtitle: AppString.clickTochangeTheme,
+                icon: AppAssets.setting,
+                title1: AppString.logout,
+                subtitle1: AppString.clickTologout,
+                icon1: AppAssets.logout,
+              ),
+              InkWell(
+                onTap: controller.goToEditProfileScreen,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: AppColors.textColor.withCustomOpacity(.1)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Edit profile",
+                        style: AppTextStyles.boldBodyStyle.copyWith(
+                          color: AppColors.mainColor,
+                          fontFamily: AppFonts.sandBold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )),
+        ),
       ),
     );
   }

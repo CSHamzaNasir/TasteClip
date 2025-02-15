@@ -6,6 +6,7 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import '../../../../config/app_text_styles.dart';
 import '../../../../constant/app_fonts.dart';
+import '../branches/branches_list_screen.dart';
 import 'restaurant_list_controller.dart';
 
 class RestaurantListScreen extends StatelessWidget {
@@ -64,97 +65,103 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<dynamic> branches = restaurant['branches'] ?? [];
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppColors.lightColor,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(
-                  AppAssets.userBgImg,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              16.horizontal,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    restaurant['restaurantName'],
-                    style: AppTextStyles.boldBodyStyle.copyWith(
-                      color: AppColors.textColor,
-                    ),
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => BranchesListScreen(
+              restaurantId: restaurant['restaurantId'],
+              restaurantName: restaurant['restaurantName'],
+            ));
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: AppColors.lightColor,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.asset(
+                    AppAssets.userBgImg,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
                   ),
-                  Text(
-                    "Last update 2 min ago",
-                    style: AppTextStyles.regularStyle.copyWith(
-                      color: AppColors.textColor,
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              SvgPicture.asset(
-                AppAssets.arrowNext,
-                width: 30,
-                height: 30,
-                colorFilter: ColorFilter.mode(
-                  AppColors.mainColor,
-                  BlendMode.srcIn,
                 ),
-              ),
-            ],
-          ),
-          16.vertical,
-          Text(
-            "Total Feedback: 12",
-            style: AppTextStyles.bodyStyle.copyWith(
-              color: AppColors.textColor,
-              fontFamily: AppFonts.sandMedium,
-            ),
-          ),
-          Text(
-            "${branches.length} Branches registered",
-            style: AppTextStyles.lightStyle.copyWith(
-              color: AppColors.textColor,
-              fontFamily: AppFonts.sandMedium,
-            ),
-          ),
-          16.vertical,
-          SizedBox(
-            height: 30,
-            child: Stack(
-              children: List.generate(
-                branches.length > 4 ? 4 : branches.length,
-                (index) {
-                  return Positioned(
-                    left: index * 20,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.network(
-                        branches[index]['branchThumbnail'],
-                        width: 30,
-                        height: 30,
-                        fit: BoxFit.cover,
+                16.horizontal,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      restaurant['restaurantName'],
+                      style: AppTextStyles.boldBodyStyle.copyWith(
+                        color: AppColors.textColor,
                       ),
                     ),
-                  );
-                },
+                    Text(
+                      "Last update 2 min ago",
+                      style: AppTextStyles.regularStyle.copyWith(
+                        color: AppColors.textColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                SvgPicture.asset(
+                  AppAssets.arrowNext,
+                  width: 30,
+                  height: 30,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.mainColor,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ],
+            ),
+            16.vertical,
+            Text(
+              "Total Feedback: 12",
+              style: AppTextStyles.bodyStyle.copyWith(
+                color: AppColors.textColor,
+                fontFamily: AppFonts.sandMedium,
               ),
             ),
-          ),
-          16.vertical,
-        ],
+            Text(
+              "${restaurant['branches'].length} Branches registered",
+              style: AppTextStyles.lightStyle.copyWith(
+                color: AppColors.textColor,
+                fontFamily: AppFonts.sandMedium,
+              ),
+            ),
+            16.vertical,
+            SizedBox(
+              height: 30,
+              child: Stack(
+                children: List.generate(
+                  branches.length > 4 ? 4 : branches.length,
+                  (index) {
+                    return Positioned(
+                      left: index * 20,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.network(
+                          branches[index]['branchThumbnail'],
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

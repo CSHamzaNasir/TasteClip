@@ -79,7 +79,7 @@ class PostTextFeedbackScreen extends StatelessWidget {
                           restaurantName: restaurantName,
                           branchName: branchName,
                         );
-                        Get.off(CustomBottomBarExample());
+                        Get.off(CustomBottomBar());
                       }
                     : () {},
                 btnColor: controller.textFeedback.text.isNotEmpty &&

@@ -1,0 +1,2 @@
+/Users/fantechlabsmac/Desktop/TasteClip/android/app/.cxx/Debug/4a336p63/x86/CMakeFiles/edit_cache.dir
+/Users/fantechlabsmac/Desktop/TasteClip/android/app/.cxx/Debug/4a336p63/x86/CMakeFiles/rebuild_cache.dir

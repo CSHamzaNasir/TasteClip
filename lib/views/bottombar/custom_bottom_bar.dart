@@ -7,15 +7,16 @@ import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/views/main/home/home_screen.dart';
+import 'package:tasteclip/views/main/profile/user_profile_screen.dart';
 
-class CustomBottomBarExample extends StatefulWidget {
-  const CustomBottomBarExample({super.key});
+class CustomBottomBar extends StatefulWidget {
+  const CustomBottomBar({super.key});
 
   @override
-  CustomBottomBarExampleState createState() => CustomBottomBarExampleState();
+  CustomBottomBarState createState() => CustomBottomBarState();
 }
 
-class CustomBottomBarExampleState extends State<CustomBottomBarExample> {
+class CustomBottomBarState extends State<CustomBottomBar> {
   int _selectedIndex = 0;
 
   final List<String> _selectedIcons = [
@@ -36,7 +37,7 @@ class CustomBottomBarExampleState extends State<CustomBottomBarExample> {
     HomeScreen(),
     HomeScreen(),
     HomeScreen(),
-    HomeScreen(),
+    UserProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -110,48 +111,51 @@ class CustomBottomBarExampleState extends State<CustomBottomBarExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _screens[_selectedIndex],
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 12,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Color(0xff9D9D9D).withCustomOpacity(0.1),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: List.generate(
-                        _selectedIcons.length,
-                        (index) => GestureDetector(
-                          onTap: () => _onItemTapped(index),
-                          child: Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: _selectedIndex == index
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: SvgPicture.asset(
-                              _selectedIndex == index
-                                  ? _selectedIcons[index]
-                                  : _unselectedIcons[index],
-                              colorFilter: ColorFilter.mode(
+      body: SafeArea(
+        top: false,
+        child: Stack(
+          children: [
+            _screens[_selectedIndex],
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 12,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xff9D9D9D).withCustomOpacity(0.1),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: List.generate(
+                          _selectedIcons.length,
+                          (index) => GestureDetector(
+                            onTap: () => _onItemTapped(index),
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: _selectedIndex == index
+                                    ? Colors.white
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: SvgPicture.asset(
                                 _selectedIndex == index
-                                    ? AppColors.mainColor
-                                    : Colors.grey,
-                                BlendMode.srcIn,
+                                    ? _selectedIcons[index]
+                                    : _unselectedIcons[index],
+                                colorFilter: ColorFilter.mode(
+                                  _selectedIndex == index
+                                      ? AppColors.mainColor
+                                      : Colors.grey,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                           ),
@@ -162,8 +166,8 @@ class CustomBottomBarExampleState extends State<CustomBottomBarExample> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

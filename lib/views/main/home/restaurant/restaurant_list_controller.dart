@@ -33,8 +33,8 @@ class RestaurantListController extends GetxController {
       restaurants.assignAll(restaurantQuery.docs.map((doc) {
         return {
           "restaurantId": doc.id,
-          "restaurantName": doc['restaurantName'],
-          "branches": doc['branches'],
+          "restaurantName": doc['restaurantName'] ?? 'Unknown Restaurant',
+          "branches": doc['branches'] ?? [],
         };
       }).toList());
     } catch (e) {

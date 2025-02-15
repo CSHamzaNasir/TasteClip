@@ -14,16 +14,18 @@ class UserProfileController extends GetxController {
     {'icon': AppAssets.video, 'label': "Video"},
   ];
 
-  //navigation functions
   void goToHomeScreen() {
     Get.offAllNamed(AppRouter.homeScreen);
   }
 
   void goToEditProfileScreen() {
-    Get.offAllNamed(AppRouter.userProfileEditScreen);
+    Get.toNamed(AppRouter.userProfileEditScreen);
   }
 
-  // firebase function
+  void goToProfileDetailScreen() {
+    Get.toNamed(AppRouter.profileDetailScreen);
+  }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxString email = ''.obs;

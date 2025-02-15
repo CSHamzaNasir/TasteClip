@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/fantechlabsmac/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/fantechlabsmac/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/fantechlabsmac/Desktop/TasteClip/android/app/.cxx/Debug/4a336p63/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/fantechlabsmac/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/fantechlabsmac/Desktop/TasteClip/android/app/.cxx/Debug/4a336p63/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

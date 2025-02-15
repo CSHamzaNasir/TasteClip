@@ -46,4 +46,6 @@ class AppAssets {
   static const String arrowNext = "assets/icons/next_arrow.svg";
   static const String addIcon = "assets/icons/add_icon.svg";
   static const String addBold = "assets/icons/add_bold.svg";
+  static const String savedIcon = "assets/icons/saved_icon.svg";
+  static const String chatbotIcon = "assets/icons/chatbot_icon.png";
 }
