@@ -16,44 +16,45 @@ class SelectedIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: SizedBox(
-            height: 50, // Set a fixed height for ListView
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: controller.categories.length,
-              itemBuilder: (context, index) {
-                return Obx(() => GestureDetector(
-                      onTap: () => controller.changeCategory(index),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 16),
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          color: controller.selectedIndex.value == index
-                              ? AppColors.primaryColor // Active color
-                              : AppColors.textColor
-                                  .withCustomOpacity(0.1), // Default color
-                        ),
-                        child: Text(
-                          controller.categories[index],
-                          style: AppTextStyles.boldBodyStyle.copyWith(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              height: 34,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.categories.length,
+                itemBuilder: (context, index) {
+                  return Obx(() => GestureDetector(
+                        onTap: () => controller.changeCategory(index),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 12),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
                             color: controller.selectedIndex.value == index
-                                ? Colors.white // Active text color
-                                : AppColors.textColor.withCustomOpacity(
-                                    0.7), // Default text color
+                                ? AppColors.mainColor
+                                : AppColors.textColor.withCustomOpacity(0.1),
+                          ),
+                          child: Text(
+                            controller.categories[index],
+                            style: AppTextStyles.regularStyle.copyWith(
+                              color: controller.selectedIndex.value == index
+                                  ? Colors.white
+                                  : AppColors.textColor.withCustomOpacity(0.7),
+                            ),
                           ),
                         ),
-                      ),
-                    ));
-              },
+                      ));
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

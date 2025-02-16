@@ -4,6 +4,7 @@ import 'package:svg_flutter/svg_flutter.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
+
 import '../../../../config/app_text_styles.dart';
 import '../../../../constant/app_fonts.dart';
 import '../branches/branches_list_screen.dart';
@@ -153,6 +154,37 @@ class RestaurantCard extends StatelessWidget {
                           width: 30,
                           height: 30,
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              width: 30,
+                              height: 30,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color:
+                                    Colors.grey[300], 
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                "Wait...",
+                                style: TextStyle(
+                                    fontSize: 8, color: Colors.black),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 30,
+                              height: 30,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.red[300], 
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.error,
+                                  size: 16, color: Colors.white),
+                            );
+                          },
                         ),
                       ),
                     );

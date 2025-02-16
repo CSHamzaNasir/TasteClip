@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/widgets/app_background.dart';
-import '../../../../constant/app_colors.dart';
+
 import '../../../../config/app_text_styles.dart';
+import '../../../../constant/app_colors.dart';
 import '../../../../constant/app_fonts.dart';
 import 'branches_list_controller.dart';
 import 'components/branch_card.dart';
@@ -79,7 +80,8 @@ class BranchesListScreen extends StatelessWidget {
                   24.vertical,
                   SelectedIndex(controller: controller),
                   16.vertical,
-                  Expanded(
+                  SizedBox(
+                    height: Get.height * .35,
                     child: ListView.separated(
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       scrollDirection: Axis.horizontal,

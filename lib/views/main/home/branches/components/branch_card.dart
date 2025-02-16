@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:svg_flutter/svg_flutter.dart';
-import 'package:tasteclip/config/app_assets.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_text_styles.dart' show AppTextStyles;
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 
+import '../../../../../config/app_assets.dart';
 import '../../../../../constant/app_colors.dart';
+import '../branches_list_controller.dart';
 
 class BranchCard extends StatelessWidget {
-  const BranchCard({
+  BranchCard({
     super.key,
     required this.branch,
   });
 
   final Map<String, dynamic> branch;
+  final controller = Get.put(BranchesListController());
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.height * .35,
       width: Get.width * 0.6,
       child: Stack(
         children: [
@@ -70,33 +71,40 @@ class BranchCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: Get.height * .16,
+                    height: Get.height * .13,
                   ),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 16),
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          color: AppColors.whiteColor,
-                        ),
-                        child: Text(
-                          "View branch",
-                          style: AppTextStyles.boldBodyStyle.copyWith(
-                            color: AppColors.textColor,
+                      InkWell(
+                        onTap: controller.goToBranchDetailScreen,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 14),
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            color: AppColors.whiteColor,
+                          ),
+                          child: Text(
+                            "View branch",
+                            style: AppTextStyles.bodyStyle.copyWith(
+                              color: AppColors.textColor,
+                            ),
                           ),
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(8),
                         margin: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: AppColors.whiteColor,
                         ),
-                        child: SvgPicture.asset(AppAssets.savedIcon),
+                        child: SvgPicture.asset(
+                          AppAssets.savedIcon,
+                          height: 20,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ],
                   ),

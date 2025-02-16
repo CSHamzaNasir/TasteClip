@@ -13,6 +13,13 @@ class UserProfileController extends GetxController {
     {'icon': AppAssets.camera, 'label': "Image"},
     {'icon': AppAssets.video, 'label': "Video"},
   ];
+      var selectedIndex = 0.obs;
+
+   final List<String> categories = ["Recent", "Saved"];
+ 
+  void changeCategory(int index) {
+    selectedIndex.value = index;
+  }
 
   void goToHomeScreen() {
     Get.offAllNamed(AppRouter.homeScreen);

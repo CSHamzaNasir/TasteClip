@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg_flutter.dart';
@@ -23,14 +24,14 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     AppAssets.homeBold,
     AppAssets.addBold,
     AppAssets.camera,
-    AppAssets.camera,
+    AppAssets.profileBold,
   ];
 
   final List<String> _unselectedIcons = [
     AppAssets.homeReg,
     AppAssets.addIcon,
     AppAssets.camera,
-    AppAssets.camera,
+    AppAssets.profileReg,
   ];
 
   final List<Widget> _screens = [
