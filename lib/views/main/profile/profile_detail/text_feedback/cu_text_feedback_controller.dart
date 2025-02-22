@@ -1,51 +1,53 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class UserFeedbackController extends GetxController {
-  RxList<Map<String, dynamic>> userFeedbackList = <Map<String, dynamic>>[].obs;
+class FeedbackController extends GetxController {
+  var feedbackList = <Map<String, dynamic>>[].obs;
 
-  Future<void> fetchUserFeedback() async {
+  @override
+  void onInit() {
+    super.onInit();
+    fetchFeedback();
+  }
+
+  Future<void> fetchFeedback() async {
     try {
-      User? user = FirebaseAuth.instance.currentUser;
+      QuerySnapshot restaurantQuery =
+          await FirebaseFirestore.instance.collection('restaurants').get();
 
-      if (user == null) {
-        log("No user logged in");
-        return;
-      }
+      List<Map<String, dynamic>> allFeedback = [];
 
-      String userId = user.uid; // Get the current user's ID
-      log("Fetching feedback for user: $userId");
-
-      final restaurants = await FirebaseFirestore.instance.collection('restaurants').get();
-
-      List<Map<String, dynamic>> feedbacks = [];
-
-      for (var restaurant in restaurants.docs) {
-        List<dynamic> branches = restaurant['branches'] ?? [];
-
+      for (var restaurantDoc in restaurantQuery.docs) {
+        List<dynamic> branches = restaurantDoc['branches'] ?? [];
         for (var branch in branches) {
-          List<dynamic> feedbackList = branch['textFeedback'] ?? [];
-
-          for (var feedback in feedbackList) {
-            if (feedback['user_id'] == userId) {
-              feedbacks.add({
-                'restaurant_name': restaurant.id,
-                'branch_name': branch['branchAddress'],
-                'feedback_text': feedback['feedback_text'],
-                'rating': feedback['rating'],
-                'created_at': feedback['created_at'],
-              });
+          List<dynamic> feedbacks = branch['textFeedback'] ?? [];
+          for (var feedback in feedbacks) {
+            DateTime createdAt;
+            if (feedback['created_at'] is Timestamp) {
+              createdAt = (feedback['created_at'] as Timestamp).toDate();
+            } else if (feedback['created_at'] is String) {
+              createdAt =
+                  DateTime.tryParse(feedback['created_at']) ?? DateTime.now();
+            } else {
+              createdAt = DateTime.now();
             }
+
+            String formattedTime = timeago.format(createdAt);
+
+            allFeedback.add({
+              "branch": branch['branchAddress'],
+              "branchThumbnail": branch['branchThumbnail'],
+              "feedback_text": feedback['feedback_text'],
+              "rating": feedback['rating'].toString(),
+              "created_at": formattedTime,
+            });
           }
         }
       }
-
-      userFeedbackList.assignAll(feedbacks);
-      log("User feedback fetched successfully!");
+      feedbackList.assignAll(allFeedback);
     } catch (e) {
-      log("Error fetching feedback: $e");
+      Get.snackbar("Error", "Failed to fetch feedback: $e");
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
@@ -87,8 +88,10 @@ class ProfileDetailScreen extends StatelessWidget {
                   (index) => GestureDetector(
                     onTap: () {
                       if (index == 0) {
-                        Get.to(
-                            UserFeedbackScreen()); // Navigate to UserFeedbackScreen
+                        Get.to(() => FeedbackScreen());
+                      }
+                      if (index == 1) {
+                        Get.toNamed(AppRouter.cuImageFeedbackScreen);
                       }
                     },
                     child: Container(

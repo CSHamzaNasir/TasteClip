@@ -7,6 +7,7 @@ class AppFeild extends StatefulWidget {
   final TextEditingController? controller;
   final Key? fieldKey;
   final bool? isPasswordField;
+  final bool isSearchField; // New parameter for search field
   final String hintText;
   final String? labelText;
   final String? helperText;
@@ -19,6 +20,8 @@ class AppFeild extends StatefulWidget {
   final Color? iconColor;
   final bool feildSideClr;
   final bool feildFocusClr;
+  final Color? feildClr;
+  final double radius; // New parameter for radius
 
   const AppFeild({
     super.key,
@@ -37,6 +40,9 @@ class AppFeild extends StatefulWidget {
     this.iconColor,
     this.feildSideClr = false,
     this.feildFocusClr = false,
+    this.feildClr,
+    this.radius = 12, // Default radius
+    this.isSearchField = false, // Default is not a search field
   });
 
   @override
@@ -50,12 +56,16 @@ class AppFeildState extends State<AppFeild> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
-          color: AppColors.transparent,
-          borderRadius: BorderRadius.all(Radius.circular(12))),
+      decoration: BoxDecoration(
+        color: widget.feildClr ?? AppColors.transparent,
+        borderRadius: BorderRadius.all(
+            Radius.circular(widget.radius)), // Use the radius parameter
+      ),
       child: TextFormField(
         style: AppTextStyles.lightStyle.copyWith(
-            color: AppColors.mainColor, fontFamily: AppFonts.sandMedium),
+          color: AppColors.mainColor,
+          fontFamily: AppFonts.sandMedium,
+        ),
         controller: widget.controller,
         keyboardType: widget.inputType,
         key: widget.fieldKey,
@@ -70,28 +80,36 @@ class AppFeildState extends State<AppFeild> {
                   ? AppColors.mainColor
                   : AppColors.greyColor,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            borderRadius: BorderRadius.all(
+                Radius.circular(widget.radius)), // Use the radius parameter
           ),
           enabledBorder: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(
-                color: widget.feildSideClr
-                    ? AppColors.mainColor
-                    : AppColors.greyColor,
-              )),
+            borderRadius: BorderRadius.all(
+                Radius.circular(widget.radius)), // Use the radius parameter
+            borderSide: BorderSide(
+              color: widget.feildSideClr
+                  ? AppColors.mainColor
+                  : AppColors.greyColor,
+            ),
+          ),
           border: InputBorder.none,
           hintText: widget.hintText,
           hintStyle: const TextStyle(
-              color: AppColors.mainColor,
-              fontSize: 15,
-              fontWeight: FontWeight.w500),
-          prefixIcon: widget.prefixIcon != null
-              ? Icon(
-                  widget.prefixIcon,
-                  size: widget.iconSize,
-                  color: widget.iconColor,
-                )
-              : null,
+            color: AppColors.mainColor,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+          prefixIcon: widget.isSearchField
+              ? const Icon(Icons.search,
+                  color: AppColors
+                      .mainColor) // Show search icon if it's a search field
+              : widget.prefixIcon != null
+                  ? Icon(
+                      widget.prefixIcon,
+                      size: widget.iconSize,
+                      color: widget.iconColor,
+                    )
+                  : null,
           suffixIcon: widget.isPasswordField == true
               ? GestureDetector(
                   onTap: () {

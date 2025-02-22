@@ -10,14 +10,15 @@ import 'package:tasteclip/utils/app_string.dart';
 import '../../../../widgets/app_button.dart';
 import 'select_branch_sheet.dart';
 
-class SelectRestaurantSheet extends StatefulWidget {
-  const SelectRestaurantSheet({super.key});
+class SelectRestaurantSheetText extends StatefulWidget {
+  const SelectRestaurantSheetText({super.key});
 
   @override
-  SelectRestaurantSheetState createState() => SelectRestaurantSheetState();
+  SelectRestaurantSheetTextState createState() =>
+      SelectRestaurantSheetTextState();
 }
 
-class SelectRestaurantSheetState extends State<SelectRestaurantSheet> {
+class SelectRestaurantSheetTextState extends State<SelectRestaurantSheetText> {
   List<Map<String, dynamic>> _restaurants = [];
 
   Future<void> _fetchRestaurants() async {
@@ -111,8 +112,6 @@ class SelectRestaurantSheetState extends State<SelectRestaurantSheet> {
                 ),
           20.vertical,
           AppButton(
-            isGradient:
-                _restaurants.any((restaurant) => restaurant['isChecked']),
             text: 'Next',
             onPressed: () {
               if (_restaurants.any((restaurant) => restaurant['isChecked'])) {
@@ -125,7 +124,7 @@ class SelectRestaurantSheetState extends State<SelectRestaurantSheet> {
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
-                    builder: (context) => SelectBranchSheet(
+                    builder: (context) => SelectBranchSheetText(
                       restaurantName: restaurantName,
                     ),
                   );
@@ -134,10 +133,12 @@ class SelectRestaurantSheetState extends State<SelectRestaurantSheet> {
                 }
               }
             },
-            btnColor: _restaurants.any((restaurant) => restaurant['isChecked'])
-                ? null
-                : AppColors.greyColor,
+            buttonIsUnselect:
+                _restaurants.any((restaurant) => restaurant['isChecked'])
+                    ? false
+                    : true,
           ),
+          16.vertical,
         ],
       ),
     );

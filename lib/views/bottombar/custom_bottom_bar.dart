@@ -74,11 +74,16 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                      onTap: () =>
-                          Get.toNamed(AppRouter.uploadTextFeedbackScreen),
+                      onTap: () => Get.toNamed(
+                            AppRouter.uploadTextFeedbackScreen,
+                          ),
                       child: _buildSvgIcon(AppAssets.message)),
                   10.horizontal,
-                  _buildSvgIcon(AppAssets.camera),
+                  InkWell(
+                      onTap: () => Get.toNamed(
+                            AppRouter.uploadImageFeedbackScreen,
+                          ),
+                      child: _buildSvgIcon(AppAssets.camera)),
                   10.horizontal,
                   _buildSvgIcon(AppAssets.video),
                 ],

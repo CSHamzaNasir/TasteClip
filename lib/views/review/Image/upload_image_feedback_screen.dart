@@ -9,6 +9,7 @@ import 'package:tasteclip/widgets/app_background.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import '../../../widgets/custom_appbar.dart';
+import 'components/select_restaurant_sheet.dart';
 
 class UploadImageFeedbackScreen extends StatelessWidget {
   UploadImageFeedbackScreen({super.key});
@@ -67,7 +68,12 @@ class UploadImageFeedbackScreen extends StatelessWidget {
                         AppButton(
                           text: 'Continue',
                           onPressed: () {
-                            // Your button action here
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) =>
+                                  const SelectRestaurantSheetImage(),
+                            );
                           },
                         ),
                       ],

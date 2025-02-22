@@ -7,19 +7,19 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/review/text/post_text_feedback_screen.dart';
 import '../../../../widgets/app_button.dart';
-import '../post_text_feedback_screen.dart';
 
-class SelectBranchSheet extends StatefulWidget {
+class SelectBranchSheetText extends StatefulWidget {
   final String restaurantName;
 
-  const SelectBranchSheet({super.key, required this.restaurantName});
+  const SelectBranchSheetText({super.key, required this.restaurantName});
 
   @override
-  SelectBranchSheetState createState() => SelectBranchSheetState();
+  SelectBranchSheetTextState createState() => SelectBranchSheetTextState();
 }
 
-class SelectBranchSheetState extends State<SelectBranchSheet> {
+class SelectBranchSheetTextState extends State<SelectBranchSheetText> {
   List<Map<String, dynamic>> _branches = [];
   String? _selectedBranch;
 
@@ -113,7 +113,6 @@ class SelectBranchSheetState extends State<SelectBranchSheet> {
                 ),
           20.vertical,
           AppButton(
-            isGradient: _selectedBranch != null,
             text: 'Next',
             onPressed: () {
               if (_selectedBranch != null) {
@@ -130,8 +129,9 @@ class SelectBranchSheetState extends State<SelectBranchSheet> {
                 log('No branch selected!');
               }
             },
-            btnColor: _selectedBranch != null ? null : AppColors.greyColor,
-          )
+            buttonIsUnselect: _selectedBranch != null ? false : true,
+          ),
+          16.vertical,
         ],
       ),
     );

@@ -7,6 +7,7 @@ import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/views/channel/channel_home_screen.dart';
+import 'package:tasteclip/views/explore/watch_feedback.dart';
 import 'package:tasteclip/views/main/home/home_screen.dart';
 import 'package:tasteclip/views/main/home/restaurant/restaurant_list_screen.dart';
 import 'package:tasteclip/views/main/profile/profile_detail/profile_detail_screen.dart';
@@ -18,6 +19,8 @@ import '../views/auth/splash/onboarding/onboarding_screen.dart';
 import '../views/channel/edit_profile/channel_profile_edit_screen.dart';
 import '../views/main/home/branches/branch_detail/branch_detail_screen.dart';
 import '../views/main/profile/edit_profile/user_profile_edit_screen.dart';
+import '../views/main/profile/profile_detail/image_feedback/cu_image_feedback_screen.dart'
+    show CuImageFeedbackScreen;
 import '../views/review/Image/upload_image_feedback_screen.dart';
 import '../views/review/text/upload_text_feedback_screen.dart';
 import '../views/review/upload_feedback_screen.dart';
@@ -47,6 +50,8 @@ class AppRouter {
   static const userProfileEditScreen = "/userProfileEditScreen";
   static const profileDetailScreen = "/profileDetailScreen";
   static const branchDetailScreen = "/branchDetailScreen";
+  static const cuImageFeedbackScreen = "/cuImageFeedbackScreen";
+  static const watchFeedbackScreen = "/watchFeedbackScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -175,6 +180,18 @@ class AppRouter {
     GetPage(
       name: branchDetailScreen,
       page: () => BranchDetailScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: cuImageFeedbackScreen,
+      page: () => CuImageFeedbackScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: watchFeedbackScreen,
+      page: () => WatchFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),

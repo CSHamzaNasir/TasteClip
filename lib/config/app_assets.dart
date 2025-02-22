@@ -47,5 +47,7 @@ class AppAssets {
   static const String addIcon = "assets/icons/add_icon.svg";
   static const String addBold = "assets/icons/add_bold.svg";
   static const String savedIcon = "assets/icons/saved_icon.svg";
+  static const String vertMore = "assets/icons/more.svg";
+  static const String menuIcon = "assets/icons/menu.svg";
   static const String chatbotIcon = "assets/icons/chatbot_icon.png";
 }

@@ -36,7 +36,7 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientBox(
         widthFactor: 1,
-        heightFactor: 0.18,
+        heightFactor: 0.20,
         gradientColors: const [
           AppColors.primaryColor,
           AppColors.mainColor,

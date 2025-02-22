@@ -6,7 +6,7 @@ import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/firebase_options.dart';
 
 import 'config/theme.dart';
-import 'views/bottombar/custom_bottom_bar.dart';
+import 'views/bottombar/custom_bottom_bar.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,14 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitUp,  
     ]);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
       home: CustomBottomBar(),
-      // initialRoute: AppRouter.homeScreen,
+      // initialRoute: AppRouter.loginScreen,
     );
   }
 }

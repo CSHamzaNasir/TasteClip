@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/constant/app_colors.dart';
+import 'package:tasteclip/constant/app_fonts.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
@@ -12,6 +13,7 @@ class AppButton extends StatelessWidget {
   final double? btnRadius;
   final bool isGradient;
   final Color? btnColor;
+  final bool buttonIsUnselect;
 
   const AppButton({
     super.key,
@@ -23,6 +25,7 @@ class AppButton extends StatelessWidget {
     this.btnRadius,
     this.isGradient = true,
     this.btnColor,
+    this.buttonIsUnselect = false,
   });
 
   @override
@@ -30,57 +33,55 @@ class AppButton extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final bool showIcon = screenWidth > 300;
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: isGradient
-            ? const LinearGradient(
-                colors: [
-                  AppColors.textColor,
-                  AppColors.mainColor,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
-            : null,
-        color: !isGradient ? btnColor : null,
-        borderRadius: BorderRadius.circular(btnRadius ?? 12),
-      ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: AppColors.lightColor,
-          backgroundColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(btnRadius ?? 12),
-            side: BorderSide(
-              color: btnSideClr ? AppColors.primaryColor : Colors.transparent,
-              width: 1,
-            ),
-          ),
-          minimumSize: const Size.fromHeight(55),
+    return InkWell(
+      onTap: isLoading ? null : onPressed,
+      borderRadius: BorderRadius.circular(btnRadius ?? 12),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: isGradient
+              ? LinearGradient(
+                  colors: buttonIsUnselect
+                      ? [AppColors.btnUnSelectColor, AppColors.btnUnSelectColor]
+                      : [
+                          AppColors.textColor,
+                          AppColors.mainColor,
+                        ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          color: !isGradient ? btnColor : null,
+          borderRadius: BorderRadius.circular(btnRadius ?? 12),
+          border: btnSideClr
+              ? Border.all(color: AppColors.primaryColor, width: 1)
+              : null,
         ),
-        onPressed: isLoading ? null : onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: isLoading
-              ? [
-                  const SpinKitThreeBounce(
-                    color: AppColors.lightColor,
-                    size: 20.0,
-                  ),
-                ]
-              : [
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        alignment: Alignment.center,
+        child: isLoading
+            ? const SpinKitThreeBounce(
+                color: AppColors.lightColor,
+                size: 20.0,
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   if (icon != null && showIcon)
                     Icon(
                       icon,
                       size: 16,
+                      color: AppColors.lightColor,
                     ),
                   if (icon != null && showIcon) const SizedBox(width: 8),
-                  Text(text,
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.lightColor,
-                      )),
+                  Text(
+                    text,
+                    style: AppTextStyles.bodyStyle.copyWith(
+                        color: AppColors.whiteColor,
+                        fontFamily: AppFonts.sandBold),
+                  ),
                 ],
-        ),
+              ),
       ),
     );
   }

@@ -106,8 +106,9 @@ class HomeScreen extends StatelessWidget {
               16.vertical,
               Row(
                 children: [
-                  const Expanded(
+                    Expanded(
                     child: HomeContentCard(
+                      onTap: controller.goToWatchFeedbackScreen,
                       imageIcon: AppAssets.shineStar,
                       title: AppString.watchFeedback,
                     ),

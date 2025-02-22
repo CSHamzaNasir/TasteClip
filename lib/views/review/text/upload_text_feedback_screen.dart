@@ -85,7 +85,7 @@ class UploadTextFeedbackScreen extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      builder: (context) => const SelectRestaurantSheet(),
+                      builder: (context) => const SelectRestaurantSheetText(),
                     );
                   },
                 ),
