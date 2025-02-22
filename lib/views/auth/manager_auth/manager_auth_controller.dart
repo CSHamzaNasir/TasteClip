@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
-
-import '../../channel/profile/channel_profile_screen.dart';
+import 'package:tasteclip/views/bottombar/channel_bottombar.dart';
 
 class ManagerAuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -129,13 +128,7 @@ class ManagerAuthController extends GetxController {
         auth.signOut();
         return;
       }
-
-      Get.to(() => ChannelProfileScreen(), arguments: {
-        "restaurantName": restaurantDoc['restaurantName'],
-        "branchEmail": branchData['branchEmail'],
-        "branchAddress": branchData['branchAddress'],
-        "channelName": branchData['channelName'],
-      });
+      Get.to(ChannelBottomBar());
 
       AppAlerts.showSnackbar(
         isSuccess: true,

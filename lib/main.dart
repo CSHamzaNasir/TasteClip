@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/firebase_options.dart';
+import 'package:tasteclip/views/bottombar/custom_bottom_bar.dart' show CustomBottomBar;
 
-import 'config/theme.dart';
-import 'views/bottombar/custom_bottom_bar.dart'; 
+import 'config/theme.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

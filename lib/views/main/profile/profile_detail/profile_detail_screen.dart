@@ -4,9 +4,10 @@ import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/config/role_enum.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/views/main/profile/profile_detail/text_feedback/cu_text_feedback_screen.dart';
+import 'package:tasteclip/views/main/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'package:tasteclip/views/main/profile/user_profile_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
@@ -88,10 +89,12 @@ class ProfileDetailScreen extends StatelessWidget {
                   (index) => GestureDetector(
                     onTap: () {
                       if (index == 0) {
-                        Get.to(() => FeedbackScreen());
+                        Get.to(() => TextFeedbackScreen(
+                              role: UserRole.user,
+                            ));
                       }
                       if (index == 1) {
-                        Get.toNamed(AppRouter.cuImageFeedbackScreen);
+                        Get.toNamed(AppRouter.imageFeedbackScreen);
                       }
                     },
                     child: Container(

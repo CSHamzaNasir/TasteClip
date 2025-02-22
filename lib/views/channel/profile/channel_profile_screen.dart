@@ -1,176 +1,164 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/views/channel/profile/channel_profile_controller.dart';
+import 'package:tasteclip/widgets/app_background.dart';
 
-import '../../../config/app_assets.dart';
-import '../../../constant/app_colors.dart';
+import '../../../config/app_router.dart';
+import '../../../config/role_enum.dart';
+import '../../main/profile/profile_detail/text_feedback/text_feedback_screen.dart';
+import 'channel_profile_controller.dart';
 
 class ChannelProfileScreen extends StatelessWidget {
-  ChannelProfileScreen({super.key});
+  final UserRole role;
+  ChannelProfileScreen({super.key, required this.role});
+
   final controller = Get.put(ChannelProfileController());
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> branchData = Get.arguments;
-
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: AppColors.whiteColor,
-          leading: Icon(
-            Icons.arrow_back_ios_rounded,
-            size: 18,
-            color: AppColors.textColor,
-          ),
-          title: Text(branchData['restaurantName'],
+    return AppBackground(
+      isLight: true,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.transparent,
+          elevation: 0,
+          title: Text(
+              role == UserRole.manager ? "Manager Profile" : "User Profile",
               style: AppTextStyles.bodyStyle.copyWith(
-                  color: AppColors.textColor,
-                  fontFamily: AppFonts.sandMedium))),
-      backgroundColor: AppColors.whiteColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    50.vertical,
-                    Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          AppAssets.dummyImg,
-                          height: 150,
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    24.vertical,
-                    Text(
-                      branchData['restaurantName'],
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.textColor,
-                        fontFamily: AppFonts.sandBold,
-                      ),
-                    ),
-                    4.vertical,
-                    Text(
-                      branchData['channelName'],
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.textColor,
-                      ),
-                    ),
-                    24.vertical,
-
-                    Row(
-                      spacing: 8,
-                      children: [
-                        Container(
-                          height: 94,
-                          width: 122,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: AppColors.textColor.withCustomOpacity(.1)),
-                        ),
-                        Container(
-                          height: 94,
-                          width: 122,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: AppColors.textColor.withCustomOpacity(.1)),
-                        ),
-                        Container(
-                          height: 94,
-                          width: 122,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: AppColors.textColor.withCustomOpacity(.1)),
-                        ),
-                      ],
-                    ),
-                    24.vertical,
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.textColor.withCustomOpacity(.1)),
-                      child: Row(
+                color: AppColors.textColor,
+              )),
+          centerTitle: true,
+        ),
+        body: Obx(
+          () => controller.isLoading.value
+              ? Center(child: CircularProgressIndicator())
+              : controller.managerData.value == null
+                  ? Center(child: Text("No data available"))
+                  : Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Center(
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.asset(
+                                  height: 150,
+                                  width: 150,
+                                  AppAssets.dummyImg,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                          16.vertical,
                           Text(
-                            branchData["branchAddress"],
-                            style: AppTextStyles.lightStyle.copyWith(
-                              color: AppColors.mainColor,
-                              fontFamily: AppFonts.sandBold,
+                              controller.managerData.value!['restaurantName']
+                                  .toUpperCase(),
+                              style: AppTextStyles.boldBodyStyle.copyWith(
+                                color: AppColors.textColor,
+                              )),
+                          6.vertical,
+                          Text("@username",
+                              style: AppTextStyles.regularStyle
+                                  .copyWith(color: AppColors.textColor)),
+                          16.vertical,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: List.generate(
+                              controller.feedbackOptions.length,
+                              (index) => GestureDetector(
+                                onTap: () {
+                                  if (index == 0) {
+                                    Get.to(() => TextFeedbackScreen(
+                                          role: UserRole.manager,
+                                        ));
+                                  }
+                                  if (index == 1) {
+                                    Get.toNamed(AppRouter.imageFeedbackScreen);
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.greyColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        controller.feedbackOptions[index]
+                                            ['icon'],
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      SizedBox(height: 12),
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: '12 ',
+                                              style: AppTextStyles.bodyStyle
+                                                  .copyWith(
+                                                color: AppColors.mainColor,
+                                                fontFamily: AppFonts.sandBold,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: "posts",
+                                              style: AppTextStyles.bodyStyle
+                                                  .copyWith(
+                                                color: AppColors.mainColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                          Spacer(),
-                          SvgPicture.asset(
-                            height: 16,
-                            AppAssets.arrowRight,
-                            colorFilter: ColorFilter.mode(
-                              AppColors.mainColor,
-                              BlendMode.srcIn,
+                          16.vertical,
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: AppColors.primaryColor),
+                              color: AppColors.mainColor.withCustomOpacity(.1),
                             ),
-                          )
+                            child: Row(
+                              children: [
+                                Text(
+                                  controller.managerData.value!['branchAddress']
+                                      .toLowerCase(),
+                                  style: AppTextStyles.bodyStyle.copyWith(
+                                    fontFamily: AppFonts.sandSemiBold,
+                                    color: AppColors.mainColor,
+                                  ),
+                                ),
+                                Spacer(),
+                                SvgPicture.asset(
+                                  AppAssets.arrowNext,
+                                  width: 24,
+                                  height: 24,
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.mainColor,
+                                    BlendMode.srcIn,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    24.vertical,
-                    InkWell(
-                      onTap: () => controller.goToAllRegisterScreen(),
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.textColor.withCustomOpacity(.1)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Edit profile",
-                              style: AppTextStyles.boldBodyStyle.copyWith(
-                                color: AppColors.textColor,
-                                fontFamily: AppFonts.sandBold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    // UserProfileCard(
-                    //   // onTap1: () => controller.goToEditScreen(),
-                    //   title1: 'Edit Profile',
-                    //   title2: 'Theme',
-                    //   image1: AppAssets.profileEdit,
-                    //   image2: AppAssets.theme,
-                    // ),
-                    // 12.vertical,
-                    // UserProfileCard(
-                    //   title1: 'Legal',
-                    //   title2: 'Help & Support',
-                    //   image1: AppAssets.legal,
-                    //   image2: AppAssets.support,
-                    // ),
-                  ],
-                ),
-              ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //   child: AppButton(
-            //     text: "Logout", onPressed: () {},
-            //     // onPressed: controller.goToRoleScreen,
-            //   ),
-            // ),
-            // 20.vertical,
-          ],
         ),
       ),
     );

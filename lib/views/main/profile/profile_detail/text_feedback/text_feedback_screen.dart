@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/config/role_enum.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+import 'text_feedback_controller.dart';
 
-import 'cu_text_feedback_controller.dart';
+class TextFeedbackScreen extends StatelessWidget {
+  final UserRole role;
 
-import 'package:get/get.dart';
-
-class FeedbackScreen extends StatelessWidget {
-  final controller = Get.put(FeedbackController());
-
-  FeedbackScreen({super.key});
+  const TextFeedbackScreen({super.key, required this.role});
 
   @override
   Widget build(BuildContext context) {
+    final FeedbackController controller =
+        Get.put(FeedbackController(role: role));
+
     return AppBackground(
       isDefault: false,
       child: Scaffold(
         body: Obx(() {
-          if (controller.feedbackList.isEmpty) {
+          if (controller.feedbackListText.isEmpty) {
             return Center(child: Text("Loading..."));
           }
           return Column(
@@ -29,9 +31,10 @@ class FeedbackScreen extends StatelessWidget {
                 height: 150,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.only(bottomRight: Radius.circular(50)),
-                    color: AppColors.mainColor),
+                  borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(50)),
+                  color: AppColors.mainColor,
+                ),
                 child: Center(
                   child: Text("Text Feedback",
                       style: AppTextStyles.boldBodyStyle
@@ -40,9 +43,9 @@ class FeedbackScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: controller.feedbackList.length,
+                  itemCount: controller.feedbackListText.length,
                   itemBuilder: (context, index) {
-                    var feedback = controller.feedbackList[index];
+                    var feedbackText = controller.feedbackListText[index];
                     return Container(
                       margin: EdgeInsets.symmetric(horizontal: 20)
                           .copyWith(bottom: 16),
@@ -52,57 +55,74 @@ class FeedbackScreen extends StatelessWidget {
                           border: Border.all(color: AppColors.mainColor),
                           color: AppColors.mainColor.withCustomOpacity(.1)),
                       child: Column(
-                        spacing: 16,
                         children: [
                           Row(
-                            spacing: 12,
                             children: [
                               CircleAvatar(
                                 radius: 25,
-                                backgroundImage: (feedback['branchThumbnail'] !=
-                                            null &&
-                                        feedback['branchThumbnail'].isNotEmpty)
-                                    ? NetworkImage(feedback['branchThumbnail'])
-                                    : null,
-                                child: (feedback['branchThumbnail'] == null ||
-                                        feedback['branchThumbnail'].isEmpty)
+                                backgroundImage:
+                                    (feedbackText['branchThumbnail'] != null &&
+                                            feedbackText['branchThumbnail']
+                                                .isNotEmpty)
+                                        ? NetworkImage(
+                                            feedbackText['branchThumbnail'])
+                                        : null,
+                                child: (feedbackText['branchThumbnail'] ==
+                                            null ||
+                                        feedbackText['branchThumbnail'].isEmpty)
                                     ? Icon(Icons.image_not_supported, size: 25)
                                     : null,
                               ),
-                              Text(
-                                feedback['branch'],
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                  fontFamily: AppFonts.sandSemiBold,
-                                ),
+                              12.horizontal,
+                              Column(
+                                children: [
+                                  Text(
+                                    role == UserRole.user
+                                        ? feedbackText['branch']
+                                        : "Full Name",
+                                    style: AppTextStyles.bodyStyle.copyWith(
+                                      color: AppColors.mainColor,
+                                      fontFamily: AppFonts.sandSemiBold,
+                                    ),
+                                  ),
+                                  Text(
+                                    role == UserRole.user
+                                        ? '@ username'
+                                        : "@ username",
+                                    style: AppTextStyles.regularStyle.copyWith(
+                                      color: AppColors.mainColor,
+                                      fontFamily: AppFonts.sandSemiBold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
+                          16.vertical,
                           Text(
-                            feedback['feedback_text'],
+                            feedbackText['feedback_text'],
                             style: AppTextStyles.regularStyle.copyWith(
-                              color: AppColors.mainColor.withCustomOpacity(
-                                .7,
-                              ),
+                              color: AppColors.mainColor.withCustomOpacity(.7),
                             ),
                           ),
+                          8.vertical,
                           Row(
-                            spacing: 4,
                             children: [
                               Text('Rating:',
                                   style: AppTextStyles.regularStyle.copyWith(
                                     color: AppColors.mainColor,
                                     fontFamily: AppFonts.sandBold,
                                   )),
+                              4.horizontal,
                               Text(
-                                feedback['rating'],
+                                feedbackText['rating'],
                                 style: AppTextStyles.regularStyle.copyWith(
                                   color: const Color(0xFFAB8104),
                                 ),
                               ),
                               Spacer(),
                               Text(
-                                feedback['created_at'],
+                                feedbackText['created_at'],
                                 style: AppTextStyles.lightStyle.copyWith(
                                   color: AppColors.mainColor,
                                   fontFamily: AppFonts.sandSemiBold,

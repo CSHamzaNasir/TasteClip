@@ -20,7 +20,7 @@ import '../views/channel/edit_profile/channel_profile_edit_screen.dart';
 import '../views/main/home/branches/branch_detail/branch_detail_screen.dart';
 import '../views/main/profile/edit_profile/user_profile_edit_screen.dart';
 import '../views/main/profile/profile_detail/image_feedback/cu_image_feedback_screen.dart'
-    show CuImageFeedbackScreen;
+    show ImageFeedbackScreen;
 import '../views/review/Image/upload_image_feedback_screen.dart';
 import '../views/review/text/upload_text_feedback_screen.dart';
 import '../views/review/upload_feedback_screen.dart';
@@ -50,7 +50,7 @@ class AppRouter {
   static const userProfileEditScreen = "/userProfileEditScreen";
   static const profileDetailScreen = "/profileDetailScreen";
   static const branchDetailScreen = "/branchDetailScreen";
-  static const cuImageFeedbackScreen = "/cuImageFeedbackScreen";
+  static const imageFeedbackScreen = "/imageFeedbackScreen";
   static const watchFeedbackScreen = "/watchFeedbackScreen";
   static final routes = [
     GetPage(
@@ -184,8 +184,8 @@ class AppRouter {
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
-      name: cuImageFeedbackScreen,
-      page: () => CuImageFeedbackScreen(),
+      name: imageFeedbackScreen,
+      page: () => ImageFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),

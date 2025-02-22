@@ -26,24 +26,9 @@ class ChannelHomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 20.vertical,
-                Obx(() => Text(
-                      controller.restaurantName.isNotEmpty
-                          ? controller.restaurantName.value
-                          : "Loading...",
-                      style: AppTextStyles.boldBodyStyle.copyWith(
-                        fontSize: 20,
-                        color: AppColors.textColor,
-                      ),
-                    )),
+                
                 10.vertical,
-                Obx(() => Text(
-                      controller.branchAddress.isNotEmpty
-                          ? controller.branchAddress.value
-                          : "Loading...",
-                      style: AppTextStyles.lightStyle.copyWith(
-                        color: AppColors.mainColor,
-                      ),
-                    )),
+              
                 20.vertical,
                 Row(
                   children: List.generate(controller.labels.length, (index) {

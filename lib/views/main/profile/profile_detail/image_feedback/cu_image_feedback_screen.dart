@@ -10,8 +10,8 @@ import '../../../../../constant/app_fonts.dart';
 import '../../../../../widgets/app_background.dart';
 import 'cu_image_feedback_controller.dart';
 
-class CuImageFeedbackScreen extends StatelessWidget {
-  CuImageFeedbackScreen({super.key});
+class ImageFeedbackScreen extends StatelessWidget {
+  ImageFeedbackScreen({super.key});
   final controller = Get.put(CuImageFeedbackController());
 
   @override
