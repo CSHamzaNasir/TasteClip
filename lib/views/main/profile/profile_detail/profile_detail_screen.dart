@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/config/role_enum.dart';
@@ -10,6 +9,8 @@ import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/views/main/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'package:tasteclip/views/main/profile/user_profile_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+
+import 'image_feedback/image_feedback_screen.dart';
 
 class ProfileDetailScreen extends StatelessWidget {
   ProfileDetailScreen({
@@ -94,7 +95,9 @@ class ProfileDetailScreen extends StatelessWidget {
                             ));
                       }
                       if (index == 1) {
-                        Get.toNamed(AppRouter.imageFeedbackScreen);
+                        Get.to(() => ImageFeedbackScreen(
+                              role: UserRole.user,
+                            ));
                       }
                     },
                     child: Container(

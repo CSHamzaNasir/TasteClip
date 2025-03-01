@@ -10,7 +10,11 @@ import 'package:tasteclip/config/app_router.dart';
 
 class UploadImageFeedbackController extends GetxController {
   final imageTitle = TextEditingController();
+  final description = TextEditingController();
   final rating = TextEditingController();
+  final tagController = TextEditingController();
+  RxList<String> tags = <String>[].obs;
+  RxString selectedMealType = 'Breakfast'.obs;
   Rx<File?> selectedImage = Rx<File?>(null);
 
   Future<void> pickImage() async {
@@ -21,8 +25,23 @@ class UploadImageFeedbackController extends GetxController {
     }
   }
 
+void addTag() {
+    if (tagController.text.isNotEmpty) {
+      tags.add(tagController.text.trim());
+      log("Tag Added: ${tags.toList()}");  
+      tagController.clear();
+      update();  
+    }
+  }
+
+
+  void removeTag(String tag) {
+    tags.remove(tag);
+  }
+
   Future<void> saveFeedback({
     required String imageTitle,
+    required String description,
     required String rating,
     required String restaurantName,
     required String branchName,
@@ -59,7 +78,10 @@ class UploadImageFeedbackController extends GetxController {
           List<dynamic> existingFeedback = branch['imageFeedback'] ?? [];
           existingFeedback.add({
             'image_title': imageTitle,
+            'description': description,
             'rating': rating,
+            'tags': tags.toList(),
+            'meal_type': selectedMealType.value,
             'image_url': imageUrl,
             'created_at': DateTime.now().toIso8601String(),
           });

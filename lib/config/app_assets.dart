@@ -14,6 +14,7 @@ class AppAssets {
   static const String imagebased = "assets/images/imagebased.png";
   static const String googleImg = "assets/images/google-img.png";
   static const String dummyImg = "assets/images/dummy.png";
+  static const String categoryFilter = "assets/images/category_filter.jpg";
   static const String userBgImg = "assets/images/user_bg_img.jpg";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
@@ -49,5 +50,7 @@ class AppAssets {
   static const String savedIcon = "assets/icons/saved_icon.svg";
   static const String vertMore = "assets/icons/more.svg";
   static const String menuIcon = "assets/icons/menu.svg";
+  static const String notification = "assets/icons/notification.svg";
+  static const String search = "assets/icons/search.svg";
   static const String chatbotIcon = "assets/icons/chatbot_icon.png";
 }

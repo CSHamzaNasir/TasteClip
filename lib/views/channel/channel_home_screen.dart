@@ -1,114 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import 'channel_hone_controller.dart';
+import 'components/channel_home_appbar.dart';
+import 'components/meal_category.dart';
+import 'components/popular_feedback.dart';
 
 class ChannelHomeScreen extends StatelessWidget {
   const ChannelHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ChannelHomeController());
-
     return AppBackground(
       isLight: true,
-      child: SafeArea(
-        child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                20.vertical,
-                
-                10.vertical,
-              
-                20.vertical,
-                Row(
-                  children: List.generate(controller.labels.length, (index) {
-                    return GetBuilder<ChannelHomeController>(
-                      builder: (_) {
-                        final isSelected = controller.selectedIndex == index;
-
-                        return GestureDetector(
-                          onTap: () => controller.updateIndex(index),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? AppColors.mainColor
-                                    : Colors.transparent,
-                                border: Border.all(color: AppColors.mainColor),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Text(
-                                controller.labels[index],
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                  fontFamily: isSelected
-                                      ? AppFonts.sandBold
-                                      : AppFonts.sandSemiBold,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : AppColors.mainColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }),
-                ),
-                20.vertical,
-                Container(
-                  padding: EdgeInsets.all(16).copyWith(bottom: 40),
-                  decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(20)),
+      child: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ChannelHomeAppBar(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
+                    spacing: 16,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        AppAssets.dummyImg,
-                        height: 191,
+                      1.vertical,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Categories",
+                            style: AppTextStyles.boldBodyStyle
+                                .copyWith(color: AppColors.textColor),
+                          ),
+                          Text(
+                            "See All",
+                            style: AppTextStyles.lightStyle.copyWith(
+                                color: AppColors.mainColor,
+                                fontFamily: AppFonts.sandSemiBold),
+                          )
+                        ],
                       ),
-                      16.vertical,
-                      Text(
-                        "Video Title",
-                        style: AppTextStyles.boldBodyStyle.copyWith(
-                          fontFamily: AppFonts.sandSemiBold,
-                          color: AppColors.textColor,
-                        ),
+                      MealCategoryRow(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Most Popular",
+                            style: AppTextStyles.boldBodyStyle
+                                .copyWith(color: AppColors.textColor),
+                          ),
+                          Text(
+                            "See All",
+                            style: AppTextStyles.lightStyle.copyWith(
+                                color: AppColors.mainColor,
+                                fontFamily: AppFonts.sandSemiBold),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Branch name",
-                        style: AppTextStyles.lightStyle.copyWith(
-                          color: AppColors.mainColor,
-                        ),
+                      PopularFeedback(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Your Feedbacker",
+                            style: AppTextStyles.boldBodyStyle
+                                .copyWith(color: AppColors.textColor),
+                          ),
+                          Text(
+                            "See All",
+                            style: AppTextStyles.lightStyle.copyWith(
+                                color: AppColors.mainColor,
+                                fontFamily: AppFonts.sandSemiBold),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "12 min ago",
-                        style: AppTextStyles.lightStyle.copyWith(
-                          color: AppColors.mainColor,
-                        ),
-                      )
                     ],
                   ),
-                )
-              ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

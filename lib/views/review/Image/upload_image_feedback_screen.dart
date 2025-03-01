@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/views/review/upload_feedback_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/review/upload_feedback_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
-import 'package:get/get.dart';
 import 'package:tasteclip/widgets/app_button.dart';
+
 import '../../../widgets/custom_appbar.dart';
 import 'components/select_restaurant_sheet.dart';
 
@@ -23,21 +23,18 @@ class UploadImageFeedbackScreen extends StatelessWidget {
           appBar: const CustomAppBar(
             title: AppString.uploadfeedback,
           ),
-          body: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                children: [
-                  50.vertical,
-                  100.horizontal,
-                  Text(
-                    AppString.imagebasedfeedback,
-                    style: AppTextStyles.bodyStyle
-                        .copyWith(color: AppColors.mainColor),
-                  ),
-                  20.vertical,
-                  Image.asset(AppAssets.imagebased),
-                  Padding(
-                    padding: const EdgeInsets.all(35.0),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              spacing: 16,
+              children: [
+                Image.asset(
+                  AppAssets.imagebased,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -64,23 +61,25 @@ class UploadImageFeedbackScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        41.vertical,
-                        AppButton(
-                          text: 'Continue',
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) =>
-                                  const SelectRestaurantSheetImage(),
-                            );
-                          },
-                        ),
                       ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: AppButton(
+                    text: 'Continue',
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) =>
+                            const SelectRestaurantSheetImage(),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         )));

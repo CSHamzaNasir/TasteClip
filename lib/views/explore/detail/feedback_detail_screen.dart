@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_assets.dart';
+import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
+import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 
 import '../../../config/app_text_styles.dart';
+import 'feedback_detail_controller.dart';
 
 class FeedbackDetailScreen extends StatelessWidget {
   final Map<String, dynamic> feedback;
+  FeedbackDetailScreen({super.key, required this.feedback});
 
-  const FeedbackDetailScreen({super.key, required this.feedback});
+  final controller = Get.put(FeedbackDetailController());
 
   @override
   Widget build(BuildContext context) {
+    controller.setFeedback(feedback);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -26,9 +30,7 @@ class FeedbackDetailScreen extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color: AppColors.lightColor,
-                ),
+                border: Border.all(color: AppColors.lightColor),
                 color: Colors.black.withCustomOpacity(0.3),
               ),
               padding: EdgeInsets.all(8),
@@ -40,28 +42,6 @@ class FeedbackDetailScreen extends StatelessWidget {
             ),
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color: AppColors.lightColor,
-                ),
-                color: Colors.black.withCustomOpacity(0.3),
-              ),
-              child: SvgPicture.asset(
-                colorFilter: ColorFilter.mode(
-                  AppColors.lightColor,
-                  BlendMode.srcIn,
-                ),
-                AppAssets.vertMore,
-              ),
-            ),
-          )
-        ],
         centerTitle: true,
         title: Text(
           "Feedback Details",
@@ -136,9 +116,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      Divider(
-                        color: AppColors.textColor,
-                      ),
+                      Divider(color: AppColors.textColor),
                       Text(
                         feedback['image_title'],
                         style: AppTextStyles.bodyStyle.copyWith(
@@ -153,20 +131,63 @@ class FeedbackDetailScreen extends StatelessWidget {
                           Text(
                             feedback['created_at'],
                             style: AppTextStyles.lightStyle.copyWith(
-                              color: AppColors.textColor.withCustomOpacity(.8),
+                              color: AppColors.textColor.withCustomOpacity(0.8),
                             ),
                           ),
                         ],
                       ),
-                      AppButton(
-                        text: "Add to bookmark",
-                        onPressed: () {},
-                        btnRadius: 50,
+                      Obx(
+                        () => AppButton(
+                          text: controller.isBookmarked.value
+                              ? "Bookmarked"
+                              : "Add to bookmark",
+                          onPressed: () => controller.toggleBookmark(),
+                          btnRadius: 50,
+                        ),
                       )
                     ],
                   ),
                 ),
                 16.vertical,
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: AppColors.whiteColor,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.favorite_border, color: AppColors.mainColor),
+                      4.horizontal,
+                      Text("12",
+                          style: AppTextStyles.lightStyle.copyWith(
+                            color: AppColors.mainColor,
+                          )),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () => controller.showAddCommentSheet(context),
+                        child: Row(
+                          children: [
+                            Icon(Icons.add),
+                            4.horizontal,
+                            Text("Add comment",
+                                style: AppTextStyles.lightStyle.copyWith(
+                                  color: AppColors.mainColor,
+                                  fontFamily: AppFonts.sandBold,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(Icons.comment_outlined, color: AppColors.mainColor),
+                      4.horizontal,
+                      Text("12",
+                          style: AppTextStyles.lightStyle.copyWith(
+                            color: AppColors.mainColor,
+                          )),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

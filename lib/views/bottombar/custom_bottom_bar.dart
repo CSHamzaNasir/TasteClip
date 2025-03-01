@@ -40,10 +40,9 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     HomeScreen(),
     UserProfileScreen(),
   ];
-
   void _onItemTapped(int index) {
     if (index == 1) {
-      _showSvgDialog();
+      _showBottomSheet();
     } else {
       setState(() {
         _selectedIndex = index;
@@ -51,66 +50,85 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     }
   }
 
-  void _showSvgDialog() {
+  void _showBottomSheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
-        return Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.17,
-              padding: EdgeInsets.only(top: 60),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        return Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Choose an option",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-            Positioned(
-              top: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                      onTap: () => Get.toNamed(
-                            AppRouter.uploadTextFeedbackScreen,
-                          ),
-                      child: _buildSvgIcon(AppAssets.message)),
-                  10.horizontal,
-                  InkWell(
-                      onTap: () => Get.toNamed(
-                            AppRouter.uploadImageFeedbackScreen,
-                          ),
-                      child: _buildSvgIcon(AppAssets.camera)),
-                  10.horizontal,
-                  _buildSvgIcon(AppAssets.video),
+                  _buildBottomSheetIcon(
+                    iconPath: AppAssets.message,
+                    label: "Text",
+                    onTap: () {
+                      Get.toNamed(AppRouter.uploadTextFeedbackScreen);
+                    },
+                  ),
+                  _buildBottomSheetIcon(
+                    iconPath: AppAssets.camera,
+                    label: "Image",
+                    onTap: () {
+                      Get.toNamed(AppRouter.uploadImageFeedbackScreen);
+                    },
+                  ),
+                  _buildBottomSheetIcon(
+                    iconPath: AppAssets.video,
+                    label: "Video",
+                    onTap: () {
+                      // Add action for video
+                    },
+                  ),
                 ],
               ),
-            ),
-          ],
+              SizedBox(height: 20),
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget _buildSvgIcon(String assetPath) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(color: Colors.black26, blurRadius: 5),
-        ],
-      ),
-      child: SvgPicture.asset(
-        assetPath,
-        width: 24,
-        height: 24,
-        colorFilter: ColorFilter.mode(AppColors.mainColor, BlendMode.srcIn),
-      ),
+  Widget _buildBottomSheetIcon(
+      {required String iconPath,
+      required String label,
+      required VoidCallback onTap}) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey.shade200,
+            ),
+            child: SvgPicture.asset(
+              iconPath,
+              width: 30,
+              height: 30,
+              colorFilter:
+                  ColorFilter.mode(AppColors.mainColor, BlendMode.srcIn),
+            ),
+          ),
+        ),
+        SizedBox(height: 5),
+        Text(label, style: TextStyle(fontSize: 14)),
+      ],
     );
   }
 

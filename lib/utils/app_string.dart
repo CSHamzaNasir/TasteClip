@@ -90,9 +90,9 @@ class AppString {
   //---------------------------------------------------------------------------- Upload Feedback //
   static const String feedback = 'Feedback';
   static const String selectBranch = 'Select Branch';
-  static const String uploadfeedback = 'Upload Feedback';
+  static const String uploadfeedback = 'Upload Image Feedback';
   static const String selectReviewType = 'Select Review Type';
-  static const String enterYourFeedbackHere = 'Enter your feedback here...';
+  static const String enterYourFeedbackHere = 'Enter your feedback title...';
   static const String textbased = 'Text-Based';
   static const String textbasedfeedback = 'Text Based Feedback';
   static const String textbasedfeedbackdesc =

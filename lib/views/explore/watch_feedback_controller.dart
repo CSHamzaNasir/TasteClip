@@ -6,11 +6,17 @@ class WatchFeedbackController extends GetxController {
   var feedbackList = <Map<String, dynamic>>[].obs;
   var feedbackListText = <Map<String, dynamic>>[].obs;
   var selectedIndex = 0.obs;
+  var selectedTopFilter = 0.obs;
 
   final List<String> categories = ["Text", "Image", "Videos"];
+  final List<String> filters = ["All", "BreakFast", "Lunch", "Dinner"];
 
   void changeCategory(int index) {
     selectedIndex.value = index;
+  }
+
+  void changeFilter(int index) {
+    selectedTopFilter.value = index;
   }
 
   @override

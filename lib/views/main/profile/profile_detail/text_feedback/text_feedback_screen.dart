@@ -15,8 +15,7 @@ class TextFeedbackScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FeedbackController controller =
-        Get.put(FeedbackController(role: role));
+    final controller = Get.put(TextFeedbackController(role: role));
 
     return AppBackground(
       isDefault: false,
@@ -55,6 +54,7 @@ class TextFeedbackScreen extends StatelessWidget {
                           border: Border.all(color: AppColors.mainColor),
                           color: AppColors.mainColor.withCustomOpacity(.1)),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
@@ -75,6 +75,7 @@ class TextFeedbackScreen extends StatelessWidget {
                               ),
                               12.horizontal,
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     role == UserRole.user

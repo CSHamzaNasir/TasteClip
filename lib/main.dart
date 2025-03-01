@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/firebase_options.dart';
-import 'package:tasteclip/views/bottombar/custom_bottom_bar.dart' show CustomBottomBar;
+import 'package:tasteclip/views/explore/watch_feedback_screen.dart';
 
-import 'config/theme.dart'; 
+import 'config/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +22,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,  
+      DeviceOrientation.portraitUp,
     ]);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      home: CustomBottomBar(),
+      home: WatchFeedbackScreen(),
       // initialRoute: AppRouter.loginScreen,
     );
   }

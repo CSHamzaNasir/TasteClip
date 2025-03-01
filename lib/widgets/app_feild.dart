@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
@@ -7,7 +8,7 @@ class AppFeild extends StatefulWidget {
   final TextEditingController? controller;
   final Key? fieldKey;
   final bool? isPasswordField;
-  final bool isSearchField; // New parameter for search field
+  final bool isSearchField;
   final String hintText;
   final String? labelText;
   final String? helperText;
@@ -15,13 +16,18 @@ class AppFeild extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onFieldSubmitted;
   final TextInputType? inputType;
-  final IconData? prefixIcon;
+  final String? prefixImage;
   final double? iconSize;
   final Color? iconColor;
   final bool feildSideClr;
   final bool feildFocusClr;
   final Color? feildClr;
-  final double radius; // New parameter for radius
+  final double radius;
+  final double height;
+  final Color? hintTextColor;
+  final Color? fieldTextColor;
+  final String? suffixImage;
+  final VoidCallback? onSuffixTap;
 
   const AppFeild({
     super.key,
@@ -35,14 +41,19 @@ class AppFeild extends StatefulWidget {
     this.validator,
     this.onFieldSubmitted,
     this.inputType,
-    this.prefixIcon,
+    this.prefixImage,
     this.iconSize,
     this.iconColor,
     this.feildSideClr = false,
     this.feildFocusClr = false,
     this.feildClr,
-    this.radius = 12, // Default radius
-    this.isSearchField = false, // Default is not a search field
+    this.radius = 12,
+    this.isSearchField = false,
+    this.height = 55,
+    this.hintTextColor,
+    this.fieldTextColor,
+    this.suffixImage,
+    this.onSuffixTap,
   });
 
   @override
@@ -56,14 +67,14 @@ class AppFeildState extends State<AppFeild> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: widget.height,
       decoration: BoxDecoration(
         color: widget.feildClr ?? AppColors.transparent,
-        borderRadius: BorderRadius.all(
-            Radius.circular(widget.radius)), // Use the radius parameter
+        borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
       ),
       child: TextFormField(
         style: AppTextStyles.lightStyle.copyWith(
-          color: AppColors.mainColor,
+          color: widget.fieldTextColor ?? AppColors.mainColor,
           fontFamily: AppFonts.sandMedium,
         ),
         controller: widget.controller,
@@ -80,12 +91,10 @@ class AppFeildState extends State<AppFeild> {
                   ? AppColors.mainColor
                   : AppColors.greyColor,
             ),
-            borderRadius: BorderRadius.all(
-                Radius.circular(widget.radius)), // Use the radius parameter
+            borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(widget.radius)), // Use the radius parameter
+            borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
             borderSide: BorderSide(
               color: widget.feildSideClr
                   ? AppColors.mainColor
@@ -94,22 +103,22 @@ class AppFeildState extends State<AppFeild> {
           ),
           border: InputBorder.none,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(
-            color: AppColors.mainColor,
+          hintStyle: TextStyle(
+            color: widget.hintTextColor ?? AppColors.mainColor,
             fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
-          prefixIcon: widget.isSearchField
-              ? const Icon(Icons.search,
-                  color: AppColors
-                      .mainColor) // Show search icon if it's a search field
-              : widget.prefixIcon != null
-                  ? Icon(
-                      widget.prefixIcon,
-                      size: widget.iconSize,
-                      color: widget.iconColor,
-                    )
-                  : null,
+          prefixIcon: widget.prefixImage != null
+              ? Padding(
+                  padding: const EdgeInsets.all(12.0).copyWith(left: 16),
+                  child: SvgPicture.asset(
+                    widget.prefixImage!,
+                    width: widget.iconSize ?? 24,
+                    height: widget.iconSize ?? 24,
+                    fit: BoxFit.contain,
+                  ),
+                )
+              : null,
           suffixIcon: widget.isPasswordField == true
               ? GestureDetector(
                   onTap: () {
@@ -125,7 +134,20 @@ class AppFeildState extends State<AppFeild> {
                         : AppColors.textColor,
                   ),
                 )
-              : const SizedBox.shrink(),
+              : widget.suffixImage != null
+                  ? GestureDetector(
+                      onTap: widget.onSuffixTap,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0).copyWith(right: 16),
+                        child: SvgPicture.asset(
+                          widget.suffixImage!,
+                          width: widget.iconSize ?? 24,
+                          height: widget.iconSize ?? 24,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  : null,
         ),
       ),
     );

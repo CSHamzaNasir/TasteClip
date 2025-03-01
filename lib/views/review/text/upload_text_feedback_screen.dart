@@ -4,8 +4,8 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
-import 'package:tasteclip/views/review/upload_feedback_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/review/upload_feedback_controller.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 
@@ -23,8 +23,8 @@ class UploadTextFeedbackScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: const CustomAppBar(
-            title: AppString.uploadfeedback,
-            showBackIcon: false,
+            title: "Upload Text Feedback",
+            showBackIcon: true,
           ),
           body: Column(
             children: [
@@ -32,14 +32,6 @@ class UploadTextFeedbackScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      45.vertical,
-                      100.horizontal,
-                      Text(
-                        AppString.textbasedfeedback,
-                        style: AppTextStyles.headingStyle1
-                            .copyWith(color: AppColors.mainColor),
-                      ),
-                      23.vertical,
                       Image.asset(AppAssets.textbased),
                       Padding(
                         padding: const EdgeInsets.all(35.0),

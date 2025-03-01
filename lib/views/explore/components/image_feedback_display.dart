@@ -30,59 +30,52 @@ class ImageFeedbackDisplay extends StatelessWidget {
         var feedback = controller.feedbackList[index];
         return InkWell(
           onTap: () => Get.to(() => FeedbackDetailScreen(feedback: feedback)),
-          child: Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                color: AppColors.lightColor.withCustomOpacity(.8),
-                borderRadius: BorderRadius.circular(16)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 8,
-              children: [
-                (feedback['image_url'] != null &&
-                        feedback['image_url'].isNotEmpty)
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12)),
-                        child: Image.network(
-                          feedback['image_url'],
-                          width: double.infinity,
-                          height: 130,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Icon(Icons.image_not_supported, size: 25),
-                Row(
-                  spacing: 6,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '@${feedback['channelName']}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.lightStyle.copyWith(
-                          color: AppColors.textColor.withCustomOpacity(.5),
-                          fontFamily: AppFonts.sandSemiBold,
-                        ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 8,
+            children: [
+              (feedback['image_url'] != null &&
+                      feedback['image_url'].isNotEmpty)
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        feedback['image_url'],
+                        width: double.infinity,
+                        height: 150,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                    Icon(
-                      size: 16,
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    Text(
-                      feedback['rating'],
+                    )
+                  : Icon(Icons.image_not_supported, size: 25),
+              Row(
+                spacing: 6,
+                children: [
+                  Expanded(
+                    child: Text(
+                      '@${feedback['channelName']}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.lightStyle.copyWith(
                         color: AppColors.textColor.withCustomOpacity(.5),
                         fontFamily: AppFonts.sandSemiBold,
                       ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+                    ),
+                  ),
+                  Icon(
+                    size: 16,
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  Text(
+                    feedback['rating'],
+                    style: AppTextStyles.lightStyle.copyWith(
+                      color: AppColors.textColor.withCustomOpacity(.5),
+                      fontFamily: AppFonts.sandSemiBold,
+                    ),
+                  ),
+                  16.vertical,
+                ],
+              ),
+            ],
           ),
         );
       },
