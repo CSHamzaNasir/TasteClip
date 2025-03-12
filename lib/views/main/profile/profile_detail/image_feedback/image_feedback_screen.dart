@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -24,7 +25,7 @@ class ImageFeedbackScreen extends StatelessWidget {
       child: Scaffold(
         body: Obx(() {
           if (controller.feedbackList.isEmpty) {
-            return Center(child: Text("Loading..."));
+            return Center(child: CupertinoActivityIndicator());
           }
           return Column(
             children: [
@@ -57,15 +58,36 @@ class ImageFeedbackScreen extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 25,
-                                backgroundImage: (feedback['branchThumbnail'] !=
-                                            null &&
+                                backgroundColor: Colors.grey[300],
+                                child: (feedback['branchThumbnail'] != null &&
                                         feedback['branchThumbnail'].isNotEmpty)
-                                    ? NetworkImage(feedback['branchThumbnail'])
-                                    : null,
-                                child: (feedback['branchThumbnail'] == null ||
-                                        feedback['branchThumbnail'].isEmpty)
-                                    ? Icon(Icons.image_not_supported, size: 25)
-                                    : null,
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: Image.network(
+                                          feedback['branchThumbnail'],
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                                child:
+                                                    CupertinoActivityIndicator());
+                                          },
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Icon(
+                                                Icons.image_not_supported,
+                                                size: 25,
+                                                color: Colors.grey);
+                                          },
+                                        ),
+                                      )
+                                    : Icon(Icons.image_not_supported,
+                                        size: 25, color: Colors.grey),
                               ),
                               Column(
                                 spacing: 4,
@@ -99,6 +121,20 @@ class ImageFeedbackScreen extends StatelessWidget {
                                     feedback['image_url'],
                                     width: double.infinity,
                                     fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child; // Image fully loaded
+                                      }
+                                      return Center(
+                                        child:
+                                            CupertinoActivityIndicator(), // Cupertino Loader
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(Icons.image_not_supported,
+                                          size: 25);
+                                    },
                                   ),
                                 )
                               : Icon(Icons.image_not_supported, size: 25),

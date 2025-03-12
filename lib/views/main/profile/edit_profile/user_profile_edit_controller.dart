@@ -16,7 +16,7 @@ class UserProfileEditController extends GetxController {
 
   RxString userName = ''.obs;
   RxString fullName = ''.obs;
-  RxString profileImageUrl = ''.obs;
+  RxString profileImage = ''.obs;
 
   Future<void> updateProfile({
     required String updatedUserName,
@@ -37,13 +37,13 @@ class UserProfileEditController extends GetxController {
         await firestore.collection('email_user').doc(user.uid).update({
           'userName': updatedUserName,
           'fullName': updatedFullName,
-          'profile_image': imageUrl ?? profileImageUrl.value,
+          'profileImage': imageUrl ?? profileImage.value,
         });
 
         // Update local variables
         userName.value = updatedUserName;
         fullName.value = updatedFullName;
-        if (imageUrl != null) profileImageUrl.value = imageUrl;
+        if (imageUrl != null) profileImage.value = imageUrl;
 
         Get.snackbar(
           'Success',

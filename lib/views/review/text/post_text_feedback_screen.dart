@@ -5,8 +5,9 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/views/bottombar/custom_bottom_bar.dart';
-import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/app_button.dart';
+import 'package:tasteclip/widgets/app_feild.dart';
+
 import 'upload_text_feedback_controller.dart';
 
 class PostTextFeedbackScreen extends StatelessWidget {
@@ -74,8 +75,6 @@ class PostTextFeedbackScreen extends StatelessWidget {
                         controller.rating.text.isNotEmpty
                     ? () {
                         controller.saveFeedback(
-                          textFeedback: controller.textFeedback.text,
-                          rating: controller.rating.text,
                           restaurantName: restaurantName,
                           branchName: branchName,
                         );

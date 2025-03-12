@@ -1,0 +1,59 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class UserController extends GetxController {
+  static UserController get to => Get.find();
+
+  var userName = "".obs;
+  var userEmail = "".obs;
+  var userProfileImage = "".obs;
+  var fullName = "".obs;
+  var isUserLoaded = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadUserData();
+  }
+
+  Future<void> fetchAndStoreUserData(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('email_user')
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+
+        fullName.value = userData['fullName'] ?? '';
+        userEmail.value = userData['email'] ?? '';
+        userName.value = userData['userName'] ?? '';
+        userProfileImage.value = userData['profileImage'] ?? '';
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('fullName', fullName.value);
+        await prefs.setString('userName', userName.value);
+        await prefs.setString('userEmail', userEmail.value);
+        await prefs.setString('userProfileImage', userProfileImage.value);
+
+        isUserLoaded.value = true;
+        log("User Data Fetched & Stored Locally: ${userName.value}");
+      }
+    } catch (e) {
+      log("Error fetching user data: $e");
+    }
+  }
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    fullName.value = prefs.getString('fullName') ?? "fullName";
+    userName.value = prefs.getString('userName') ?? "Guest User";
+    userEmail.value = prefs.getString('userEmail') ?? "No Email";
+    userProfileImage.value = prefs.getString('userProfileImage') ?? "";
+    isUserLoaded.value = true;
+  }
+}

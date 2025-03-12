@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
-import 'package:tasteclip/widgets/app_feild.dart'; 
+import 'package:tasteclip/widgets/app_feild.dart';
 
 class ChannelHomeAppBar extends StatelessWidget {
   const ChannelHomeAppBar({
@@ -53,13 +55,16 @@ class ChannelHomeAppBar extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: AppColors.whiteColor, shape: BoxShape.circle),
-                child: SvgPicture.asset(
-                  AppAssets.notification,
-                  fit: BoxFit.cover,
+              InkWell(
+                onTap: () => Get.toNamed(AppRouter.notificationScreen),
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: AppColors.whiteColor, shape: BoxShape.circle),
+                  child: SvgPicture.asset(
+                    AppAssets.notification,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               )
             ],

@@ -2,11 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasteclip/config/app_router.dart';
+import 'package:tasteclip/views/review/Image/model/image_feedback_model.dart';
 
 class UploadImageFeedbackController extends GetxController {
   final imageTitle = TextEditingController();
@@ -25,15 +27,14 @@ class UploadImageFeedbackController extends GetxController {
     }
   }
 
-void addTag() {
+  void addTag() {
     if (tagController.text.isNotEmpty) {
       tags.add(tagController.text.trim());
-      log("Tag Added: ${tags.toList()}");  
+      log("Tag Added: ${tags.toList()}");
       tagController.clear();
-      update();  
+      update();
     }
   }
-
 
   void removeTag(String tag) {
     tags.remove(tag);
@@ -47,6 +48,12 @@ void addTag() {
     required String branchName,
   }) async {
     try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        log("User not logged in!");
+        return;
+      }
+
       if (selectedImage.value == null) {
         log("No image selected!");
         return;
@@ -59,6 +66,17 @@ void addTag() {
       UploadTask uploadTask = storageRef.putFile(selectedImage.value!);
       TaskSnapshot snapshot = await uploadTask;
       String imageUrl = await snapshot.ref.getDownloadURL();
+
+      ImageFeedbackModel feedback = ImageFeedbackModel(
+        userId: user.uid,
+        imageTitle: imageTitle,
+        description: description,
+        rating: rating,
+        tags: tags.toList(),
+        mealType: selectedMealType.value,
+        imageUrl: imageUrl,
+        createdAt: DateTime.now(),
+      );
 
       final restaurantDoc = FirebaseFirestore.instance
           .collection('restaurants')
@@ -76,15 +94,7 @@ void addTag() {
       for (var branch in branches) {
         if (branch['branchAddress'] == branchName) {
           List<dynamic> existingFeedback = branch['imageFeedback'] ?? [];
-          existingFeedback.add({
-            'image_title': imageTitle,
-            'description': description,
-            'rating': rating,
-            'tags': tags.toList(),
-            'meal_type': selectedMealType.value,
-            'image_url': imageUrl,
-            'created_at': DateTime.now().toIso8601String(),
-          });
+          existingFeedback.add(feedback.toMap());
           branch['imageFeedback'] = existingFeedback;
         }
         updatedBranches.add(branch);

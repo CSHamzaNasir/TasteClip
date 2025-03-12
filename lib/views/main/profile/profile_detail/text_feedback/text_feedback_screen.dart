@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/config/role_enum.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+
 import 'text_feedback_controller.dart';
 
 class TextFeedbackScreen extends StatelessWidget {
@@ -26,19 +28,74 @@ class TextFeedbackScreen extends StatelessWidget {
           }
           return Column(
             children: [
-              Container(
-                height: 150,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(50)),
-                  color: AppColors.mainColor,
-                ),
-                child: Center(
-                  child: Text("Text Feedback",
-                      style: AppTextStyles.boldBodyStyle
-                          .copyWith(color: AppColors.lightColor)),
-                ),
+              Stack(
+                clipBehavior: Clip
+                    .none, // Allows the avatars to overflow outside the container
+                children: [
+                  Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(50)),
+                      color: AppColors.mainColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Text Feedback",
+                        style: AppTextStyles.boldBodyStyle
+                            .copyWith(color: AppColors.lightColor),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -25,
+                    left: 16,
+                    right: 0,
+                    child: Row(
+                      spacing: 12,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              shape: BoxShape.circle),
+                          child: Image.asset(
+                            width: 24,
+                            height: 24,
+                            AppAssets.breakfast,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              shape: BoxShape.circle),
+                          child: Image.asset(
+                            width: 24,
+                            height: 24,
+                            AppAssets.lunch,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              shape: BoxShape.circle),
+                          child: Image.asset(
+                            width: 24,
+                            height: 24,
+                            AppAssets.dinner,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: ListView.builder(

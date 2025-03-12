@@ -1,20 +1,34 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tasteclip/views/review/text/model/text_feedback_model.dart';
 
 class UploadTextFeedbackController extends GetxController {
   final textFeedback = TextEditingController();
   final rating = TextEditingController();
 
   Future<void> saveFeedback({
-    required String textFeedback,
-    required String rating,
     required String restaurantName,
     required String branchName,
   }) async {
     try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        log("User not logged in!");
+        return;
+      }
+
+      final String userId = user.uid;
+      final feedback = FeedbackModel(
+        userId: userId,
+        feedbackText: textFeedback.text,
+        rating: rating.text,
+        createdAt: DateTime.now(),
+      );
+
       final restaurantDoc = FirebaseFirestore.instance
           .collection('restaurants')
           .doc(restaurantName);
@@ -26,23 +40,26 @@ class UploadTextFeedbackController extends GetxController {
       }
 
       final List<dynamic> branches = restaurantSnapshot['branches'] ?? [];
-      List<dynamic> updatedBranches = [];
+      bool branchFound = false;
 
       for (var branch in branches) {
         if (branch['branchAddress'] == branchName) {
-          List<dynamic> existingFeedback = branch['textFeedback'] ?? [];
-          existingFeedback.add({
-            'feedback_text': textFeedback,
-            'rating': rating,
-            'created_at': DateTime.now().toIso8601String(),
-          });
-          branch['textFeedback'] = existingFeedback;
+          branchFound = true;
+          branch['textFeedback'] = (branch['textFeedback'] ?? [])
+            ..add(feedback.toMap());
+          break;
         }
-        updatedBranches.add(branch);
       }
 
-      await restaurantDoc.update({'branches': updatedBranches});
-      log("Feedback submitted successfully!");
+      if (branchFound) {
+        await restaurantDoc.update({'branches': branches});
+        log("Feedback submitted successfully!");
+      } else {
+        log("Branch not found!");
+      }
+
+      textFeedback.clear();
+      rating.clear();
     } catch (e) {
       log("Error saving feedback: $e");
     }

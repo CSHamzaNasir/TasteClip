@@ -51,6 +51,7 @@ dependencies:
   firebase_storage: ^12.3.6
   shimmer: ^3.0.0
   timeago: ^3.7.0
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:

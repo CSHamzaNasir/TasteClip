@@ -6,8 +6,10 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
+import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/main/profile/profile_detail/image_feedback/image_feedback_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+
 import '../../../config/role_enum.dart';
 import '../../main/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'channel_profile_controller.dart';
@@ -26,11 +28,24 @@ class ChannelProfileScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.transparent,
           elevation: 0,
-          title: Text(
-              role == UserRole.manager ? "Manager Profile" : "User Profile",
-              style: AppTextStyles.bodyStyle.copyWith(
-                color: AppColors.textColor,
-              )),
+          title: Row(
+            children: [
+              Text(
+                  role == UserRole.manager ? "Manager Profile" : "User Profile",
+                  style: AppTextStyles.bodyStyle.copyWith(
+                    color: AppColors.textColor,
+                  )),
+              Spacer(),
+              InkWell(
+                  onTap: () => Get.to((RoleScreen())),
+                  child: Text(
+                    "Log out",
+                    style: AppTextStyles.bodyStyle.copyWith(
+                      color: AppColors.textColor,
+                    ),
+                  ))
+            ],
+          ),
           centerTitle: true,
         ),
         body: Obx(

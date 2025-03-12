@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -41,7 +42,7 @@ class WatchFeedbackScreen extends StatelessWidget {
               ),
             ),
             centerTitle: true,
-            title: Text("Images Feedback",
+            title: Text("Explore Feedback",
                 style: AppTextStyles.bodyStyle.copyWith(
                   color: AppColors.textColor,
                   fontFamily: AppFonts.sandBold,
@@ -62,6 +63,7 @@ class WatchFeedbackScreen extends StatelessWidget {
                         feildSideClr: false,
                         radius: 50,
                         hintText: "hintText",
+                        prefixImage: AppAssets.search,
                         isSearchField: true,
                       ),
                     ),
@@ -82,7 +84,7 @@ class WatchFeedbackScreen extends StatelessWidget {
                 TopFilter(controller: controller),
                 Obx(() {
                   if (controller.feedbackList.isEmpty) {
-                    return Center(child: Text("Loading..."));
+                    return Center(child: CupertinoActivityIndicator());
                   }
                   return Expanded(
                     child: Column(

@@ -5,13 +5,13 @@ class AuthModel {
   final String fullName;
   final String userName;
   final String email;
-  final String? profileImageUrl;
+  final String? profileImage;
   AuthModel({
     required this.uid,
     required this.fullName,
     required this.userName,
     required this.email,
-    this.profileImageUrl,
+    this.profileImage,
   });
 
   AuthModel copyWith({
@@ -19,14 +19,14 @@ class AuthModel {
     String? fullName,
     String? userName,
     String? email,
-    String? profileImageUrl,
+    String? profileImage,
   }) {
     return AuthModel(
       uid: uid ?? this.uid,
       fullName: fullName ?? this.fullName,
       userName: userName ?? this.userName,
       email: email ?? this.email,
-      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 
@@ -36,7 +36,7 @@ class AuthModel {
       'fullName': fullName,
       'userName': userName,
       'email': email,
-      'profileImageUrl': profileImageUrl,
+      'profileImage': profileImage,
     };
   }
 
@@ -46,9 +46,8 @@ class AuthModel {
       fullName: map['fullName'] as String,
       userName: map['userName'] as String,
       email: map['email'] as String,
-      profileImageUrl: map['profileImageUrl'] != null
-          ? map['profileImageUrl'] as String
-          : null,
+      profileImage:
+          map['profileImage'] != null ? map['profileImage'] as String : null,
     );
   }
 
@@ -59,7 +58,7 @@ class AuthModel {
 
   @override
   String toString() {
-    return 'AuthModel(uid: $uid, fullName: $fullName, userName: $userName, email: $email, profileImageUrl: $profileImageUrl)';
+    return 'AuthModel(uid: $uid, fullName: $fullName, userName: $userName, email: $email, profileImage: $profileImage)';
   }
 
   @override
@@ -70,7 +69,7 @@ class AuthModel {
         other.fullName == fullName &&
         other.userName == userName &&
         other.email == email &&
-        other.profileImageUrl == profileImageUrl;
+        other.profileImage == profileImage;
   }
 
   @override
@@ -79,6 +78,6 @@ class AuthModel {
         fullName.hashCode ^
         userName.hashCode ^
         email.hashCode ^
-        profileImageUrl.hashCode;
+        profileImage.hashCode;
   }
 }

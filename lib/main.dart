@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasteclip/config/app_router.dart';
 import 'package:tasteclip/firebase_options.dart';
-import 'package:tasteclip/views/explore/watch_feedback_screen.dart';
+import 'package:tasteclip/views/auth/splash/binding/initial_binding.dart';
 
 import 'config/theme.dart';
 
@@ -25,11 +25,12 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return GetMaterialApp(
+      initialBinding: InitialBinding(),
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      home: WatchFeedbackScreen(),
-      // initialRoute: AppRouter.loginScreen,
+      // home: ChannelBottomBar(),
+      initialRoute: AppRouter.splashScreen,
     );
   }
 }

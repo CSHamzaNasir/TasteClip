@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
 import '../../../config/app_assets.dart';
 import '../../../config/app_router.dart';
 
@@ -38,7 +39,7 @@ class UserProfileController extends GetxController {
   RxString email = ''.obs;
   RxString fullName = ''.obs;
   // ignore: non_constant_identifier_names
-  RxString profile_image = ''.obs;
+  RxString profileImage = ''.obs;
   RxString userName = ''.obs;
 
   @override
@@ -57,12 +58,21 @@ class UserProfileController extends GetxController {
         if (userDoc.exists) {
           email.value = userDoc['email'] ?? '';
           fullName.value = userDoc['fullName'] ?? '';
-          profile_image.value = userDoc['profile_image'] ?? '';
+          profileImage.value = userDoc['profileImage'] ?? '';
           userName.value = userDoc['userName'] ?? '';
         }
       }
     } catch (e) {
       log('Error fetching user data: $e');
+    }
+  }
+
+  void logout() async {
+    try {
+      await auth.signOut();
+      Get.offAllNamed(AppRouter.splashScreen);
+    } catch (e) {
+      log('Error logging out: $e');
     }
   }
 }

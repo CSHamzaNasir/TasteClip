@@ -4,34 +4,34 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/role_enum.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class ImageFeedbackController extends GetxController {
+class NotificationController extends GetxController {
   final UserRole role;
-  ImageFeedbackController({required this.role});
+  NotificationController({required this.role});
 
-  var feedbackList = <Map<String, dynamic>>[].obs;
+  var notificationList = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchFeedback();
+    fetchNotifications();
   }
 
-  Future<void> fetchFeedback() async {
+  Future<void> fetchNotifications() async {
     try {
       QuerySnapshot restaurantQuery =
           await FirebaseFirestore.instance.collection('restaurants').get();
       QuerySnapshot userQuery =
           await FirebaseFirestore.instance.collection('email_user').get();
 
-      // Store user details including profile image
       Map<String, Map<String, String>> userMap = {};
       for (var userDoc in userQuery.docs) {
         userMap[userDoc['uid']] = {
           "fullName": userDoc['fullName'] ?? "Unknown User",
+          "profileImage": userDoc['profileImage'] ?? "",
         };
       }
 
-      List<Map<String, dynamic>> allFeedback = [];
+      List<Map<String, dynamic>> allNotifications = [];
       String? currentUserBranchId;
       String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -55,6 +55,7 @@ class ImageFeedbackController extends GetxController {
           for (var feedback in feedbacks) {
             String userId = feedback['user_id'] ?? '';
             String userName = userMap[userId]?["fullName"] ?? "Unknown User";
+            String userProfile = userMap[userId]?["profileImage"] ?? "";
 
             if (role == UserRole.user && feedback['user_id'] != currentUserId) {
               continue;
@@ -77,22 +78,18 @@ class ImageFeedbackController extends GetxController {
 
             String formattedTime = timeago.format(createdAt);
 
-            allFeedback.add({
+            allNotifications.add({
               "fullName": userName,
-              "branch": branch['branchAddress'],
-              "channelName": branch['channelName'],
-              "branchThumbnail": branch['branchThumbnail'],
-              "image_title": feedback['image_title'],
-              "image_url": feedback['image_url'],
-              "rating": feedback['rating'].toString(),
+              "profileImage": userProfile,
+              "image_url": feedback['image_url'] ?? "",
               "created_at": formattedTime,
             });
           }
         }
       }
-      feedbackList.assignAll(allFeedback);
+      notificationList.assignAll(allNotifications);
     } catch (e) {
-      Get.snackbar("Error", "Failed to fetch feedback: $e");
+      Get.snackbar("Error", "Failed to fetch notifications: $e");
     }
   }
 }

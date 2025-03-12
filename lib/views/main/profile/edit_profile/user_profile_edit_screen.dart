@@ -38,11 +38,11 @@ class UserProfileEditScreen extends StatelessWidget {
                     radius: 50,
                     backgroundImage: profileImage.value != null
                         ? FileImage(profileImage.value!)
-                        : (controller.profileImageUrl.isNotEmpty
-                            ? NetworkImage(controller.profileImageUrl.value)
+                        : (controller.profileImage.isNotEmpty
+                            ? NetworkImage(controller.profileImage.value)
                             : null),
                     child: profileImage.value == null &&
-                            controller.profileImageUrl.isEmpty
+                            controller.profileImage.isEmpty
                         ? const Icon(Icons.camera_alt, size: 50)
                         : null,
                   ),

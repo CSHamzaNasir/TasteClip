@@ -55,10 +55,10 @@ class ProfileDetailScreen extends StatelessWidget {
                             color: AppColors.primaryColor, width: 2)),
                     child: CircleAvatar(
                       radius: 75,
-                      backgroundImage: controller.profile_image.value.isNotEmpty
-                          ? NetworkImage(controller.profile_image.value)
+                      backgroundImage: controller.profileImage.value.isNotEmpty
+                          ? NetworkImage(controller.profileImage.value)
                           : null,
-                      child: controller.profile_image.value.isEmpty
+                      child: controller.profileImage.value.isEmpty
                           ? const Icon(
                               Icons.person,
                               size: 50,

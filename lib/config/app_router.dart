@@ -7,6 +7,7 @@ import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/auth/splash/splash_screen.dart';
 import 'package:tasteclip/views/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/views/channel/channel_home_screen.dart';
+import 'package:tasteclip/views/channel/notification/notification_screen.dart';
 import 'package:tasteclip/views/explore/watch_feedback_screen.dart';
 import 'package:tasteclip/views/main/home/home_screen.dart';
 import 'package:tasteclip/views/main/home/restaurant/restaurant_list_screen.dart';
@@ -49,6 +50,7 @@ class AppRouter {
   static const profileDetailScreen = "/profileDetailScreen";
   static const branchDetailScreen = "/branchDetailScreen";
   static const watchFeedbackScreen = "/watchFeedbackScreen";
+  static const notificationScreen = "/notificationScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -183,6 +185,12 @@ class AppRouter {
     GetPage(
       name: watchFeedbackScreen,
       page: () => WatchFeedbackScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: notificationScreen,
+      page: () => NotificationScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),

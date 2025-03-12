@@ -27,13 +27,14 @@ class TextFeedbackDisplay extends StatelessWidget {
       itemBuilder: (context, index) {
         var feedbackText = controller.feedbackListText[index];
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
           children: [
             Row(
               spacing: 12,
               children: [
                 CircleAvatar(
-                  radius: 25,
+                  radius: 18,
                   backgroundImage: (feedbackText['branchThumbnail'] != null &&
                           feedbackText['branchThumbnail'].isNotEmpty)
                       ? NetworkImage(feedbackText['branchThumbnail'])
@@ -43,61 +44,57 @@ class TextFeedbackDisplay extends StatelessWidget {
                       ? Icon(Icons.image_not_supported, size: 25)
                       : null,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Full Name",
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.mainColor,
-                        fontFamily: AppFonts.sandSemiBold,
-                      ),
-                    ),
-                    Text(
-                      "@username",
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.primaryColor,
-                        fontFamily: AppFonts.sandSemiBold,
-                      ),
-                    ),
-                  ],
-                ),
+                Text(
+                  "Full Name",
+                  style: AppTextStyles.bodyStyle.copyWith(
+                    color: AppColors.mainColor,
+                    fontFamily: AppFonts.sandSemiBold,
+                  ),
+                )
               ],
             ),
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.primaryColor),
-                color: AppColors.mainColor.withCustomOpacity(.1),
-              ),
-              child: Text(
-                feedbackText['feedback_text'] ?? "No feedback available",
-                style: AppTextStyles.regularStyle.copyWith(
-                  color: AppColors.mainColor.withCustomOpacity(.7),
-                ),
+            Text(
+              feedbackText['feedback_text'] ?? "No feedback available",
+              style: AppTextStyles.regularStyle.copyWith(
+                color: AppColors.textColor.withCustomOpacity(.6),
               ),
             ),
             Row(
+              spacing: 12,
               children: [
                 Icon(
                   Icons.favorite_border_outlined,
                   color: AppColors.mainColor,
                 ),
-                SizedBox(width: 4),
                 Text('12',
                     style: AppTextStyles.regularStyle.copyWith(
                       color: AppColors.mainColor,
                       fontFamily: AppFonts.sandBold,
                     )),
-                Spacer(),
+                Container(
+                  color: AppColors.mainColor.withCustomOpacity(.4),
+                  height: 20,
+                  width: 1,
+                ),
+                Text(
+                  "Reply",
+                  style: AppTextStyles.lightStyle.copyWith(
+                    color: AppColors.textColor,
+                    fontFamily: AppFonts.sandSemiBold,
+                  ),
+                ),
+                Container(
+                  color: AppColors.mainColor.withCustomOpacity(.4),
+                  height: 20,
+                  width: 1,
+                ),
                 Text(
                   feedbackText['created_at'] ?? "",
                   style: AppTextStyles.lightStyle.copyWith(
                     color: AppColors.btnUnSelectColor,
                     fontFamily: AppFonts.sandSemiBold,
                   ),
-                )
+                ),
               ],
             )
           ],

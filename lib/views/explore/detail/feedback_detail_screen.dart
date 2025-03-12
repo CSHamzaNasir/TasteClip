@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_colors.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
@@ -27,21 +29,33 @@ class FeedbackDetailScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(color: AppColors.lightColor),
-                color: Colors.black.withCustomOpacity(0.3),
-              ),
-              padding: EdgeInsets.all(8),
-              child: Icon(
-                Icons.arrow_back_ios_rounded,
-                size: 18,
-                color: AppColors.whiteColor,
-              ),
+            child: Icon(
+              Icons.arrow_back_ios_rounded,
+              size: 18,
+              color: AppColors.whiteColor,
             ),
           ),
         ),
+        actions: [
+          InkWell(
+            onTap: () => controller.showRestaurantSheet(context),
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Container(
+                padding: EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                    color: AppColors.whiteColor, shape: BoxShape.circle),
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: SvgPicture.asset(
+                    AppAssets.info,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
         centerTitle: true,
         title: Text(
           "Feedback Details",
@@ -97,7 +111,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                             child: Text(
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              feedback['branch'] ?? "No Title",
+                              feedback['image_title'] ?? "No Title",
                               style: AppTextStyles.headingStyle1.copyWith(
                                 color: AppColors.textColor,
                               ),
@@ -118,7 +132,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                       ),
                       Divider(color: AppColors.textColor),
                       Text(
-                        feedback['image_title'],
+                        feedback['description'] ?? "No Description",
                         style: AppTextStyles.bodyStyle.copyWith(
                           color: AppColors.textColor,
                         ),
@@ -188,6 +202,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                12.vertical,
               ],
             ),
           ),

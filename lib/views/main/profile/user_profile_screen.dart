@@ -4,8 +4,8 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/constant/app_fonts.dart';
 import 'package:tasteclip/utils/app_string.dart';
+import 'package:tasteclip/views/auth/role/role_screen.dart';
 import 'package:tasteclip/views/main/profile/user_profile_controller.dart';
-
 import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../config/app_text_styles.dart';
@@ -34,10 +34,10 @@ class UserProfileScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 75,
-                    backgroundImage: controller.profile_image.value.isNotEmpty
-                        ? NetworkImage(controller.profile_image.value)
+                    backgroundImage: controller.profileImage.value.isNotEmpty
+                        ? NetworkImage(controller.profileImage.value)
                         : null,
-                    child: controller.profile_image.value.isEmpty
+                    child: controller.profileImage.value.isEmpty
                         ? Text("loading")
                         : null,
                   ),
@@ -72,6 +72,7 @@ class UserProfileScreen extends StatelessWidget {
                 icon1: AppAssets.setting,
               ),
               ProfileCard(
+                onTap: () => Get.to((RoleScreen())),
                 controller: controller,
                 title: AppString.theme,
                 subtitle: AppString.clickTochangeTheme,

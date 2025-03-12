@@ -53,4 +53,8 @@ class AppAssets {
   static const String notification = "assets/icons/notification.svg";
   static const String search = "assets/icons/search.svg";
   static const String chatbotIcon = "assets/icons/chatbot_icon.png";
+  static const String breakfast = "assets/icons/breakfast.png";
+  static const String lunch = "assets/icons/lunch.png";
+  static const String dinner = "assets/icons/dinner.png";
+  static const String info = "assets/icons/info.svg";
 }
