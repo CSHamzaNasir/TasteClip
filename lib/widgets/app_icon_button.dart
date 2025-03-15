@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
-import 'package:tasteclip/constant/app_colors.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
 
 class AppIconButton extends StatelessWidget {
   final String text;

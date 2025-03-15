@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constant/app_colors.dart';
+import '../core/constant/app_colors.dart';
 
 ThemeData appTheme = ThemeData(
   colorScheme: ColorScheme.fromSwatch().copyWith(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/constant/app_colors.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
 
 class AppAlerts {
   static void showSnackbar({required bool isSuccess, required String message}) {
