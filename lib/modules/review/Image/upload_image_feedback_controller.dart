@@ -7,17 +7,17 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/route/app_router.dart';
-import 'package:tasteclip/modules/review/Image/model/image_feedback_model.dart';
+import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 
 class UploadImageFeedbackController extends GetxController {
-  final imageTitle = TextEditingController();
   final description = TextEditingController();
   final rating = TextEditingController();
-  final tagController = TextEditingController();
-  RxList<String> tags = <String>[].obs;
   RxString selectedMealType = 'Breakfast'.obs;
   Rx<File?> selectedImage = Rx<File?>(null);
+  RxBool isLoading = false.obs;
 
   Future<void> pickImage() async {
     final pickedFile =
@@ -27,35 +27,25 @@ class UploadImageFeedbackController extends GetxController {
     }
   }
 
-  void addTag() {
-    if (tagController.text.isNotEmpty) {
-      tags.add(tagController.text.trim());
-      log("Tag Added: ${tags.toList()}");
-      tagController.clear();
-      update();
-    }
-  }
-
-  void removeTag(String tag) {
-    tags.remove(tag);
-  }
-
   Future<void> saveFeedback({
-    required String imageTitle,
     required String description,
     required String rating,
     required String restaurantName,
     required String branchName,
   }) async {
     try {
+      isLoading.value = true;
+
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         log("User not logged in!");
+        isLoading.value = false;
         return;
       }
 
       if (selectedImage.value == null) {
         log("No image selected!");
+        isLoading.value = false;
         return;
       }
 
@@ -67,43 +57,62 @@ class UploadImageFeedbackController extends GetxController {
       TaskSnapshot snapshot = await uploadTask;
       String imageUrl = await snapshot.ref.getDownloadURL();
 
-      ImageFeedbackModel feedback = ImageFeedbackModel(
-        userId: user.uid,
-        imageTitle: imageTitle,
-        description: description,
-        rating: rating,
-        tags: tags.toList(),
-        mealType: selectedMealType.value,
-        imageUrl: imageUrl,
-        createdAt: DateTime.now(),
+      final feedbackDoc =
+          FirebaseFirestore.instance.collection('feedback').doc();
+
+      await feedbackDoc.set({
+        'feedbackId': feedbackDoc.id,
+        'userId': user.uid,
+        'restaurantName': restaurantName,
+        'branchName': branchName,
+        'description': description,
+        'rating': rating,
+        'mealType': selectedMealType.value,
+        'imageUrl': imageUrl,
+        'category': 'image_feedback',
+        'createdAt': DateTime.now(),
+        'comments': [],
+      });
+
+      log("Feedback submitted successfully!");
+
+      Get.snackbar(
+        'Success!',
+        'Your feedback has been uploaded successfully.',
+        icon: Icon(
+          Icons.verified,
+          color: AppColors.lightColor,
+        ),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: AppColors.mainColor.withCustomOpacity(0.9),
+        colorText: Colors.white,
+        borderRadius: 10,
+        margin: const EdgeInsets.all(10),
+        duration: const Duration(seconds: 3),
       );
 
-      final restaurantDoc = FirebaseFirestore.instance
-          .collection('restaurants')
-          .doc(restaurantName);
+      this.description.clear();
+      this.rating.clear();
+      selectedImage.value = null;
+      selectedMealType.value = 'Breakfast';
 
-      final restaurantSnapshot = await restaurantDoc.get();
-      if (!restaurantSnapshot.exists) {
-        log("Restaurant does not exist!");
-        return;
-      }
-
-      final List<dynamic> branches = restaurantSnapshot['branches'] ?? [];
-      List<dynamic> updatedBranches = [];
-
-      for (var branch in branches) {
-        if (branch['branchAddress'] == branchName) {
-          List<dynamic> existingFeedback = branch['imageFeedback'] ?? [];
-          existingFeedback.add(feedback.toMap());
-          branch['imageFeedback'] = existingFeedback;
-        }
-        updatedBranches.add(branch);
-      }
-
-      await restaurantDoc.update({'branches': updatedBranches});
-      log("Feedback submitted successfully!");
+      Get.off(CustomBottomBar());
     } catch (e) {
       log("Error saving feedback: $e");
+
+      Get.snackbar(
+        'Error!',
+        'Failed to upload feedback. Please try again.',
+        icon: Icon(Icons.error),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.withCustomOpacity(0.9),
+        colorText: Colors.white,
+        borderRadius: 10,
+        margin: const EdgeInsets.all(10),
+        duration: const Duration(seconds: 3),
+      );
+    } finally {
+      isLoading.value = false;
     }
   }
 

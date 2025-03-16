@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 class ImageFeedbackModel {
+  final String feedbackId; // Add this field
   final String userId;
   final String imageTitle;
   final String description;
@@ -9,8 +8,10 @@ class ImageFeedbackModel {
   final String mealType;
   final String imageUrl;
   final DateTime createdAt;
+  final List<Map<String, dynamic>> comments;
 
   ImageFeedbackModel({
+    required this.feedbackId, // Add this field
     required this.userId,
     required this.imageTitle,
     required this.description,
@@ -19,36 +20,36 @@ class ImageFeedbackModel {
     required this.mealType,
     required this.imageUrl,
     required this.createdAt,
+    this.comments = const [],
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'user_id': userId,
-      'image_title': imageTitle,
+      'feedbackId': feedbackId, // Add this field
+      'userId': userId,
+      'imageTitle': imageTitle,
       'description': description,
       'rating': rating,
       'tags': tags,
-      'meal_type': mealType,
-      'image_url': imageUrl,
-      'created_at': createdAt.toIso8601String(),
+      'mealType': mealType,
+      'imageUrl': imageUrl,
+      'createdAt': createdAt,
+      'comments': comments,
     };
   }
 
-  factory ImageFeedbackModel.fromMap(Map<String, dynamic> map) {
+  factory ImageFeedbackModel.fromMap(Map<String, dynamic> data) {
     return ImageFeedbackModel(
-      userId: map['user_id'],
-      imageTitle: map['image_title'],
-      description: map['description'],
-      rating: map['rating'],
-      tags: List<String>.from(map['tags']),
-      mealType: map['meal_type'],
-      imageUrl: map['image_url'],
-      createdAt: DateTime.parse(map['created_at']),
+      feedbackId: data['feedbackId'], // Add this field
+      userId: data['userId'],
+      imageTitle: data['imageTitle'],
+      description: data['description'],
+      rating: data['rating'],
+      tags: List<String>.from(data['tags']),
+      mealType: data['mealType'],
+      imageUrl: data['imageUrl'],
+      createdAt: data['createdAt'].toDate(),
+      comments: List<Map<String, dynamic>>.from(data['comments'] ?? []),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory ImageFeedbackModel.fromJson(String source) =>
-      ImageFeedbackModel.fromMap(json.decode(source));
 }

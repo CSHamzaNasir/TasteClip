@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/role_enum.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ImageFeedbackController extends GetxController {
@@ -13,10 +13,10 @@ class ImageFeedbackController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchFeedback();
+    fetchImageFeedback();
   }
 
-  Future<void> fetchFeedback() async {
+  Future<void> fetchImageFeedback() async {
     try {
       QuerySnapshot restaurantQuery =
           await FirebaseFirestore.instance.collection('restaurants').get();
@@ -83,7 +83,7 @@ class ImageFeedbackController extends GetxController {
               "channelName": branch['channelName'],
               "branchThumbnail": branch['branchThumbnail'],
               "image_title": feedback['image_title'],
-              "image_url": feedback['image_url'],
+              "imageUrl": feedback['imageUrl'],
               "rating": feedback['rating'].toString(),
               "created_at": formattedTime,
             });

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/role_enum.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class TextFeedbackController extends GetxController {

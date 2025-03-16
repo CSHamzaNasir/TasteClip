@@ -10,7 +10,7 @@ import 'package:tasteclip/modules/auth/role/role_screen.dart';
 import 'package:tasteclip/modules/profile/profile_detail/image_feedback/image_feedback_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import '../../../config/role_enum.dart';
+import '../../../config/app_enum.dart';
 import '../../profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'channel_profile_controller.dart';
 

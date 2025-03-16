@@ -91,7 +91,7 @@ class ChannelHomeController extends GetxController {
                 "channelName": branch['channelName'],
                 "branchThumbnail": branch['branchThumbnail'],
                 "image_title": feedback['image_title'],
-                "image_url": feedback['image_url'],
+                "imageUrl": feedback['imageUrl'],
                 "rating": feedback['rating'].toString(),
                 "created_at": formattedTime,
               });

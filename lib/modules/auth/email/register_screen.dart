@@ -131,9 +131,9 @@ class RegisterScreen extends StatelessWidget {
                     SocialButton(
                       onTap: () => showUnderDevelopmentDialog(
                           context, "This feature is under development."),
-                      // onTap: () async {
-                      //   controller.signInWithGoogle();
-                      // },
+                      
+                      
+                      
                       title: AppString.google,
                       icon: AppAssets.googleIcon,
                     ),

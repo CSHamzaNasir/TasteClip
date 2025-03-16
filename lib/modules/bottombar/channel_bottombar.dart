@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/config/role_enum.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/modules/channel/channel_home_screen.dart';
 
 import '../../config/app_assets.dart';

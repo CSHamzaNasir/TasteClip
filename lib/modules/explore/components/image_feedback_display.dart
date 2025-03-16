@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 
@@ -10,9 +11,12 @@ import '../detail/feedback_detail_screen.dart';
 import '../watch_feedback_controller.dart';
 
 class ImageFeedbackDisplay extends StatelessWidget {
+  final FeedbackCategory category;
+
   const ImageFeedbackDisplay({
     super.key,
     required this.controller,
+    required this.category,
   });
 
   final WatchFeedbackController controller;
@@ -33,81 +37,95 @@ class ImageFeedbackDisplay extends StatelessWidget {
       }
 
       return GridView.builder(
+        padding: const EdgeInsets.all(16),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
-          childAspectRatio: .9,
+          childAspectRatio: 1,
         ),
         itemCount: controller.feedbackList.length,
         itemBuilder: (context, index) {
           var feedback = controller.feedbackList[index];
           return InkWell(
-            onTap: () => Get.to(() => FeedbackDetailScreen(feedback: feedback)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 8,
-              children: [
-                (feedback['image_url'] != null &&
-                        feedback['image_url'].isNotEmpty)
-                    ? ClipRRect(
+            onTap: () => Get.to(() => FeedbackDetailScreen(
+                  feedback: feedback,
+                  category: FeedbackCategory.image,
+                )),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppColors.mainColor.withCustomOpacity(.2)),
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child:
-                                  Center(child: CupertinoActivityIndicator()),
-                            ),
-                            Image.network(
-                              feedback['image_url'],
-                              width: double.infinity,
-                              height: 140,
-                              fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                    child: CupertinoActivityIndicator());
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(Icons.image_not_supported,
-                                    size: 25);
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    : Icon(Icons.image_not_supported, size: 25),
-                Row(
-                  spacing: 6,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '@${feedback['channelName']}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.lightStyle.copyWith(
-                          color: AppColors.textColor.withCustomOpacity(.5),
-                          fontFamily: AppFonts.sandSemiBold,
-                        ),
+                        child: (feedback['imageUrl'] != null &&
+                                feedback['imageUrl'].isNotEmpty)
+                            ? Center(
+                                child: Image.network(
+                                  feedback['imageUrl'],
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                        child: CupertinoActivityIndicator());
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Center(
+                                      child: Icon(Icons.image_not_supported,
+                                          size: 25),
+                                    );
+                                  },
+                                ),
+                              )
+                            : Center(
+                                child:
+                                    Icon(Icons.image_not_supported, size: 25),
+                              ),
                       ),
                     ),
-                    Icon(
-                      size: 16,
-                      Icons.star,
-                      color: Colors.amber,
+                  ),
+                  8.vertical,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '@${feedback['restaurantName'] ?? "Unknown"}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.lightStyle.copyWith(
+                              color: AppColors.textColor.withCustomOpacity(.5),
+                              fontFamily: AppFonts.sandSemiBold,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          size: 16,
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        Text(
+                          feedback['rating'] ?? "0.0",
+                          style: AppTextStyles.lightStyle.copyWith(
+                            color: AppColors.textColor.withCustomOpacity(.5),
+                            fontFamily: AppFonts.sandSemiBold,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      feedback['rating'],
-                      style: AppTextStyles.lightStyle.copyWith(
-                        color: AppColors.textColor.withCustomOpacity(.5),
-                        fontFamily: AppFonts.sandSemiBold,
-                      ),
-                    ),
-                    16.vertical,
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           );
         },

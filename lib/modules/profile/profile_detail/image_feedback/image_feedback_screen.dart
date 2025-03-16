@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/config/role_enum.dart';
+import 'package:tasteclip/config/app_enum.dart';
 
 import '../../../../config/app_text_styles.dart';
 import '../../../../core/constant/app_colors.dart';
@@ -113,22 +113,22 @@ class ImageFeedbackScreen extends StatelessWidget {
                               SvgPicture.asset(AppAssets.vertMore)
                             ],
                           ),
-                          (feedback['image_url'] != null &&
-                                  feedback['image_url'].isNotEmpty)
+                          (feedback['imageUrl'] != null &&
+                                  feedback['imageUrl'].isNotEmpty)
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: Image.network(
-                                    feedback['image_url'],
+                                    feedback['imageUrl'],
                                     width: double.infinity,
                                     fit: BoxFit.cover,
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
                                       if (loadingProgress == null) {
-                                        return child; // Image fully loaded
+                                        return child; 
                                       }
                                       return Center(
                                         child:
-                                            CupertinoActivityIndicator(), // Cupertino Loader
+                                            CupertinoActivityIndicator(), 
                                       );
                                     },
                                     errorBuilder: (context, error, stackTrace) {

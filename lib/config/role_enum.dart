@@ -1,4 +1,0 @@
-enum UserRole {
-  user,
-  manager,
-}

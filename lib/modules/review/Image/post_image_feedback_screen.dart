@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
@@ -9,7 +10,6 @@ import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../../widgets/app_feild.dart';
 import '../../../widgets/app_button.dart';
-import '../../bottombar/custom_bottom_bar.dart';
 import 'upload_image_feedback_controller.dart';
 
 class PostImageFeedbackScreen extends StatelessWidget {
@@ -27,7 +27,7 @@ class PostImageFeedbackScreen extends StatelessWidget {
     final controller = Get.put(UploadImageFeedbackController());
 
     return AppBackground(
-      isLight: true,
+      isDefault: false,
       child: SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
@@ -84,19 +84,11 @@ class PostImageFeedbackScreen extends StatelessWidget {
                                 )),
                           ),
                           AppFeild(
-                            hintText: AppString.enterYourFeedbackHere,
-                            controller: controller.imageTitle,
-                            feildSideClr: true,
-                            hintTextColor:
-                                AppColors.mainColor.withCustomOpacity(.5),
-                            feildFocusClr: true,
-                          ),
-                          AppFeild(
-                            hintText: "Description",
+                            hintText: "Enter your feedback",
                             controller: controller.description,
-                            feildSideClr: true,
+                            feildSideClr: false,
                             hintTextColor:
-                                AppColors.mainColor.withCustomOpacity(.5),
+                                AppColors.textColor.withCustomOpacity(.3),
                             feildFocusClr: true,
                           ),
                           AppFeild(
@@ -104,53 +96,10 @@ class PostImageFeedbackScreen extends StatelessWidget {
                             inputType: TextInputType.number,
                             controller: controller.rating,
                             feildFocusClr: true,
-                            feildSideClr: true,
+                            feildSideClr: false,
                             hintTextColor:
-                                AppColors.mainColor.withCustomOpacity(.3),
+                                AppColors.textColor.withCustomOpacity(.3),
                           ),
-                          TextField(
-                            controller: controller.tagController,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.mainColor),
-                                  borderRadius: BorderRadius.circular(12)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.mainColor),
-                                  borderRadius: BorderRadius.circular(12)),
-                              hintText: "Add tags (Max: 15)",
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () {
-                                  if (controller.tags.length < 15) {
-                                    controller.addTag();
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                          Obx(() => Wrap(
-                                children: controller.tags
-                                    .map(
-                                      (tag) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 4),
-                                        child: Chip(
-                                          label: Text(tag),
-                                          backgroundColor: AppColors.whiteColor,
-                                          elevation: 0,
-                                          side: BorderSide(
-                                              color: AppColors.mainColor),
-                                          surfaceTintColor: AppColors.mainColor,
-                                          deleteIcon: Icon(Icons.close),
-                                          onDeleted: () =>
-                                              controller.removeTag(tag),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              )),
                           DropdownButtonFormField<String>(
                             value: controller.selectedMealType.value,
                             items: ['Breakfast', 'Lunch', 'Dinner']
@@ -168,10 +117,10 @@ class PostImageFeedbackScreen extends StatelessWidget {
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide:
-                                      BorderSide(color: AppColors.mainColor)),
+                                      BorderSide(color: AppColors.textColor)),
                               border: OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: AppColors.mainColor),
+                                      BorderSide(color: AppColors.textColor),
                                   borderRadius: BorderRadius.circular(12)),
                               labelText: "Select Meal Type",
                             ),
@@ -180,31 +129,33 @@ class PostImageFeedbackScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  AppButton(
-                    isGradient: controller.imageTitle.text.isNotEmpty &&
-                        controller.rating.text.isNotEmpty &&
-                        controller.selectedImage.value != null,
-                    text: 'Next',
-                    onPressed: controller.imageTitle.text.isNotEmpty &&
-                            controller.rating.text.isNotEmpty &&
-                            controller.selectedImage.value != null
-                        ? () {
-                            controller.saveFeedback(
-                              imageTitle: controller.imageTitle.text,
-                              rating: controller.rating.text,
-                              restaurantName: restaurantName,
-                              branchName: branchName,
-                              description: controller.description.text,
-                            );
-                            Get.off(CustomBottomBar());
-                          }
-                        : () {},
-                    btnColor: controller.imageTitle.text.isNotEmpty &&
-                            controller.rating.text.isNotEmpty &&
-                            controller.selectedImage.value != null
-                        ? null
-                        : AppColors.btnUnSelectColor,
-                  )
+                  Obx(() {
+                    return controller.isLoading.value 
+                        ? const SpinKitThreeBounce(
+                            color: AppColors.textColor,
+                            size: 25.0,
+                          )
+                        : AppButton(
+                            isGradient: controller.rating.text.isNotEmpty &&
+                                controller.selectedImage.value != null,
+                            text: 'Next',
+                            onPressed: controller.rating.text.isNotEmpty &&
+                                    controller.selectedImage.value != null
+                                ? () {
+                                    controller.saveFeedback(
+                                      rating: controller.rating.text,
+                                      restaurantName: restaurantName,
+                                      branchName: branchName,
+                                      description: controller.description.text,
+                                    );
+                                  }
+                                : () {},
+                            btnColor: controller.rating.text.isNotEmpty &&
+                                    controller.selectedImage.value != null
+                                ? null
+                                : AppColors.btnUnSelectColor,
+                          );
+                  }),
                 ],
               ),
             ),

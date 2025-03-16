@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/role_enum.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationController extends GetxController {
@@ -81,7 +81,7 @@ class NotificationController extends GetxController {
             allNotifications.add({
               "fullName": userName,
               "profileImage": userProfile,
-              "image_url": feedback['image_url'] ?? "",
+              "imageUrl": feedback['imageUrl'] ?? "",
               "created_at": formattedTime,
             });
           }
