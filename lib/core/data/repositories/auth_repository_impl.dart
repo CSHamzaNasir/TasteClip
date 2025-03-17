@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/core/data/models/auth_models.dart';
 import 'package:tasteclip/core/domain/repositories/auth_repository.dart';
 
@@ -21,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      Get.toNamed(AppRouter.userProfileScreen);
+      Get.to(CustomBottomBar());
       return credential.user;
     } catch (e) {}
     return null;

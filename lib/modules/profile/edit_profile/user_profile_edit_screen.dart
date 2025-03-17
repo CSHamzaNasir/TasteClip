@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/custom_appbar.dart';
 
@@ -11,7 +13,8 @@ import 'user_profile_edit_controller.dart';
 
 class UserProfileEditScreen extends StatelessWidget {
   final Rx<File?> profileImage = Rx<File?>(null);
-  final controller = Get.put(UserProfileEditController());
+  final UserProfileEditController controller =
+      Get.put(UserProfileEditController());
 
   UserProfileEditScreen({super.key});
 
@@ -69,15 +72,22 @@ class UserProfileEditScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              AppButton(
-                text: "Save",
-                onPressed: () async {
-                  await controller.updateProfile(
-                    updatedUserName: controller.userNameController.text,
-                    updatedFullName: controller.fullNameController.text,
-                    imageFile: profileImage.value,
-                  );
-                },
+              Obx(
+                () => controller.isLoading.value
+                    ? SpinKitThreeBounce(
+                        color: AppColors.textColor,
+                        size: 25.0,
+                      )
+                    : AppButton(
+                        text: "Save",
+                        onPressed: () async {
+                          await controller.updateProfile(
+                            updatedUserName: controller.userNameController.text,
+                            updatedFullName: controller.fullNameController.text,
+                            imageFile: profileImage.value,
+                          );
+                        },
+                      ),
               ),
             ],
           ),

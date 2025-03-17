@@ -64,11 +64,23 @@ class ImageFeedbackDetailController extends GetxController {
                       itemCount: comments.length,
                       itemBuilder: (context, index) {
                         final comment = comments[index];
-                        return ListTile(
-                          title: Text(comment['commentText'] ?? ""),
-                          subtitle: Text(
-                            "Posted by: ${comment['userId']}",
-                            style: TextStyle(color: Colors.grey),
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: AppColors.btnUnSelectColor
+                                    .withCustomOpacity(.3)),
+                            child: ListTile(
+                              title: Text(comment['commentText'] ?? "",
+                                  style: AppTextStyles.bodyStyle.copyWith(
+                                      color: AppColors.mainColor,
+                                      fontFamily: AppFonts.sandBold)),
+                              subtitle: Text(
+                                "Posted by: Hamza Nasir",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
                           ),
                         );
                       },

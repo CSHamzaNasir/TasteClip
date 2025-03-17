@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
 
 class UserProfileEditController extends GetxController {
   final userNameController = TextEditingController();
@@ -17,6 +19,7 @@ class UserProfileEditController extends GetxController {
   RxString userName = ''.obs;
   RxString fullName = ''.obs;
   RxString profileImage = ''.obs;
+  RxBool isLoading = false.obs; // Add this line
 
   Future<void> updateProfile({
     required String updatedUserName,
@@ -24,6 +27,7 @@ class UserProfileEditController extends GetxController {
     File? imageFile,
   }) async {
     try {
+      isLoading.value = true; // Set loading to true
       final user = auth.currentUser;
       if (user != null) {
         String? imageUrl;
@@ -46,10 +50,18 @@ class UserProfileEditController extends GetxController {
         if (imageUrl != null) profileImage.value = imageUrl;
 
         Get.snackbar(
-          'Success',
-          'Profile updated successfully.',
-          backgroundColor: Get.theme.primaryColor,
+          'Success!',
+          'Your Profile updated successfully.',
+          icon: Icon(
+            Icons.verified,
+            color: AppColors.lightColor,
+          ),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: AppColors.mainColor.withCustomOpacity(0.9),
           colorText: Colors.white,
+          borderRadius: 10,
+          margin: const EdgeInsets.all(10),
+          duration: const Duration(seconds: 3),
         );
       }
     } catch (e) {
@@ -60,6 +72,8 @@ class UserProfileEditController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    } finally {
+      isLoading.value = false; 
     }
   }
 

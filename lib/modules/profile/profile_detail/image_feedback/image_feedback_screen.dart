@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/config/app_enum.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
 
 import '../../../../config/app_text_styles.dart';
 import '../../../../core/constant/app_colors.dart';
@@ -101,7 +101,7 @@ class ImageFeedbackScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    '@${feedback['channelName']}',
+                                    '@${feedback['restaurantName']}',
                                     style: AppTextStyles.lightStyle.copyWith(
                                       color: AppColors.mainColor,
                                       fontFamily: AppFonts.sandSemiBold,
@@ -124,11 +124,10 @@ class ImageFeedbackScreen extends StatelessWidget {
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
                                       if (loadingProgress == null) {
-                                        return child; 
+                                        return child;
                                       }
                                       return Center(
-                                        child:
-                                            CupertinoActivityIndicator(), 
+                                        child: CupertinoActivityIndicator(),
                                       );
                                     },
                                     errorBuilder: (context, error, stackTrace) {
@@ -148,7 +147,7 @@ class ImageFeedbackScreen extends StatelessWidget {
                                     AppColors.mainColor.withCustomOpacity(.2),
                                 borderRadius: BorderRadius.circular(8)),
                             child: Text(
-                              feedback['image_title'],
+                              feedback['description'],
                               style: AppTextStyles.lightStyle.copyWith(
                                 color: AppColors.mainColor,
                                 fontFamily: AppFonts.sandSemiBold,

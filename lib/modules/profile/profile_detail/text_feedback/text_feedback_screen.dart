@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/widgets/app_background.dart';
@@ -29,8 +29,7 @@ class TextFeedbackScreen extends StatelessWidget {
           return Column(
             children: [
               Stack(
-                clipBehavior: Clip
-                    .none, // Allows the avatars to overflow outside the container
+                clipBehavior: Clip.none,
                 children: [
                   Container(
                     height: 150,
@@ -145,8 +144,8 @@ class TextFeedbackScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     role == UserRole.user
-                                        ? '@ username'
-                                        : "@ username",
+                                        ? feedbackText['restaurantName']
+                                        : feedbackText['restaurantName'],
                                     style: AppTextStyles.regularStyle.copyWith(
                                       color: AppColors.mainColor,
                                       fontFamily: AppFonts.sandSemiBold,
@@ -158,7 +157,7 @@ class TextFeedbackScreen extends StatelessWidget {
                           ),
                           16.vertical,
                           Text(
-                            feedbackText['feedback_text'],
+                            feedbackText['review'],
                             style: AppTextStyles.regularStyle.copyWith(
                               color: AppColors.mainColor.withCustomOpacity(.7),
                             ),

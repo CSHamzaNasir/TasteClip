@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/detail/text_feedback_detail_controller.dart';
 
 import '../../../config/app_text_styles.dart';
@@ -34,16 +33,16 @@ class TextFeedbackDisplay extends StatelessWidget {
         ),
       ),
       itemBuilder: (context, index) {
-        var feedback = controller.feedbackList[index];
-
         var feedbackText = controller.feedbackListText[index];
+
         return GestureDetector(
           onTap: () {
             log("tapppppppppppppppppppppp");
-            Get.to(() => FeedbackDetailScreen(
-                  category: FeedbackCategory.text,
-                  feedback: feedback,
-                ));
+            // Get.to(() => FeedbackDetailScreen(
+            //       category: FeedbackCategory.text,
+            //       feedback:
+            //           feedbackText,
+            //     ));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
