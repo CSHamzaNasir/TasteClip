@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -50,7 +51,7 @@ class ChannelProfileScreen extends StatelessWidget {
         ),
         body: Obx(
           () => controller.isLoading.value
-              ? Center(child: CircularProgressIndicator())
+              ? Center(child: CupertinoActivityIndicator())
               : controller.managerData.value == null
                   ? Center(child: Text("No data available"))
                   : Padding(

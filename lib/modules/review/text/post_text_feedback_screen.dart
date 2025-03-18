@@ -53,11 +53,13 @@ class PostTextFeedbackScreen extends StatelessWidget {
                   return Column(
                     children: [
                       AppFeild(
+                        isRating: true,
                         hintText: AppString.enterYourFeedbackHere,
                         controller: controller.textFeedback,
                       ),
                       16.vertical,
                       AppFeild(
+                        isRating: true,
                         hintText: 'Enter your rating',
                         inputType: TextInputType.number,
                         controller: controller.rating,

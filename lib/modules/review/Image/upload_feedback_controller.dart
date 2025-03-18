@@ -7,16 +7,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 
-class UploadImageFeedbackController extends GetxController {
-  final description = TextEditingController();
-  final rating = TextEditingController();
+class UploadFeedbackController extends GetxController {
+  final TextEditingController description = TextEditingController();
+  final TextEditingController rating = TextEditingController();
   RxString selectedMealType = 'Breakfast'.obs;
   Rx<File?> selectedImage = Rx<File?>(null);
+  Rx<File?> selectedVideo = Rx<File?>(null);
   RxBool isLoading = false.obs;
 
   Future<void> pickImage() async {
@@ -27,11 +29,20 @@ class UploadImageFeedbackController extends GetxController {
     }
   }
 
+  Future<void> pickVideo() async {
+    final pickedFile =
+        await ImagePicker().pickVideo(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedVideo.value = File(pickedFile.path);
+    }
+  }
+
   Future<void> saveFeedback({
     required String description,
     required String rating,
     required String restaurantName,
     required String branchName,
+    required FeedbackCategory category,
   }) async {
     try {
       isLoading.value = true;
@@ -43,19 +54,36 @@ class UploadImageFeedbackController extends GetxController {
         return;
       }
 
-      if (selectedImage.value == null) {
-        log("No image selected!");
-        isLoading.value = false;
-        return;
+      String? mediaUrl;
+      if (category == FeedbackCategory.image) {
+        if (selectedImage.value == null) {
+          log("No image selected!");
+          isLoading.value = false;
+          return;
+        }
+
+        String fileName = "${DateTime.now().millisecondsSinceEpoch}.jpg";
+        Reference storageRef =
+            FirebaseStorage.instance.ref().child('userImageFeedback/$fileName');
+
+        UploadTask uploadTask = storageRef.putFile(selectedImage.value!);
+        TaskSnapshot snapshot = await uploadTask;
+        mediaUrl = await snapshot.ref.getDownloadURL();
+      } else if (category == FeedbackCategory.video) {
+        if (selectedVideo.value == null) {
+          log("No video selected!");
+          isLoading.value = false;
+          return;
+        }
+
+        String fileName = "${DateTime.now().millisecondsSinceEpoch}.mp4";
+        Reference storageRef =
+            FirebaseStorage.instance.ref().child('userVideoFeedback/$fileName');
+
+        UploadTask uploadTask = storageRef.putFile(selectedVideo.value!);
+        TaskSnapshot snapshot = await uploadTask;
+        mediaUrl = await snapshot.ref.getDownloadURL();
       }
-
-      String fileName = "${DateTime.now().millisecondsSinceEpoch}.jpg";
-      Reference storageRef =
-          FirebaseStorage.instance.ref().child('userImageFeedback/$fileName');
-
-      UploadTask uploadTask = storageRef.putFile(selectedImage.value!);
-      TaskSnapshot snapshot = await uploadTask;
-      String imageUrl = await snapshot.ref.getDownloadURL();
 
       final feedbackDoc =
           FirebaseFirestore.instance.collection('feedback').doc();
@@ -68,8 +96,10 @@ class UploadImageFeedbackController extends GetxController {
         'description': description,
         'rating': rating,
         'mealType': selectedMealType.value,
-        'imageUrl': imageUrl,
-        'category': 'image_feedback',
+        'mediaUrl': mediaUrl,
+        'category': category == FeedbackCategory.image
+            ? 'image_feedback'
+            : 'video_feedback',
         'createdAt': DateTime.now(),
         'comments': [],
       });
@@ -94,6 +124,7 @@ class UploadImageFeedbackController extends GetxController {
       this.description.clear();
       this.rating.clear();
       selectedImage.value = null;
+      selectedVideo.value = null;
       selectedMealType.value = 'Breakfast';
 
       Get.off(CustomBottomBar());

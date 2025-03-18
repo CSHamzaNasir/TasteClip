@@ -3,18 +3,21 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/utils/app_string.dart';
 
 import '../../../../widgets/app_button.dart';
-import '../post_image_feedback_screen.dart';
+import '../post_feedback_screen.dart';
 
 class SelectBranchSheetImage extends StatefulWidget {
   final String restaurantName;
+  final FeedbackCategory category;
 
-  const SelectBranchSheetImage({super.key, required this.restaurantName});
+  const SelectBranchSheetImage(
+      {super.key, required this.restaurantName, required this.category});
 
   @override
   SelectBranchSheetImageState createState() => SelectBranchSheetImageState();
@@ -24,7 +27,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
   List<Map<String, dynamic>> _branches = [];
   List<Map<String, dynamic>> _filteredBranches = [];
   String? _selectedBranch;
-  
+
   final TextEditingController _searchController = TextEditingController();
 
   Future<void> _fetchBranches() async {
@@ -68,9 +71,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context)
-              .viewInsets
-              .bottom, 
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -152,11 +153,11 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
                     Navigator.pop(context);
                     showModalBottomSheet(
                       context: context,
-                      isScrollControlled:
-                          true, 
+                      isScrollControlled: true,
                       builder: (context) => PostImageFeedbackScreen(
                         restaurantName: widget.restaurantName,
                         branchName: _selectedBranch!,
+                        category: widget.category,
                       ),
                     );
                   } else {

@@ -2,14 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_assets.dart';
-import 'package:tasteclip/config/app_text_styles.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class WatchFeedbackController extends GetxController {
@@ -18,6 +11,116 @@ class WatchFeedbackController extends GetxController {
   var selectedIndex = 0.obs;
   var selectedTopFilter = 0.obs;
   var feedback = {}.obs;
+
+  String get currentUserId => FirebaseAuth.instance.currentUser?.uid ?? '';
+
+  Future<void> likeFeedback(String feedbackId) async {
+    try {
+      final feedbackDoc =
+          FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
+
+      
+      await feedbackDoc.update({
+        'likes.$currentUserId': true,
+      });
+
+      log("Feedback liked by user: $currentUserId");
+    } catch (e) {
+      log("Error liking feedback: $e");
+      Get.snackbar("Error", "Failed to like feedback: $e");
+    }
+  }
+
+  
+  Future<void> unlikeFeedback(String feedbackId) async {
+    try {
+      final feedbackDoc =
+          FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
+
+      
+      await feedbackDoc.update({
+        'likes.$currentUserId': FieldValue.delete(),
+      });
+
+      log("Feedback unliked by user: $currentUserId");
+    } catch (e) {
+      log("Error unliking feedback: $e");
+      Get.snackbar("Error", "Failed to unlike feedback: $e");
+    }
+  }
+
+  
+  bool hasUserLikedFeedback(Map<String, dynamic> feedback) {
+    final likes = feedback['likes'];
+    if (likes is Map<dynamic, dynamic>) {
+      return likes.containsKey(currentUserId);
+    }
+    return false; 
+  }
+
+  
+  Future<void> toggleLikeFeedback(
+      String feedbackId, Map<String, dynamic> feedback) async {
+    if (hasUserLikedFeedback(feedback)) {
+      await unlikeFeedback(feedbackId);
+    } else {
+      await likeFeedback(feedbackId);
+    }
+    
+    fetchFeedbackText();
+  }
+
+  
+  Future<void> fetchFeedbackText() async {
+    try {
+      String selectedMealType = filters[selectedTopFilter.value];
+
+      QuerySnapshot feedbackQuery = await FirebaseFirestore.instance
+          .collection('feedback')
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      List<Map<String, dynamic>> allFeedbackText = [];
+
+      for (var doc in feedbackQuery.docs) {
+        Map<String, dynamic> feedbackData = doc.data() as Map<String, dynamic>;
+
+        if (feedbackData['category'] == "text_feedback" &&
+            (selectedMealType == "All" ||
+                feedbackData['mealType'] == selectedMealType)) {
+          DateTime createdAt = feedbackData['createdAt'].toDate();
+
+          DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+              .collection('email_user')
+              .doc(feedbackData['userId'])
+              .get();
+
+          Map<String, dynamic> userData =
+              userSnapshot.data() as Map<String, dynamic>;
+
+          Map<String, dynamic> feedbackWithUser = {
+            "feedbackId": feedbackData['feedbackId'],
+            "branch": feedbackData['branchName'],
+            "branchThumbnail": feedbackData['branchThumbnail'],
+            "review": feedbackData['review'],
+            "rating": feedbackData['rating'].toString(),
+            "created_at": timeago.format(createdAt),
+            "meal_type": feedbackData['mealType'],
+            "user_id": feedbackData['userId'],
+            "user_fullName": userData['fullName'],
+            "user_profileImage": userData['profileImage'],
+            "likes": feedbackData['likes'] ?? {}, 
+          };
+
+          allFeedbackText.add(feedbackWithUser);
+        }
+      }
+
+      feedbackListText.assignAll(allFeedbackText);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to fetch text feedback: $e");
+    }
+  }
 
   final List<String> categories = ["Text", "Image", "Videos"];
   final List<String> filters = ["All", "Breakfast", "Lunch", "Dinner"];
@@ -83,40 +186,6 @@ class WatchFeedbackController extends GetxController {
     }
   }
 
-  Future<void> fetchFeedbackText() async {
-    try {
-      String selectedMealType = filters[selectedTopFilter.value];
-
-      QuerySnapshot feedbackQuery = await FirebaseFirestore.instance
-          .collection('feedback')
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      List<Map<String, dynamic>> allFeedbackText = feedbackQuery.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .where((feedbackData) =>
-              feedbackData['category'] == "text_feedback" &&
-              (selectedMealType == "All" ||
-                  feedbackData['mealType'] == selectedMealType))
-          .map((feedbackData) {
-        DateTime createdAt = feedbackData['createdAt'].toDate();
-        return {
-          "feedbackId": feedbackData['feedbackId'],
-          "branch": feedbackData['branchName'],
-          "branchThumbnail": feedbackData['branchThumbnail'],
-          "review": feedbackData['review'],
-          "rating": feedbackData['rating'].toString(),
-          "created_at": timeago.format(createdAt),
-          "meal_type": feedbackData['mealType'],
-        };
-      }).toList();
-
-      feedbackListText.assignAll(allFeedbackText);
-    } catch (e) {
-      Get.snackbar("Error", "Failed to fetch text feedback: $e");
-    }
-  }
-
   Future<void> addCommentToFeedback({
     required String feedbackId,
     required String commentText,
@@ -145,102 +214,6 @@ class WatchFeedbackController extends GetxController {
     } catch (e) {
       log("Error adding comment: $e");
     }
-  }
-
-  void showRestaurantSheet(BuildContext context) {
-    Get.bottomSheet(
-      Container(
-        padding: EdgeInsets.all(16).copyWith(bottom: 40),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 16,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                "Branch Detail",
-                style: AppTextStyles.bodyStyle
-                    .copyWith(color: AppColors.mainColor),
-              ),
-            ),
-            Row(
-              spacing: 16,
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: (feedback['branchThumbnail'] != null &&
-                          feedback['branchThumbnail'].isNotEmpty)
-                      ? NetworkImage(feedback['branchThumbnail'])
-                      : null,
-                  child: (feedback['branchThumbnail'] == null ||
-                          feedback['branchThumbnail'].isEmpty)
-                      ? Icon(Icons.image_not_supported, size: 25)
-                      : null,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      feedback['branch'] ?? "No branch",
-                      style: AppTextStyles.boldBodyStyle.copyWith(
-                        color: AppColors.textColor,
-                      ),
-                    ),
-                    Text(
-                      feedback['channelName'] ?? "No Channel Name",
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.textColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              "Total Feedback: 23",
-              style: AppTextStyles.bodyStyle.copyWith(
-                color: AppColors.textColor,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: AppColors.primaryColor),
-                color: AppColors.mainColor.withCustomOpacity(.1),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "Channel profile",
-                    style: AppTextStyles.bodyStyle.copyWith(
-                      fontFamily: AppFonts.sandSemiBold,
-                      color: AppColors.mainColor,
-                    ),
-                  ),
-                  Spacer(),
-                  SvgPicture.asset(
-                    AppAssets.arrowNext,
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.mainColor,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      isScrollControlled: false,
-    );
   }
 
   Future<Map<String, dynamic>> fetchFeedback(String feedbackId) async {

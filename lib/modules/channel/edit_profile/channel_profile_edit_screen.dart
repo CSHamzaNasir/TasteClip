@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
@@ -61,7 +62,7 @@ class ChannelProfileEditScreen extends StatelessWidget {
                       ? null
                       : controller.updateBranch,
                   child: controller.isLoading.value
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ?  CupertinoActivityIndicator(color: Colors.white)
                       : const Text("Update Branch"),
                 )),
           ],

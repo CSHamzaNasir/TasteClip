@@ -4,7 +4,6 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
-
 import 'package:tasteclip/widgets/gradient_box.dart';
 
 import '../../../config/app_text_styles.dart';
@@ -12,6 +11,7 @@ import '../../../core/constant/app_colors.dart';
 
 class ProfileCard extends StatelessWidget {
   final VoidCallback? onTap;
+  final VoidCallback? onTap1;
   final String title;
   final String title1;
   final String subtitle;
@@ -28,6 +28,7 @@ class ProfileCard extends StatelessWidget {
     required this.subtitle1,
     required this.icon1,
     this.onTap,
+    this.onTap1,
   });
 
   final UserProfileController controller;
@@ -79,27 +80,30 @@ class ProfileCard extends StatelessWidget {
                 ),
               ),
               16.vertical,
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    icon1,
-                    height: 22,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.whiteColor,
-                      BlendMode.srcIn,
+              InkWell(
+                onTap: onTap1,
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      icon1,
+                      height: 22,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.whiteColor,
+                        BlendMode.srcIn,
+                      ),
                     ),
-                  ),
-                  8.horizontal,
-                  Text(
-                    title1,
-                    style: AppTextStyles.bodyStyle.copyWith(
-                      color: AppColors.lightColor,
-                      fontFamily: AppFonts.sandBold,
+                    8.horizontal,
+                    Text(
+                      title1,
+                      style: AppTextStyles.bodyStyle.copyWith(
+                        color: AppColors.lightColor,
+                        fontFamily: AppFonts.sandBold,
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  SvgPicture.asset(AppAssets.arrowRight)
-                ],
+                    Spacer(),
+                    SvgPicture.asset(AppAssets.arrowRight)
+                  ],
+                ),
               ),
               4.vertical,
               Text(

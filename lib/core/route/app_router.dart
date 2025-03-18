@@ -7,10 +7,10 @@ import 'package:tasteclip/modules/auth/role/role_screen.dart';
 import 'package:tasteclip/modules/auth/splash/splash_screen.dart';
 import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/modules/channel/channel_home_screen.dart';
-import 'package:tasteclip/modules/notification/notification_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_screen.dart';
 import 'package:tasteclip/modules/home/home_screen.dart';
 import 'package:tasteclip/modules/home/restaurant/restaurant_list_screen.dart';
+import 'package:tasteclip/modules/notification/notification_screen.dart';
 import 'package:tasteclip/modules/profile/profile_detail/profile_detail_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
 
@@ -20,9 +20,7 @@ import '../../modules/auth/splash/onboarding/onboarding_screen.dart';
 import '../../modules/channel/edit_profile/channel_profile_edit_screen.dart';
 import '../../modules/home/branches/branch_detail/branch_detail_screen.dart';
 import '../../modules/profile/edit_profile/user_profile_edit_screen.dart';
-import '../../modules/review/Image/upload_image_feedback_screen.dart';
 import '../../modules/review/text/upload_text_feedback_screen.dart';
-import '../../modules/review/upload_feedback_screen.dart';
 import '../../modules/review/video/upload_video_feedback_screen.dart';
 
 class AppRouter {
@@ -92,24 +90,21 @@ class AppRouter {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
-    GetPage(
-      name: uploadFeedbackScreen,
-      page: () => UploadFeedbackScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
+
     GetPage(
       name: uploadTextFeedbackScreen,
       page: () => UploadTextFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
-    GetPage(
-      name: uploadImageFeedbackScreen,
-      page: () => UploadImageFeedbackScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
+    // GetPage(
+    //   name: uploadImageFeedbackScreen,
+    //   page: () => UploadImageFeedbackScreen(
+    //     category: FeedbackCategory.image,
+    //   ),
+    //   transition: Transition.fadeIn,
+    //   transitionDuration: const Duration(milliseconds: 500),
+    // ),
     GetPage(
       name: uploadVideoFeedbackScreen,
       page: () => UploadVideoFeedbackScreen(),

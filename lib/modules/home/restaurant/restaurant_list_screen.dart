@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg_flutter.dart';
@@ -36,7 +37,7 @@ class RestaurantListScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CupertinoActivityIndicator());
         } else if (controller.hasError.value) {
           return Center(child: Text("Error: ${controller.errorMessage}"));
         } else if (controller.restaurants.isEmpty) {
@@ -161,14 +162,13 @@ class RestaurantCard extends StatelessWidget {
                               height: 30,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color:
-                                    Colors.grey[300], 
+                                color: Colors.grey[300],
                                 shape: BoxShape.circle,
                               ),
                               child: Text(
                                 "Wait...",
-                                style: TextStyle(
-                                    fontSize: 8, color: Colors.black),
+                                style:
+                                    TextStyle(fontSize: 8, color: Colors.black),
                               ),
                             );
                           },
@@ -178,7 +178,7 @@ class RestaurantCard extends StatelessWidget {
                               height: 30,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: Colors.red[300], 
+                                color: Colors.red[300],
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(Icons.error,

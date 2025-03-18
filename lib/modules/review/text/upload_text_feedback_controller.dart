@@ -9,9 +9,9 @@ import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 
 class UploadTextFeedbackController extends GetxController {
-  final textFeedback = TextEditingController();
-  final rating = TextEditingController();
-  var isLoading = false.obs;
+  final TextEditingController textFeedback = TextEditingController();
+  final TextEditingController rating = TextEditingController();
+  RxBool isLoading = false.obs;
 
   Future<void> saveFeedback({
     required String restaurantName,

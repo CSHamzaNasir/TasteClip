@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
+import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 import 'image_feedback/image_feedback_screen.dart';
@@ -53,17 +54,9 @@ class ProfileDetailScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                         border: Border.all(
                             color: AppColors.primaryColor, width: 2)),
-                    child: CircleAvatar(
+                    child: ProfileImageWithShimmer(
+                      imageUrl: controller.profileImage.value,
                       radius: 75,
-                      backgroundImage: controller.profileImage.value.isNotEmpty
-                          ? NetworkImage(controller.profileImage.value)
-                          : null,
-                      child: controller.profileImage.value.isEmpty
-                          ? const Icon(
-                              Icons.person,
-                              size: 50,
-                            )
-                          : null,
                     ),
                   ),
                 ),

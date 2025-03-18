@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/utils/shimmer_style.dart';
 
 import '../../../config/app_text_styles.dart';
 import '../../../core/constant/app_fonts.dart';
@@ -48,10 +48,7 @@ class ImageFeedbackDisplay extends StatelessWidget {
         itemBuilder: (context, index) {
           var feedback = controller.feedbackList[index];
           return InkWell(
-            onTap: () => Get.to(() => FeedbackDetailScreen(
-                  feedback: feedback,
-                  category: FeedbackCategory.image,
-                )),
+            onTap: () => Get.to(() => FeedbackDetailScreen(feedback: feedback)),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
@@ -62,29 +59,42 @@ class ImageFeedbackDisplay extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: AppColors.mainColor.withCustomOpacity(.2)),
+                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.mainColor.withCustomOpacity(.2),
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: (feedback['imageUrl'] != null &&
                                 feedback['imageUrl'].isNotEmpty)
-                            ? Center(
-                                child: Image.network(
-                                  feedback['imageUrl'],
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                        child: CupertinoActivityIndicator());
-                                  },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Center(
-                                      child: Icon(Icons.image_not_supported,
-                                          size: 25),
-                                    );
-                                  },
-                                ),
+                            ? Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  ShimmerEffect.rectangular(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                  Image.network(
+                                    feedback['imageUrl'],
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+
+                                      return ShimmerEffect.rectangular(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Center(
+                                        child: Icon(Icons.image_not_supported,
+                                            size: 25),
+                                      );
+                                    },
+                                  ),
+                                ],
                               )
                             : Center(
                                 child:

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
@@ -30,7 +31,7 @@ class BranchesListScreen extends StatelessWidget {
         child: Scaffold(
           body: Obx(() {
             if (controller.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CupertinoActivityIndicator());
             } else if (controller.hasError.value) {
               return Center(child: Text("Error: ${controller.errorMessage}"));
             } else if (controller.branches.isEmpty) {

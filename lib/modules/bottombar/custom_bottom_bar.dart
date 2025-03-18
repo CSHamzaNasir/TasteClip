@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:tasteclip/config/app_assets.dart';
-import 'package:tasteclip/core/route/app_router.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/modules/home/home_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
+import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({super.key});
@@ -82,16 +84,20 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                   _buildBottomSheetIcon(
                     iconPath: AppAssets.camera,
                     label: "Image",
-                    onTap: () {
-                      Get.toNamed(AppRouter.uploadImageFeedbackScreen);
-                    },
+                    onTap: () => Get.to(
+                      UploadFeedbackScreen(
+                        category: FeedbackCategory.image,
+                      ),
+                    ),
                   ),
                   _buildBottomSheetIcon(
                     iconPath: AppAssets.video,
                     label: "Video",
-                    onTap: () {
-                      // Add action for video
-                    },
+                    onTap: () => Get.to(
+                      UploadFeedbackScreen(
+                        category: FeedbackCategory.video,
+                      ),
+                    ),
                   ),
                 ],
               ),
