@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/modules/auth/role/role_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
@@ -20,7 +19,7 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      isLight: true,
+      isDefault: false,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -33,10 +32,17 @@ class UserProfileScreen extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ProfileImageWithShimmer(
-                    imageUrl: controller.profileImage.value,
-                    radius: 75,
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.mainColor)),
+                    child: ProfileImageWithShimmer(
+                      imageUrl: controller.profileImage.value,
+                      radius: 65,
+                    ),
                   ),
+                  4.vertical,
                   Text(
                     controller.fullName.isNotEmpty
                         ? controller.fullName.value
@@ -58,6 +64,7 @@ class UserProfileScreen extends StatelessWidget {
                 ],
               ),
               ProfileCard(
+                onTap1: controller.goToSettingScreen,
                 onTap: controller.goToProfileDetailScreen,
                 controller: controller,
                 title: AppString.profileDetails,
@@ -66,17 +73,6 @@ class UserProfileScreen extends StatelessWidget {
                 title1: AppString.setting,
                 subtitle1: AppString.clickToSeeSetting,
                 icon1: AppAssets.setting,
-              ),
-              ProfileCard(
-                onTap1: controller.logout,
-                onTap: () => Get.to((RoleScreen())),
-                controller: controller,
-                title: AppString.theme,
-                subtitle: AppString.clickTochangeTheme,
-                icon: AppAssets.setting,
-                title1: AppString.logout,
-                subtitle1: AppString.clickTologout,
-                icon1: AppAssets.logout,
               ),
               InkWell(
                 onTap: controller.goToEditProfileScreen,
@@ -92,7 +88,7 @@ class UserProfileScreen extends StatelessWidget {
                         "Edit profile",
                         style: AppTextStyles.boldBodyStyle.copyWith(
                           color: AppColors.mainColor,
-                          fontFamily: AppFonts.sandBold,
+                          fontFamily: AppFonts.sandMedium,
                         ),
                       ),
                     ],

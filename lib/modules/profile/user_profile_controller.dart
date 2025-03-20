@@ -34,6 +34,10 @@ class UserProfileController extends GetxController {
     Get.toNamed(AppRouter.profileDetailScreen);
   }
 
+  void goToSettingScreen() {
+    Get.toNamed(AppRouter.settingScreen);
+  }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxString email = ''.obs;

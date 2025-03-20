@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
+import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/route/app_router.dart';
@@ -133,7 +134,12 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           ),
         ),
         SizedBox(height: 5),
-        Text(label, style: TextStyle(fontSize: 14)),
+        Text(
+          label,
+          style: AppTextStyles.regularStyle.copyWith(
+            color: AppColors.textColor,
+          ),
+        ),
       ],
     );
   }

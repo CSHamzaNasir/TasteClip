@@ -81,7 +81,19 @@ class VideoFeedbackDisplay extends StatelessWidget {
               }
 
               final feedback = _controller.videoFeedbacks[index];
-              return VideoFeedbackItem(feedback: feedback);
+              return VideoFeedbackItem(
+                feedback: feedback,
+                onNextVideo: () {
+                  if (index < _controller.videoFeedbacks.length - 1) {
+                    _controller.videoFeedbacks[index + 1];
+                  }
+                },
+                onPreviousVideo: () {
+                  if (index > 0) {
+                    _controller.videoFeedbacks[index - 1];
+                  }
+                },
+              );
             },
           ),
         ],
@@ -92,8 +104,15 @@ class VideoFeedbackDisplay extends StatelessWidget {
 
 class VideoFeedbackItem extends StatefulWidget {
   final Map<String, dynamic> feedback;
+  final VoidCallback onNextVideo;
+  final VoidCallback onPreviousVideo;
 
-  const VideoFeedbackItem({super.key, required this.feedback});
+  const VideoFeedbackItem({
+    super.key,
+    required this.feedback,
+    required this.onNextVideo,
+    required this.onPreviousVideo,
+  });
 
   @override
   VideoFeedbackItemState createState() => VideoFeedbackItemState();
@@ -103,6 +122,7 @@ class VideoFeedbackItemState extends State<VideoFeedbackItem> {
   late VideoPlayerController _videoController;
   late Future<void> _initializeVideoPlayerFuture;
   bool _isPlaying = false;
+  bool _isVideoLoaded = false;
 
   @override
   void initState() {
@@ -112,9 +132,16 @@ class VideoFeedbackItemState extends State<VideoFeedbackItem> {
         VideoPlayerController.network(widget.feedback['mediaUrl']);
     _initializeVideoPlayerFuture = _videoController.initialize().then((_) {
       setState(() {
+        _isVideoLoaded = true;
         _isPlaying = true;
         _videoController.play();
       });
+    });
+
+    _videoController.addListener(() {
+      if (_videoController.value.position >= _videoController.value.duration) {
+        widget.onNextVideo();
+      }
     });
   }
 
@@ -164,44 +191,45 @@ class VideoFeedbackItemState extends State<VideoFeedbackItem> {
               }
             },
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    AppColors.primaryColor.withCustomOpacity(0.8),
-                    AppColors.primaryColor.withCustomOpacity(0.8),
-                    Colors.transparent,
+          if (_isVideoLoaded)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      AppColors.primaryColor.withCustomOpacity(0.8),
+                      AppColors.primaryColor.withCustomOpacity(0.8),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 5,
+                  children: [
+                    Text(widget.feedback['description'],
+                        style: AppTextStyles.headingStyle1
+                            .copyWith(color: AppColors.whiteColor)),
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: AppColors.mainColor),
+                      child: Text(widget.feedback['restaurantName'],
+                          style: AppTextStyles.lightStyle.copyWith(
+                            color: AppColors.lightColor,
+                          )),
+                    ),
                   ],
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 5,
-                children: [
-                  Text(widget.feedback['description'],
-                      style: AppTextStyles.headingStyle1
-                          .copyWith(color: AppColors.whiteColor)),
-                  Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: AppColors.mainColor),
-                    child: Text(widget.feedback['restaurantName'],
-                        style: AppTextStyles.lightStyle.copyWith(
-                          color: AppColors.lightColor,
-                        )),
-                  ),
-                ],
-              ),
             ),
-          ),
           Positioned(
             top: 20,
             right: 20,

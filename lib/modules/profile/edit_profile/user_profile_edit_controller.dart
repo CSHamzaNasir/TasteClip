@@ -73,7 +73,7 @@ class UserProfileEditController extends GetxController {
         colorText: Colors.white,
       );
     } finally {
-      isLoading.value = false; 
+      isLoading.value = false;
     }
   }
 

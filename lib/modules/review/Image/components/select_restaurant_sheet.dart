@@ -152,13 +152,13 @@ class SelectRestaurantSheetImageState
                     )['name'];
 
                     if (restaurantName != null) {
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
                         builder: (context) => SelectBranchSheetImage(
                           restaurantName: restaurantName,
-                          category: widget.category, 
+                          category: widget.category,
                         ),
                       );
                     } else {

@@ -28,7 +28,7 @@ class PopularFeedback extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding:   EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0),
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.whiteColor,

@@ -62,7 +62,7 @@ class ChannelProfileEditScreen extends StatelessWidget {
                       ? null
                       : controller.updateBranch,
                   child: controller.isLoading.value
-                      ?  CupertinoActivityIndicator(color: Colors.white)
+                      ? CupertinoActivityIndicator(color: Colors.white)
                       : const Text("Update Branch"),
                 )),
           ],

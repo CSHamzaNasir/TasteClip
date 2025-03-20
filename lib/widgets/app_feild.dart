@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
@@ -29,7 +29,7 @@ class AppFeild extends StatefulWidget {
   final Color? fieldTextColor;
   final String? suffixImage;
   final VoidCallback? onSuffixTap;
-  final bool isRating; 
+  final bool isRating;
 
   const AppFeild({
     super.key,
@@ -56,7 +56,7 @@ class AppFeild extends StatefulWidget {
     this.fieldTextColor,
     this.suffixImage,
     this.onSuffixTap,
-    this.isRating = false, 
+    this.isRating = false,
   });
 
   @override
@@ -82,8 +82,7 @@ class AppFeildState extends State<AppFeild> {
         ),
         controller: widget.controller,
         keyboardType: widget.isRating
-            ? TextInputType.numberWithOptions(
-                decimal: true) 
+            ? TextInputType.numberWithOptions(decimal: true)
             : widget.inputType,
         key: widget.fieldKey,
         obscureText: widget.isPasswordField == true ? _obscureText : false,
@@ -103,15 +102,13 @@ class AppFeildState extends State<AppFeild> {
         onFieldSubmitted: widget.onFieldSubmitted,
         inputFormatters: widget.isRating
             ? [
-                FilteringTextInputFormatter.allow(RegExp(
-                    r'^\d?\.?\d?')), 
-                _MaxValueInputFormatter(
-                    5.0), 
+                FilteringTextInputFormatter.allow(RegExp(r'^\d?\.?\d?')),
+                _MaxValueInputFormatter(5.0),
               ]
             : null,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16, vertical: 16), 
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: widget.feildFocusClr
@@ -181,7 +178,6 @@ class AppFeildState extends State<AppFeild> {
   }
 }
 
-
 class _MaxValueInputFormatter extends TextInputFormatter {
   final double maxValue;
 
@@ -198,7 +194,7 @@ class _MaxValueInputFormatter extends TextInputFormatter {
 
     final value = double.tryParse(newValue.text);
     if (value == null || value > maxValue) {
-      return oldValue; 
+      return oldValue;
     }
 
     return newValue;

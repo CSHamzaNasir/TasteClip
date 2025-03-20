@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
@@ -53,17 +54,27 @@ class PostTextFeedbackScreen extends StatelessWidget {
                   return Column(
                     children: [
                       AppFeild(
-                        isRating: true,
                         hintText: AppString.enterYourFeedbackHere,
                         controller: controller.textFeedback,
                       ),
                       16.vertical,
-                      AppFeild(
-                        isRating: true,
-                        hintText: 'Enter your rating',
-                        inputType: TextInputType.number,
-                        controller: controller.rating,
+                      RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: false,
+                        itemCount: 5,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: AppColors.mainColor,
+                        ),
+                        onRatingUpdate: (rating) {
+                          controller.rating.value = rating;
+                        },
                       ),
+                      16.vertical,
                     ],
                   );
                 },
@@ -77,21 +88,21 @@ class PostTextFeedbackScreen extends StatelessWidget {
                       )
                     : AppButton(
                         isGradient: controller.textFeedback.text.isNotEmpty &&
-                            controller.rating.text.isNotEmpty,
+                            controller.rating.value > 0,
                         text: 'Next',
                         onPressed: controller.textFeedback.text.isNotEmpty &&
-                                controller.rating.text.isNotEmpty
+                                controller.rating.value > 0
                             ? () {
                                 controller.saveFeedback(
                                   restaurantName: restaurantName,
                                   branchName: branchName,
-                                  rating: controller.rating.text,
+                                  rating: controller.rating.value.toString(),
                                   textFeedback: controller.textFeedback.text,
                                 );
                               }
                             : () {},
                         btnColor: controller.textFeedback.text.isNotEmpty &&
-                                controller.rating.text.isNotEmpty
+                                controller.rating.value > 0
                             ? null
                             : AppColors.btnUnSelectColor,
                       );

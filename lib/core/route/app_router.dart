@@ -13,6 +13,9 @@ import 'package:tasteclip/modules/home/restaurant/restaurant_list_screen.dart';
 import 'package:tasteclip/modules/notification/notification_screen.dart';
 import 'package:tasteclip/modules/profile/profile_detail/profile_detail_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
+import 'package:tasteclip/modules/setting/legal/legal_screen.dart';
+import 'package:tasteclip/modules/setting/setting_profile_screen.dart';
+import 'package:tasteclip/modules/setting/setting_screen.dart';
 
 import '../../modules/auth/email/register_screen.dart';
 import '../../modules/auth/manager_auth/manager_register_screen.dart';
@@ -21,7 +24,6 @@ import '../../modules/channel/edit_profile/channel_profile_edit_screen.dart';
 import '../../modules/home/branches/branch_detail/branch_detail_screen.dart';
 import '../../modules/profile/edit_profile/user_profile_edit_screen.dart';
 import '../../modules/review/text/upload_text_feedback_screen.dart';
-import '../../modules/review/video/upload_video_feedback_screen.dart';
 
 class AppRouter {
   static const splashScreen = "/splashScreen";
@@ -49,6 +51,9 @@ class AppRouter {
   static const branchDetailScreen = "/branchDetailScreen";
   static const watchFeedbackScreen = "/watchFeedbackScreen";
   static const notificationScreen = "/notificationScreen";
+  static const settingScreen = "/settingScreen";
+  static const settingProfileScreen = "/settingProfileScreen";
+  static const legalScreen = "/legalScreen";
   static final routes = [
     GetPage(
       name: splashScreen,
@@ -90,24 +95,9 @@ class AppRouter {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
-
     GetPage(
       name: uploadTextFeedbackScreen,
       page: () => UploadTextFeedbackScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
-    // GetPage(
-    //   name: uploadImageFeedbackScreen,
-    //   page: () => UploadImageFeedbackScreen(
-    //     category: FeedbackCategory.image,
-    //   ),
-    //   transition: Transition.fadeIn,
-    //   transitionDuration: const Duration(milliseconds: 500),
-    // ),
-    GetPage(
-      name: uploadVideoFeedbackScreen,
-      page: () => UploadVideoFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),
@@ -186,6 +176,24 @@ class AppRouter {
     GetPage(
       name: notificationScreen,
       page: () => NotificationScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: settingScreen,
+      page: () => SettingScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: settingProfileScreen,
+      page: () => SettingProfileScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: legalScreen,
+      page: () => LegalScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),

@@ -10,7 +10,7 @@ import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 
 class UploadTextFeedbackController extends GetxController {
   final TextEditingController textFeedback = TextEditingController();
-  final TextEditingController rating = TextEditingController();
+  RxDouble rating = 0.0.obs;
   RxBool isLoading = false.obs;
 
   Future<void> saveFeedback({
@@ -67,7 +67,7 @@ class UploadTextFeedbackController extends GetxController {
       );
 
       this.textFeedback.clear();
-      this.rating.clear();
+      this.rating.value = 0.0;
       Get.off(CustomBottomBar());
     } catch (e) {
       log("Error saving feedback: $e");

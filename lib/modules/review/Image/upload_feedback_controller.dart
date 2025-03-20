@@ -15,12 +15,11 @@ import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 
 class UploadFeedbackController extends GetxController {
   final TextEditingController description = TextEditingController();
-  final TextEditingController rating = TextEditingController();
   RxString selectedMealType = 'Breakfast'.obs;
   Rx<File?> selectedImage = Rx<File?>(null);
   Rx<File?> selectedVideo = Rx<File?>(null);
   RxBool isLoading = false.obs;
-
+  RxDouble rating = 0.0.obs;
   Future<void> pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -29,17 +28,46 @@ class UploadFeedbackController extends GetxController {
     }
   }
 
-  Future<void> pickVideo() async {
-    final pickedFile =
-        await ImagePicker().pickVideo(source: ImageSource.gallery);
+  Future<void> pickVideo({required ImageSource source}) async {
+    final pickedFile = await ImagePicker().pickVideo(source: source);
     if (pickedFile != null) {
       selectedVideo.value = File(pickedFile.path);
     }
   }
 
+  Future<void> showVideoSourceChoice() async {
+    Get.bottomSheet(
+      Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.video_library),
+              title: Text('Upload from Gallery'),
+              onTap: () async {
+                Get.back();
+                await pickVideo(source: ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.videocam),
+              title: Text('Capture Video'),
+              onTap: () async {
+                Get.back();
+                await pickVideo(source: ImageSource.camera);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> saveFeedback({
     required String description,
-    required String rating,
+    required double rating,
     required String restaurantName,
     required String branchName,
     required FeedbackCategory category,
@@ -122,7 +150,7 @@ class UploadFeedbackController extends GetxController {
       );
 
       this.description.clear();
-      this.rating.clear();
+      this.rating.value = 0.0;
       selectedImage.value = null;
       selectedVideo.value = null;
       selectedMealType.value = 'Breakfast';

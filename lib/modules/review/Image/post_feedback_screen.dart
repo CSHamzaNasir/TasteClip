@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
@@ -58,62 +59,69 @@ class PostImageFeedbackScreen extends StatelessWidget {
                   GetBuilder<UploadFeedbackController>(
                     builder: (_) {
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           16.vertical,
                           if (category == FeedbackCategory.image)
-                            GestureDetector(
-                              onTap: () async {
-                                await controller.pickImage();
-                              },
-                              child: Obx(
-                                () => Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.mainColor
-                                        .withCustomOpacity(.5),
-                                    borderRadius: BorderRadius.circular(10),
-                                    image:
-                                        controller.selectedImage.value != null
-                                            ? DecorationImage(
-                                                image: FileImage(controller
-                                                    .selectedImage.value!),
-                                                fit: BoxFit.cover,
+                            Center(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await controller.pickImage();
+                                },
+                                child: Obx(
+                                  () => Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.mainColor
+                                          .withCustomOpacity(.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                      image:
+                                          controller.selectedImage.value != null
+                                              ? DecorationImage(
+                                                  image: FileImage(controller
+                                                      .selectedImage.value!),
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : null,
+                                    ),
+                                    child:
+                                        controller.selectedImage.value == null
+                                            ? Icon(
+                                                Icons.camera_alt,
+                                                color: Colors.white,
                                               )
                                             : null,
                                   ),
-                                  child: controller.selectedImage.value == null
-                                      ? Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.white,
-                                        )
-                                      : null,
                                 ),
                               ),
                             ),
                           if (category == FeedbackCategory.video)
-                            GestureDetector(
-                              onTap: () async {
-                                await controller.pickVideo();
-                              },
-                              child: Obx(
-                                () => Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.mainColor
-                                        .withCustomOpacity(.5),
-                                    borderRadius: BorderRadius.circular(10),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await controller.showVideoSourceChoice();
+                                },
+                                child: Obx(
+                                  () => Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.mainColor
+                                          .withCustomOpacity(.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child:
+                                        controller.selectedVideo.value == null
+                                            ? Icon(
+                                                Icons.videocam,
+                                                color: Colors.white,
+                                              )
+                                            : Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                              ),
                                   ),
-                                  child: controller.selectedVideo.value == null
-                                      ? Icon(
-                                          Icons.videocam,
-                                          color: Colors.white,
-                                        )
-                                      : Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                        ),
                                 ),
                               ),
                             ),
@@ -125,17 +133,6 @@ class PostImageFeedbackScreen extends StatelessWidget {
                             hintTextColor:
                                 AppColors.textColor.withCustomOpacity(.3),
                             feildFocusClr: true,
-                          ),
-                          16.vertical,
-                          AppFeild(
-                            hintText: 'Enter your rating',
-                            inputType: TextInputType.number,
-                            controller: controller.rating,
-                            feildFocusClr: true,
-                            feildSideClr: false,
-                            isRating: true,
-                            hintTextColor:
-                                AppColors.textColor.withCustomOpacity(.3),
                           ),
                           16.vertical,
                           DropdownButtonFormField<String>(
@@ -163,6 +160,22 @@ class PostImageFeedbackScreen extends StatelessWidget {
                               labelText: "Select Meal Type",
                             ),
                           ),
+                          16.vertical,
+                          RatingBar.builder(
+                            initialRating: controller.rating.value,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 30,
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: AppColors.mainColor,
+                            ),
+                            onRatingUpdate: (rating) {
+                              controller.rating.value = rating;
+                            },
+                          ),
                         ],
                       );
                     },
@@ -174,19 +187,19 @@ class PostImageFeedbackScreen extends StatelessWidget {
                             size: 25.0,
                           )
                         : AppButton(
-                            isGradient: controller.rating.text.isNotEmpty &&
+                            isGradient: controller.rating.value > 0 &&
                                 (category == FeedbackCategory.image
                                     ? controller.selectedImage.value != null
                                     : controller.selectedVideo.value != null),
                             text: 'Next',
-                            onPressed: controller.rating.text.isNotEmpty &&
+                            onPressed: controller.rating.value > 0 &&
                                     (category == FeedbackCategory.image
                                         ? controller.selectedImage.value != null
                                         : controller.selectedVideo.value !=
                                             null)
                                 ? () {
                                     controller.saveFeedback(
-                                      rating: controller.rating.text,
+                                      rating: controller.rating.value,
                                       restaurantName: restaurantName,
                                       branchName: branchName,
                                       description: controller.description.text,
@@ -194,7 +207,7 @@ class PostImageFeedbackScreen extends StatelessWidget {
                                     );
                                   }
                                 : () {},
-                            btnColor: controller.rating.text.isNotEmpty &&
+                            btnColor: controller.rating.value > 0 &&
                                     (category == FeedbackCategory.image
                                         ? controller.selectedImage.value != null
                                         : controller.selectedVideo.value !=
