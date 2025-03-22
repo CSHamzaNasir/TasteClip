@@ -20,7 +20,10 @@ class ChannelHomeScreen extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ChannelHomeAppBar(),
+            ChannelHomeAppBar(
+              image: "",
+              username: 'username',
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(

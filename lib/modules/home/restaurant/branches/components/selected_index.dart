@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 
-import '../../../../config/app_text_styles.dart';
-import '../../../../core/constant/app_colors.dart';
+import '../../../../../config/app_text_styles.dart';
+import '../../../../../core/constant/app_colors.dart';
 import '../branches_list_controller.dart';
 
 class SelectedIndex extends StatelessWidget {

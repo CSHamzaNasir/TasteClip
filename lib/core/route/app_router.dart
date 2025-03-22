@@ -21,7 +21,6 @@ import '../../modules/auth/email/register_screen.dart';
 import '../../modules/auth/manager_auth/manager_register_screen.dart';
 import '../../modules/auth/splash/onboarding/onboarding_screen.dart';
 import '../../modules/channel/edit_profile/channel_profile_edit_screen.dart';
-import '../../modules/home/branches/branch_detail/branch_detail_screen.dart';
 import '../../modules/profile/edit_profile/user_profile_edit_screen.dart';
 import '../../modules/review/text/upload_text_feedback_screen.dart';
 
@@ -48,7 +47,6 @@ class AppRouter {
   static const channelProfileEditScreen = "/channelProfileEditScreen";
   static const userProfileEditScreen = "/userProfileEditScreen";
   static const profileDetailScreen = "/profileDetailScreen";
-  static const branchDetailScreen = "/branchDetailScreen";
   static const watchFeedbackScreen = "/watchFeedbackScreen";
   static const notificationScreen = "/notificationScreen";
   static const settingScreen = "/settingScreen";
@@ -158,12 +156,6 @@ class AppRouter {
     GetPage(
       name: profileDetailScreen,
       page: () => ProfileDetailScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    GetPage(
-      name: branchDetailScreen,
-      page: () => BranchDetailScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),

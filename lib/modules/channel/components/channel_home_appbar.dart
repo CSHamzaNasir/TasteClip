@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
-import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
+import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 
 class ChannelHomeAppBar extends StatelessWidget {
+  final String image;
+  final String username;
   const ChannelHomeAppBar({
     super.key,
+    required this.image,
+    required this.username,
   });
 
   @override
@@ -32,14 +36,14 @@ class ChannelHomeAppBar extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 24,
-                backgroundImage: AssetImage(AppAssets.dummyImg),
+                backgroundImage: NetworkImage(image),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 4,
                 children: [
                   Text(
-                    "Hello, Username!",
+                    "Hello, $username!",
                     style: AppTextStyles.regularStyle.copyWith(
                       color: AppColors.whiteColor,
                       fontFamily: AppFonts.sandBold,

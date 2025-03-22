@@ -16,6 +16,16 @@ class AppAssets {
   static const String dummyImg = "assets/images/dummy.png";
   static const String categoryFilter = "assets/images/category_filter.jpg";
   static const String userBgImg = "assets/images/user_bg_img.jpg";
+  static const String unSnack = "assets/images/un_snacks.svg";
+  static const String unMeal = "assets/images/un_meal.svg";
+  static const String unDrink = "assets/images/un_drinks.svg";
+  static const String unVeqan = "assets/images/un_veqan.svg";
+  static const String unDesserets = "assets/images/un_deserts.svg";
+  static const String snack = "assets/images/snacks.svg";
+  static const String meal = "assets/images/meal.svg";
+  static const String drink = "assets/images/drinks.svg";
+  static const String veqan = "assets/images/veqan.svg";
+  static const String deserts = "assets/images/deserts.svg";
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
   static const String mailIcon = "assets/icons/mail-icon.svg";

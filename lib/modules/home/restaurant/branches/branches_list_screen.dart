@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/modules/home/restaurant/branches/components/branch_card.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import '../../../config/app_text_styles.dart';
-import '../../../core/constant/app_colors.dart';
-import '../../../core/constant/app_fonts.dart';
+import '../../../../config/app_text_styles.dart';
+import '../../../../core/constant/app_colors.dart';
+import '../../../../core/constant/app_fonts.dart';
 import 'branches_list_controller.dart';
-import 'components/branch_card.dart';
 import 'components/selected_index.dart';
 
 class BranchesListScreen extends StatelessWidget {
@@ -81,20 +81,7 @@ class BranchesListScreen extends StatelessWidget {
                   24.vertical,
                   SelectedIndex(controller: controller),
                   16.vertical,
-                  SizedBox(
-                    height: Get.height * .35,
-                    child: ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.branches.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(width: 16),
-                      itemBuilder: (context, index) {
-                        var branch = controller.branches[index];
-                        return BranchCard(branch: branch);
-                      },
-                    ),
-                  ),
+                  BranchCard(controller: controller),
                 ],
               );
             }

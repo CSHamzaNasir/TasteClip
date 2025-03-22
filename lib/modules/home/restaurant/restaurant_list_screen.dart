@@ -8,7 +8,7 @@ import 'package:tasteclip/core/constant/app_colors.dart';
 
 import '../../../config/app_text_styles.dart';
 import '../../../core/constant/app_fonts.dart';
-import '../branches/branches_list_screen.dart';
+import 'branches/branches_list_screen.dart';
 import 'restaurant_list_controller.dart';
 
 class RestaurantListScreen extends StatelessWidget {
@@ -21,7 +21,8 @@ class RestaurantListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: AppColors.transparent,
+        elevation: 0,
         leading: Icon(
           Icons.arrow_back_ios_rounded,
           size: 18,

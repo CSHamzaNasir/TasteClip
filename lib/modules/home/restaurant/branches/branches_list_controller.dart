@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/core/route/app_router.dart';
 
 class BranchesListController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -13,10 +12,6 @@ class BranchesListController extends GetxController {
 
   void changeCategory(int index) {
     selectedIndex.value = index;
-  }
-
-  void goToBranchDetailScreen() {
-    Get.toNamed(AppRouter.branchDetailScreen);
   }
 
   void fetchBranches(String restaurantId) async {

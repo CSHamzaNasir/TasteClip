@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/modules/home/branches/branch_detail/branch_detail_controller.dart';
+import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
 
-import '../../../../../config/app_text_styles.dart';
-import '../../../../../core/constant/app_colors.dart';
+import '../../../../../../config/app_text_styles.dart';
+import '../../../../../../core/constant/app_colors.dart';
 
 class Filter extends StatelessWidget {
   const Filter({
