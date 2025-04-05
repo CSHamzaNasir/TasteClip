@@ -19,7 +19,6 @@ class WatchFeedbackController extends GetxController {
       final feedbackDoc =
           FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
 
-      
       await feedbackDoc.update({
         'likes.$currentUserId': true,
       });
@@ -31,13 +30,11 @@ class WatchFeedbackController extends GetxController {
     }
   }
 
-  
   Future<void> unlikeFeedback(String feedbackId) async {
     try {
       final feedbackDoc =
           FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
 
-      
       await feedbackDoc.update({
         'likes.$currentUserId': FieldValue.delete(),
       });
@@ -49,16 +46,14 @@ class WatchFeedbackController extends GetxController {
     }
   }
 
-  
   bool hasUserLikedFeedback(Map<String, dynamic> feedback) {
     final likes = feedback['likes'];
     if (likes is Map<dynamic, dynamic>) {
       return likes.containsKey(currentUserId);
     }
-    return false; 
+    return false;
   }
 
-  
   Future<void> toggleLikeFeedback(
       String feedbackId, Map<String, dynamic> feedback) async {
     if (hasUserLikedFeedback(feedback)) {
@@ -66,11 +61,10 @@ class WatchFeedbackController extends GetxController {
     } else {
       await likeFeedback(feedbackId);
     }
-    
+
     fetchFeedbackText();
   }
 
-  
   Future<void> fetchFeedbackText() async {
     try {
       String selectedMealType = filters[selectedTopFilter.value];
@@ -109,7 +103,7 @@ class WatchFeedbackController extends GetxController {
             "user_id": feedbackData['userId'],
             "user_fullName": userData['fullName'],
             "user_profileImage": userData['profileImage'],
-            "likes": feedbackData['likes'] ?? {}, 
+            "likes": feedbackData['likes'] ?? {},
           };
 
           allFeedbackText.add(feedbackWithUser);
