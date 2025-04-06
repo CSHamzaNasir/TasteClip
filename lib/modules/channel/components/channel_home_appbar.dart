@@ -43,7 +43,7 @@ class ChannelHomeAppBar extends StatelessWidget {
                 spacing: 4,
                 children: [
                   Text(
-                    "Hello, $username!",
+                    username,
                     style: AppTextStyles.regularStyle.copyWith(
                       color: AppColors.whiteColor,
                       fontFamily: AppFonts.sandBold,

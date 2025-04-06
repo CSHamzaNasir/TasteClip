@@ -1,11 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class BranchDetailController extends GetxController {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   var selectedIndexes = <int>[].obs;
-  var feedbackListText = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> feedbackList = <Map<String, dynamic>>[].obs;
+  RxBool isLoading = false.obs;
+  RxString errorMessage = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchAllFeedback();
+  }
+
+  Future<void> fetchAllFeedback() async {
+    try {
+      isLoading(true);
+      errorMessage('');
+
+      final QuerySnapshot snapshot = await firestore
+          .collection('feedback')
+          .where('category', isEqualTo: 'text_feedback')
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      feedbackList.assignAll(snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return {
+          ...data,
+          'id': doc.id,
+        };
+      }));
+    } catch (e) {
+      errorMessage('Failed to load feedback: ${e.toString()}');
+      Get.snackbar(
+        'Error',
+        'Failed to load feedback data',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> refreshFeedback() async {
+    await fetchAllFeedback();
+  }
 
   final List<String> defaultImages = [
     AppAssets.unDesserets,
@@ -36,61 +78,5 @@ class BranchDetailController extends GetxController {
     return selectedIndexes.contains(index)
         ? selectedImages[index]
         : defaultImages[index];
-  }
-
-  final List<String> filters = ["All", "Breakfast", "Lunch", "Dinner"];
-  var selectedTopFilter = 0.obs;
-
-// In WatchFeedbackController class
-  Future<void> fetchFeedbackTextByBranch(String branchName) async {
-    try {
-      String selectedMealType = filters[selectedTopFilter.value];
-
-      QuerySnapshot feedbackQuery = await FirebaseFirestore.instance
-          .collection('feedback')
-          .where('branchName', isEqualTo: branchName)
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      List<Map<String, dynamic>> allFeedbackText = [];
-
-      for (var doc in feedbackQuery.docs) {
-        Map<String, dynamic> feedbackData = doc.data() as Map<String, dynamic>;
-
-        if (feedbackData['category'] == "text_feedback" &&
-            (selectedMealType == "All" ||
-                feedbackData['mealType'] == selectedMealType)) {
-          DateTime createdAt = feedbackData['createdAt'].toDate();
-
-          DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-              .collection('email_user')
-              .doc(feedbackData['userId'])
-              .get();
-
-          Map<String, dynamic> userData =
-              userSnapshot.data() as Map<String, dynamic>;
-
-          Map<String, dynamic> feedbackWithUser = {
-            "feedbackId": feedbackData['feedbackId'],
-            "branch": feedbackData['branchName'],
-            "branchThumbnail": feedbackData['branchThumbnail'],
-            "review": feedbackData['review'],
-            "rating": feedbackData['rating'].toString(),
-            "created_at": timeago.format(createdAt),
-            "meal_type": feedbackData['mealType'],
-            "user_id": feedbackData['userId'],
-            "user_fullName": userData['fullName'],
-            "user_profileImage": userData['profileImage'],
-            "likes": feedbackData['likes'] ?? {},
-          };
-
-          allFeedbackText.add(feedbackWithUser);
-        }
-      }
-
-      feedbackListText.assignAll(allFeedbackText);
-    } catch (e) {
-      Get.snackbar("Error", "Failed to fetch text feedback: $e");
-    }
   }
 }

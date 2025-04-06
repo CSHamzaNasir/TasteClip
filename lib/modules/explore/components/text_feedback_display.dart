@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
@@ -12,15 +13,11 @@ import '../watch_feedback_controller.dart';
 
 class TextFeedbackDisplay extends StatelessWidget {
   final FeedbackCategory category;
-  final String? branchName;
-  final bool showBranchName;
 
   TextFeedbackDisplay({
     super.key,
     required this.controller,
     required this.category,
-    this.branchName,
-    this.showBranchName = true,
   });
 
   final WatchFeedbackController controller;
@@ -29,25 +26,17 @@ class TextFeedbackDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final displayedFeedback = branchName != null
-          ? controller.feedbackListText
-              .where((feedback) => feedback['branch'] == branchName)
-              .toList()
-          : controller.feedbackListText;
+      final displayedFeedback = controller.feedbackListText;
 
       if (displayedFeedback.isEmpty) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.feedback_outlined,
-                size: 48,
-                color: AppColors.btnUnSelectColor,
-              ),
+              CupertinoActivityIndicator(),
               16.vertical,
               Text(
-                'No feedback available',
+                'Loading...',
                 style: AppTextStyles.bodyStyle.copyWith(
                   color: AppColors.btnUnSelectColor,
                 ),
@@ -62,9 +51,6 @@ class TextFeedbackDisplay extends StatelessWidget {
           itemCount: 5,
           separatorBuilder: (context, index) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Divider(
-              color: AppColors.btnUnSelectColor,
-            ),
           ),
           itemBuilder: (context, index) {
             return const TextFeedbackShimmer();
@@ -75,45 +61,68 @@ class TextFeedbackDisplay extends StatelessWidget {
       return ListView.separated(
         itemCount: displayedFeedback.length,
         separatorBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Divider(
-            color: AppColors.btnUnSelectColor,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 0.0),
         ),
         itemBuilder: (context, index) {
           final feedbackText = displayedFeedback[index];
 
           return GestureDetector(
             onTap: () {},
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    ProfileImageWithShimmer(
-                      imageUrl: feedbackText['user_profileImage'],
-                      radius: 18,
-                    ),
-                    12.horizontal,
-                    Text(
-                      feedbackText['user_fullName'] ?? "Unknown User",
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.mainColor,
-                        fontFamily: AppFonts.sandSemiBold,
-                      ),
-                    ),
-                  ],
-                ),
-                12.vertical,
-                Text(
-                  feedbackText['review'] ?? "No feedback available",
-                  style: AppTextStyles.regularStyle.copyWith(
-                    color: AppColors.textColor.withCustomOpacity(.6),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.whiteColor.withCustomOpacity(.95),
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.btnUnSelectColor.withCustomOpacity(.2),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
                   ),
-                ),
-                12.vertical,
-                Row(
-                  children: [
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      ProfileImageWithShimmer(
+                        imageUrl: feedbackText['user_profileImage'],
+                        radius: 18,
+                      ),
+                      12.horizontal,
+                      Column(
+                        spacing: 8,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            feedbackText['user_fullName'] ?? "Unknown User",
+                            style: AppTextStyles.bodyStyle.copyWith(
+                              color: AppColors.mainColor,
+                              fontFamily: AppFonts.sandSemiBold,
+                            ),
+                          ),
+                          Text(
+                            feedbackText['created_at'] ?? "",
+                            style: AppTextStyles.lightStyle.copyWith(
+                              color: AppColors.btnUnSelectColor,
+                              fontFamily: AppFonts.sandSemiBold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  12.vertical,
+                  Text(
+                    feedbackText['review'] ?? "No feedback available",
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: AppColors.textColor.withCustomOpacity(.6),
+                    ),
+                  ),
+                  12.vertical,
+                  Row(children: [
                     GestureDetector(
                       onTap: () {
                         controller.toggleLikeFeedback(
@@ -173,19 +182,9 @@ class TextFeedbackDisplay extends StatelessWidget {
                         fontFamily: AppFonts.sandSemiBold,
                       ),
                     ),
-                    if (showBranchName && feedbackText['branch'] != null) ...[
-                      12.horizontal,
-                      Text(
-                        feedbackText['branch'],
-                        style: AppTextStyles.lightStyle.copyWith(
-                          color: AppColors.btnUnSelectColor,
-                          fontFamily: AppFonts.sandSemiBold,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ],
+                  ]),
+                ],
+              ),
             ),
           );
         },
