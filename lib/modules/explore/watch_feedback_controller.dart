@@ -65,7 +65,7 @@ class WatchFeedbackController extends GetxController {
     fetchFeedbackText();
   }
 
-  Future<void> fetchFeedbackText() async {
+  Future<void> fetchFeedbackText({String? branchName}) async {
     try {
       String selectedMealType = filters[selectedTopFilter.value];
 
@@ -81,7 +81,8 @@ class WatchFeedbackController extends GetxController {
 
         if (feedbackData['category'] == "text_feedback" &&
             (selectedMealType == "All" ||
-                feedbackData['mealType'] == selectedMealType)) {
+                feedbackData['mealType'] == selectedMealType) &&
+            (branchName == null || feedbackData['branchName'] == branchName)) {
           DateTime createdAt = feedbackData['createdAt'].toDate();
 
           DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
