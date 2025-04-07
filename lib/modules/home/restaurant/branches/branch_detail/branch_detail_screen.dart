@@ -81,6 +81,7 @@ class BranchDetailScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFeedbackDisplay(
+                    branchName: displayBranchName,
                     controller: controller,
                     category: FeedbackCategory.text,
                   ),

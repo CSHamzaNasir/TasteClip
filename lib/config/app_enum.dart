@@ -8,3 +8,8 @@ enum FeedbackCategory {
   text,
   video,
 }
+
+enum Feedback {
+  branchFeedback,
+  allFeedback,
+}

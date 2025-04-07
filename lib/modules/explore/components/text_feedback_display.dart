@@ -13,11 +13,13 @@ import '../watch_feedback_controller.dart';
 
 class TextFeedbackDisplay extends StatelessWidget {
   final FeedbackCategory category;
+  final String? branchName;
 
   TextFeedbackDisplay({
     super.key,
     required this.controller,
     required this.category,
+    this.branchName,
   });
 
   final WatchFeedbackController controller;
