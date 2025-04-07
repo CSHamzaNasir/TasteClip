@@ -9,7 +9,7 @@ enum FeedbackCategory {
   video,
 }
 
-enum Feedback {
+enum FeedbackScope {
   branchFeedback,
   allFeedback,
 }

@@ -84,6 +84,7 @@ class BranchDetailScreen extends StatelessWidget {
                     branchName: displayBranchName,
                     controller: controller,
                     category: FeedbackCategory.text,
+                    feedback: FeedbackScope.branchFeedback,
                   ),
                 ),
               )

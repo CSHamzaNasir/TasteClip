@@ -43,7 +43,7 @@ class BranchCard extends StatelessWidget {
             onTap: () {
               Get.to(
                 () => BranchDetailScreen(
-                  branchName: branch["channelName"],
+                  branchName: branch["branchAddress"],
                   branchImageUrl: branch["branchThumbnail"],
                 ),
               );
@@ -70,7 +70,7 @@ class BranchCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      branch["channelName"],
+                      branch["branchAddress"],
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: AppTextStyles.bodyStyle.copyWith(

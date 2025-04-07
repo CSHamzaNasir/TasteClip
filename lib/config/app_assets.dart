@@ -26,6 +26,8 @@ class AppAssets {
   static const String drink = "assets/images/drinks.svg";
   static const String veqan = "assets/images/veqan.svg";
   static const String deserts = "assets/images/deserts.svg";
+  static const String likeThumb = "assets/images/like_thumb.svg";
+
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
   static const String mailIcon = "assets/icons/mail-icon.svg";
@@ -67,4 +69,5 @@ class AppAssets {
   static const String lunch = "assets/icons/lunch.png";
   static const String dinner = "assets/icons/dinner.png";
   static const String info = "assets/icons/info.svg";
+  static const String messageFilled = "assets/icons/message_filled.svg";
 }
