@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
@@ -160,13 +159,18 @@ class TextFeedbackDisplay extends StatelessWidget {
                                           BlendMode.srcIn,
                                         ),
                                         AppAssets.likeThumb))
-                                : Icon(
+                                : SvgPicture.asset(
                                     controller
                                             .hasUserLikedFeedback(feedbackText)
-                                        ? Icons.favorite
-                                        : Icons.favorite_border_outlined,
-                                    color: AppColors.mainColor,
-                                    size: 20,
+                                        ? AppAssets.likeThumb
+                                        : AppAssets.likeBorder,
+                                    height: 18,
+                                    width: 18,
+                                    fit: BoxFit.cover,
+                                    colorFilter: ColorFilter.mode(
+                                      AppColors.mainColor,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                           ),
                           Text(

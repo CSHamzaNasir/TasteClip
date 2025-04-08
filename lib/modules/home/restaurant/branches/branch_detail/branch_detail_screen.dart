@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -30,7 +31,7 @@ class BranchDetailScreen extends StatelessWidget {
       backgroundColor: AppColors.whiteColor.withCustomOpacity(.95),
       body: Obx(() {
         if (branchDetailController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CupertinoActivityIndicator());
         }
 
         if (branchDetailController.errorMessage.value.isNotEmpty) {

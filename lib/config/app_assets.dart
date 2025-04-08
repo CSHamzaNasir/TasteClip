@@ -27,6 +27,7 @@ class AppAssets {
   static const String veqan = "assets/images/veqan.svg";
   static const String deserts = "assets/images/deserts.svg";
   static const String likeThumb = "assets/images/like_thumb.svg";
+  static const String likeBorder = "assets/images/like_border.svg";
 
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";
