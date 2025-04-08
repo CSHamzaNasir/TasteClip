@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_enum.dart';
 
 class BranchDetailController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -8,6 +12,7 @@ class BranchDetailController extends GetxController {
   RxList<Map<String, dynamic>> feedbackList = <Map<String, dynamic>>[].obs;
   RxBool isLoading = false.obs;
   RxString errorMessage = ''.obs;
+  Rx<FeedbackCategory> selectedCategory = FeedbackCategory.text.obs;
 
   @override
   void onInit() {
@@ -78,5 +83,54 @@ class BranchDetailController extends GetxController {
     return selectedIndexes.contains(index)
         ? selectedImages[index]
         : defaultImages[index];
+  }
+
+  void filterIconTap(BuildContext context, GlobalKey key) {
+    final RenderBox renderBox =
+        key.currentContext!.findRenderObject() as RenderBox;
+    final Offset offset = renderBox.localToGlobal(Offset.zero);
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        offset.dx,
+        offset.dy + renderBox.size.height,
+        offset.dx + renderBox.size.width,
+        0,
+      ),
+      items: [
+        PopupMenuItem(
+          value: FeedbackCategory.text,
+          child: ListTile(
+            leading: Icon(Icons.text_fields),
+            title: Text('Text'),
+          ),
+        ),
+        PopupMenuItem(
+          value: FeedbackCategory.image,
+          child: ListTile(
+            leading: Icon(Icons.image),
+            title: Text('Image'),
+          ),
+        ),
+        PopupMenuItem(
+          value: FeedbackCategory.video,
+          child: ListTile(
+            leading: Icon(Icons.video_library),
+            title: Text('Video'),
+          ),
+        ),
+      ],
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ).then((value) {
+      if (value != null) {
+        log("Selected: $value");
+        selectedCategory(value);
+        fetchAllFeedback();
+      }
+    });
   }
 }

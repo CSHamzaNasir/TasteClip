@@ -111,7 +111,8 @@ class WatchFeedbackScreen extends StatelessWidget {
                                       )
                                     : controller.selectedIndex.value == 1
                                         ? ImageFeedbackDisplay(
-                                            controller: controller,
+                                            feedback:
+                                                FeedbackScope.branchFeedback,
                                             category: FeedbackCategory.image,
                                           )
                                         : VideoFeedbackDisplay(),

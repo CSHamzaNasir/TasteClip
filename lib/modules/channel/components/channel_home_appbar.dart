@@ -12,10 +12,17 @@ import 'package:tasteclip/widgets/app_feild.dart';
 class ChannelHomeAppBar extends StatelessWidget {
   final String image;
   final String username;
+  final String? actionImage;
+  final VoidCallback? onActionTap;
+  final GlobalKey? actionKey;
+
   const ChannelHomeAppBar({
     super.key,
     required this.image,
     required this.username,
+    this.actionImage,
+    this.onActionTap,
+    this.actionKey,
   });
 
   @override
@@ -24,10 +31,12 @@ class ChannelHomeAppBar extends StatelessWidget {
       padding: EdgeInsets.all(16).copyWith(top: 50),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: AppColors.mainColor,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(16))),
+        color: AppColors.mainColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+      ),
       child: Column(
         spacing: 24,
         children: [
@@ -55,18 +64,27 @@ class ChannelHomeAppBar extends StatelessWidget {
                       color: AppColors.whiteColor,
                       fontFamily: AppFonts.sandRegular,
                     ),
-                  )
+                  ),
                 ],
               ),
               Spacer(),
               InkWell(
-                onTap: () => Get.toNamed(AppRouter.notificationScreen),
+                key: actionKey,
+                onTap: () {
+                  if (onActionTap != null) {
+                    onActionTap!();
+                  } else {
+                    Get.toNamed(AppRouter.notificationScreen);
+                  }
+                },
                 child: Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                      color: AppColors.whiteColor, shape: BoxShape.circle),
+                    color: AppColors.whiteColor,
+                    shape: BoxShape.circle,
+                  ),
                   child: SvgPicture.asset(
-                    AppAssets.notification,
+                    actionImage ?? AppAssets.notification,
                     fit: BoxFit.cover,
                   ),
                 ),

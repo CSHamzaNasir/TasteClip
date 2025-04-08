@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/modules/explore/detail/image_feedback_detail_controller.dart';
 import 'package:tasteclip/utils/shimmer_style.dart';
+import 'package:tasteclip/utils/text_shimmer.dart';
 
 import '../../../config/app_text_styles.dart';
 import '../../../core/constant/app_fonts.dart';
@@ -12,14 +14,16 @@ import '../watch_feedback_controller.dart';
 
 class ImageFeedbackDisplay extends StatelessWidget {
   final FeedbackCategory category;
+  final FeedbackScope? feedback;
 
-  const ImageFeedbackDisplay({
+  ImageFeedbackDisplay({
     super.key,
-    required this.controller,
     required this.category,
+    this.feedback,
   });
 
-  final WatchFeedbackController controller;
+  final controller = Get.put(WatchFeedbackController());
+  final imageFeedbackController = Get.put(ImageFeedbackDetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class ImageFeedbackDisplay extends StatelessWidget {
       return GridView.builder(
         padding: const EdgeInsets.all(16),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 1,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           childAspectRatio: 1,
@@ -50,12 +54,55 @@ class ImageFeedbackDisplay extends StatelessWidget {
           return InkWell(
             onTap: () => Get.to(() => FeedbackDetailScreen(feedback: feedback)),
             child: Container(
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
+                color: AppColors.whiteColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      ProfileImageWithShimmer(
+                        imageUrl: feedback['user_profileImage'],
+                        radius: 18,
+                      ),
+                      12.horizontal,
+                      Column(
+                        spacing: 4,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            feedback['user_fullName'] ?? "Unknown User",
+                            style: AppTextStyles.bodyStyle.copyWith(
+                              color: AppColors.mainColor,
+                              fontFamily: AppFonts.sandSemiBold,
+                            ),
+                          ),
+                          Text(
+                            feedback['created_at'] ?? "",
+                            style: AppTextStyles.lightStyle.copyWith(
+                              color: AppColors.btnUnSelectColor
+                                  .withCustomOpacity(.5),
+                              fontFamily: AppFonts.sandSemiBold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  16.vertical,
+                  Text(
+                    feedback['description'] ?? "No review available",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: AppColors.textColor.withCustomOpacity(.5),
+                      fontFamily: AppFonts.sandSemiBold,
+                    ),
+                  ),
+                  16.vertical,
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -108,6 +155,15 @@ class ImageFeedbackDisplay extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       children: [
+                        Obx(
+                          () => Text(
+                            "${imageFeedbackController.comments.length} comments",
+                            style: AppTextStyles.lightStyle.copyWith(
+                              color: AppColors.mainColor,
+                            ),
+                          ),
+                        ),
+                        12.horizontal,
                         Expanded(
                           child: Text(
                             '@${feedback['restaurantName'] ?? "Unknown"}',

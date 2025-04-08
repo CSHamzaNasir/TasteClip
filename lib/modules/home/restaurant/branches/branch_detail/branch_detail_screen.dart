@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/modules/channel/components/channel_home_appbar.dart';
+import 'package:tasteclip/modules/explore/components/image_feedback_display.dart';
 import 'package:tasteclip/modules/explore/components/text_feedback_display.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
@@ -14,6 +18,8 @@ import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_
 class BranchDetailScreen extends StatelessWidget {
   final String? branchName;
   final String? branchImageUrl;
+  final GlobalKey actionKey = GlobalKey();
+
   BranchDetailScreen({
     super.key,
     this.branchName,
@@ -55,9 +61,16 @@ class BranchDetailScreen extends StatelessWidget {
           child: Column(
             children: [
               ChannelHomeAppBar(
+                actionImage: AppAssets.filterSetting,
                 image: displayBranchImage,
                 username: displayBranchName,
+                actionKey: actionKey,
+                onActionTap: () {
+                  log("Filter icon tapped");
+                  branchDetailController.filterIconTap(context, actionKey);
+                },
               ),
+
               // Obx(
               //   () => Row(
               //     mainAxisAlignment: MainAxisAlignment.center,
@@ -80,14 +93,23 @@ class BranchDetailScreen extends StatelessWidget {
               // ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: TextFeedbackDisplay(
-                    branchName: displayBranchName,
-                    controller: controller,
-                    category: FeedbackCategory.text,
-                    feedback: FeedbackScope.branchFeedback,
-                  ),
-                ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal:
+                            branchDetailController.selectedCategory.value ==
+                                    FeedbackCategory.text
+                                ? 20.0
+                                : 4),
+                    child: branchDetailController.selectedCategory.value ==
+                            FeedbackCategory.text
+                        ? TextFeedbackDisplay(
+                            branchName: displayBranchName,
+                            controller: controller,
+                            category: FeedbackCategory.text,
+                            feedback: FeedbackScope.branchFeedback,
+                          )
+                        : ImageFeedbackDisplay(
+                            category: FeedbackCategory.image,
+                          )),
               )
             ],
           ),

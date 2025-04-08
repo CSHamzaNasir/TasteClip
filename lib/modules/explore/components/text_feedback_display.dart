@@ -102,7 +102,7 @@ class TextFeedbackDisplay extends StatelessWidget {
                         ),
                         12.horizontal,
                         Column(
-                          spacing: 8,
+                          spacing: 4,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
