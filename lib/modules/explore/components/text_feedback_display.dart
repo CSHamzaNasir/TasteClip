@@ -81,7 +81,8 @@ class TextFeedbackDisplay extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 16),
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.whiteColor.withCustomOpacity(.95),
+                  color: AppColors.whiteColor.withCustomOpacity(
+                      feedback == FeedbackScope.branchFeedback ? .95 : 1),
                   borderRadius: BorderRadius.circular(32),
                   boxShadow: [
                     BoxShadow(
@@ -180,21 +181,35 @@ class TextFeedbackDisplay extends StatelessWidget {
                               fontFamily: AppFonts.sandBold,
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color:
-                                    AppColors.mainColor.withCustomOpacity(.1)),
-                            child: SvgPicture.asset(
-                                height: 18,
-                                width: 18,
-                                fit: BoxFit.cover,
-                                colorFilter: ColorFilter.mode(
-                                  AppColors.mainColor.withCustomOpacity(.7),
-                                  BlendMode.srcIn,
-                                ),
-                                AppAssets.messageFilled),
+                          if (feedback == FeedbackScope.allFeedback)
+                            Container(
+                              color: AppColors.mainColor.withCustomOpacity(.4),
+                              height: 20,
+                              width: 1,
+                            ),
+                          if (feedback == FeedbackScope.branchFeedback)
+                            Container(
+                              padding: EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: AppColors.mainColor
+                                      .withCustomOpacity(.1)),
+                              child: SvgPicture.asset(
+                                  height: 18,
+                                  width: 18,
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.mainColor.withCustomOpacity(.7),
+                                    BlendMode.srcIn,
+                                  ),
+                                  AppAssets.messageFilled),
+                            ),
+                          Text(
+                            '4',
+                            style: AppTextStyles.regularStyle.copyWith(
+                              color: AppColors.mainColor,
+                              fontFamily: AppFonts.sandBold,
+                            ),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -232,7 +247,7 @@ class TextFeedbackDisplay extends StatelessWidget {
                                 AppColors.mainColor.withCustomOpacity(.7),
                                 BlendMode.srcIn,
                               ),
-                              AppAssets.menuIcon,
+                              AppAssets.info,
                             ),
                           ),
                           Text(

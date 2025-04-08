@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
+import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
@@ -157,24 +159,13 @@ class ImageFeedbackDisplay extends StatelessWidget {
                       children: [
                         Obx(
                           () => Text(
-                            "${imageFeedbackController.comments.length} comments",
+                            "${imageFeedbackController.comments.length} Comments",
                             style: AppTextStyles.lightStyle.copyWith(
                               color: AppColors.mainColor,
                             ),
                           ),
                         ),
                         12.horizontal,
-                        Expanded(
-                          child: Text(
-                            '@${feedback['restaurantName'] ?? "Unknown"}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.lightStyle.copyWith(
-                              color: AppColors.textColor.withCustomOpacity(.5),
-                              fontFamily: AppFonts.sandSemiBold,
-                            ),
-                          ),
-                        ),
                         Icon(
                           size: 16,
                           Icons.star,
@@ -190,6 +181,45 @@ class ImageFeedbackDisplay extends StatelessWidget {
                       ],
                     ),
                   ),
+                  16.vertical,
+                  Row(children: [
+                    // ignore: unrelated_type_equality_checks
+                    Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: AppColors.mainColor.withCustomOpacity(.1)),
+                      child: SvgPicture.asset(
+                        height: 18,
+                        width: 18,
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                          AppColors.mainColor.withCustomOpacity(.7),
+                          BlendMode.srcIn,
+                        ),
+                        AppAssets.likeThumb,
+                      ),
+                    ),
+                    12.horizontal,
+                    Obx(
+                      () => Text(
+                        "${imageFeedbackController.likes.length}",
+                        style: AppTextStyles.lightStyle.copyWith(
+                          color: AppColors.mainColor,
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      '@${feedback['restaurantName'] ?? "Unknown"}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.lightStyle.copyWith(
+                        color: AppColors.textColor.withCustomOpacity(.5),
+                        fontFamily: AppFonts.sandSemiBold,
+                      ),
+                    )
+                  ])
                 ],
               ),
             ),
