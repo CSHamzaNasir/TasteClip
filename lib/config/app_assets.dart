@@ -71,4 +71,5 @@ class AppAssets {
   static const String dinner = "assets/icons/dinner.png";
   static const String info = "assets/icons/info.svg";
   static const String messageFilled = "assets/icons/message_filled.svg";
+  static const String filterSetting = "assets/icons/filter_setting.svg";
 }
