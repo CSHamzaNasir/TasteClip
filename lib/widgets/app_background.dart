@@ -37,7 +37,7 @@ class AppBackground extends StatelessWidget {
             ? LinearGradient(
                 colors: isLight
                     ? [
-                        AppColors.lightColor,
+                        AppColors.whiteColor,
                         AppColors.whiteColor,
                       ]
                     : [

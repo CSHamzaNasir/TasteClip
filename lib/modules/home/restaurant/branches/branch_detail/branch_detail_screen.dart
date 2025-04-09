@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
@@ -58,22 +56,7 @@ class BranchDetailScreen extends StatelessWidget {
           onRefresh: branchDetailController.refreshFeedback,
           child: Column(
             children: [
-              InkWell(
-                onTap: () =>
-                    branchDetailController.filterIconTap(context, actionKey),
-                key: actionKey,
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    AppAssets.notification,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              16.vertical,
               Expanded(
                 child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -86,7 +69,6 @@ class BranchDetailScreen extends StatelessWidget {
                             FeedbackCategory.text
                         ? TextFeedbackDisplay(
                             branchName: displayBranchName,
-                            controller: controller,
                             category: FeedbackCategory.text,
                             feedback: FeedbackScope.branchFeedback,
                           )

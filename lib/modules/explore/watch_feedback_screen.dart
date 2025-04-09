@@ -104,8 +104,7 @@ class WatchFeedbackScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: controller.selectedIndex.value == 0
-                                    ? TextFeedbackDisplay(
-                                        controller: controller,
+                                    ? TextFeedbackDisplay( 
                                         category: FeedbackCategory.text,
                                         feedback: FeedbackScope.allFeedback,
                                       )

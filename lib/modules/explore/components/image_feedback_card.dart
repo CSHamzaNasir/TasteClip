@@ -81,7 +81,8 @@ class ImageFeedbackCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                             backgroundBlendMode: BlendMode.overlay,
                           ),
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -94,11 +95,17 @@ class ImageFeedbackCard extends StatelessWidget {
                                 spacing: 4,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    feedback['user_fullName'] ?? "Unknown User",
-                                    style: AppTextStyles.bodyStyle.copyWith(
-                                      color: AppColors.mainColor,
-                                      fontFamily: AppFonts.sandSemiBold,
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      feedback['user_fullName'] ??
+                                          "Unknown User",
+                                      style: AppTextStyles.bodyStyle.copyWith(
+                                        color: AppColors.mainColor,
+                                        fontFamily: AppFonts.sandSemiBold,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Text(

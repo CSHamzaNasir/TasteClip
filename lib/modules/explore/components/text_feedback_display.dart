@@ -18,15 +18,14 @@ class TextFeedbackDisplay extends StatelessWidget {
   final FeedbackScope feedback;
 
   TextFeedbackDisplay({
-    super.key,
-    required this.controller,
+    super.key, 
     required this.category,
     this.branchName,
     required this.feedback,
   });
-
-  final WatchFeedbackController controller;
+ 
   final textfeedbackController = Get.put(TextFeedbackDetailController());
+  final controller = Get.put(WatchFeedbackController());
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class TextFeedbackDisplay extends StatelessWidget {
               16.vertical,
               Text(
                 'Loading...',
-                style: AppTextStyles.bodyStyle.copyWith(
+                style: AppTextStyles.bodyStyle.copyWith( 
                   color: AppColors.btnUnSelectColor,
                 ),
               ),

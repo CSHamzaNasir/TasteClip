@@ -3,11 +3,13 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
+import 'package:tasteclip/modules/explore/components/image_feedback_display.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
@@ -71,15 +73,22 @@ class HomeScreen extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0).copyWith(top: 24),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppString.capturingExpMotion,
-                  style: AppTextStyles.headingStyle1.copyWith(
+                  "Stories",
+                  style: AppTextStyles.boldBodyStyle.copyWith(
                     color: AppColors.textColor,
                     fontFamily: AppFonts.sandBold,
                   ),
                 ),
                 24.vertical,
+                Expanded(
+                  child: ImageFeedbackDisplay(
+                    feedback: FeedbackScope.allFeedback,
+                    category: FeedbackCategory.image,
+                  ),
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(

@@ -26,3 +26,8 @@ extension FeedbackCategoryExtension on FeedbackCategory {
     }
   }
 }
+
+enum FeedImageStoryHome{
+  yes,
+  no,
+}

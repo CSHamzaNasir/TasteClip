@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
@@ -16,6 +17,8 @@ import 'branches_list_controller.dart';
 class BranchesListScreen extends StatelessWidget {
   final String restaurantId;
   final String restaurantName;
+
+  final GlobalKey actionKey = GlobalKey();
 
   BranchesListScreen(
       {super.key, required this.restaurantId, required this.restaurantName});
@@ -70,6 +73,24 @@ class BranchesListScreen extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
+                            InkWell(
+                              onTap: () => branchDetailController.filterIconTap(
+                                  context, actionKey),
+                              key: actionKey,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.whiteColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: SvgPicture.asset(
+                                  AppAssets.filterSetting,
+                                  fit: BoxFit.cover,
+                                  height: 20,
+                                  width: 20,
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ],

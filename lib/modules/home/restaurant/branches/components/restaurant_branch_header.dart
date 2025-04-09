@@ -67,7 +67,7 @@ class RestaurantBranchHeader extends StatelessWidget {
                       branch["branchAddress"],
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: AppTextStyles.bodyStyle.copyWith(
+                      style: AppTextStyles.regularStyle.copyWith(
                         color: isSelected
                             ? AppColors.mainColor
                             : AppColors.primaryColor.withCustomOpacity(.5),

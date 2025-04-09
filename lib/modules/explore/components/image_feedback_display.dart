@@ -14,11 +14,13 @@ import '../watch_feedback_controller.dart';
 class ImageFeedbackDisplay extends StatelessWidget {
   final FeedbackCategory category;
   final FeedbackScope? feedback;
+  final FeedImageStoryHome? feedImageStoryHome;
 
   ImageFeedbackDisplay({
     super.key,
     required this.category,
     this.feedback,
+    this.feedImageStoryHome,
   });
 
   final controller = Get.put(WatchFeedbackController());
