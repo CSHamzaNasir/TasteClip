@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tasteclip/config/app_text_styles.dart' show AppTextStyles;
+import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 
 import '../../../../../core/constant/app_colors.dart';
 import '../branches_list_controller.dart';
 
-class BranchCard extends StatelessWidget {
-  const BranchCard({
+class RestaurantBranchHeader extends StatelessWidget {
+  const RestaurantBranchHeader({
     super.key,
     required this.controller,
     required this.onBranchSelected,
@@ -20,7 +21,7 @@ class BranchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100, // Fixed height for the horizontal list
+      height: 100,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         scrollDirection: Axis.horizontal,
@@ -36,7 +37,7 @@ class BranchCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     padding: EdgeInsets.all(2),
@@ -45,7 +46,7 @@ class BranchCard extends StatelessWidget {
                       border: Border.all(
                         color: isSelected
                             ? AppColors.mainColor
-                            : Colors.transparent,
+                            : AppColors.primaryColor,
                         width: isSelected ? 2 : 1,
                       ),
                     ),
@@ -61,7 +62,7 @@ class BranchCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                    width: 100,
+                    width: 80,
                     child: Text(
                       branch["branchAddress"],
                       overflow: TextOverflow.ellipsis,
@@ -69,8 +70,10 @@ class BranchCard extends StatelessWidget {
                       style: AppTextStyles.bodyStyle.copyWith(
                         color: isSelected
                             ? AppColors.mainColor
-                            : AppColors.textColor,
-                        fontFamily: AppFonts.sandBold,
+                            : AppColors.primaryColor.withCustomOpacity(.5),
+                        fontFamily: isSelected
+                            ? AppFonts.sandBold
+                            : AppFonts.sandMedium,
                       ),
                     ),
                   ),

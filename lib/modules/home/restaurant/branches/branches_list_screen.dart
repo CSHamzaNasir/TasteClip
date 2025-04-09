@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_screen.dart';
-import 'package:tasteclip/modules/home/restaurant/branches/components/branch_card.dart';
+import 'package:tasteclip/modules/home/restaurant/branches/components/restaurant_branch_header.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../../config/app_text_styles.dart';
@@ -16,12 +17,14 @@ class BranchesListScreen extends StatelessWidget {
   final String restaurantId;
   final String restaurantName;
 
-  const BranchesListScreen(
+  BranchesListScreen(
       {super.key, required this.restaurantId, required this.restaurantName});
+
+  final controller = Get.put(BranchesListController());
+  final branchDetailController = Get.put(BranchDetailController());
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(BranchesListController());
     final selectedBranch = Rxn<Map<String, dynamic>>();
 
     controller.fetchBranches(restaurantId);
@@ -38,7 +41,6 @@ class BranchesListScreen extends StatelessWidget {
             } else if (controller.branches.isEmpty) {
               return const Center(child: Text("No branches found."));
             } else {
-              // Set first branch as selected by default
               if (selectedBranch.value == null &&
                   controller.branches.isNotEmpty) {
                 selectedBranch.value = controller.branches.first;
@@ -68,21 +70,13 @@ class BranchesListScreen extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
-                            CircleAvatar(
-                              backgroundColor:
-                                  AppColors.textColor.withCustomOpacity(.3),
-                              child: Icon(
-                                Icons.search_rounded,
-                                color: AppColors.whiteColor,
-                              ),
-                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
                   24.vertical,
-                  BranchCard(
+                  RestaurantBranchHeader(
                     controller: controller,
                     onBranchSelected: (branch) {
                       selectedBranch.value = branch;

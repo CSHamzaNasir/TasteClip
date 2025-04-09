@@ -153,27 +153,42 @@ class WatchFeedbackController extends GetxController {
           .orderBy('createdAt', descending: true)
           .get();
 
-      List<Map<String, dynamic>> allFeedback = feedbackQuery.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .where((feedbackData) =>
-              feedbackData['category'] == "image_feedback" &&
-              (selectedMealType == "All" ||
-                  feedbackData['mealType'] == selectedMealType))
-          .map((feedbackData) {
-        DateTime createdAt = feedbackData['createdAt'].toDate();
-        return {
-          "feedbackId": feedbackData['feedbackId'],
-          "branch": feedbackData['branchName'],
-          "restaurantName": feedbackData['restaurantName'],
-          "branchThumbnail": feedbackData['branchThumbnail'],
-          "image_title": feedbackData['imageTitle'],
-          "description": feedbackData['description'],
-          "imageUrl": feedbackData['imageUrl'],
-          "rating": feedbackData['rating'].toString(),
-          "created_at": timeago.format(createdAt),
-          "meal_type": feedbackData['mealType'],
-        };
-      }).toList();
+      List<Map<String, dynamic>> allFeedback = [];
+
+      for (var doc in feedbackQuery.docs) {
+        Map<String, dynamic> feedbackData = doc.data() as Map<String, dynamic>;
+
+        if (feedbackData['category'] == "image_feedback" &&
+            (selectedMealType == "All" ||
+                feedbackData['mealType'] == selectedMealType)) {
+          DateTime createdAt = feedbackData['createdAt'].toDate();
+
+          // Fetch user data from email_user collection
+          DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+              .collection('email_user')
+              .doc(feedbackData['userId'])
+              .get();
+
+          Map<String, dynamic> userData =
+              userSnapshot.data() as Map<String, dynamic>;
+
+          allFeedback.add({
+            "feedbackId": feedbackData['feedbackId'],
+            "branch": feedbackData['branchName'],
+            "restaurantName": feedbackData['restaurantName'],
+            "branchThumbnail": feedbackData['branchThumbnail'],
+            "image_title": feedbackData['imageTitle'],
+            "description": feedbackData['description'],
+            "imageUrl": feedbackData['imageUrl'],
+            "rating": feedbackData['rating'].toString(),
+            "created_at": timeago.format(createdAt),
+            "meal_type": feedbackData['mealType'],
+            "user_id": feedbackData['userId'],
+            "user_fullName": userData['fullName'],
+            "user_profileImage": userData['profileImage'],
+          });
+        }
+      }
 
       feedbackList.assignAll(allFeedback);
     } catch (e) {

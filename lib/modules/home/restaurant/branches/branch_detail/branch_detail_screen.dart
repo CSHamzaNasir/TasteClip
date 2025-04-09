@@ -1,15 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/modules/channel/components/channel_home_appbar.dart';
 import 'package:tasteclip/modules/explore/components/image_feedback_display.dart';
 import 'package:tasteclip/modules/explore/components/text_feedback_display.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
@@ -33,7 +31,6 @@ class BranchDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayBranchName = branchName ?? "Unknown Branch";
-    final displayBranchImage = branchImageUrl ?? "default_image_url";
     return Scaffold(
       backgroundColor: AppColors.whiteColor.withCustomOpacity(.95),
       body: Obx(() {
@@ -61,15 +58,21 @@ class BranchDetailScreen extends StatelessWidget {
           onRefresh: branchDetailController.refreshFeedback,
           child: Column(
             children: [
-              ChannelHomeAppBar(
-                actionImage: AppAssets.filterSetting,
-                image: displayBranchImage,
-                username: displayBranchName,
-                actionKey: actionKey,
-                onActionTap: () {
-                  log("Filter icon tapped");
-                  branchDetailController.filterIconTap(context, actionKey);
-                },
+              InkWell(
+                onTap: () =>
+                    branchDetailController.filterIconTap(context, actionKey),
+                key: actionKey,
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.whiteColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(
+                    AppAssets.notification,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               Expanded(
                 child: Padding(
