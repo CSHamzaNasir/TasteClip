@@ -82,7 +82,7 @@ class TextFeedbackDisplay extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.whiteColor.withCustomOpacity(
-                      feedback == FeedbackScope.branchFeedback ? .95 : 1),
+                      feedback == FeedbackScope.branchFeedback ? .95 : .6),
                   borderRadius: BorderRadius.circular(32),
                   boxShadow: [
                     BoxShadow(

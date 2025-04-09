@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_screen.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/components/branch_card.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
@@ -10,7 +11,6 @@ import '../../../../config/app_text_styles.dart';
 import '../../../../core/constant/app_colors.dart';
 import '../../../../core/constant/app_fonts.dart';
 import 'branches_list_controller.dart';
-import 'components/selected_index.dart';
 
 class BranchesListScreen extends StatelessWidget {
   final String restaurantId;
@@ -22,11 +22,12 @@ class BranchesListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(BranchesListController());
+    final selectedBranch = Rxn<Map<String, dynamic>>();
 
     controller.fetchBranches(restaurantId);
 
     return AppBackground(
-      isLight: true,
+      isDefault: false,
       child: SafeArea(
         child: Scaffold(
           body: Obx(() {
@@ -37,6 +38,12 @@ class BranchesListScreen extends StatelessWidget {
             } else if (controller.branches.isEmpty) {
               return const Center(child: Text("No branches found."));
             } else {
+              // Set first branch as selected by default
+              if (selectedBranch.value == null &&
+                  controller.branches.isNotEmpty) {
+                selectedBranch.value = controller.branches.first;
+              }
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -53,6 +60,14 @@ class BranchesListScreen extends StatelessWidget {
                               height: 40,
                             ),
                             Spacer(),
+                            Text(
+                              restaurantName,
+                              style: AppTextStyles.boldBodyStyle.copyWith(
+                                color: AppColors.textColor,
+                                fontFamily: AppFonts.sandBold,
+                              ),
+                            ),
+                            Spacer(),
                             CircleAvatar(
                               backgroundColor:
                                   AppColors.textColor.withCustomOpacity(.3),
@@ -63,25 +78,25 @@ class BranchesListScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        24.vertical,
-                        Text(
-                          "Find The\nPerfect Choice",
-                          style: AppTextStyles.headingStyle.copyWith(
-                            color: AppColors.textColor,
-                            fontFamily: AppFonts.sandBold,
-                          ),
-                        ),
-                        6.vertical,
-                        Text("Discover best choice for you",
-                            style: AppTextStyles.bodyStyle
-                                .copyWith(color: AppColors.textColor))
                       ],
                     ),
                   ),
                   24.vertical,
-                  SelectedIndex(controller: controller),
-                  16.vertical,
-                  BranchCard(controller: controller),
+                  BranchCard(
+                    controller: controller,
+                    onBranchSelected: (branch) {
+                      selectedBranch.value = branch;
+                    },
+                    selectedBranchId: selectedBranch.value?['branchId'],
+                  ),
+                  if (selectedBranch.value != null)
+                    Expanded(
+                      child: BranchDetailScreen(
+                        branchName: selectedBranch.value!['branchAddress'],
+                        branchImageUrl:
+                            selectedBranch.value!['branchThumbnail'],
+                      ),
+                    ),
                 ],
               );
             }

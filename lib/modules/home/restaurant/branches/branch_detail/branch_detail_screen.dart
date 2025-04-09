@@ -18,6 +18,7 @@ import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_
 class BranchDetailScreen extends StatelessWidget {
   final String? branchName;
   final String? branchImageUrl;
+
   final GlobalKey actionKey = GlobalKey();
 
   BranchDetailScreen({
@@ -70,27 +71,6 @@ class BranchDetailScreen extends StatelessWidget {
                   branchDetailController.filterIconTap(context, actionKey);
                 },
               ),
-
-              // Obx(
-              //   () => Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: List.generate(
-              //       branchDetailController.defaultImages.length,
-              //       (index) => GestureDetector(
-              //         onTap: () =>
-              //             branchDetailController.toggleSelection(index),
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(8.0),
-              //           child: SvgPicture.asset(
-              //             branchDetailController.getImageForIndex(index),
-              //             width: 80,
-              //             height: 80,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Expanded(
                 child: Padding(
                     padding: EdgeInsets.symmetric(
