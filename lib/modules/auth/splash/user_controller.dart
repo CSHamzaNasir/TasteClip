@@ -12,15 +12,21 @@ class UserController extends GetxController {
   var userProfileImage = "".obs;
   var fullName = "".obs;
   var isUserLoaded = false.obs;
+  var currentUserId = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    loadUserData();
+    loadUserData().then((_) {
+      if (currentUserId.value.isNotEmpty) {
+        fetchAndStoreUserData(currentUserId.value);
+      }
+    });
   }
 
   Future<void> fetchAndStoreUserData(String userId) async {
     try {
+      currentUserId.value = userId;
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('email_user')
           .doc(userId)
@@ -39,6 +45,7 @@ class UserController extends GetxController {
         await prefs.setString('userName', userName.value);
         await prefs.setString('userEmail', userEmail.value);
         await prefs.setString('userProfileImage', userProfileImage.value);
+        await prefs.setString('currentUserId', currentUserId.value);
 
         isUserLoaded.value = true;
         log("User Data Fetched & Stored Locally: ${userName.value}");
@@ -54,6 +61,8 @@ class UserController extends GetxController {
     userName.value = prefs.getString('userName') ?? "Guest User";
     userEmail.value = prefs.getString('userEmail') ?? "No Email";
     userProfileImage.value = prefs.getString('userProfileImage') ?? "";
+    currentUserId.value =
+        prefs.getString('currentUserId') ?? ""; // Load user ID
     isUserLoaded.value = true;
   }
 }

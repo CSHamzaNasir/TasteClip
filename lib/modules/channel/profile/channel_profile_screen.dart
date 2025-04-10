@@ -8,7 +8,7 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/role/role_screen.dart';
-import 'package:tasteclip/modules/profile/profile_detail/image_feedback/image_feedback_screen.dart';
+import 'package:tasteclip/modules/profile/profile_detail/image_feedback/user_feedback_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../config/app_enum.dart';
@@ -93,7 +93,7 @@ class ChannelProfileScreen extends StatelessWidget {
                                         ));
                                   }
                                   if (index == 1) {
-                                    Get.to(() => ImageFeedbackScreen(
+                                    Get.to(() => UserFeedbackScreen(
                                           role: UserRole.manager,
                                         ));
                                   }

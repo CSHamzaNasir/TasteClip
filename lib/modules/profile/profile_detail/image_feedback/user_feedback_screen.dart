@@ -10,16 +10,18 @@ import '../../../../config/app_text_styles.dart';
 import '../../../../core/constant/app_colors.dart';
 import '../../../../core/constant/app_fonts.dart';
 import '../../../../widgets/app_background.dart';
-import 'image_feedback_controller.dart';
+import 'user_feedback_controller.dart';
 
-class ImageFeedbackScreen extends StatelessWidget {
+class UserFeedbackScreen extends StatelessWidget {
   final UserRole role;
+  final FeedbackCategory? feedbackCategory;
 
-  const ImageFeedbackScreen({super.key, required this.role});
+  const UserFeedbackScreen(
+      {super.key, required this.role, this.feedbackCategory});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ImageFeedbackController(role: role));
+    final controller = Get.put(UserFeedbackController(role: role));
     return AppBackground(
       isDefault: false,
       child: Scaffold(
@@ -37,7 +39,10 @@ class ImageFeedbackScreen extends StatelessWidget {
                         BorderRadius.only(bottomRight: Radius.circular(50)),
                     color: AppColors.mainColor),
                 child: Center(
-                  child: Text("Image Feedback",
+                  child: Text(
+                      feedbackCategory == FeedbackCategory.image
+                          ? "Image Feedback"
+                          : "Video Feedback",
                       style: AppTextStyles.boldBodyStyle
                           .copyWith(color: AppColors.lightColor)),
                 ),

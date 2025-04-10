@@ -172,7 +172,7 @@ class TextFeedbackScreen extends StatelessWidget {
                                   )),
                               4.horizontal,
                               Text(
-                                feedbackText['rating'],
+                                feedbackText['userId'],
                                 style: AppTextStyles.regularStyle.copyWith(
                                   color: const Color(0xFFAB8104),
                                 ),

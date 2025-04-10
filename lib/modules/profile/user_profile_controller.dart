@@ -8,7 +8,6 @@ import '../../config/app_assets.dart';
 import '../../core/route/app_router.dart';
 
 class UserProfileController extends GetxController {
-//list
   List<Map<String, dynamic>> feedbackOptions = [
     {'icon': AppAssets.message, 'label': "Text"},
     {'icon': AppAssets.camera, 'label': "Image"},
@@ -42,7 +41,6 @@ class UserProfileController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxString email = ''.obs;
   RxString fullName = ''.obs;
-  // ignore: non_constant_identifier_names
   RxString profileImage = ''.obs;
   RxString userName = ''.obs;
 

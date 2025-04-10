@@ -4,21 +4,20 @@ import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class TextFeedbackController extends GetxController {
+class UserFeedbackController extends GetxController {
   final UserRole role;
+  UserFeedbackController({required this.role});
 
-  TextFeedbackController({required this.role});
-
-  var feedbackListText = <Map<String, dynamic>>[].obs;
-  var textFeedbackCount = 0.obs;
+  var feedbackList = <Map<String, dynamic>>[].obs;
+  var imageFeedbackCount = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchFeedbackText();
+    fetchUserFeedback();
   }
 
-Future<void> fetchFeedbackText() async {
+  Future<void> fetchUserFeedback() async {
     try {
       QuerySnapshot feedbackQuery = await FirebaseFirestore.instance
           .collection('feedback')
@@ -27,34 +26,42 @@ Future<void> fetchFeedbackText() async {
 
       String currentUserId = Get.find<UserController>().currentUserId.value;
 
-      List<Map<String, dynamic>> allFeedbackText = feedbackQuery.docs
+      List<Map<String, dynamic>> allFeedback = feedbackQuery.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .where((feedbackData) {
         if (role == UserRole.user) {
           return feedbackData['userId'] == currentUserId &&
-              feedbackData['category'] == "text_feedback";
+              (feedbackData['category'] == "image_feedback" ||
+                  feedbackData['category'] == "video_feedback");
         }
-        return feedbackData['category'] == "text_feedback";
+        return feedbackData['category'] == "image_feedback" ||
+            feedbackData['category'] == "video_feedback";
       }).map((feedbackData) {
         DateTime createdAt = feedbackData['createdAt'].toDate();
         return {
           "feedbackId": feedbackData['feedbackId'],
           "branch": feedbackData['branchName'],
+          "restaurantName": feedbackData['restaurantName'],
           "branchThumbnail": feedbackData['branchThumbnail'],
-          "review": feedbackData['review'],
+          "image_title": feedbackData['imageTitle'],
+          "description": feedbackData['description'],
+          "imageUrl": feedbackData['imageUrl'],
+          "mediaUrl": feedbackData['mediaUrl'],
           "rating": feedbackData['rating'].toString(),
           "created_at": timeago.format(createdAt),
           "meal_type": feedbackData['mealType'],
-          "restaurantName": feedbackData['restaurantName'],
           "userId": feedbackData['userId'],
+          "category": feedbackData['category'],
         };
       }).toList();
 
-      feedbackListText.assignAll(allFeedbackText);
-      textFeedbackCount.value = allFeedbackText.length;
-      update();  
+      feedbackList.assignAll(allFeedback);
+      imageFeedbackCount.value = allFeedback
+          .where((feedback) => feedback['category'] == "image_feedback")
+          .length;
+      update();
     } catch (e) {
-      Get.snackbar("Error", "Failed to fetch text feedback: $e");
+      Get.snackbar("Error", "Failed to fetch feedback: $e");
     }
   }
 }

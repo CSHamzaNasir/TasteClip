@@ -17,7 +17,7 @@ class BranchesListController extends GetxController {
   void fetchBranches(String restaurantId) async {
     isLoading(true);
     hasError(false);
-    branches.clear();
+  branches.clear();
 
     try {
       DocumentSnapshot restaurantDoc =

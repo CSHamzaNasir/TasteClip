@@ -6,18 +6,23 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
+import 'package:tasteclip/modules/profile/profile_detail/image_feedback/user_feedback_controller.dart';
+import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_controller.dart';
 import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import 'image_feedback/image_feedback_screen.dart';
+import 'image_feedback/user_feedback_screen.dart';
 
 class ProfileDetailScreen extends StatelessWidget {
-  ProfileDetailScreen({
-    super.key,
-  });
+  ProfileDetailScreen({super.key});
+
   final controller = Get.put(UserProfileController());
+  final imageFeedbackController =
+      Get.put(UserFeedbackController(role: UserRole.user));
+  final textFeedbackController =
+      Get.put(TextFeedbackController(role: UserRole.user));
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +90,16 @@ class ProfileDetailScreen extends StatelessWidget {
                       if (index == 0) {
                         Get.to(() => TextFeedbackScreen(
                               role: UserRole.user,
-                            ));
+                            ))?.then((_) {
+                          textFeedbackController.fetchFeedbackText();
+                        });
                       }
-                      if (index == 1) {
-                        Get.to(() => ImageFeedbackScreen(
+                      if (index == 1 || index == 2) {
+                        Get.to(() => UserFeedbackScreen(
                               role: UserRole.user,
+                              feedbackCategory: index == 1
+                                  ? FeedbackCategory.image
+                                  : FeedbackCategory.video,
                             ));
                       }
                     },
@@ -108,24 +118,29 @@ class ProfileDetailScreen extends StatelessWidget {
                             width: 24,
                           ),
                           SizedBox(height: 12),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: '12 ',
-                                  style: AppTextStyles.bodyStyle.copyWith(
-                                    color: AppColors.mainColor,
-                                    fontFamily: AppFonts.sandBold,
-                                  ),
+                          GetBuilder<TextFeedbackController>(
+                            builder: (controller) {
+                              return RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          '${index == 0 ? textFeedbackController.textFeedbackCount.value : imageFeedbackController.imageFeedbackCount.value}',
+                                      style: AppTextStyles.bodyStyle.copyWith(
+                                        color: AppColors.mainColor,
+                                        fontFamily: AppFonts.sandBold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: " posts",
+                                      style: AppTextStyles.bodyStyle.copyWith(
+                                        color: AppColors.mainColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                TextSpan(
-                                  text: "posts",
-                                  style: AppTextStyles.bodyStyle.copyWith(
-                                    color: AppColors.mainColor,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              );
+                            },
                           ),
                         ],
                       ),
