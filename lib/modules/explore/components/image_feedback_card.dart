@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/modules/explore/detail/image_feedback_detail_controller.dart';
@@ -13,17 +15,19 @@ import '../../../config/app_text_styles.dart';
 import '../../../core/constant/app_fonts.dart';
 
 class ImageFeedbackCard extends StatelessWidget {
-  const ImageFeedbackCard({
+  final FeedbackScope? feedbackScope;
+  ImageFeedbackCard({
     super.key,
     required this.feedback,
-    required this.imageFeedbackController,
+    this.feedbackScope,
   });
 
   final Map<String, dynamic> feedback;
-  final ImageFeedbackDetailController imageFeedbackController;
+  final imageFeedbackController = Get.put(ImageFeedbackDetailController());
 
   @override
   Widget build(BuildContext context) {
+    log(feedbackScope.toString());
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(36),

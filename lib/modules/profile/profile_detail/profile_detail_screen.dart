@@ -6,7 +6,7 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/modules/profile/profile_detail/image_feedback/user_feedback_controller.dart';
+import 'package:tasteclip/modules/explore/video_feedback_display.dart';
 import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_controller.dart';
 import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
@@ -19,8 +19,7 @@ class ProfileDetailScreen extends StatelessWidget {
   ProfileDetailScreen({super.key});
 
   final controller = Get.put(UserProfileController());
-  final imageFeedbackController =
-      Get.put(UserFeedbackController(role: UserRole.user));
+
   final textFeedbackController =
       Get.put(TextFeedbackController(role: UserRole.user));
 
@@ -94,13 +93,14 @@ class ProfileDetailScreen extends StatelessWidget {
                           textFeedbackController.fetchFeedbackText();
                         });
                       }
-                      if (index == 1 || index == 2) {
+                      if (index == 1) {
                         Get.to(() => UserFeedbackScreen(
                               role: UserRole.user,
-                              feedbackCategory: index == 1
-                                  ? FeedbackCategory.image
-                                  : FeedbackCategory.video,
+                              feedbackScope: FeedbackScope.currentUserFeedback,
                             ));
+                      }
+                      if (index == 2) {
+                        Get.to(() => VideoFeedbackDisplay());
                       }
                     },
                     child: Container(
@@ -125,7 +125,7 @@ class ProfileDetailScreen extends StatelessWidget {
                                   children: [
                                     TextSpan(
                                       text:
-                                          '${index == 0 ? textFeedbackController.textFeedbackCount.value : imageFeedbackController.imageFeedbackCount.value}',
+                                          '${textFeedbackController.textFeedbackCount.value}',
                                       style: AppTextStyles.bodyStyle.copyWith(
                                         color: AppColors.mainColor,
                                         fontFamily: AppFonts.sandBold,

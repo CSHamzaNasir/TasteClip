@@ -1,27 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/modules/explore/components/image_feedback_card.dart';
+import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
+import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 
 import '../../../../config/app_text_styles.dart';
 import '../../../../core/constant/app_colors.dart';
-import '../../../../core/constant/app_fonts.dart';
 import '../../../../widgets/app_background.dart';
-import 'user_feedback_controller.dart';
 
 class UserFeedbackScreen extends StatelessWidget {
   final UserRole role;
-  final FeedbackCategory? feedbackCategory;
+  final FeedbackScope? feedbackScope;
 
-  const UserFeedbackScreen(
-      {super.key, required this.role, this.feedbackCategory});
+  UserFeedbackScreen({
+    super.key,
+    required this.role,
+    this.feedbackScope,
+  });
 
+  final controller = Get.put(WatchFeedbackController());
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserFeedbackController(role: role));
     return AppBackground(
       isDefault: false,
       child: Scaffold(
@@ -39,156 +40,34 @@ class UserFeedbackScreen extends StatelessWidget {
                         BorderRadius.only(bottomRight: Radius.circular(50)),
                     color: AppColors.mainColor),
                 child: Center(
-                  child: Text(
-                      feedbackCategory == FeedbackCategory.image
-                          ? "Image Feedback"
-                          : "Video Feedback",
+                  child: Text("Image Feedback",
                       style: AppTextStyles.boldBodyStyle
                           .copyWith(color: AppColors.lightColor)),
                 ),
               ),
               Expanded(
-                child: ListView.separated(
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1,
+                  ),
                   itemCount: controller.feedbackList.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 16),
                   itemBuilder: (context, index) {
                     var feedback = controller.feedbackList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        spacing: 16,
-                        children: [
-                          Row(
-                            spacing: 12,
-                            children: [
-                              CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors.grey[300],
-                                child: (feedback['branchThumbnail'] != null &&
-                                        feedback['branchThumbnail'].isNotEmpty)
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: Image.network(
-                                          feedback['branchThumbnail'],
-                                          width: 50,
-                                          height: 50,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder: (context, child,
-                                              loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return Center(
-                                                child:
-                                                    CupertinoActivityIndicator());
-                                          },
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Icon(
-                                                Icons.image_not_supported,
-                                                size: 25,
-                                                color: Colors.grey);
-                                          },
-                                        ),
-                                      )
-                                    : Icon(Icons.image_not_supported,
-                                        size: 25, color: Colors.grey),
-                              ),
-                              Column(
-                                spacing: 4,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    feedback['branch'],
-                                    style: AppTextStyles.regularStyle.copyWith(
-                                      color: AppColors.mainColor,
-                                      fontFamily: AppFonts.sandBold,
-                                    ),
-                                  ),
-                                  Text(
-                                    '@${feedback['restaurantName']}',
-                                    style: AppTextStyles.lightStyle.copyWith(
-                                      color: AppColors.mainColor,
-                                      fontFamily: AppFonts.sandSemiBold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Spacer(),
-                              SvgPicture.asset(AppAssets.vertMore)
-                            ],
-                          ),
-                          (feedback['imageUrl'] != null &&
-                                  feedback['imageUrl'].isNotEmpty)
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    feedback['imageUrl'],
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      }
-                                      return Center(
-                                        child: CupertinoActivityIndicator(),
-                                      );
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Icon(Icons.image_not_supported,
-                                          size: 25);
-                                    },
-                                  ),
-                                )
-                              : Icon(Icons.image_not_supported, size: 25),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: AppColors.primaryColor),
-                                color:
-                                    AppColors.mainColor.withCustomOpacity(.2),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Text(
-                              feedback['description'],
-                              style: AppTextStyles.lightStyle.copyWith(
-                                color: AppColors.mainColor,
-                                fontFamily: AppFonts.sandSemiBold,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            spacing: 4,
-                            children: [
-                              Text('Rating:',
-                                  style: AppTextStyles.regularStyle.copyWith(
-                                    color: AppColors.mainColor,
-                                    fontFamily: AppFonts.sandBold,
-                                  )),
-                              Text(
-                                feedback['rating'],
-                                style: AppTextStyles.regularStyle.copyWith(
-                                  color: const Color(0xFFAB8104),
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                feedback['created_at'],
-                                style: AppTextStyles.lightStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                  fontFamily: AppFonts.sandSemiBold,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
+                    return InkWell(
+                      onTap: () => Get.to(
+                          () => FeedbackDetailScreen(feedback: feedback)),
+                      child: ImageFeedbackCard(
+                        feedback: feedback,
+                        feedbackScope: FeedbackScope.currentUserFeedback,
                       ),
                     );
                   },
                 ),
-              ),
+              )
             ],
           );
         }),

@@ -13,13 +13,13 @@ import '../watch_feedback_controller.dart';
 
 class ImageFeedbackDisplay extends StatelessWidget {
   final FeedbackCategory category;
-  final FeedbackScope? feedback;
+  final FeedbackScope? feedbackScope;
   final FeedImageStoryHome? feedImageStoryHome;
 
   ImageFeedbackDisplay({
     super.key,
     required this.category,
-    this.feedback,
+    this.feedbackScope,
     this.feedImageStoryHome,
   });
 
@@ -28,11 +28,18 @@ class ImageFeedbackDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Set the scope when widget is built
+    if (feedbackScope != null) {
+      controller.changeScope(feedbackScope!);
+    }
+
     return Obx(() {
       if (controller.feedbackList.isEmpty) {
         return Center(
           child: Text(
-            "No feedback available",
+            controller.currentScope.value == FeedbackScope.currentUserFeedback
+                ? "You haven't posted any image feedback yet"
+                : "No feedback available",
             style: AppTextStyles.bodyStyle.copyWith(
               color: AppColors.textColor.withCustomOpacity(0.6),
               fontFamily: AppFonts.sandBold,
@@ -43,7 +50,7 @@ class ImageFeedbackDisplay extends StatelessWidget {
 
       return GridView.builder(
         padding: const EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
@@ -55,8 +62,9 @@ class ImageFeedbackDisplay extends StatelessWidget {
           return InkWell(
             onTap: () => Get.to(() => FeedbackDetailScreen(feedback: feedback)),
             child: ImageFeedbackCard(
-                feedback: feedback,
-                imageFeedbackController: imageFeedbackController),
+              feedback: feedback,
+              feedbackScope: feedbackScope,
+            ),
           );
         },
       );

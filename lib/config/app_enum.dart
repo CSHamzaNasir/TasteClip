@@ -12,6 +12,7 @@ enum FeedbackCategory {
 enum FeedbackScope {
   branchFeedback,
   allFeedback,
+  currentUserFeedback
 }
 
 extension FeedbackCategoryExtension on FeedbackCategory {
