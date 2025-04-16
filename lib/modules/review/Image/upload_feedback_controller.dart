@@ -12,14 +12,15 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
+import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
 
 class UploadFeedbackController extends GetxController {
   final TextEditingController description = TextEditingController();
-  RxString selectedMealType = 'Breakfast'.obs;
   Rx<File?> selectedImage = Rx<File?>(null);
   Rx<File?> selectedVideo = Rx<File?>(null);
   RxBool isLoading = false.obs;
   RxDouble rating = 0.0.obs;
+
   Future<void> pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -83,6 +84,8 @@ class UploadFeedbackController extends GetxController {
       }
 
       String? mediaUrl;
+      String categoryString;
+
       if (category == FeedbackCategory.image) {
         if (selectedImage.value == null) {
           log("No image selected!");
@@ -97,6 +100,7 @@ class UploadFeedbackController extends GetxController {
         UploadTask uploadTask = storageRef.putFile(selectedImage.value!);
         TaskSnapshot snapshot = await uploadTask;
         mediaUrl = await snapshot.ref.getDownloadURL();
+        categoryString = 'image_feedback';
       } else if (category == FeedbackCategory.video) {
         if (selectedVideo.value == null) {
           log("No video selected!");
@@ -111,26 +115,28 @@ class UploadFeedbackController extends GetxController {
         UploadTask uploadTask = storageRef.putFile(selectedVideo.value!);
         TaskSnapshot snapshot = await uploadTask;
         mediaUrl = await snapshot.ref.getDownloadURL();
+        categoryString = 'video_feedback';
+      } else {
+        categoryString = 'text_feedback';
       }
 
       final feedbackDoc =
           FirebaseFirestore.instance.collection('feedback').doc();
 
-      await feedbackDoc.set({
-        'feedbackId': feedbackDoc.id,
-        'userId': user.uid,
-        'restaurantName': restaurantName,
-        'branchName': branchName,
-        'description': description,
-        'rating': rating,
-        'mealType': selectedMealType.value,
-        'mediaUrl': mediaUrl,
-        'category': category == FeedbackCategory.image
-            ? 'image_feedback'
-            : 'video_feedback',
-        'createdAt': DateTime.now(),
-        'comments': [],
-      });
+      final feedback = UploadFeedbackModel(
+        feedbackId: feedbackDoc.id,
+        userId: user.uid,
+        restaurantName: restaurantName,
+        branchName: branchName,
+        description: description,
+        rating: rating,
+        mediaUrl: mediaUrl,
+        category: categoryString,
+        createdAt: DateTime.now(),
+        comments: [],
+      );
+
+      await feedbackDoc.set(feedback.toMap());
 
       log("Feedback submitted successfully!");
 
@@ -149,12 +155,7 @@ class UploadFeedbackController extends GetxController {
         duration: const Duration(seconds: 3),
       );
 
-      this.description.clear();
-      this.rating.value = 0.0;
-      selectedImage.value = null;
-      selectedVideo.value = null;
-      selectedMealType.value = 'Breakfast';
-
+      clearForm();
       Get.off(CustomBottomBar());
     } catch (e) {
       log("Error saving feedback: $e");
@@ -173,6 +174,13 @@ class UploadFeedbackController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void clearForm() {
+    description.clear();
+    rating.value = 0.0;
+    selectedImage.value = null;
+    selectedVideo.value = null;
   }
 
   void goToUserScreen() {

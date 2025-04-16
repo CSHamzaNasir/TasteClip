@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      // home: ChannelBottomBar(),
+      // home: LoginScreen(),
       initialRoute: AppRouter.splashScreen,
     );
   }

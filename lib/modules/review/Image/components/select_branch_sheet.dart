@@ -154,7 +154,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      builder: (context) => PostImageFeedbackScreen(
+                      builder: (context) => PostFeedbackScreen(
                         restaurantName: widget.restaurantName,
                         branchName: _selectedBranch!,
                         category: widget.category,

@@ -78,9 +78,12 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                     iconPath: AppAssets.message,
                     label: "Text",
                     onTap: () {
+                      
+                      Get.to(
                       UploadFeedbackScreen(
                         category: FeedbackCategory.text,
-                      );
+                      ),
+                    );
                       // Get.toNamed(AppRouter.uploadTextFeedbackScreen);
                     },
                   ),

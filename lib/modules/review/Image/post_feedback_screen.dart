@@ -9,17 +9,17 @@ import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+import 'package:tasteclip/widgets/app_button.dart';
+import 'package:tasteclip/widgets/app_feild.dart';
 
-import '../../../../widgets/app_feild.dart';
-import '../../../widgets/app_button.dart';
 import 'upload_feedback_controller.dart';
 
-class PostImageFeedbackScreen extends StatelessWidget {
+class PostFeedbackScreen extends StatelessWidget {
   final String restaurantName;
   final String branchName;
   final FeedbackCategory category;
 
-  const PostImageFeedbackScreen({
+  const PostFeedbackScreen({
     super.key,
     required this.restaurantName,
     required this.branchName,
@@ -135,32 +135,6 @@ class PostImageFeedbackScreen extends StatelessWidget {
                             feildFocusClr: true,
                           ),
                           16.vertical,
-                          DropdownButtonFormField<String>(
-                            value: controller.selectedMealType.value,
-                            items: ['Breakfast', 'Lunch', 'Dinner']
-                                .map((meal) => DropdownMenuItem(
-                                      value: meal,
-                                      child: Text(meal),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              if (value != null) {
-                                controller.selectedMealType.value = value;
-                              }
-                            },
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide:
-                                      BorderSide(color: AppColors.textColor)),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.textColor),
-                                  borderRadius: BorderRadius.circular(12)),
-                              labelText: "Select Meal Type",
-                            ),
-                          ),
-                          16.vertical,
                           RatingBar.builder(
                             initialRating: controller.rating.value,
                             minRating: 1,
@@ -181,39 +155,34 @@ class PostImageFeedbackScreen extends StatelessWidget {
                     },
                   ),
                   Obx(() {
+                    bool isFormValid = controller.rating.value > 0 &&
+                        controller.description.text.isNotEmpty;
+
+                    // Additional validation for media types
+                    if (category == FeedbackCategory.image) {
+                      isFormValid =
+                          isFormValid && controller.selectedImage.value != null;
+                    } else if (category == FeedbackCategory.video) {
+                      isFormValid =
+                          isFormValid && controller.selectedVideo.value != null;
+                    }
+
                     return controller.isLoading.value
                         ? const SpinKitThreeBounce(
                             color: AppColors.textColor,
                             size: 25.0,
                           )
                         : AppButton(
-                            isGradient: controller.rating.value > 0 &&
-                                (category == FeedbackCategory.image
-                                    ? controller.selectedImage.value != null
-                                    : controller.selectedVideo.value != null),
-                            text: 'Next',
-                            onPressed: controller.rating.value > 0 &&
-                                    (category == FeedbackCategory.image
-                                        ? controller.selectedImage.value != null
-                                        : controller.selectedVideo.value !=
-                                            null)
-                                ? () {
-                                    controller.saveFeedback(
-                                      rating: controller.rating.value,
-                                      restaurantName: restaurantName,
-                                      branchName: branchName,
-                                      description: controller.description.text,
-                                      category: category,
-                                    );
-                                  }
-                                : () {},
-                            btnColor: controller.rating.value > 0 &&
-                                    (category == FeedbackCategory.image
-                                        ? controller.selectedImage.value != null
-                                        : controller.selectedVideo.value !=
-                                            null)
-                                ? null
-                                : AppColors.btnUnSelectColor,
+                            text: 'Submit',
+                            onPressed: () => controller.saveFeedback(
+                              rating: controller.rating.value,
+                              restaurantName: restaurantName,
+                              branchName: branchName,
+                              description: controller.description.text,
+                              category: category,
+                            ),
+                            btnColor:
+                                isFormValid ? null : AppColors.btnUnSelectColor,
                           );
                   }),
                 ],

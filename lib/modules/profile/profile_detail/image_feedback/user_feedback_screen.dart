@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
-import 'package:tasteclip/modules/explore/components/image_feedback_card.dart';
-import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 
 import '../../../../config/app_text_styles.dart';
@@ -27,9 +24,9 @@ class UserFeedbackScreen extends StatelessWidget {
       isDefault: false,
       child: Scaffold(
         body: Obx(() {
-          if (controller.feedbackList.isEmpty) {
-            return Center(child: CupertinoActivityIndicator());
-          }
+          // if (controller.feedbackList.isEmpty) {
+          //   return Center(child: CupertinoActivityIndicator());
+          // }
           return Column(
             children: [
               Container(
@@ -45,29 +42,29 @@ class UserFeedbackScreen extends StatelessWidget {
                           .copyWith(color: AppColors.lightColor)),
                 ),
               ),
-              Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: controller.feedbackList.length,
-                  itemBuilder: (context, index) {
-                    var feedback = controller.feedbackList[index];
-                    return InkWell(
-                      onTap: () => Get.to(
-                          () => FeedbackDetailScreen(feedback: feedback)),
-                      child: ImageFeedbackCard(
-                        feedback: feedback,
-                        feedbackScope: FeedbackScope.currentUserFeedback,
-                      ),
-                    );
-                  },
-                ),
-              )
+              // Expanded(
+              //   child: GridView.builder(
+              //     padding: const EdgeInsets.all(16),
+              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //       crossAxisCount: 1,
+              //       crossAxisSpacing: 16,
+              //       mainAxisSpacing: 16,
+              //       childAspectRatio: 1,
+              //     ),
+              //     itemCount: controller.feedbackList.length,
+              //     itemBuilder: (context, index) {
+              //       var feedback = controller.feedbackList[index];
+              //       return InkWell(
+              //         onTap: () => Get.to(
+              //             () => FeedbackDetailScreen(feedback: feedback)),
+              //         child: ImageFeedbackCard(
+              //           feedback: feedback,
+              //           feedbackScope: FeedbackScope.currentUserFeedback,
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // )
             ],
           );
         }),

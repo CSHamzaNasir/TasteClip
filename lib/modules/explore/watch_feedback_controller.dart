@@ -1,315 +1,197 @@
-import 'dart:developer';
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/app_enum.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:tasteclip/core/data/models/auth_models.dart';
+import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
+import 'package:video_player/video_player.dart';
 
 class WatchFeedbackController extends GetxController {
-  var feedbackList = <Map<String, dynamic>>[].obs;
-  var feedbackListText = <Map<String, dynamic>>[].obs;
-  var selectedIndex = 0.obs;
-  var selectedTopFilter = 0.obs;
-  var feedback = {}.obs;
-  var currentScope = FeedbackScope.allFeedback.obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  RxList<UploadFeedbackModel> feedbacks = <UploadFeedbackModel>[].obs;
+  RxBool isLoading = false.obs;
+  final Map<String, VideoPlayerController> _videoControllers = {};
+  final Map<String, AuthModel?> _userCache = {};
 
   @override
   void onInit() {
+    fetchFeedbacks();
     super.onInit();
-    fetchImageFeedback();
-    fetchFeedbackText();
   }
 
-  String get currentUserId => FirebaseAuth.instance.currentUser?.uid ?? '';
+  @override
+  void onClose() {
+    for (var controller in _videoControllers.values) {
+      controller.dispose();
+    }
+    _videoControllers.clear();
+    super.onClose();
+  }
 
-  Future<void> likeFeedback(String feedbackId) async {
+  Future<void> fetchFeedbacks() async {
     try {
-      final feedbackDoc =
-          FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
-
-      await feedbackDoc.update({
-        'likes.$currentUserId': true,
-      });
-
-      log("Feedback liked by user: $currentUserId");
-    } catch (e) {
-      log("Error liking feedback: $e");
-      Get.snackbar("Error", "Failed to like feedback: $e");
-    }
-  }
-
-  Future<void> unlikeFeedback(String feedbackId) async {
-    try {
-      final feedbackDoc =
-          FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
-
-      await feedbackDoc.update({
-        'likes.$currentUserId': FieldValue.delete(),
-      });
-
-      log("Feedback unliked by user: $currentUserId");
-    } catch (e) {
-      log("Error unliking feedback: $e");
-      Get.snackbar("Error", "Failed to unlike feedback: $e");
-    }
-  }
-
-  bool hasUserLikedFeedback(Map<String, dynamic> feedback) {
-    final likes = feedback['likes'];
-    if (likes is Map<dynamic, dynamic>) {
-      return likes.containsKey(currentUserId);
-    }
-    return false;
-  }
-
-  Future<void> toggleLikeFeedback(
-      String feedbackId, Map<String, dynamic> feedback) async {
-    if (hasUserLikedFeedback(feedback)) {
-      await unlikeFeedback(feedbackId);
-    } else {
-      await likeFeedback(feedbackId);
-    }
-
-    fetchFeedbackText();
-  }
-
-  Future<void> fetchFeedbackText({String? branchName}) async {
-    try {
-      String selectedMealType = filters[selectedTopFilter.value];
-
-      QuerySnapshot feedbackQuery = await FirebaseFirestore.instance
+      isLoading.value = true;
+      final snapshot = await _firestore
           .collection('feedback')
           .orderBy('createdAt', descending: true)
           .get();
 
-      List<Map<String, dynamic>> allFeedbackText = [];
+      feedbacks.value = snapshot.docs
+          .map((doc) => UploadFeedbackModel.fromMap(doc.data()))
+          .toList();
 
-      for (var doc in feedbackQuery.docs) {
-        Map<String, dynamic> feedbackData = doc.data() as Map<String, dynamic>;
-
-        if (feedbackData['category'] == "text_feedback" &&
-            (selectedMealType == "All" ||
-                feedbackData['mealType'] == selectedMealType) &&
-            (branchName == null || feedbackData['branchName'] == branchName)) {
-          DateTime createdAt = feedbackData['createdAt'].toDate();
-
-          DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-              .collection('email_user')
-              .doc(feedbackData['userId'])
-              .get();
-
-          Map<String, dynamic> userData =
-              userSnapshot.data() as Map<String, dynamic>;
-
-          Map<String, dynamic> feedbackWithUser = {
-            "feedbackId": feedbackData['feedbackId'],
-            "branch": feedbackData['branchName'],
-            "branchThumbnail": feedbackData['branchThumbnail'],
-            "review": feedbackData['review'],
-            "rating": feedbackData['rating'].toString(),
-            "created_at": timeago.format(createdAt),
-            "meal_type": feedbackData['mealType'],
-            "user_id": feedbackData['userId'],
-            "user_fullName": userData['fullName'],
-            "user_profileImage": userData['profileImage'],
-            "likes": feedbackData['likes'] ?? {},
-          };
-
-          allFeedbackText.add(feedbackWithUser);
-        }
-      }
-
-      feedbackListText.assignAll(allFeedbackText);
+      await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
     } catch (e) {
-      Get.snackbar("Error", "Failed to fetch text feedback: $e");
+      Get.snackbar('Error', 'Failed to fetch feedbacks: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  final List<String> categories = ["Text", "Image", "Videos"];
-  final List<String> filters = ["All", "Breakfast", "Lunch", "Dinner"];
-
-  void changeCategory(int index) {
-    selectedIndex.value = index;
-    if (categories[index] == "Text") {
-      fetchFeedbackText();
-    }
-    if (categories[index] == "Image") {
-      fetchImageFeedback();
-    }
-    log('Selected Category: ${categories[index]}');
-  }
-
-  void changeFilter(int index) {
-    selectedTopFilter.value = index;
-    fetchImageFeedback();
-    fetchFeedbackText();
-  }
-
-  Future<void> fetchImageFeedback() async {
+  Future<void> fetchFeedbacksByCategory(String category) async {
     try {
-      log('--- STARTING IMAGE FEEDBACK FETCH ---');
-      log('Current Scope: ${currentScope.value}');
-      log('Current User ID: $currentUserId');
-      log('Selected Meal Type: ${filters[selectedTopFilter.value]}');
-
-      // Base query
-      Query query = FirebaseFirestore.instance
+      isLoading.value = true;
+      final snapshot = await _firestore
           .collection('feedback')
-          .where('category', isEqualTo: 'image_feedback')
-          .orderBy('createdAt', descending: true);
-
-      // Apply scope filter
-      if (currentScope.value == FeedbackScope.currentUserFeedback) {
-        log('Applying current user filter...');
-        query = query.where('userId', isEqualTo: currentUserId);
-      } else {
-        log('Showing all feedback (no user filter)');
-      }
-
-      // Apply meal type filter
-      if (filters[selectedTopFilter.value] != "All") {
-        log('Applying meal type filter: ${filters[selectedTopFilter.value]}');
-        query = query.where('mealType',
-            isEqualTo: filters[selectedTopFilter.value]);
-      }
-
-      log('Executing Firestore query...');
-      QuerySnapshot feedbackQuery = await query.get();
-      log('Received ${feedbackQuery.docs.length} documents from Firestore');
-
-      List<Map<String, dynamic>> allFeedback = [];
-
-      for (var doc in feedbackQuery.docs) {
-        Map<String, dynamic> feedbackData = doc.data() as Map<String, dynamic>;
-        log('\nProcessing document ID: ${doc.id}');
-        log('Feedback data: $feedbackData');
-
-        // Verify user match for current user scope
-        if (currentScope.value == FeedbackScope.currentUserFeedback) {
-          log('Checking user match:');
-          log('Document userId: ${feedbackData['userId']}');
-          log('Current userId: $currentUserId');
-          if (feedbackData['userId'] != currentUserId) {
-            log('⚠️ USER MISMATCH - SKIPPING THIS DOCUMENT');
-            continue;
-          }
-        }
-
-        DateTime createdAt = feedbackData['createdAt'].toDate();
-        log('Created at: $createdAt');
-
-        // Fetch user data
-        log('Fetching user data for userId: ${feedbackData['userId']}');
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('email_user')
-            .doc(feedbackData['userId'])
-            .get();
-
-        if (userSnapshot.exists) {
-          Map<String, dynamic> userData =
-              userSnapshot.data() as Map<String, dynamic>;
-          log('User data: $userData');
-
-          final feedbackItem = {
-            "feedbackId": doc.id,
-            "branch": feedbackData['branchName'] ?? '',
-            "restaurantName": feedbackData['restaurantName'] ?? '',
-            "branchThumbnail": feedbackData['branchThumbnail'] ?? '',
-            "image_title": feedbackData['imageTitle'] ?? '',
-            "description": feedbackData['description'] ?? '',
-            "imageUrl": feedbackData['imageUrl'] ?? '',
-            "rating": feedbackData['rating']?.toString() ?? '0',
-            "created_at": timeago.format(createdAt),
-            "meal_type": feedbackData['mealType'] ?? '',
-            "user_id": feedbackData['userId'] ?? '',
-            "user_fullName": userData['fullName'] ?? 'Unknown User',
-            "user_profileImage": userData['profileImage'] ?? '',
-            "likes": feedbackData['likes'] ?? {},
-            "isCurrentUser": feedbackData['userId'] ==
-                currentUserId, // Add flag for current user
-          };
-
-          log('Constructed feedback item: $feedbackItem');
-          allFeedback.add(feedbackItem);
-
-          // Add icon indicator in logs
-          if (feedbackItem['isCurrentUser']) {
-            log('👤 THIS IS CURRENT USER\'S FEEDBACK');
-          } else {
-            log('👥 OTHER USER\'S FEEDBACK');
-          }
-        } else {
-          log('⚠️ User document not found for userId: ${feedbackData['userId']}');
-        }
-      }
-
-      log('\nTOTAL FILTERED FEEDBACK: ${allFeedback.length} items');
-      log('FEEDBACK LIST CONTENT:');
-      for (var item in allFeedback) {
-        log('• ${item['user_fullName']} - ${item['isCurrentUser'] ? "YOUR CONTENT" : "Other"} - ${item['image_title']}');
-      }
-
-      feedbackList.assignAll(allFeedback);
-      log('--- FEEDBACK FETCH COMPLETE ---\n');
-    } catch (e) {
-      log('❌ ERROR IN fetchImageFeedback: $e');
-      feedbackList.clear();
-      Get.snackbar("Error", "Failed to fetch image feedback");
-    }
-  }
-
-  void changeScope(FeedbackScope scope) {
-    currentScope.value = scope;
-    fetchImageFeedback();
-  }
-
-  Future<void> addCommentToFeedback({
-    required String feedbackId,
-    required String commentText,
-  }) async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        log("User not logged in!");
-        return;
-      }
-
-      final feedbackDoc =
-          FirebaseFirestore.instance.collection('feedback').doc(feedbackId);
-
-      await feedbackDoc.update({
-        'comments': FieldValue.arrayUnion([
-          {
-            'userId': user.uid,
-            'commentText': commentText,
-            'timestamp': DateTime.now(),
-          }
-        ]),
-      });
-
-      log("Comment added successfully!");
-    } catch (e) {
-      log("Error adding comment: $e");
-    }
-  }
-
-  Future<Map<String, dynamic>> fetchFeedback(String feedbackId) async {
-    try {
-      final feedbackDoc = await FirebaseFirestore.instance
-          .collection('feedback')
-          .doc(feedbackId)
+          .where('category', isEqualTo: category)
+          .orderBy('createdAt', descending: true)
           .get();
 
-      if (feedbackDoc.exists) {
-        return feedbackDoc.data() as Map<String, dynamic>;
-      } else {
-        log("Feedback not found!");
-        return {};
-      }
+      feedbacks.value = snapshot.docs
+          .map((doc) => UploadFeedbackModel.fromMap(doc.data()))
+          .toList();
+
+      await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
     } catch (e) {
-      log("Error fetching feedback: $e");
-      return {};
+      Get.snackbar('Error', 'Failed to fetch feedbacks: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
+
+  Future<AuthModel?> _getUserDetails(String userId) async {
+    if (_userCache.containsKey(userId)) {
+      return _userCache[userId];
+    }
+
+    try {
+      final doc = await _firestore.collection('email_user').doc(userId).get();
+      if (doc.exists) {
+        final user = AuthModel.fromMap(doc.data()!);
+        _userCache[userId] = user;
+        return user;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error fetching user details: $e');
+      return null;
+    }
+  }
+
+  void updateFeedbackLike(String feedbackId, List<String> newLikes) {
+    final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+    if (index != -1) {
+      feedbacks[index] = feedbacks[index].copyWith(likes: newLikes);
+      update();
+    }
+  }
+
+  AuthModel? getUserDetails(String userId) => _userCache[userId];
+
+  Future<void> toggleLike(String feedbackId) async {
+    try {
+      final currentUserId = _auth.currentUser?.uid;
+      if (currentUserId == null) return;
+
+      final feedbackRef = _firestore.collection('feedback').doc(feedbackId);
+
+      await _firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(feedbackRef);
+        if (!snapshot.exists) return;
+
+        final data = snapshot.data()!;
+        final currentLikes = List<String>.from(data['likes'] ?? []);
+        final isLiked = currentLikes.contains(currentUserId);
+        final currentTasteCoin = (data['tasteCoin'] as int? ?? 0);
+
+        if (isLiked) {
+          
+          currentLikes.remove(currentUserId);
+          transaction.update(feedbackRef, {
+            'likes': currentLikes,
+            'tasteCoin': (currentTasteCoin - 1)
+                .clamp(0, 1000000) 
+          });
+        } else {
+          
+          currentLikes.add(currentUserId);
+          transaction.update(feedbackRef,
+              {'likes': currentLikes, 'tasteCoin': currentTasteCoin + 1});
+        }
+
+        
+        final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+        if (index != -1) {
+          final newTasteCoin = isLiked
+              ? (feedbacks[index].tasteCoin - 1).clamp(0, 1000000)
+              : feedbacks[index].tasteCoin + 1;
+
+          feedbacks[index] = feedbacks[index].copyWith(
+            likes: currentLikes,
+            tasteCoin: newTasteCoin,
+          );
+        }
+      });
+
+      update();
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update like: $e');
+      debugPrint('Error details: $e');
+    }
+  }
+
+  bool isLikedByCurrentUser(UploadFeedbackModel feedback) {
+    final currentUserId = _auth.currentUser?.uid;
+    if (currentUserId == null) return false;
+    return feedback.likes.contains(currentUserId);
+  }
+
+  Future<void> initializeVideo(String feedbackId, String videoUrl) async {
+    if (_videoControllers.containsKey(feedbackId)) return;
+
+    final controller = VideoPlayerController.network(videoUrl);
+    _videoControllers[feedbackId] = controller;
+    await controller.initialize();
+    update();
+  }
+
+  void toggleVideoPlayback(String feedbackId) {
+    final controller = _videoControllers[feedbackId];
+    if (controller != null) {
+      if (controller.value.isPlaying) {
+        controller.pause();
+      } else {
+        controller.play();
+      }
+      update();
+    }
+  }
+
+  bool isVideoInitialized(String feedbackId) =>
+      _videoControllers.containsKey(feedbackId);
+
+  bool isVideoPlaying(String feedbackId) =>
+      _videoControllers[feedbackId]?.value.isPlaying ?? false;
+
+  VideoPlayerController? getVideoController(String feedbackId) =>
+      _videoControllers[feedbackId];
+
+  String formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+
+  String get currentUserId => _auth.currentUser?.uid ?? '';
 }

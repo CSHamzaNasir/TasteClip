@@ -31,7 +31,9 @@ class UploadFeedbackScreen extends StatelessWidget {
           appBar: CustomAppBar(
             title: category == FeedbackCategory.image
                 ? AppString.uploadfeedback
-                : "Upload Video Feedback",
+                : category == FeedbackCategory.video
+                    ? "Upload Video Feedback"
+                    : "Upload Text Feedback",
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -51,8 +53,10 @@ class UploadFeedbackScreen extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: category == FeedbackCategory.image
-                                ? '${AppString.imagebasedfeedbackdesc.split(' ').take(2).join(' ')} '
-                                : "Video ",
+                                ? 'Image '
+                                : category == FeedbackCategory.video
+                                    ? 'Video '
+                                    : 'Text ',
                             style: AppTextStyles.bodyStyle.copyWith(
                               color: AppColors.mainColor,
                               fontWeight: FontWeight.bold,
