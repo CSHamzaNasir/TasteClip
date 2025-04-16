@@ -34,7 +34,6 @@ class AppRouter {
   static const forgetPasswordScreen = "/forgetPasswordScreen";
   static const recoverPasswordScreen = "/recoverPasswordScreen";
   static const userProfileScreen = "/userProfileScreen";
-  static const uploadFeedbackScreen = "/uploadFeedbackScreen";
   static const uploadTextFeedbackScreen = "/uploadTextFeedbackScreen";
   static const uploadImageFeedbackScreen = "/uploadImageFeedbackScreen";
   static const uploadVideoFeedbackScreen = "/uploadVideoFeedbackScreen";

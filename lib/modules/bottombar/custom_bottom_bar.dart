@@ -8,7 +8,6 @@ import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/modules/home/home_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
 import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
@@ -79,7 +78,10 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                     iconPath: AppAssets.message,
                     label: "Text",
                     onTap: () {
-                      Get.toNamed(AppRouter.uploadTextFeedbackScreen);
+                      UploadFeedbackScreen(
+                        category: FeedbackCategory.text,
+                      );
+                      // Get.toNamed(AppRouter.uploadTextFeedbackScreen);
                     },
                   ),
                   _buildBottomSheetIcon(
