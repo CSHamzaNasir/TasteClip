@@ -13,6 +13,7 @@ class UploadFeedbackModel {
   final List<dynamic> comments;
   final List<String> likes;
   final int tasteCoin;
+  String? branchThumbnail;
 
   UploadFeedbackModel({
     required this.feedbackId,
@@ -25,6 +26,7 @@ class UploadFeedbackModel {
     required this.category,
     required this.createdAt,
     required this.comments,
+    this.branchThumbnail,
     this.likes = const [],
     this.tasteCoin = 0,
   });
@@ -38,6 +40,7 @@ class UploadFeedbackModel {
     double? rating,
     String? mediaUrl,
     String? category,
+    String? branchThumbnail,
     DateTime? createdAt,
     List<dynamic>? comments,
     List<String>? likes,
@@ -52,6 +55,7 @@ class UploadFeedbackModel {
       rating: rating ?? this.rating,
       mediaUrl: mediaUrl ?? this.mediaUrl,
       category: category ?? this.category,
+      branchThumbnail: branchThumbnail ?? this.branchThumbnail,
       createdAt: createdAt ?? this.createdAt,
       comments: comments ?? this.comments,
       likes: likes ?? this.likes,
@@ -73,6 +77,7 @@ class UploadFeedbackModel {
       'comments': comments,
       'likes': likes,
       'tasteCoin': tasteCoin,
+      'branchThumbnail': branchThumbnail,
     };
   }
 
@@ -86,6 +91,7 @@ class UploadFeedbackModel {
       rating: map['rating']?.toDouble() ?? 0.0,
       mediaUrl: map['mediaUrl'],
       category: map['category'] ?? '',
+      branchThumbnail: map['branchThumbnail'] ?? '',
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       comments: List<dynamic>.from(map['comments'] ?? []),
       likes: List<String>.from(map['likes'] ?? []),

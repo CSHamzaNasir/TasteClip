@@ -15,9 +15,11 @@ class WatchFeedbackController extends GetxController {
   RxBool isLoading = false.obs;
   final Map<String, VideoPlayerController> _videoControllers = {};
   final Map<String, AuthModel?> _userCache = {};
+  final Map<String, String> _branchThumbnailCache = {};
 
   @override
   void onInit() {
+    _preloadBranches();
     fetchFeedbacks();
     super.onInit();
   }
@@ -31,6 +33,27 @@ class WatchFeedbackController extends GetxController {
     super.onClose();
   }
 
+  Future<void> _preloadBranches() async {
+    try {
+      final snapshot = await _firestore
+          .collection('restaurants')
+          .doc('branches')
+          .collection('branches')
+          .get();
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final name = data['branchName'] as String?;
+        final thumbnail = data['branchThumbnail'] as String?;
+        if (name != null && thumbnail != null) {
+          _branchThumbnailCache[name] = thumbnail;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error preloading branches: $e');
+    }
+  }
+
   Future<void> fetchFeedbacks() async {
     try {
       isLoading.value = true;
@@ -39,9 +62,13 @@ class WatchFeedbackController extends GetxController {
           .orderBy('createdAt', descending: true)
           .get();
 
-      feedbacks.value = snapshot.docs
-          .map((doc) => UploadFeedbackModel.fromMap(doc.data()))
-          .toList();
+      feedbacks.value = snapshot.docs.map((doc) {
+        final feedback = UploadFeedbackModel.fromMap(doc.data());
+        if (_branchThumbnailCache.containsKey(feedback.branchName)) {
+          feedback.branchThumbnail = _branchThumbnailCache[feedback.branchName];
+        }
+        return feedback;
+      }).toList();
 
       await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
     } catch (e) {
@@ -60,9 +87,13 @@ class WatchFeedbackController extends GetxController {
           .orderBy('createdAt', descending: true)
           .get();
 
-      feedbacks.value = snapshot.docs
-          .map((doc) => UploadFeedbackModel.fromMap(doc.data()))
-          .toList();
+      feedbacks.value = snapshot.docs.map((doc) {
+        final feedback = UploadFeedbackModel.fromMap(doc.data());
+        if (_branchThumbnailCache.containsKey(feedback.branchName)) {
+          feedback.branchThumbnail = _branchThumbnailCache[feedback.branchName];
+        }
+        return feedback;
+      }).toList();
 
       await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
     } catch (e) {
@@ -118,21 +149,17 @@ class WatchFeedbackController extends GetxController {
         final currentTasteCoin = (data['tasteCoin'] as int? ?? 0);
 
         if (isLiked) {
-          
           currentLikes.remove(currentUserId);
           transaction.update(feedbackRef, {
             'likes': currentLikes,
-            'tasteCoin': (currentTasteCoin - 1)
-                .clamp(0, 1000000) 
+            'tasteCoin': (currentTasteCoin - 1).clamp(0, 1000000)
           });
         } else {
-          
           currentLikes.add(currentUserId);
           transaction.update(feedbackRef,
               {'likes': currentLikes, 'tasteCoin': currentTasteCoin + 1});
         }
 
-        
         final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
         if (index != -1) {
           final newTasteCoin = isLiked
