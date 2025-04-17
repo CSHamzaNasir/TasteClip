@@ -5,6 +5,7 @@ class UploadFeedbackModel {
   final String userId;
   final String restaurantName;
   final String branchName;
+  final String branchId; // Added this field
   final String description;
   final double rating;
   final String? mediaUrl;
@@ -13,20 +14,19 @@ class UploadFeedbackModel {
   final List<dynamic> comments;
   final List<String> likes;
   final int tasteCoin;
-  String? branchThumbnail;
 
   UploadFeedbackModel({
     required this.feedbackId,
     required this.userId,
     required this.restaurantName,
     required this.branchName,
+    required this.branchId, // Added this parameter
     required this.description,
     required this.rating,
     this.mediaUrl,
     required this.category,
     required this.createdAt,
     required this.comments,
-    this.branchThumbnail,
     this.likes = const [],
     this.tasteCoin = 0,
   });
@@ -36,11 +36,11 @@ class UploadFeedbackModel {
     String? userId,
     String? restaurantName,
     String? branchName,
+    String? branchId, // Added this parameter
     String? description,
     double? rating,
     String? mediaUrl,
     String? category,
-    String? branchThumbnail,
     DateTime? createdAt,
     List<dynamic>? comments,
     List<String>? likes,
@@ -51,11 +51,11 @@ class UploadFeedbackModel {
       userId: userId ?? this.userId,
       restaurantName: restaurantName ?? this.restaurantName,
       branchName: branchName ?? this.branchName,
+      branchId: branchId ?? this.branchId, // Added this line
       description: description ?? this.description,
       rating: rating ?? this.rating,
       mediaUrl: mediaUrl ?? this.mediaUrl,
       category: category ?? this.category,
-      branchThumbnail: branchThumbnail ?? this.branchThumbnail,
       createdAt: createdAt ?? this.createdAt,
       comments: comments ?? this.comments,
       likes: likes ?? this.likes,
@@ -69,6 +69,7 @@ class UploadFeedbackModel {
       'userId': userId,
       'restaurantName': restaurantName,
       'branchName': branchName,
+      'branchId': branchId, // Added this line
       'description': description,
       'rating': rating,
       'mediaUrl': mediaUrl,
@@ -77,7 +78,6 @@ class UploadFeedbackModel {
       'comments': comments,
       'likes': likes,
       'tasteCoin': tasteCoin,
-      'branchThumbnail': branchThumbnail,
     };
   }
 
@@ -87,12 +87,14 @@ class UploadFeedbackModel {
       userId: map['userId'] ?? '',
       restaurantName: map['restaurantName'] ?? '',
       branchName: map['branchName'] ?? '',
+      branchId: map['branchId'] ?? '', // Added this line
       description: map['description'] ?? '',
       rating: map['rating']?.toDouble() ?? 0.0,
       mediaUrl: map['mediaUrl'],
       category: map['category'] ?? '',
-      branchThumbnail: map['branchThumbnail'] ?? '',
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
       comments: List<dynamic>.from(map['comments'] ?? []),
       likes: List<String>.from(map['likes'] ?? []),
       tasteCoin: map['tasteCoin'] ?? 0,
