@@ -17,15 +17,15 @@ import 'upload_feedback_controller.dart';
 class PostFeedbackScreen extends StatelessWidget {
   final String restaurantName;
   final String branchName;
-  final String branchId; // Added this parameter
+  final String branchId;
   final FeedbackCategory category;
 
   const PostFeedbackScreen({
     super.key,
     required this.restaurantName,
     required this.branchName,
-    required this.branchId, // Added this parameter
     required this.category,
+    required this.branchId,
   });
 
   @override
@@ -180,9 +180,9 @@ class PostFeedbackScreen extends StatelessWidget {
                               rating: controller.rating.value,
                               restaurantName: restaurantName,
                               branchName: branchName,
-                              branchId: branchId, // Added this parameter
                               description: controller.description.text,
                               category: category,
+                                branchId: branchId,
                             ),
                             btnColor:
                                 isFormValid ? null : AppColors.btnUnSelectColor,

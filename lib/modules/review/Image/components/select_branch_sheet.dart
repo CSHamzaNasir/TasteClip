@@ -16,8 +16,11 @@ class SelectBranchSheetImage extends StatefulWidget {
   final String restaurantName;
   final FeedbackCategory category;
 
-  const SelectBranchSheetImage(
-      {super.key, required this.restaurantName, required this.category});
+  const SelectBranchSheetImage({
+    super.key,
+    required this.restaurantName,
+    required this.category,
+  });
 
   @override
   SelectBranchSheetImageState createState() => SelectBranchSheetImageState();
@@ -27,6 +30,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
   List<Map<String, dynamic>> _branches = [];
   List<Map<String, dynamic>> _filteredBranches = [];
   String? _selectedBranch;
+  String? _selectedBranchId; // Add this to store branchId
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -41,7 +45,11 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
         List<dynamic> branches = restaurantDoc['branches'] ?? [];
         setState(() {
           _branches = branches
-              .map((branch) => {'name': branch['branchAddress']})
+              .map((branch) => {
+                    'name': branch['branchAddress'],
+                    'id': branch[
+                        'branchId'], // Assuming you have branchId in your document
+                  })
               .toList();
           _filteredBranches = List.from(_branches);
         });
@@ -135,6 +143,8 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
                                   onChanged: (String? value) {
                                     setState(() {
                                       _selectedBranch = value;
+                                      _selectedBranchId = branch[
+                                          'id']; // Store the branchId when selected
                                     });
                                   },
                                   activeColor: AppColors.mainColor,
@@ -149,7 +159,8 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
               AppButton(
                 text: 'Next',
                 onPressed: () {
-                  if (_selectedBranch != null) {
+                  log("branch id $_selectedBranchId");
+                  if (_selectedBranch != null && _selectedBranchId != null) {
                     Navigator.pop(context);
                     showModalBottomSheet(
                       context: context,
@@ -157,6 +168,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
                       builder: (context) => PostFeedbackScreen(
                         restaurantName: widget.restaurantName,
                         branchName: _selectedBranch!,
+                        branchId: _selectedBranchId!,
                         category: widget.category,
                       ),
                     );

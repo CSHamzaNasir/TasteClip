@@ -5,7 +5,6 @@ class UploadFeedbackModel {
   final String userId;
   final String restaurantName;
   final String branchName;
-  final String branchId; // Added this field
   final String description;
   final double rating;
   final String? mediaUrl;
@@ -14,16 +13,19 @@ class UploadFeedbackModel {
   final List<dynamic> comments;
   final List<String> likes;
   final int tasteCoin;
+  final String branchId;
+  final String? branchThumbnail;
 
   UploadFeedbackModel({
     required this.feedbackId,
     required this.userId,
+    required this.branchId,
     required this.restaurantName,
     required this.branchName,
-    required this.branchId, // Added this parameter
     required this.description,
     required this.rating,
     this.mediaUrl,
+    this.branchThumbnail,
     required this.category,
     required this.createdAt,
     required this.comments,
@@ -33,11 +35,12 @@ class UploadFeedbackModel {
 
   UploadFeedbackModel copyWith({
     String? feedbackId,
+    String? branchId,
     String? userId,
     String? restaurantName,
     String? branchName,
-    String? branchId, // Added this parameter
     String? description,
+    String? branchThumbnail,
     double? rating,
     String? mediaUrl,
     String? category,
@@ -51,7 +54,6 @@ class UploadFeedbackModel {
       userId: userId ?? this.userId,
       restaurantName: restaurantName ?? this.restaurantName,
       branchName: branchName ?? this.branchName,
-      branchId: branchId ?? this.branchId, // Added this line
       description: description ?? this.description,
       rating: rating ?? this.rating,
       mediaUrl: mediaUrl ?? this.mediaUrl,
@@ -60,6 +62,8 @@ class UploadFeedbackModel {
       comments: comments ?? this.comments,
       likes: likes ?? this.likes,
       tasteCoin: tasteCoin ?? this.tasteCoin,
+      branchId: branchId ?? this.branchId,
+      branchThumbnail: branchThumbnail ?? this.branchThumbnail,
     );
   }
 
@@ -69,7 +73,6 @@ class UploadFeedbackModel {
       'userId': userId,
       'restaurantName': restaurantName,
       'branchName': branchName,
-      'branchId': branchId, // Added this line
       'description': description,
       'rating': rating,
       'mediaUrl': mediaUrl,
@@ -77,7 +80,9 @@ class UploadFeedbackModel {
       'createdAt': createdAt,
       'comments': comments,
       'likes': likes,
+      'branchThumbnail': branchThumbnail,
       'tasteCoin': tasteCoin,
+      'branchId': branchId,
     };
   }
 
@@ -87,7 +92,8 @@ class UploadFeedbackModel {
       userId: map['userId'] ?? '',
       restaurantName: map['restaurantName'] ?? '',
       branchName: map['branchName'] ?? '',
-      branchId: map['branchId'] ?? '', // Added this line
+      branchId: map['branchId'] ?? '',
+      branchThumbnail: map['branchThumbnail'] ?? '',
       description: map['description'] ?? '',
       rating: map['rating']?.toDouble() ?? 0.0,
       mediaUrl: map['mediaUrl'],

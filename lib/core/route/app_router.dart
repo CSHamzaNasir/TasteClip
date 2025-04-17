@@ -22,7 +22,6 @@ import '../../modules/auth/manager_auth/manager_register_screen.dart';
 import '../../modules/auth/splash/onboarding/onboarding_screen.dart';
 import '../../modules/channel/edit_profile/channel_profile_edit_screen.dart';
 import '../../modules/profile/edit_profile/user_profile_edit_screen.dart';
-import '../../modules/review/text/upload_text_feedback_screen.dart';
 
 class AppRouter {
   static const splashScreen = "/splashScreen";
@@ -89,12 +88,6 @@ class AppRouter {
     GetPage(
       name: forgetPasswordScreen,
       page: () => const ForgetPasswordScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
-    GetPage(
-      name: uploadTextFeedbackScreen,
-      page: () => UploadTextFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 500),
     ),

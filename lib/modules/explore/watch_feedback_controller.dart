@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/data/models/auth_models.dart';
 import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
@@ -31,6 +31,59 @@ class WatchFeedbackController extends GetxController {
     super.onClose();
   }
 
+  final Map<String, String> _branchThumbnailCache = {};
+
+  Future<String?> _getBranchThumbnail(String branchId) async {
+    if (_branchThumbnailCache.containsKey(branchId)) {
+      return _branchThumbnailCache[branchId];
+    }
+
+    try {
+      final querySnapshot = await _firestore
+          .collection('restaurants')
+          .where('branches.branchId', isEqualTo: branchId)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return _extractThumbnailFromDoc(querySnapshot.docs.first, branchId);
+      }
+
+      final allRestaurants = await _firestore.collection('restaurants').get();
+      for (var doc in allRestaurants.docs) {
+        final thumbnail = _extractThumbnailFromDoc(doc, branchId);
+        if (thumbnail != null) return thumbnail;
+      }
+
+      return null;
+    } catch (e) {
+      log('Error fetching branch thumbnail: $e');
+      return null;
+    }
+  }
+
+  String? _extractThumbnailFromDoc(QueryDocumentSnapshot doc, String branchId) {
+    final data = doc.data() as Map<String, dynamic>?;
+    if (data == null) return null;
+
+    final branches = data['branches'] as List<dynamic>?;
+    if (branches == null) return null;
+
+    for (var branch in branches) {
+      if (branch is! Map) continue;
+
+      final branchMap = branch as Map<String, dynamic>;
+      if (branchMap['branchId'] != branchId) continue;
+
+      final thumbnail = branchMap['branchThumbnail'] as String?;
+      if (thumbnail != null) {
+        _branchThumbnailCache[branchId] = thumbnail;
+        return thumbnail;
+      }
+    }
+    return null;
+  }
+
   Future<void> fetchFeedbacks() async {
     try {
       isLoading.value = true;
@@ -40,34 +93,11 @@ class WatchFeedbackController extends GetxController {
           .orderBy('createdAt', descending: true)
           .get();
 
-      feedbacks.value = snapshot.docs.map((doc) {
+      feedbacks.value = await Future.wait(snapshot.docs.map((doc) async {
         final feedback = UploadFeedbackModel.fromMap(doc.data());
-        return feedback;
-      }).toList();
-
-      await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch feedbacks: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> fetchFeedbacksByCategory(String category) async {
-    try {
-      isLoading.value = true;
-
-      final snapshot = await _firestore
-          .collection('feedback')
-          .where('category', isEqualTo: category)
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      feedbacks.value = snapshot.docs.map((doc) {
-        final feedback = UploadFeedbackModel.fromMap(doc.data());
-
-        return feedback;
-      }).toList();
+        final thumbnail = await _getBranchThumbnail(feedback.branchId);
+        return feedback.copyWith(branchThumbnail: thumbnail);
+      }));
 
       await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
     } catch (e) {
@@ -91,7 +121,7 @@ class WatchFeedbackController extends GetxController {
       }
       return null;
     } catch (e) {
-      debugPrint('Error fetching user details: $e');
+      log('Error fetching user details: $e');
       return null;
     }
   }
@@ -150,7 +180,7 @@ class WatchFeedbackController extends GetxController {
       update();
     } catch (e) {
       Get.snackbar('Error', 'Failed to update like: $e');
-      debugPrint('Error details: $e');
+      log('Error details: $e');
     }
   }
 

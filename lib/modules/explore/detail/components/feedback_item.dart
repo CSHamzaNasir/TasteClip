@@ -35,7 +35,7 @@ class FeedbackItem extends StatelessWidget {
     }
 
     return Container(
-      height: feedback.category != 'text_feedback' ? 400 : 160,
+      height: feedback.category != 'text_feedback' ? 400 : 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
             feedbackScope == FeedbackScope.allFeedback ? 36 : 12),
@@ -86,9 +86,11 @@ class FeedbackItem extends StatelessWidget {
             child: Container(
               height: 180,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(36),
-                  bottomRight: Radius.circular(36),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                      feedbackScope == FeedbackScope.allFeedback ? 36 : 0),
+                  bottomRight: Radius.circular(
+                      feedbackScope == FeedbackScope.allFeedback ? 36 : 0),
                 ),
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
@@ -304,6 +306,24 @@ class FeedbackItem extends StatelessWidget {
                             ],
                           );
                         },
+                      )
+                    : SizedBox.shrink(),
+                feedbackScope == FeedbackScope.currentUserFeedback
+                    ? Center(
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          padding: EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.lightColor),
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  feedback.branchThumbnail!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       )
                     : SizedBox.shrink(),
                 if (feedback.category != 'text_feedback') ...[

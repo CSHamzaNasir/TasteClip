@@ -71,8 +71,8 @@ class UploadFeedbackController extends GetxController {
     required double rating,
     required String restaurantName,
     required String branchName,
-    required String branchId,
     required FeedbackCategory category,
+    required String branchId,
   }) async {
     try {
       isLoading.value = true;
@@ -127,13 +127,14 @@ class UploadFeedbackController extends GetxController {
       final feedback = UploadFeedbackModel(
         feedbackId: feedbackDoc.id,
         userId: user.uid,
-        branchId: branchId,
         restaurantName: restaurantName,
         branchName: branchName,
         description: description,
         rating: rating,
         mediaUrl: mediaUrl,
         category: categoryString,
+        branchId: branchId, // Store the branchId
+
         createdAt: DateTime.now(),
         comments: [],
       );

@@ -109,9 +109,9 @@ class UserProfileScreen extends StatelessWidget {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 10,
+                      crossAxisSpacing: 16,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 0.8,
+                      childAspectRatio: .8,
                     ),
                     padding: const EdgeInsets.all(8),
                     itemCount: watchFeedbackController.feedbacks.length,
