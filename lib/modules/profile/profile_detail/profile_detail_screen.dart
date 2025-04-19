@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/modules/explore/video_feedback_display.dart';
-import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_controller.dart';
-import 'package:tasteclip/modules/profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
-
-import 'image_feedback/user_feedback_screen.dart';
 
 class ProfileDetailScreen extends StatelessWidget {
   ProfileDetailScreen({super.key});
 
   final controller = Get.put(UserProfileController());
-
-  final textFeedbackController =
-      Get.put(TextFeedbackController(role: UserRole.user));
 
   @override
   Widget build(BuildContext context) {
@@ -80,74 +70,74 @@ class ProfileDetailScreen extends StatelessWidget {
                 ),
               ),
               16.vertical,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(
-                  controller.feedbackOptions.length,
-                  (index) => GestureDetector(
-                    onTap: () {
-                      if (index == 0) {
-                        Get.to(() => TextFeedbackScreen(
-                              role: UserRole.user,
-                            ))?.then((_) {
-                          textFeedbackController.fetchFeedbackText();
-                        });
-                      }
-                      if (index == 1) {
-                        Get.to(() => UserFeedbackScreen(
-                              role: UserRole.user,
-                              feedbackScope: FeedbackScope.currentUserFeedback,
-                            ));
-                      }
-                      if (index == 2) {
-                        Get.to(() => VideoFeedbackDisplay());
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.greyColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            controller.feedbackOptions[index]['icon'],
-                            height: 24,
-                            width: 24,
-                          ),
-                          SizedBox(height: 12),
-                          GetBuilder<TextFeedbackController>(
-                            builder: (controller) {
-                              return RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '${textFeedbackController.textFeedbackCount.value}',
-                                      style: AppTextStyles.bodyStyle.copyWith(
-                                        color: AppColors.mainColor,
-                                        fontFamily: AppFonts.sandBold,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: " posts",
-                                      style: AppTextStyles.bodyStyle.copyWith(
-                                        color: AppColors.mainColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: List.generate(
+              //     controller.feedbackOptions.length,
+              //     (index) => GestureDetector(
+              //       onTap: () {
+              //         if (index == 0) {
+              //           Get.to(() => TextFeedbackScreen(
+              //                 role: UserRole.user,
+              //               ))?.then((_) {
+              //             textFeedbackController.fetchFeedbackText();
+              //           });
+              //         }
+              //         if (index == 1) {
+              //           Get.to(() => UserFeedbackScreen(
+              //                 role: UserRole.user,
+              //                 feedbackScope: FeedbackScope.currentUserFeedback,
+              //               ));
+              //         }
+              //         if (index == 2) {
+              //           // Get.to(() => VideoFeedbackDisplay());
+              //         }
+              //       },
+              //       child: Container(
+              //         padding: EdgeInsets.all(16),
+              //         decoration: BoxDecoration(
+              //           color: AppColors.greyColor,
+              //           borderRadius: BorderRadius.circular(12),
+              //         ),
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           children: [
+              //             SvgPicture.asset(
+              //               controller.feedbackOptions[index]['icon'],
+              //               height: 24,
+              //               width: 24,
+              //             ),
+              //             SizedBox(height: 12),
+              //             // GetBuilder<TextFeedbackController>(
+              //             //   builder: (controller) {
+              //             //     return RichText(
+              //             //       text: TextSpan(
+              //             //         children: [
+              //             //           TextSpan(
+              //             //             text:
+              //             //                 '${textFeedbackController.textFeedbackCount.value}',
+              //             //             style: AppTextStyles.bodyStyle.copyWith(
+              //             //               color: AppColors.mainColor,
+              //             //               fontFamily: AppFonts.sandBold,
+              //             //             ),
+              //             //           ),
+              //             //           TextSpan(
+              //             //             text: " posts",
+              //             //             style: AppTextStyles.bodyStyle.copyWith(
+              //             //               color: AppColors.mainColor,
+              //             //             ),
+              //             //           ),
+              //             //         ],
+              //             //       ),
+              //             //     );
+              //             //   },
+              //             // ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               16.vertical,
               Row(
                 children: [

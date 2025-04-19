@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,17 +19,31 @@ import 'package:video_player/video_player.dart';
 class FeedbackItem extends StatelessWidget {
   final UploadFeedbackModel feedback;
   final FeedbackScope feedbackScope;
+  final String? branchId;
 
   const FeedbackItem({
     super.key,
     required this.feedback,
     required this.feedbackScope,
+    this.branchId,
   });
 
   @override
   Widget build(BuildContext context) {
+    log(branchId.toString());
     final controller = Get.put(WatchFeedbackController());
     final user = controller.getUserDetails(feedback.userId);
+
+    if (feedback.category == 'video_feedback' && feedback.mediaUrl != null) {
+      controller.initializeVideo(feedback.feedbackId, feedback.mediaUrl!);
+    }
+
+    if (feedbackScope == FeedbackScope.branchFeedback &&
+        feedback.branchId != branchId) {
+      return Container();
+    }
+
+    log(branchId.toString());
 
     if (feedback.category == 'video_feedback' && feedback.mediaUrl != null) {
       controller.initializeVideo(feedback.feedbackId, feedback.mediaUrl!);
@@ -38,7 +53,7 @@ class FeedbackItem extends StatelessWidget {
       height: feedback.category != 'text_feedback' ? 400 : 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-            feedbackScope == FeedbackScope.allFeedback ? 36 : 12),
+            feedbackScope != FeedbackScope.currentUserFeedback ? 36 : 12),
         color:
             (feedback.category != 'image_feedback' || feedback.mediaUrl == null)
                 ? AppColors.mainColor.withCustomOpacity(.2)
@@ -88,9 +103,13 @@ class FeedbackItem extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(
-                      feedbackScope == FeedbackScope.allFeedback ? 36 : 0),
+                      feedbackScope != FeedbackScope.currentUserFeedback
+                          ? 36
+                          : 0),
                   bottomRight: Radius.circular(
-                      feedbackScope == FeedbackScope.allFeedback ? 36 : 0),
+                      feedbackScope != FeedbackScope.currentUserFeedback
+                          ? 36
+                          : 0),
                 ),
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
@@ -111,7 +130,7 @@ class FeedbackItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    feedbackScope == FeedbackScope.allFeedback
+                    feedbackScope != FeedbackScope.currentUserFeedback
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(32),
                             child: BackdropFilter(
@@ -169,7 +188,7 @@ class FeedbackItem extends StatelessWidget {
                             ),
                           )
                         : SizedBox.shrink(),
-                    feedbackScope == FeedbackScope.allFeedback
+                    feedbackScope != FeedbackScope.currentUserFeedback
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(32),
                             child: BackdropFilter(
@@ -200,7 +219,7 @@ class FeedbackItem extends StatelessWidget {
                 ),
                 if (feedback.category == 'text_feedback') ...[
                   12.vertical,
-                  feedbackScope == FeedbackScope.allFeedback
+                  feedbackScope != FeedbackScope.currentUserFeedback
                       ? Text(
                           feedback.description,
                           maxLines: 2,
@@ -213,7 +232,7 @@ class FeedbackItem extends StatelessWidget {
                       : SizedBox.shrink(),
                 ],
                 const Spacer(),
-                feedbackScope == FeedbackScope.allFeedback
+                feedbackScope != FeedbackScope.currentUserFeedback
                     ? GetBuilder<WatchFeedbackController>(
                         builder: (controller) {
                           final currentFeedback =
@@ -328,7 +347,7 @@ class FeedbackItem extends StatelessWidget {
                     : SizedBox.shrink(),
                 if (feedback.category != 'text_feedback') ...[
                   16.vertical,
-                  feedbackScope == FeedbackScope.allFeedback
+                  feedbackScope != FeedbackScope.currentUserFeedback
                       ? Text(
                           feedback.description,
                           maxLines: 2,

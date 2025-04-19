@@ -1,25 +1,17 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/modules/explore/detail/image_feedback_detail_controller.dart';
-import 'package:tasteclip/widgets/app_button.dart';
+import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
 
 class FeedbackDetailScreen extends StatelessWidget {
-  final Map<String, dynamic> feedback;
+  final UploadFeedbackModel feedback;
 
-  FeedbackDetailScreen({super.key, required this.feedback});
-
-  final controller = Get.put(ImageFeedbackDetailController());
+  const FeedbackDetailScreen({super.key, required this.feedback});
 
   @override
   Widget build(BuildContext context) {
-    controller.setFeedback(feedback);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -47,14 +39,17 @@ class FeedbackDetailScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child:
-                feedback['imageUrl'] != null && feedback['imageUrl'].isNotEmpty
-                    ? Image.network(
-                        feedback['imageUrl'],
-                        fit: BoxFit.cover,
-                      )
-                    : Container(color: Colors.grey),
-          ),
+              child: feedback.category == 'image_feedback' &&
+                      feedback.mediaUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: feedback.mediaUrl!,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Center(child: Icon(Icons.error)),
+                    )
+                  : SizedBox.shrink()),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -84,61 +79,7 @@ class FeedbackDetailScreen extends StatelessWidget {
                     spacing: 12,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              feedback['branch'] ?? "No Title",
-                              style: AppTextStyles.headingStyle1.copyWith(
-                                color: AppColors.textColor,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: Colors.amber,
-                          ),
-                          Text(
-                            feedback['rating'] ?? "0.0",
-                            style: AppTextStyles.lightStyle.copyWith(
-                              color: AppColors.textColor,
-                            ),
-                          ),
-                        ],
-                      ),
                       Divider(color: AppColors.textColor),
-                      Text(
-                        feedback['description'] ?? "No Description",
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.textColor,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(Icons.access_time, size: 18, color: Colors.grey),
-                          SizedBox(width: 6),
-                          Text(
-                            feedback['created_at']?.toString() ??
-                                "Unknown Date",
-                            style: AppTextStyles.lightStyle.copyWith(
-                              color: AppColors.textColor.withCustomOpacity(0.8),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Obx(
-                        () => AppButton(
-                          text: controller.isBookmarked.value
-                              ? "Bookmarked"
-                              : "Add to bookmark",
-                          onPressed: () {},
-                          btnRadius: 50,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -151,68 +92,44 @@ class FeedbackDetailScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      GestureDetector(
-                        onTap: () =>
-                            controller.toggleLike(feedback['feedbackId']),
-                        child: Obx(
-                          () => Row(
-                            children: [
-                              Icon(
-                                controller.likes.contains(
-                                        FirebaseAuth.instance.currentUser?.uid)
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: AppColors.mainColor,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                "${controller.likes.length}",
-                                style: AppTextStyles.lightStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                       Spacer(),
-                      GestureDetector(
-                        onTap: () => controller.showAddCommentSheet(
-                            context, feedback['feedbackId']),
-                        child: Row(
-                          children: [
-                            Icon(Icons.add, color: AppColors.mainColor),
-                            SizedBox(width: 4),
-                            Text(
-                              "Add comment",
-                              style: AppTextStyles.lightStyle.copyWith(
-                                color: AppColors.mainColor,
-                                fontFamily: AppFonts.sandBold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () => controller.showAddCommentSheet(
+                      //       context, feedback['feedbackId']),
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(Icons.add, color: AppColors.mainColor),
+                      //       SizedBox(width: 4),
+                      //       Text(
+                      //         "Add comment",
+                      //         style: AppTextStyles.lightStyle.copyWith(
+                      //           color: AppColors.mainColor,
+                      //           fontFamily: AppFonts.sandBold,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       Spacer(),
-                      GestureDetector(
-                        onTap: () => controller.showCommentsSheet(
-                            context, feedback['feedbackId']),
-                        child: Obx(
-                          () => Row(
-                            children: [
-                              Icon(Icons.comment_outlined,
-                                  color: AppColors.mainColor),
-                              SizedBox(width: 4),
-                              Text(
-                                "${controller.comments.length}",
-                                style: AppTextStyles.lightStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () => controller.showCommentsSheet(
+                      //       context, feedback['feedbackId']),
+                      //   child: Obx(
+                      //     () => Row(
+                      //       children: [
+                      //         Icon(Icons.comment_outlined,
+                      //             color: AppColors.mainColor),
+                      //         SizedBox(width: 4),
+                      //         Text(
+                      //           "${controller.comments.length}",
+                      //           style: AppTextStyles.lightStyle.copyWith(
+                      //             color: AppColors.mainColor,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

@@ -24,14 +24,41 @@ class WatchFeedbackController extends GetxController {
 
   @override
   void onClose() {
+    _feedbackSubscription?.cancel();
     for (var controller in _videoControllers.values) {
       controller.dispose();
     }
     _videoControllers.clear();
+    _branchThumbnailCache.clear();
+    _userCache.clear();
     super.onClose();
   }
 
   final Map<String, String> _branchThumbnailCache = {};
+  Future<void> fetchFeedbacksForBranch(String branchId) async {
+    try {
+      isLoading.value = true;
+      feedbacks.clear();
+
+      final snapshot = await _firestore
+          .collection('feedback')
+          .where('branchId', isEqualTo: branchId)
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      feedbacks.value = await Future.wait(snapshot.docs.map((doc) async {
+        final feedback = UploadFeedbackModel.fromMap(doc.data());
+        final thumbnail = await _getBranchThumbnail(feedback.branchId);
+        return feedback.copyWith(branchThumbnail: thumbnail);
+      }));
+
+      await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch branch feedbacks: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   Future<String?> _getBranchThumbnail(String branchId) async {
     if (_branchThumbnailCache.containsKey(branchId)) {
@@ -84,25 +111,36 @@ class WatchFeedbackController extends GetxController {
     return null;
   }
 
+  Future<void> refreshFeedbacks() async {
+    _branchThumbnailCache.clear();
+    _userCache.clear();
+    await fetchFeedbacks();
+  }
+
+  StreamSubscription<QuerySnapshot>? _feedbackSubscription;
+
   Future<void> fetchFeedbacks() async {
     try {
       isLoading.value = true;
 
-      final snapshot = await _firestore
+      _feedbackSubscription?.cancel();
+
+      _feedbackSubscription = _firestore
           .collection('feedback')
           .orderBy('createdAt', descending: true)
-          .get();
+          .snapshots()
+          .listen((snapshot) async {
+        feedbacks.value = await Future.wait(snapshot.docs.map((doc) async {
+          final feedback = UploadFeedbackModel.fromMap(doc.data());
+          final thumbnail = await _getBranchThumbnail(feedback.branchId);
+          return feedback.copyWith(branchThumbnail: thumbnail);
+        }));
 
-      feedbacks.value = await Future.wait(snapshot.docs.map((doc) async {
-        final feedback = UploadFeedbackModel.fromMap(doc.data());
-        final thumbnail = await _getBranchThumbnail(feedback.branchId);
-        return feedback.copyWith(branchThumbnail: thumbnail);
-      }));
-
-      await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
+        await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
+        isLoading.value = false;
+      });
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch feedbacks: $e');
-    } finally {
       isLoading.value = false;
     }
   }

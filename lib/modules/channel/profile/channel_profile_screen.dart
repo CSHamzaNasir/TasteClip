@@ -8,11 +8,9 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/role/role_screen.dart';
-import 'package:tasteclip/modules/profile/profile_detail/image_feedback/user_feedback_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 import '../../../config/app_enum.dart';
-import '../../profile/profile_detail/text_feedback/text_feedback_screen.dart';
 import 'channel_profile_controller.dart';
 
 class ChannelProfileScreen extends StatelessWidget {
@@ -81,66 +79,66 @@ class ChannelProfileScreen extends StatelessWidget {
                               style: AppTextStyles.regularStyle
                                   .copyWith(color: AppColors.textColor)),
                           16.vertical,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(
-                              controller.feedbackOptions.length,
-                              (index) => GestureDetector(
-                                onTap: () {
-                                  if (index == 0) {
-                                    Get.to(() => TextFeedbackScreen(
-                                          role: UserRole.manager,
-                                        ));
-                                  }
-                                  if (index == 1) {
-                                    Get.to(() => UserFeedbackScreen(
-                                          role: UserRole.manager,
-                                        ));
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.greyColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        controller.feedbackOptions[index]
-                                            ['icon'],
-                                        height: 24,
-                                        width: 24,
-                                      ),
-                                      SizedBox(height: 12),
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '12 ',
-                                              style: AppTextStyles.bodyStyle
-                                                  .copyWith(
-                                                color: AppColors.mainColor,
-                                                fontFamily: AppFonts.sandBold,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: "posts",
-                                              style: AppTextStyles.bodyStyle
-                                                  .copyWith(
-                                                color: AppColors.mainColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //   children: List.generate(
+                          //     controller.feedbackOptions.length,
+                          //     (index) => GestureDetector(
+                          //       onTap: () {
+                          //         if (index == 0) {
+                          //           Get.to(() => TextFeedbackScreen(
+                          //                 role: UserRole.manager,
+                          //               ));
+                          //         }
+                          //         if (index == 1) {
+                          //           Get.to(() => UserFeedbackScreen(
+                          //                 role: UserRole.manager,
+                          //               ));
+                          //         }
+                          //       },
+                          //       child: Container(
+                          //         padding: EdgeInsets.all(16),
+                          //         decoration: BoxDecoration(
+                          //           color: AppColors.greyColor,
+                          //           borderRadius: BorderRadius.circular(12),
+                          //         ),
+                          //         child: Column(
+                          //           mainAxisAlignment: MainAxisAlignment.center,
+                          //           children: [
+                          //             SvgPicture.asset(
+                          //               controller.feedbackOptions[index]
+                          //                   ['icon'],
+                          //               height: 24,
+                          //               width: 24,
+                          //             ),
+                          //             SizedBox(height: 12),
+                          //             RichText(
+                          //               text: TextSpan(
+                          //                 children: [
+                          //                   TextSpan(
+                          //                     text: '12 ',
+                          //                     style: AppTextStyles.bodyStyle
+                          //                         .copyWith(
+                          //                       color: AppColors.mainColor,
+                          //                       fontFamily: AppFonts.sandBold,
+                          //                     ),
+                          //                   ),
+                          //                   TextSpan(
+                          //                     text: "posts",
+                          //                     style: AppTextStyles.bodyStyle
+                          //                         .copyWith(
+                          //                       color: AppColors.mainColor,
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           16.vertical,
                           Container(
                             padding: EdgeInsets.symmetric(

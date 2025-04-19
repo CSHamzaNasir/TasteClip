@@ -9,6 +9,7 @@ import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
@@ -90,9 +91,16 @@ class WatchFeedbackScreen extends StatelessWidget {
                     itemCount: controller.feedbacks.length,
                     itemBuilder: (context, index) {
                       final feedback = controller.feedbacks[index];
-                      return FeedbackItem(
-                        feedback: feedback,
-                        feedbackScope: FeedbackScope.allFeedback,
+                      return GestureDetector(
+                        onTap: () => Get.to(
+                          FeedbackDetailScreen(
+                            feedback: feedback,
+                          ),
+                        ),
+                        child: FeedbackItem(
+                          feedback: feedback,
+                          feedbackScope: FeedbackScope.allFeedback,
+                        ),
                       );
                     },
                   ),

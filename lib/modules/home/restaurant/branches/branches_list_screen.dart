@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
-import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_screen.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/components/restaurant_branch_header.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
@@ -25,6 +27,7 @@ class BranchesListScreen extends StatelessWidget {
 
   final controller = Get.put(BranchesListController());
   final branchDetailController = Get.put(BranchDetailController());
+  final watchFeedbackcontroller = Get.put(WatchFeedbackController());
 
   @override
   Widget build(BuildContext context) {
@@ -97,21 +100,47 @@ class BranchesListScreen extends StatelessWidget {
                     ),
                   ),
                   24.vertical,
+                  // In BranchesListScreen class
                   RestaurantBranchHeader(
                     controller: controller,
                     onBranchSelected: (branch) {
                       selectedBranch.value = branch;
+                      if (selectedBranch.value == null &&
+                          controller.branches.isNotEmpty) {
+                        selectedBranch.value = controller.branches.first;
+                        final initialBranchId =
+                            selectedBranch.value!['branchId'];
+                        watchFeedbackcontroller
+                            .fetchFeedbacksForBranch(initialBranchId);
+                      }
                     },
                     selectedBranchId: selectedBranch.value?['branchId'],
                   ),
-                  if (selectedBranch.value != null)
-                    Expanded(
-                      child: BranchDetailScreen(
-                        branchName: selectedBranch.value!['branchAddress'],
-                        branchImageUrl:
-                            selectedBranch.value!['branchThumbnail'],
-                      ),
+
+                  // In FeedbackItem widget
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Obx(() {
+                        if (watchFeedbackcontroller.isLoading.value) {
+                          return const Center(
+                              child: CupertinoActivityIndicator());
+                        }
+                        return ListView.builder(
+                          itemCount: watchFeedbackcontroller.feedbacks.length,
+                          itemBuilder: (context, index) {
+                            final feedback =
+                                watchFeedbackcontroller.feedbacks[index];
+                            return FeedbackItem(
+                              feedback: feedback,
+                              feedbackScope: FeedbackScope.branchFeedback,
+                              branchId: selectedBranch.value?['branchId'] ?? '',
+                            );
+                          },
+                        );
+                      }),
                     ),
+                  )
                 ],
               );
             }
