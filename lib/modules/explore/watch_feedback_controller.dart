@@ -137,6 +137,18 @@ class WatchFeedbackController extends GetxController {
         }));
 
         await Future.wait(feedbacks.map((f) => _getUserDetails(f.userId)));
+ 
+        final currentUserId = _auth.currentUser?.uid;
+        if (currentUserId != null) {
+          final textFeedbackCount = snapshot.docs.where((doc) {
+            final data = doc.data();
+            return data['category'] == 'text_feedback' &&
+                data['userId'] == currentUserId;
+          }).length;
+
+          log('Number of text feedbacks by current user: $textFeedbackCount');
+        }
+
         isLoading.value = false;
       });
     } catch (e) {

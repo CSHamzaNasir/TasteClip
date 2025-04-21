@@ -12,7 +12,7 @@ enum FeedbackCategory {
 enum FeedbackScope {
   branchFeedback,
   allFeedback,
-  currentUserFeedback
+  currentUserFeedback,
 }
 
 extension FeedbackCategoryExtension on FeedbackCategory {
@@ -28,7 +28,7 @@ extension FeedbackCategoryExtension on FeedbackCategory {
   }
 }
 
-enum FeedImageStoryHome{
+enum FeedImageStoryHome {
   yes,
   no,
 }

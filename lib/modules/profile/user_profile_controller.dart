@@ -4,18 +4,67 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-import '../../config/app_assets.dart';
 import '../../core/route/app_router.dart';
 
 class UserProfileController extends GetxController {
   List<Map<String, dynamic>> feedbackOptions = [
-    {'icon': AppAssets.message, 'label': "Text"},
-    {'icon': AppAssets.camera, 'label': "Image"},
-    {'icon': AppAssets.video, 'label': "Video"},
+    {'label': "Text", 'count': 0},
+    {'label': "Image", 'count': 0},
+    {'label': "Video", 'count': 0},
   ];
-  var selectedIndex = 0.obs;
 
+  var selectedIndex = 0.obs;
   final List<String> categories = ["Recent", "Saved"];
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  RxString email = ''.obs;
+  RxString fullName = ''.obs;
+  RxString profileImage = ''.obs;
+  RxString userName = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCurrentUserData();
+    fetchFeedbackCounts();
+  }
+
+  Future<void> fetchFeedbackCounts() async {
+    try {
+      final user = auth.currentUser;
+      if (user == null) return;
+ 
+      final textCount = await firestore
+          .collection('feedback')
+          .where('userId', isEqualTo: user.uid)
+          .where('category', isEqualTo: 'text_feedback')
+          .count()
+          .get();
+
+      final imageCount = await firestore
+          .collection('feedback')
+          .where('userId', isEqualTo: user.uid)
+          .where('category', isEqualTo: 'image_feedback')
+          .count()
+          .get();
+
+      final videoCount = await firestore
+          .collection('feedback')
+          .where('userId', isEqualTo: user.uid)
+          .where('category', isEqualTo: 'video_feedback')
+          .count()
+          .get();
+
+      feedbackOptions[0]['count'] = textCount.count;
+      feedbackOptions[1]['count'] = imageCount.count;
+      feedbackOptions[2]['count'] = videoCount.count;
+
+      update(); // Notify listeners
+    } catch (e) {
+      log('Error fetching feedback counts: $e');
+    }
+  }
 
   void changeCategory(int index) {
     selectedIndex.value = index;
@@ -35,19 +84,6 @@ class UserProfileController extends GetxController {
 
   void goToSettingScreen() {
     Get.toNamed(AppRouter.settingScreen);
-  }
-
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  RxString email = ''.obs;
-  RxString fullName = ''.obs;
-  RxString profileImage = ''.obs;
-  RxString userName = ''.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    fetchCurrentUserData();
   }
 
   Future<void> fetchCurrentUserData() async {

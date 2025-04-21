@@ -15,6 +15,7 @@ class UploadFeedbackModel {
   final int tasteCoin;
   final String branchId;
   final String? branchThumbnail;
+  final List<String> hashTags;
 
   UploadFeedbackModel({
     required this.feedbackId,
@@ -31,6 +32,7 @@ class UploadFeedbackModel {
     required this.comments,
     this.likes = const [],
     this.tasteCoin = 0,
+    this.hashTags = const [],
   });
 
   UploadFeedbackModel copyWith({
@@ -48,6 +50,7 @@ class UploadFeedbackModel {
     List<dynamic>? comments,
     List<String>? likes,
     int? tasteCoin,
+    List<String>? hashTags,
   }) {
     return UploadFeedbackModel(
       feedbackId: feedbackId ?? this.feedbackId,
@@ -64,6 +67,7 @@ class UploadFeedbackModel {
       tasteCoin: tasteCoin ?? this.tasteCoin,
       branchId: branchId ?? this.branchId,
       branchThumbnail: branchThumbnail ?? this.branchThumbnail,
+      hashTags: hashTags ?? this.hashTags,
     );
   }
 
@@ -83,6 +87,7 @@ class UploadFeedbackModel {
       'branchThumbnail': branchThumbnail,
       'tasteCoin': tasteCoin,
       'branchId': branchId,
+      'hashTags': hashTags,
     };
   }
 
@@ -104,6 +109,7 @@ class UploadFeedbackModel {
       comments: List<dynamic>.from(map['comments'] ?? []),
       likes: List<String>.from(map['likes'] ?? []),
       tasteCoin: map['tasteCoin'] ?? 0,
+      hashTags: List<String>.from(map['hashTags'] ?? []),
     );
   }
 }

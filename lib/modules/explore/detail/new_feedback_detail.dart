@@ -42,7 +42,9 @@ class NewFeedbackDetailScreen extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                icon: SvgPicture.asset(AppAssets.vertMore, color: Colors.white),
+                icon: SvgPicture.asset(
+                  AppAssets.vertMore,
+                ),
                 onPressed: () {},
               ),
             ],

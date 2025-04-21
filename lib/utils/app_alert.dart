@@ -3,9 +3,13 @@ import 'package:get/get.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 
 class AppAlerts {
-  static void showSnackbar({required bool isSuccess, required String message}) {
+  static void showSnackbar({
+    required bool isSuccess,
+    required String message,
+    String? customTitle,
+  }) {
     Get.snackbar(
-      isSuccess ? 'Success' : 'Error',
+      customTitle ?? (isSuccess ? 'Success' : 'Error'),
       message,
       backgroundColor: isSuccess ? AppColors.mainColor : Colors.red,
       colorText: Colors.white,

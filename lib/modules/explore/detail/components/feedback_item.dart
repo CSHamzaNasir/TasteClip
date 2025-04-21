@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,7 +49,7 @@ class FeedbackItem extends StatelessWidget {
     }
 
     return Container(
-      height: feedback.category != 'text_feedback' ? 400 : 150,
+      height: feedback.category != 'text_feedback' ? 400 : 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
             feedbackScope != FeedbackScope.currentUserFeedback ? 36 : 12),
@@ -63,18 +62,18 @@ class FeedbackItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Stack(
         children: [
-          if (feedback.category == 'image_feedback' &&
-              feedback.mediaUrl != null)
-            Positioned.fill(
-              child: CachedNetworkImage(
-                imageUrl: feedback.mediaUrl!,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) =>
-                    const Center(child: Icon(Icons.error)),
-              ),
+          Positioned.fill(
+            child: CachedNetworkImage(
+              imageUrl: feedback.category == 'text_feedback'
+                  ? feedback.branchThumbnail!
+                  : feedback.mediaUrl!,
+              fit: BoxFit.cover,
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) =>
+                  const Center(child: Icon(Icons.error)),
             ),
+          ),
           if (feedback.category == 'video_feedback' &&
               feedback.mediaUrl != null)
             GetBuilder<WatchFeedbackController>(
@@ -346,7 +345,6 @@ class FeedbackItem extends StatelessWidget {
                       )
                     : SizedBox.shrink(),
                 if (feedback.category != 'text_feedback') ...[
-                  16.vertical,
                   feedbackScope != FeedbackScope.currentUserFeedback
                       ? Text(
                           feedback.description,

@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/firebase_options.dart';
 import 'package:tasteclip/modules/auth/splash/binding/initial_binding.dart';
+import 'package:tasteclip/modules/home/chat_bot/chat_screen.dart';
 
 import 'config/theme.dart';
 
@@ -29,8 +30,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       getPages: AppRouter.routes,
-      // home: LoginScreen(),
-      initialRoute: AppRouter.splashScreen,
+      // initialRoute: AppRouter.splashScreen,
+      home: ChatScreen(),
     );
   }
 }

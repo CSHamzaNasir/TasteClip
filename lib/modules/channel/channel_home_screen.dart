@@ -1,90 +1,77 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
+import 'package:tasteclip/modules/channel/channel_home_controller.dart';
+import 'package:tasteclip/modules/channel/components/channel_home_appbar.dart';
+import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
+import 'package:tasteclip/modules/redeem/model/create_voucher_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import 'components/channel_home_appbar.dart';
-import 'components/meal_category.dart';
-import 'components/popular_feedback.dart';
-
 class ChannelHomeScreen extends StatelessWidget {
-  const ChannelHomeScreen({super.key});
+  ChannelHomeScreen({super.key});
+  final watchFeedbackcontroller = Get.put(WatchFeedbackController());
+  final channelHomeController = Get.put(ChannelHomeController());
 
   @override
   Widget build(BuildContext context) {
+    log(channelHomeController.branchId);
     return AppBackground(
       isLight: true,
       child: Scaffold(
         body: Column(
+          spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ChannelHomeAppBar(
-              image: "",
-              username: 'username',
+              image:
+                  channelHomeController.managerData.value?["branchThumbnail"] ??
+                      '',
+              username:
+                  channelHomeController.managerData.value?["branchAddress"] ??
+                      '',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Most Popular",
+                  style: AppTextStyles.boldBodyStyle
+                      .copyWith(color: AppColors.textColor),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      () => CreateVoucherScreen(),
+                    );
+                  },
+                  child: Text(
+                    "See All",
+                    style: AppTextStyles.lightStyle.copyWith(
+                        color: AppColors.mainColor,
+                        fontFamily: AppFonts.sandSemiBold),
+                  ),
+                ),
+              ],
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    spacing: 16,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      1.vertical,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Categories",
-                            style: AppTextStyles.boldBodyStyle
-                                .copyWith(color: AppColors.textColor),
-                          ),
-                          Text(
-                            "See All",
-                            style: AppTextStyles.lightStyle.copyWith(
-                                color: AppColors.mainColor,
-                                fontFamily: AppFonts.sandSemiBold),
-                          )
-                        ],
-                      ),
-                      MealCategoryRow(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Most Popular",
-                            style: AppTextStyles.boldBodyStyle
-                                .copyWith(color: AppColors.textColor),
-                          ),
-                          Text(
-                            "See All",
-                            style: AppTextStyles.lightStyle.copyWith(
-                                color: AppColors.mainColor,
-                                fontFamily: AppFonts.sandSemiBold),
-                          ),
-                        ],
-                      ),
-                      PopularFeedback(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Your Feedbacker",
-                            style: AppTextStyles.boldBodyStyle
-                                .copyWith(color: AppColors.textColor),
-                          ),
-                          Text(
-                            "See All",
-                            style: AppTextStyles.lightStyle.copyWith(
-                                color: AppColors.mainColor,
-                                fontFamily: AppFonts.sandSemiBold),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ListView.builder(
+                  itemCount: watchFeedbackcontroller.feedbacks.length,
+                  itemBuilder: (context, index) {
+                    final feedback = watchFeedbackcontroller.feedbacks[index];
+                    return FeedbackItem(
+                      feedback: feedback,
+                      feedbackScope: FeedbackScope.branchFeedback,
+                      branchId: channelHomeController.branchId,
+                    );
+                  },
                 ),
               ),
             ),

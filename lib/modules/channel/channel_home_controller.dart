@@ -14,6 +14,7 @@ class ChannelHomeController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   var isLoading = true.obs;
   var managerData = Rxn<Map<String, dynamic>>();
+  String get branchId => auth.currentUser?.uid ?? 'No branch ID';
 
   @override
   void onInit() {
@@ -39,6 +40,7 @@ class ChannelHomeController extends GetxController {
               'branchEmail': branch['branchEmail'],
               'branchAddress': branch['branchAddress'],
               'status': branch['status'],
+              'branchThumbnail': branch['branchThumbnail'],
             };
             isLoading.value = false;
             return;

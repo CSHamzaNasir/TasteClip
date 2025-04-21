@@ -72,4 +72,6 @@ class AppAssets {
   static const String info = "assets/icons/info.svg";
   static const String messageFilled = "assets/icons/message_filled.svg";
   static const String filterSetting = "assets/icons/filter_setting.svg";
+  static const String branchIcon = "assets/icons/branch_icon.svg";
+  static const String voucherIcon = "assets/icons/voucher_fill.svg";
 }

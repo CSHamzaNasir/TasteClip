@@ -92,11 +92,10 @@ class WatchFeedbackScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final feedback = controller.feedbacks[index];
                       return GestureDetector(
-                        onTap: () => Get.to(
-                          FeedbackDetailScreen(
-                            feedback: feedback,
-                          ),
-                        ),
+                        onTap: () => Get.to(() => FeedbackDetailScreen(
+                              feedback: feedback,
+                              feedbackScope: FeedbackScope.allFeedback,
+                            )),
                         child: FeedbackItem(
                           feedback: feedback,
                           feedbackScope: FeedbackScope.allFeedback,

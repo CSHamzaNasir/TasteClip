@@ -133,7 +133,7 @@ class UploadFeedbackController extends GetxController {
         rating: rating,
         mediaUrl: mediaUrl,
         category: categoryString,
-        branchId: branchId, // Store the branchId
+        branchId: branchId,  
 
         createdAt: DateTime.now(),
         comments: [],
