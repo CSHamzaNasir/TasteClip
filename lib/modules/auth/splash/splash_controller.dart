@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/core/route/app_router.dart'; 
+import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
 import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 
@@ -14,12 +14,12 @@ class SplashController extends GetxController {
   void onInit() {
     super.onInit();
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       splashAppLogo = false;
       splashText = true;
       update();
 
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _checkUserStatus();
       });
     });
@@ -31,8 +31,7 @@ class SplashController extends GetxController {
     log("DEBUG: User is ${user != null ? 'LOGGED IN' : 'NULL'}");
 
     if (user != null) {
-      await UserController.to
-          .fetchAndStoreUserData(user.uid);  
+      await UserController.to.fetchAndStoreUserData(user.uid);
       Get.off(() => CustomBottomBar());
     } else {
       goToOnboardingScreen();

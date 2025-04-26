@@ -1,14 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/modules/channel/event/create_event_controller.dart';
+import 'package:tasteclip/modules/redeem/model/create_voucher_controller.dart';
 
 class CreateVoucherScreen extends StatelessWidget {
   CreateVoucherScreen({super.key});
 
-  final controller = Get.put(EventController());
+  final controller = Get.put(VoucherController());
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -102,7 +103,7 @@ class CreateVoucherScreen extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 50),
                     ),
                     child: controller.isLoading.value
-                        ? const CircularProgressIndicator()
+                        ? const CupertinoActivityIndicator()
                         : const Text('Create Voucher'),
                   )),
             ],

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg_flutter.dart';
@@ -8,6 +6,7 @@ import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/modules/channel/event/event_screen.dart';
 import 'package:tasteclip/modules/home/home_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
 import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
@@ -25,21 +24,21 @@ class CustomBottomBarState extends State<CustomBottomBar> {
   final List<String> _selectedIcons = [
     AppAssets.homeBold,
     AppAssets.addBold,
-    AppAssets.camera,
+    AppAssets.eventBold,
     AppAssets.profileBold,
   ];
 
   final List<String> _unselectedIcons = [
     AppAssets.homeReg,
     AppAssets.addIcon,
-    AppAssets.camera,
+    AppAssets.eventReg,
     AppAssets.profileReg,
   ];
 
   final List<Widget> _screens = [
     HomeScreen(),
     HomeScreen(),
-    HomeScreen(),
+    AllEventsScreen(),
     UserProfileScreen(),
   ];
   void _onItemTapped(int index) {
@@ -78,12 +77,11 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                     iconPath: AppAssets.message,
                     label: "Text",
                     onTap: () {
-                      
                       Get.to(
-                      UploadFeedbackScreen(
-                        category: FeedbackCategory.text,
-                      ),
-                    );
+                        UploadFeedbackScreen(
+                          category: FeedbackCategory.text,
+                        ),
+                      );
                       // Get.toNamed(AppRouter.uploadTextFeedbackScreen);
                     },
                   ),
@@ -162,41 +160,41 @@ class CustomBottomBarState extends State<CustomBottomBar> {
               right: 0,
               bottom: 12,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 36),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Color(0xff9D9D9D).withCustomOpacity(0.1),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: List.generate(
-                          _selectedIcons.length,
-                          (index) => GestureDetector(
-                            onTap: () => _onItemTapped(index),
-                            child: Container(
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: _selectedIndex == index
-                                    ? Colors.white
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: SvgPicture.asset(
+                  borderRadius: BorderRadius.circular(24),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.whiteColor,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: List.generate(
+                        _selectedIcons.length,
+                        (index) => GestureDetector(
+                          onTap: () => _onItemTapped(index),
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: _selectedIndex == index
+                                  ? AppColors.primaryColor.withCustomOpacity(.2)
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: SvgPicture.asset(
+                              height: 24,
+                              width: 24,
+                              fit: BoxFit.cover,
+                              _selectedIndex == index
+                                  ? _selectedIcons[index]
+                                  : _unselectedIcons[index],
+                              colorFilter: ColorFilter.mode(
                                 _selectedIndex == index
-                                    ? _selectedIcons[index]
-                                    : _unselectedIcons[index],
-                                colorFilter: ColorFilter.mode(
-                                  _selectedIndex == index
-                                      ? AppColors.mainColor
-                                      : Colors.grey,
-                                  BlendMode.srcIn,
-                                ),
+                                    ? AppColors.mainColor
+                                    : Colors.grey,
+                                BlendMode.srcIn,
                               ),
                             ),
                           ),

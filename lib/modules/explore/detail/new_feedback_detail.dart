@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -85,7 +86,7 @@ class NewFeedbackDetailScreen extends StatelessWidget {
         imageUrl: feedback.mediaUrl!,
         fit: BoxFit.cover,
         placeholder: (context, url) =>
-            const Center(child: CircularProgressIndicator()),
+            const Center(child: CupertinoActivityIndicator()),
         errorWidget: (context, url, error) =>
             const Center(child: Icon(Icons.error)),
       );
@@ -94,7 +95,7 @@ class NewFeedbackDetailScreen extends StatelessWidget {
       return GetBuilder<WatchFeedbackController>(
         builder: (controller) {
           if (!controller.isVideoInitialized(feedback.feedbackId)) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CupertinoActivityIndicator());
           }
           return Stack(
             children: [

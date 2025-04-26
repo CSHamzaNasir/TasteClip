@@ -13,6 +13,7 @@ enum FeedbackScope {
   branchFeedback,
   allFeedback,
   currentUserFeedback,
+  homefeed,
 }
 
 extension FeedbackCategoryExtension on FeedbackCategory {

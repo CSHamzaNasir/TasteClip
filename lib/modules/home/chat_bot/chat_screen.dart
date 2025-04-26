@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasteclip/config/app_text_styles.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/home/chat_bot/chat_controller.dart';
 import 'package:tasteclip/modules/home/chat_bot/chat_model.dart';
 
 class ChatScreen extends StatelessWidget {
-  final ChatController _chatController = Get.put(ChatController()); 
+  final ChatController _chatController = Get.put(ChatController());
   final ScrollController _scrollController = ScrollController();
 
   ChatScreen({super.key});
@@ -13,79 +17,242 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pakistani Food Guide'),
-        backgroundColor: Colors.orange,
+        title: Text('Find best bite',
+            style: AppTextStyles.bodyStyle.copyWith(
+                color: AppColors.whiteColor, fontFamily: AppFonts.sandBold)),
+        backgroundColor: const Color(0xFF6C5CE7),
+        elevation: 0,
+        centerTitle: false,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Obx(() {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (_scrollController.hasClients) {
-                  _scrollController.animateTo(
-                    _scrollController.position.maxScrollExtent,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeOut,
-                  );
-                }
-              });
-              return ListView.builder(
-                controller: _scrollController,
-                itemCount: _chatController.chatMessages.length,
-                itemBuilder: (context, index) {
-                  final message = _chatController.chatMessages[index];
-                  return ChatBubble(message: message);
-                },
-              );
-            }),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF6C5CE7), Color(0xFFA89BEC)],
           ),
-          Obx(() {
-            if (_chatController.showCitySelection.value) {
-              return CitySelectionWidget();
-            } else if (_chatController.showCategorySelection.value) {
-              return CategorySelectionWidget();
-            } else {
-              return UserInputWidget();
-            }
-          }),
-        ],
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Obx(() {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (_scrollController.hasClients) {
+                    _scrollController.animateTo(
+                      _scrollController.position.maxScrollExtent,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                });
+                return ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _chatController.chatMessages.length,
+                  itemBuilder: (context, index) {
+                    final message = _chatController.chatMessages[index];
+                    if (index > 0 &&
+                        _chatController.chatMessages[index - 1].isUser &&
+                        !message.isUser) {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 8),
+                          ChatBubble(message: message),
+                        ],
+                      );
+                    }
+                    return ChatBubble(message: message);
+                  },
+                );
+              }),
+            ),
+            Obx(() {
+              if (_chatController.showCitySelection.value) {
+                return CitySelectionWidget();
+              } else if (_chatController.showCategorySelection.value) {
+                return CategorySelectionWidget();
+              } else {
+                return Container();
+              }
+            }),
+          ],
+        ),
       ),
     );
   }
 }
 
-class ChatBubble extends StatelessWidget {
+class ChatBubble extends StatefulWidget {
   final ChatMessage message;
 
   const ChatBubble({super.key, required this.message});
 
   @override
+  State<ChatBubble> createState() => _ChatBubbleState();
+}
+
+class _ChatBubbleState extends State<ChatBubble>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _typingAnimationController;
+  bool _showMessage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _typingAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+
+    if (!widget.message.isUser) {
+      _typingAnimationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            _showMessage = true;
+          });
+        }
+      });
+      _typingAnimationController.forward();
+    } else {
+      _showMessage = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    _typingAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: message.isUser ? Colors.orange[200] : Colors.grey[200],
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(message.isUser ? 12 : 0),
-            topRight: Radius.circular(message.isUser ? 0 : 12),
-            bottomLeft: Radius.circular(12),
-            bottomRight: Radius.circular(12),
-          ),
-        ),
-        child: message.restaurant != null
-            ? _buildRestaurantCard(message.restaurant!)
-            : Text(
-                message.text,
-                style: TextStyle(
-                  color: message.isUser ? Colors.black : Colors.black87,
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: _showMessage
+          ? Align(
+              alignment: widget.message.isUser
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.8,
+                ),
+                child: widget.message.isUser
+                    ? _buildUserMessage()
+                    : _buildBotMessage(),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withCustomOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildTypingDot(0),
+                      const SizedBox(width: 4),
+                      _buildTypingDot(1),
+                      const SizedBox(width: 4),
+                      _buildTypingDot(2),
+                    ],
+                  ),
                 ),
               ),
+            ),
+    );
+  }
+
+  Widget _buildTypingDot(int index) {
+    return AnimatedBuilder(
+      animation: _typingAnimationController,
+      builder: (context, child) {
+        final animationValue = _typingAnimationController.value;
+        final dotValue = (animationValue * 3 - index).clamp(0.0, 1.0);
+        return Opacity(
+          opacity: dotValue,
+          child: child,
+        );
+      },
+      child: Container(
+        width: 10,
+        height: 10,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
       ),
+    );
+  }
+
+  Widget _buildUserMessage() {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withCustomOpacity(0.1),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Text(
+        widget.message.text,
+        style: const TextStyle(
+          color: Color(0xFF6C5CE7),
+          fontSize: 15,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBotMessage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withCustomOpacity(0.1),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: widget.message.restaurant != null
+              ? _buildRestaurantCard(widget.message.restaurant!)
+              : Text(
+                  widget.message.text,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 15,
+                  ),
+                ),
+        ),
+        if (widget.message.restaurant == null)
+          const Padding(
+            padding: EdgeInsets.only(left: 8.0, top: 4.0),
+            child: Text(
+              'AI Assistant',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 11,
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -95,48 +262,55 @@ class ChatBubble extends StatelessWidget {
       children: [
         Text(
           restaurant.name,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            color: Colors.black87,
+            color: Color(0xFF6C5CE7),
           ),
         ),
-        SizedBox(height: 6),
+        const SizedBox(height: 8),
         Row(
           children: [
-            Icon(Icons.location_on, size: 16, color: Colors.orange),
-            SizedBox(width: 4),
+            Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
+            const SizedBox(width: 4),
             Text(
               restaurant.location,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.grey[800]),
             ),
           ],
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 6),
         Row(
           children: [
-            Icon(Icons.star, size: 16, color: Colors.amber),
-            SizedBox(width: 4),
+            Icon(Icons.star, size: 16, color: Colors.amber[600]),
+            const SizedBox(width: 4),
             Text(
               '${restaurant.rating}',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.grey[800]),
             ),
-            SizedBox(width: 12),
-            Icon(Icons.restaurant, size: 16, color: Colors.green),
-            SizedBox(width: 4),
+            const SizedBox(width: 12),
+            Icon(Icons.restaurant, size: 16, color: Colors.green[600]),
+            const SizedBox(width: 4),
             Text(
               restaurant.specialty,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.grey[800]),
             ),
           ],
         ),
-        SizedBox(height: 6),
-        Text(
-          '⭐ ${restaurant.highlight}',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[700],
-            fontStyle: FontStyle.italic,
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xFF6C5CE7).withCustomOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            '⭐ ${restaurant.highlight}',
+            style: TextStyle(
+              fontSize: 13,
+              color: const Color(0xFF6C5CE7),
+              fontStyle: FontStyle.italic,
+            ),
           ),
         ),
       ],
@@ -147,49 +321,84 @@ class ChatBubble extends StatelessWidget {
 class CitySelectionWidget extends StatelessWidget {
   final _chatController = Get.put(ChatController());
 
+  final RxString searchQuery = ''.obs;
+
   CitySelectionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      padding: EdgeInsets.all(8),
-      color: Colors.grey[100],
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Select your city:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF6C5CE7)),
           ),
-          SizedBox(height: 8),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 2.5,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
+          const SizedBox(height: 12),
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Search city...',
+              prefixIcon: const Icon(Icons.search, color: Color(0xFF6C5CE7)),
+              filled: true,
+              fillColor: Colors.grey[100],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
               ),
-              itemCount: pakistaniCities.length,
-              itemBuilder: (context, index) {
-                final city = pakistaniCities[index];
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () => _chatController.selectCity(city),
-                  child: Text(
-                    city,
-                    style: TextStyle(fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
             ),
+            onChanged: (value) {
+              searchQuery.value = value;
+            },
+          ),
+          SizedBox(
+            height: 80,
+            child: Obx(() {
+              final filteredCities = pakistaniCities.where((city) {
+                final query = searchQuery.value.toLowerCase();
+                return city.toLowerCase().contains(query);
+              }).toList();
+
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: filteredCities.length,
+                itemBuilder: (context, index) {
+                  final city = filteredCities[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ChoiceChip(
+                      label: Text(city),
+                      selected: _chatController.selectedCity.value == city,
+                      onSelected: (selected) {
+                        if (selected) {
+                          _chatController.selectCity(city);
+                        }
+                      },
+                      selectedColor: const Color(0xFF6C5CE7),
+                      labelStyle: TextStyle(
+                        color: _chatController.selectedCity.value == city
+                            ? Colors.white
+                            : const Color(0xFF6C5CE7),
+                      ),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: const BorderSide(color: Color(0xFF6C5CE7)),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),
@@ -205,90 +414,47 @@ class CategorySelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      padding: EdgeInsets.all(8),
-      color: Colors.grey[100],
-      child: Column(
-        children: [
-          Text(
-            'Select food category:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          SizedBox(height: 8),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 2.5,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-              ),
-              itemCount: foodCategories.length,
-              itemBuilder: (context, index) {
-                final category = foodCategories[index];
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () => _chatController.selectCategory(category),
-                  child: Text(
-                    category,
-                    style: TextStyle(fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-    );
-  }
-}
-
-class UserInputWidget extends StatelessWidget {
-  final TextEditingController _textController = TextEditingController();
-  final ChatController _chatController = Get.find();
-
-  UserInputWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                hintText: 'Type your message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16),
-              ),
-            ),
+          const Text(
+            'Select food category:',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF6C5CE7)),
           ),
-          SizedBox(width: 8),
-          CircleAvatar(
-            backgroundColor: Colors.orange,
-            child: IconButton(
-              icon: Icon(Icons.send, color: Colors.white),
-              onPressed: () {
-                if (_textController.text.isNotEmpty) {
-                  _chatController.chatMessages.add(ChatMessage(
-                    text: _textController.text,
-                    isUser: true,
-                  ));
-                  _textController.clear();
-                }
-              },
-            ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: foodCategories.map((category) {
+              return ChoiceChip(
+                label: Text(category),
+                selected: _chatController.selectedCategory.value == category,
+                onSelected: (selected) {
+                  if (selected) {
+                    _chatController.selectCategory(category);
+                  }
+                },
+                selectedColor: const Color(0xFF6C5CE7),
+                labelStyle: TextStyle(
+                  color: _chatController.selectedCategory.value == category
+                      ? Colors.white
+                      : const Color(0xFF6C5CE7),
+                ),
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Color(0xFF6C5CE7)),
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),

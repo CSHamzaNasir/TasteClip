@@ -35,64 +35,54 @@ class ChatController extends GetxController {
   var chatMessages = <ChatMessage>[].obs;
   var showCitySelection = true.obs;
   var showCategorySelection = false.obs;
+  var isTyping = false.obs; // <-- NEW
 
   @override
   void onInit() {
     super.onInit();
+    addBotMessage('Welcome to Food Recommendations! Please select your city:');
+  }
+
+  void addBotMessage(String text, {Restaurant? restaurant}) async {
+    isTyping.value = true;
+    await Future.delayed(Duration(seconds: 1));
+    isTyping.value = false;
     chatMessages.add(ChatMessage(
-      text: 'Welcome to Food Recommendations! Please select your city:',
+      text: text,
       isUser: false,
+      restaurant: restaurant,
     ));
   }
 
   void selectCity(String city) {
     selectedCity.value = city;
-    chatMessages.add(ChatMessage(
-      text: 'You selected: $city',
-      isUser: true,
-    ));
-    chatMessages.add(ChatMessage(
-      text: 'Great choice! Now please select a food category:',
-      isUser: false,
-    ));
+    chatMessages.add(ChatMessage(text: 'You selected: $city', isUser: true));
+    addBotMessage('Great choice! Now please select a food category:');
     showCitySelection.value = false;
     showCategorySelection.value = true;
   }
 
   void selectCategory(String category) {
     selectedCategory.value = category;
-    chatMessages.add(ChatMessage(
-      text: 'You selected: $category',
-      isUser: true,
-    ));
+    chatMessages
+        .add(ChatMessage(text: 'You selected: $category', isUser: true));
 
     final cityRecos = recommendations[selectedCity.value];
     if (cityRecos != null) {
       final categoryRecos = cityRecos[category];
       if (categoryRecos != null && categoryRecos.isNotEmpty) {
-        chatMessages.add(ChatMessage(
-          text: 'Here are the top $category spots in ${selectedCity.value}:',
-          isUser: false,
-        ));
+        addBotMessage(
+            'Here are the top $category spots in ${selectedCity.value}:');
         for (final restaurant in categoryRecos) {
-          chatMessages.add(ChatMessage(
-            text: restaurant.name,
-            isUser: false,
-            restaurant: restaurant,
-          ));
+          addBotMessage(restaurant.name, restaurant: restaurant);
         }
       } else {
-        chatMessages.add(ChatMessage(
-          text:
-              'No recommendations found for $category in ${selectedCity.value}',
-          isUser: false,
-        ));
+        addBotMessage(
+            'No recommendations found for $category in ${selectedCity.value}');
       }
     } else {
-      chatMessages.add(ChatMessage(
-        text: 'No recommendations available for ${selectedCity.value} yet',
-        isUser: false,
-      ));
+      addBotMessage(
+          'No recommendations available for ${selectedCity.value} yet');
     }
 
     showCategorySelection.value = false;

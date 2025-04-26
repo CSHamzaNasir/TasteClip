@@ -1,39 +1,42 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
+import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
+import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
+import 'package:tasteclip/modules/home/components/drawer.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
 import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
-
-import '../../widgets/under_dev.dart';
-import 'components/content_card.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final controller = Get.put(HomeController());
   final userController = Get.find<UserController>();
+  final watchFeedbackController = Get.put(WatchFeedbackController());
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      isLight: true,
+      isDefault: false,
       child: SafeArea(
         child: Scaffold(
           key: _scaffoldKey,
-          drawer: Drawer(
-            child: DrawerWidget(),
-          ),
+          drawer: HomeDrawer(),
           appBar: AppBar(
+            centerTitle: true,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -43,12 +46,12 @@ class HomeScreen extends StatelessWidget {
                     color: AppColors.textColor,
                   ),
                 ),
-                Text(
-                  userController.fullName.value,
-                  style: AppTextStyles.boldBodyStyle.copyWith(
-                    color: AppColors.mainColor,
-                  ),
-                ),
+                Obx(() => Text(
+                      userController.fullName.value,
+                      style: AppTextStyles.boldBodyStyle.copyWith(
+                        color: AppColors.mainColor,
+                      ),
+                    )),
               ],
             ),
             elevation: 0,
@@ -67,104 +70,139 @@ class HomeScreen extends StatelessWidget {
               },
             ),
           ),
-          body: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0).copyWith(top: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppString.capturingExpMotion,
-                  style: AppTextStyles.boldBodyStyle.copyWith(
+          body: Obx(() {
+            if (watchFeedbackController.isLoading.value) {
+              return const Center(child: CupertinoActivityIndicator());
+            }
+
+            if (watchFeedbackController.feedbacks.isEmpty) {
+              return Center(
+                child: Text(
+                  "No feedbacks available",
+                  style: AppTextStyles.regularStyle.copyWith(
                     color: AppColors.textColor,
-                    fontFamily: AppFonts.sandBold,
                   ),
                 ),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+                  child: Text(
+                    AppString.capturingExpMotion,
+                    style: AppTextStyles.boldBodyStyle.copyWith(
+                      color: AppColors.textColor,
+                      fontFamily: AppFonts.sandBold,
+                    ),
+                  ),
+                ),
+                6.vertical,
+                _buildVideoFeedbacks(),
                 8.vertical,
-                HomeContentCard(
-                  onTap: () => showUnderDevelopmentDialog(
-                      context, "This feature is under development."),
-                  width: 1,
-                  imageIcon: AppAssets.shineStar,
-                  title: AppString.clickHereForEssentailFood,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "Image Feedbacks",
+                    style: AppTextStyles.boldBodyStyle.copyWith(
+                      color: AppColors.textColor,
+                      fontFamily: AppFonts.sandBold,
+                    ),
+                  ),
                 ),
                 16.vertical,
-                Row(
-                  children: [
-                    Expanded(
-                      child: HomeContentCard(
-                        onTap: controller.goToWatchFeedbackScreen,
-                        imageIcon: AppAssets.shineStar,
-                        title: AppString.watchFeedback,
-                      ),
-                    ),
-                    12.horizontal,
-                    Expanded(
-                      child: HomeContentCard(
-                        onTap: () => controller.goToAllRegisterScreen(),
-                        imageIcon: AppAssets.shineStar,
-                        title: AppString.exploreRestaurant,
-                      ),
-                    ),
-                  ],
-                )
+                _buildImageFeedbacks(),
               ],
-            ),
-          ),
+            );
+          }),
         ),
       ),
     );
   }
-}
 
-class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({
-    super.key,
-  });
+  Widget _buildVideoFeedbacks() {
+    final videoFeedbacks = watchFeedbackController.feedbacks
+        .where((feedback) => feedback.category == 'video_feedback')
+        .toList();
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(
-          height: 250,
-          child: DrawerHeader(
-            decoration: BoxDecoration(),
-            child: SingleChildScrollView(
-              child: Column(
-                spacing: 6,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.mainColor),
-                    ),
-                    child: ProfileImageWithShimmer(
-                      radius: 60,
-                      imageUrl: UserController.to.userProfileImage.value,
-                    ),
-                  ),
-                  Text(
-                    UserController.to.fullName.value,
-                    style: AppTextStyles.bodyStyle.copyWith(
-                        color: AppColors.textColor,
-                        fontFamily: AppFonts.sandSemiBold),
-                  ),
-                  Text(
-                    UserController.to.userEmail.value,
-                    style: AppTextStyles.regularStyle.copyWith(
-                      color: AppColors.textColor,
-                    ),
-                  ),
-                ],
+    if (videoFeedbacks.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      height: 220,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: videoFeedbacks.length,
+        itemBuilder: (context, index) {
+          final feedback = videoFeedbacks[index];
+          return GestureDetector(
+            onTap: () => Get.to(() => FeedbackDetailScreen(
+                  feedback: feedback,
+                  feedbackScope: FeedbackScope.allFeedback,
+                )),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: FeedbackItem(
+                feedback: feedback,
+                feedbackScope: FeedbackScope.allFeedback,
               ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildImageFeedbacks() {
+    final imageFeedbacks = watchFeedbackController.feedbacks
+        .where((feedback) => feedback.category == 'image_feedback')
+        .toList();
+
+    if (imageFeedbacks.isEmpty) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            "No image feedbacks available",
+            style: AppTextStyles.regularStyle.copyWith(
+              color: AppColors.textColor,
             ),
           ),
         ),
-      ],
+      );
+    }
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await watchFeedbackController.refreshFeedbacks();
+          },
+          child: ListView.builder(
+            itemCount: imageFeedbacks.length,
+            itemBuilder: (context, index) {
+              final feedback = imageFeedbacks[index];
+              return GestureDetector(
+                onTap: () => Get.to(() => FeedbackDetailScreen(
+                      feedback: feedback,
+                      feedbackScope: FeedbackScope.allFeedback,
+                    )),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: FeedbackItem(
+                    feedback: feedback,
+                    feedbackScope: FeedbackScope.allFeedback,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

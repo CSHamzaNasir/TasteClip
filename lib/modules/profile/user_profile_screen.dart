@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
@@ -121,7 +122,7 @@ class UserProfileScreen extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   if (watchFeedbackController.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: CupertinoActivityIndicator());
                   }
 
                   if (watchFeedbackController.feedbacks.isEmpty) {
