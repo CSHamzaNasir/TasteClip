@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
@@ -10,6 +11,7 @@ import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+import 'package:tasteclip/widgets/app_button.dart';
 
 import '../../config/app_text_styles.dart';
 import '../../core/constant/app_colors.dart';
@@ -115,6 +117,31 @@ class UserProfileScreen extends StatelessWidget {
                               ],
                             ))
                         .toList(),
+                  ),
+                ),
+                16.vertical,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    spacing: 16,
+                    children: [
+                      Expanded(
+                        child: AppButton(
+                          text: "Logout",
+                          onPressed: () {},
+                          isGradient: false,
+                          btnColor: AppColors.mainColor,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color:
+                                AppColors.primaryColor.withCustomOpacity(.1)),
+                        child: SvgPicture.asset(AppAssets.message),
+                      )
+                    ],
                   ),
                 ),
                 12.vertical,

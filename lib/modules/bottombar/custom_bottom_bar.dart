@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:tasteclip/config/app_assets.dart';
-import 'package:tasteclip/config/app_enum.dart';
-import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/modules/channel/event/event_screen.dart';
 import 'package:tasteclip/modules/home/home_screen.dart';
+import 'package:tasteclip/modules/home/restaurant/restaurant_list_screen.dart';
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
-import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({super.key});
@@ -23,128 +20,28 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 
   final List<String> _selectedIcons = [
     AppAssets.homeBold,
-    AppAssets.addBold,
+    AppAssets.branchBoldIcon,
     AppAssets.eventBold,
     AppAssets.profileBold,
   ];
 
   final List<String> _unselectedIcons = [
     AppAssets.homeReg,
-    AppAssets.addIcon,
+    AppAssets.branchRegIcon,
     AppAssets.eventReg,
     AppAssets.profileReg,
   ];
 
   final List<Widget> _screens = [
     HomeScreen(),
-    HomeScreen(),
+    RestaurantListScreen(),
     AllEventsScreen(),
     UserProfileScreen(),
   ];
   void _onItemTapped(int index) {
-    if (index == 1) {
-      _showBottomSheet();
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-  }
-
-  void _showBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Choose an option",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildBottomSheetIcon(
-                    iconPath: AppAssets.message,
-                    label: "Text",
-                    onTap: () {
-                      Get.to(
-                        UploadFeedbackScreen(
-                          category: FeedbackCategory.text,
-                        ),
-                      );
-                      // Get.toNamed(AppRouter.uploadTextFeedbackScreen);
-                    },
-                  ),
-                  _buildBottomSheetIcon(
-                    iconPath: AppAssets.camera,
-                    label: "Image",
-                    onTap: () => Get.to(
-                      UploadFeedbackScreen(
-                        category: FeedbackCategory.image,
-                      ),
-                    ),
-                  ),
-                  _buildBottomSheetIcon(
-                    iconPath: AppAssets.video,
-                    label: "Video",
-                    onTap: () => Get.to(
-                      UploadFeedbackScreen(
-                        category: FeedbackCategory.video,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildBottomSheetIcon(
-      {required String iconPath,
-      required String label,
-      required VoidCallback onTap}) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey.shade200,
-            ),
-            child: SvgPicture.asset(
-              iconPath,
-              width: 30,
-              height: 30,
-              colorFilter:
-                  ColorFilter.mode(AppColors.mainColor, BlendMode.srcIn),
-            ),
-          ),
-        ),
-        SizedBox(height: 5),
-        Text(
-          label,
-          style: AppTextStyles.regularStyle.copyWith(
-            color: AppColors.textColor,
-          ),
-        ),
-      ],
-    );
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override

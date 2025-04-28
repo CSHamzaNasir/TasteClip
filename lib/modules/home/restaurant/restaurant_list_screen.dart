@@ -23,11 +23,6 @@ class RestaurantListScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
         elevation: 0,
-        leading: Icon(
-          Icons.arrow_back_ios_rounded,
-          size: 18,
-          color: AppColors.textColor,
-        ),
         title: Text(
           "All Restaurant",
           style: AppTextStyles.bodyStyle.copyWith(

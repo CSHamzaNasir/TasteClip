@@ -95,10 +95,8 @@ class WatchFeedbackController extends GetxController {
         return _extractThumbnailFromDoc(querySnapshot.docs.first, branchId);
       }
 
-      final allRestaurants = await _firestore
-          .collection('restaurants')
-          .limit(100) // Added limit for performance
-          .get();
+      final allRestaurants =
+          await _firestore.collection('restaurants').limit(100).get();
 
       for (final doc in allRestaurants.docs) {
         final thumbnail = _extractThumbnailFromDoc(doc, branchId);
@@ -163,7 +161,6 @@ class WatchFeedbackController extends GetxController {
       _feedbackSubscription = _firestore
           .collection('feedback')
           .orderBy('createdAt', descending: true)
-          .limit(100)
           .snapshots()
           .listen((snapshot) async {
         feedbacks.value = await Future.wait(
@@ -293,7 +290,6 @@ class WatchFeedbackController extends GetxController {
         'comments': FieldValue.arrayUnion([newComment.toMap()])
       });
 
-      // Update local state
       final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
       if (index != -1) {
         final updatedComments = List<dynamic>.from(feedbacks[index].comments)
@@ -313,7 +309,6 @@ class WatchFeedbackController extends GetxController {
         final data = doc.data()!;
         final comments = List<dynamic>.from(data['comments'] ?? []);
 
-        // Update local state
         final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
         if (index != -1) {
           feedbacks[index] = feedbacks[index].copyWith(comments: comments);

@@ -66,6 +66,8 @@ class UploadFeedbackController extends GetxController {
     );
   }
 
+  RxList<String> selectedHashtags = <String>[].obs;
+
   Future<void> saveFeedback({
     required String description,
     required double rating,
@@ -133,10 +135,10 @@ class UploadFeedbackController extends GetxController {
         rating: rating,
         mediaUrl: mediaUrl,
         category: categoryString,
-        branchId: branchId,  
-
+        branchId: branchId,
         createdAt: DateTime.now(),
         comments: [],
+        hashTags: selectedHashtags.toList(),
       );
 
       await feedbackDoc.set(feedback.toMap());
@@ -162,7 +164,6 @@ class UploadFeedbackController extends GetxController {
       Get.off(CustomBottomBar());
     } catch (e) {
       log("Error saving feedback: $e");
-
       Get.snackbar(
         'Error!',
         'Failed to upload feedback. Please try again.',
@@ -184,6 +185,7 @@ class UploadFeedbackController extends GetxController {
     rating.value = 0.0;
     selectedImage.value = null;
     selectedVideo.value = null;
+    selectedHashtags.clear();
   }
 
   void goToUserScreen() {

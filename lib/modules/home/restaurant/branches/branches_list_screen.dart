@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:svg_flutter/svg.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
@@ -11,9 +9,6 @@ import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_
 import 'package:tasteclip/modules/home/restaurant/branches/components/restaurant_branch_header.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
-import '../../../../config/app_text_styles.dart';
-import '../../../../core/constant/app_colors.dart';
-import '../../../../core/constant/app_fonts.dart';
 import 'branches_list_controller.dart';
 
 class BranchesListScreen extends StatelessWidget {
@@ -39,6 +34,18 @@ class BranchesListScreen extends StatelessWidget {
       isDefault: false,
       child: SafeArea(
         child: Scaffold(
+          // appBar: AppBar(
+          //   centerTitle: true,
+          //   backgroundColor: AppColors.transparent,
+          //   elevation: 0,
+          //   title: Text(
+          //     restaurantName,
+          //     style: AppTextStyles.boldBodyStyle.copyWith(
+          //       color: AppColors.textColor,
+          //       fontFamily: AppFonts.sandBold,
+          //     ),
+          //   ),
+          // ),
           body: Obx(() {
             if (controller.isLoading.value) {
               return const Center(child: CupertinoActivityIndicator());
@@ -55,52 +62,7 @@ class BranchesListScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        12.vertical,
-                        Row(
-                          children: [
-                            Image.asset(
-                              AppAssets.chatbotIcon,
-                              height: 40,
-                            ),
-                            Spacer(),
-                            Text(
-                              restaurantName,
-                              style: AppTextStyles.boldBodyStyle.copyWith(
-                                color: AppColors.textColor,
-                                fontFamily: AppFonts.sandBold,
-                              ),
-                            ),
-                            Spacer(),
-                            InkWell(
-                              onTap: () => branchDetailController.filterIconTap(
-                                  context, actionKey),
-                              key: actionKey,
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.whiteColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: SvgPicture.asset(
-                                  AppAssets.filterSetting,
-                                  fit: BoxFit.cover,
-                                  height: 20,
-                                  width: 20,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                   24.vertical,
-                  // In BranchesListScreen class
                   RestaurantBranchHeader(
                     controller: controller,
                     onBranchSelected: (branch) {
@@ -116,17 +78,16 @@ class BranchesListScreen extends StatelessWidget {
                     },
                     selectedBranchId: selectedBranch.value?['branchId'],
                   ),
-
-                  // In FeedbackItem widget
+                  16.vertical,
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Obx(() {
-                        if (watchFeedbackcontroller.isLoading.value) {
-                          return const Center(
-                              child: CupertinoActivityIndicator());
-                        }
-                        return ListView.builder(
+                    child: Obx(() {
+                      if (watchFeedbackcontroller.isLoading.value) {
+                        return const Center(
+                            child: CupertinoActivityIndicator());
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: ListView.builder(
                           itemCount: watchFeedbackcontroller.feedbacks.length,
                           itemBuilder: (context, index) {
                             final feedback =
@@ -137,9 +98,9 @@ class BranchesListScreen extends StatelessWidget {
                               branchId: selectedBranch.value?['branchId'] ?? '',
                             );
                           },
-                        );
-                      }),
-                    ),
+                        ),
+                      );
+                    }),
                   )
                 ],
               );

@@ -73,33 +73,28 @@ class HomeScreen extends StatelessWidget {
           ),
           body: Stack(
             children: [
-              Obx(() {
-                if (watchFeedbackController.isLoading.value) {
-                  return const Center(child: CupertinoActivityIndicator());
-                }
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  6.vertical,
+                  Obx(() {
+                    if (watchFeedbackController.isLoading.value) {
+                      return const Center(child: CupertinoActivityIndicator());
+                    }
 
-                if (watchFeedbackController.feedbacks.isEmpty) {
-                  return Center(
-                    child: Text(
-                      "No feedbacks available",
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.textColor,
-                      ),
-                    ),
-                  );
-                }
+                    return TextFeedback();
+                  }),
+                  UploadVisualFeedback(),
+                  Obx(() {
+                    if (watchFeedbackController.isLoading.value) {
+                      return const Center(child: CupertinoActivityIndicator());
+                    }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    6.vertical,
-                    TextFeedback(),
-                    UploadVisualFeedback(),
-                    6.vertical,
-                    VisualFeedback(),
-                  ],
-                );
-              }),
+                    return VisualFeedback();
+                  }),
+                  6.vertical,
+                ],
+              ),
               Positioned(
                 right: 20,
                 bottom: MediaQuery.of(context).size.height / 2 - 28,
@@ -152,40 +147,47 @@ class TextFeedback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageFeedbacks = watchFeedbackController.feedbacks
+    final textFeedbacks = watchFeedbackController.feedbacks
         .where((feedback) => feedback.category == 'text_feedback')
         .toList();
-
-    if (imageFeedbacks.isEmpty) {
-      return Expanded(
-        child: Center(
-          child: Text(
-            "No Text feedbacks available",
-            style: AppTextStyles.regularStyle.copyWith(
-              color: AppColors.textColor,
-            ),
-          ),
-        ),
-      );
-    }
 
     return SizedBox(
       height: 140,
       child: ListView.builder(
-        itemCount: imageFeedbacks.length,
+        itemCount: textFeedbacks.length + 1,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          final feedback = imageFeedbacks[index];
-          return GestureDetector(
-            onTap: () => Get.to(() => FeedbackDetailScreen(
-                  feedback: feedback,
-                  feedbackScope: FeedbackScope.allFeedback,
-                )),
-            child: FeedbackItem(
-              feedback: feedback,
-              feedbackScope: FeedbackScope.allFeedback,
-            ),
-          );
+          if (index == 0) {
+            return Container(
+              width: 120,
+              margin: const EdgeInsets.only(left: 20, right: 8),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  "Upload Text",
+                  style: AppTextStyles.regularStyle.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            final feedback = textFeedbacks[index - 1];
+            return GestureDetector(
+              onTap: () => Get.to(() => FeedbackDetailScreen(
+                    feedback: feedback,
+                    feedbackScope: FeedbackScope.allFeedback,
+                  )),
+              child: FeedbackItem(
+                feedback: feedback,
+                feedbackScope: FeedbackScope.allFeedback,
+              ),
+            );
+          }
         },
       ),
     );
@@ -204,21 +206,12 @@ class VisualFeedback extends StatelessWidget {
         .toList();
 
     if (imageFeedbacks.isEmpty) {
-      return Expanded(
-        child: Center(
-          child: Text(
-            "No image feedbacks available",
-            style: AppTextStyles.regularStyle.copyWith(
-              color: AppColors.textColor,
-            ),
-          ),
-        ),
-      );
+      return SizedBox.shrink();
     }
 
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
         child: RefreshIndicator(
           onRefresh: () async {
             await watchFeedbackController.refreshFeedbacks();

@@ -1,10 +1,7 @@
 import 'chat_controller.dart';
 
 final List<String> pakistaniCities = [
-  //Capital
   'Islamabad',
-
-  // Punjab
   'Okara',
   'Khanewal',
   'Sahiwal',
@@ -17,33 +14,23 @@ final List<String> pakistaniCities = [
   'Bahawalpur',
   'Sargodha',
   'Rahim Yar Khan',
-
-  // Sindh
   'Karachi',
   'Hyderabad',
   'Sukkur',
   'Larkana',
   'Nawabshah',
-
-  // Khyber Pakhtunkhwa (KPK)
   'Peshawar',
   'Abbottabad',
   'Mardan',
   'Swat',
   'Bannu',
-
-  // Balochistan
   'Quetta',
   'Gwadar',
   'Khuzdar',
   'Turbat',
   'Sibi',
-
-  // Gilgit-Baltistan
   'Gilgit',
   'Skardu',
-
-  // Azad Jammu & Kashmir (AJK)
   'Muzaffarabad',
   'Mirpur',
 ];
@@ -1713,4 +1700,3 @@ final Map<String, Map<String, List<Restaurant>>> recommendations = {
     ],
   },
 };
-

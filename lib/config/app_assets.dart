@@ -78,4 +78,6 @@ class AppAssets {
   static const String voucherIcon = "assets/icons/voucher_fill.svg";
   static const String locIcon = "assets/icons/location_icon.svg";
   static const String sendIcon = "assets/icons/send_icon.svg";
+  static const String branchRegIcon = "assets/icons/branch_reg.svg";
+  static const String branchBoldIcon = "assets/icons/branch_bold.svg";
 }
