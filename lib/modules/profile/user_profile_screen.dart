@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/app_assets.dart';
@@ -16,146 +15,196 @@ import '../../config/app_text_styles.dart';
 import '../../core/constant/app_colors.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  UserProfileScreen({super.key});
+  UserProfileScreen({super.key, this.feedbackScope});
   final controller = Get.put(UserProfileController());
   final watchFeedbackController = Get.put(WatchFeedbackController());
+  final FeedbackScope? feedbackScope;
 
   @override
   Widget build(BuildContext context) {
+    final videoFeedbacks = watchFeedbackController.feedbacks
+        .where((feedback) =>
+            feedback.category == 'video_feedback' ||
+            feedbackScope == FeedbackScope.currentUserFeedback)
+        .toList();
+    final imageFeedbacks = watchFeedbackController.feedbacks
+        .where((feedback) =>
+            feedback.category == 'image_feedback' ||
+            feedbackScope == FeedbackScope.currentUserFeedback)
+        .toList();
     return AppBackground(
       isDefault: false,
       child: SafeArea(
         child: Scaffold(
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 120,
-                child: Image.asset(
-                  AppAssets.userBgImg,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 120,
+                  child: Image.asset(
+                    AppAssets.userBgImg,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
                 ),
-              ),
-              Transform.translate(
-                offset: const Offset(0, -40),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        shape: BoxShape.circle,
+                Transform.translate(
+                  offset: const Offset(0, -25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: ProfileImageWithShimmer(
+                          imageUrl: controller.profileImage.value,
+                          radius: 40,
+                        ),
                       ),
-                      child: ProfileImageWithShimmer(
-                        imageUrl: controller.profileImage.value,
-                        radius: 40,
+                      4.vertical,
+                      GestureDetector(
+                        onTap: () {
+                          controller.logout();
+                        },
+                        child: Text(
+                          controller.fullName.isNotEmpty
+                              ? controller.fullName.value
+                              : "Loading...",
+                          style: AppTextStyles.bodyStyle.copyWith(
+                            color: AppColors.textColor,
+                            fontFamily: AppFonts.sandBold,
+                          ),
+                        ),
                       ),
-                    ),
-                    4.vertical,
-                    GestureDetector(
-                      onTap: () {
-                        controller.logout();
-                      },
-                      child: Text(
-                        controller.fullName.isNotEmpty
-                            ? controller.fullName.value
+                      2.vertical,
+                      Text(
+                        controller.email.isNotEmpty
+                            ? controller.email.value
                             : "Loading...",
+                        style: AppTextStyles.lightStyle.copyWith(
+                          color: AppColors.textColor.withCustomOpacity(.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: controller.feedbackOptions
+                        .map((option) => Column(
+                              children: [
+                                6.vertical,
+                                Text(
+                                  option['label'],
+                                  style: AppTextStyles.lightStyle.copyWith(
+                                    color: AppColors.textColor
+                                        .withCustomOpacity(.7),
+                                    fontFamily: AppFonts.sandMedium,
+                                  ),
+                                ),
+                                Text(
+                                  option['count'].toString(),
+                                  style: AppTextStyles.boldBodyStyle.copyWith(
+                                    color: AppColors.textColor,
+                                  ),
+                                ),
+                              ],
+                            ))
+                        .toList(),
+                  ),
+                ),
+                12.vertical,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Stories",
                         style: AppTextStyles.bodyStyle.copyWith(
                           color: AppColors.textColor,
                           fontFamily: AppFonts.sandBold,
                         ),
                       ),
-                    ),
-                    2.vertical,
-                    Text(
-                      controller.email.isNotEmpty
-                          ? controller.email.value
-                          : "Loading...",
-                      style: AppTextStyles.bodyStyle.copyWith(
-                        fontSize: 14,
-                        color: AppColors.textColor.withAlpha(200),
+                      16.vertical,
+                      SizedBox(
+                        height: 150,
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            await watchFeedbackController.refreshFeedbacks();
+                          },
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: videoFeedbacks.length,
+                            itemBuilder: (context, index) {
+                              final feedback = videoFeedbacks[index];
+                              return GestureDetector(
+                                onTap: () => Get.to(() => FeedbackDetailScreen(
+                                      feedback: feedback,
+                                      feedbackScope:
+                                          FeedbackScope.currentUserFeedback,
+                                    )),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: FeedbackItem(
+                                    feedback: feedback,
+                                    feedbackScope:
+                                        FeedbackScope.currentUserFeedback,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: controller.feedbackOptions
-                      .map((option) => Column(
-                            spacing: 6,
-                            children: [
-                              Text(
-                                option['label'],
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                  fontFamily: AppFonts.sandBold,
+                      16.vertical,
+                      Text(
+                        "Photos",
+                        style: AppTextStyles.bodyStyle.copyWith(
+                          color: AppColors.textColor,
+                          fontFamily: AppFonts.sandBold,
+                        ),
+                      ),
+                      16.vertical,
+                      SizedBox(
+                        height: 200,
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            await watchFeedbackController.refreshFeedbacks();
+                          },
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: imageFeedbacks.length,
+                            itemBuilder: (context, index) {
+                              final feedback = imageFeedbacks[index];
+                              return GestureDetector(
+                                onTap: () => Get.to(() => FeedbackDetailScreen(
+                                      feedback: feedback,
+                                      feedbackScope:
+                                          FeedbackScope.currentUserFeedback,
+                                    )),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: FeedbackItem(
+                                    feedback: feedback,
+                                    feedbackScope:
+                                        FeedbackScope.currentUserFeedback,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                option['count'].toString(),
-                                style: AppTextStyles.bodyStyle.copyWith(
-                                  color: AppColors.mainColor,
-                                ),
-                              ),
-                            ],
-                          ))
-                      .toList(),
-                ),
-              ),
-              12.vertical,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Your Feedback",
-                    style: AppTextStyles.boldBodyStyle.copyWith(
-                      color: AppColors.textColor,
-                    ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: Obx(() {
-                  if (watchFeedbackController.isLoading.value) {
-                    return const Center(child: CupertinoActivityIndicator());
-                  }
-
-                  if (watchFeedbackController.feedbacks.isEmpty) {
-                    return const Center(child: Text('No feedbacks found'));
-                  }
-
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: .8,
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    itemCount: watchFeedbackController.feedbacks.length,
-                    itemBuilder: (context, index) {
-                      final feedback = watchFeedbackController.feedbacks[index];
-                      return GestureDetector(
-                        onTap: () => Get.to(() => FeedbackDetailScreen(
-                              feedback: feedback,
-                              feedbackScope: FeedbackScope.currentUserFeedback,
-                            )),
-                        child: FeedbackItem(
-                          feedback: feedback,
-                          feedbackScope: FeedbackScope.currentUserFeedback,
-                        ),
-                      );
-                    },
-                  );
-                }),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
