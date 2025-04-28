@@ -21,16 +21,18 @@ class LikesInteraction extends StatefulWidget {
     super.key,
     required this.feedback,
     required this.feedbackScope,
+    required this.commentSheet,
   });
   final FeedbackScope feedbackScope;
   final UploadFeedbackModel feedback;
+  final VoidCallback commentSheet;
 
   @override
   LikesInteractionState createState() => LikesInteractionState();
 }
 
 class LikesInteractionState extends State<LikesInteraction> {
-  final controller = Get.find<WatchFeedbackController>();
+  final controller = Get.put(WatchFeedbackController());
   final userProfileController = Get.find<UserProfileController>();
 
   late Future<Map<String, int>> _feedbackCountsFuture;
@@ -262,57 +264,90 @@ class LikesInteractionState extends State<LikesInteraction> {
             spacing: 6,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                colorFilter: ColorFilter.mode(
-                  AppColors.whiteColor,
-                  BlendMode.srcIn,
-                ),
-                AppAssets.likeThumb,
-              ),
-              Text(
-                widget.feedback.likes.length.toString(),
-                style: AppTextStyles.regularStyle.copyWith(
-                  color: AppColors.whiteColor,
-                ),
-              ),
-              6.vertical,
-              SvgPicture.asset(
-                colorFilter: ColorFilter.mode(
-                  AppColors.whiteColor,
-                  BlendMode.srcIn,
-                ),
-                AppAssets.messageFilled,
-              ),
-              Text(
-                counts['text'].toString(),
-                style: AppTextStyles.regularStyle.copyWith(
-                  color: AppColors.whiteColor,
-                ),
-              ),
-              6.vertical,
-              SvgPicture.asset(
-                colorFilter: ColorFilter.mode(
-                  AppColors.whiteColor,
-                  BlendMode.srcIn,
-                ),
-                AppAssets.savedIcon,
-              ),
-              Text(
-                counts['image'].toString(),
-                style: AppTextStyles.regularStyle.copyWith(
-                  color: AppColors.whiteColor,
-                ),
-              ),
-              6.vertical,
-              GestureDetector(
-                onTap: () => _showInfoBottomSheet(context, counts),
-                child: SvgPicture.asset(
-                  colorFilter: ColorFilter.mode(
-                    AppColors.whiteColor,
-                    BlendMode.srcIn,
-                  ),
-                  AppAssets.info,
-                ),
+              GetBuilder<WatchFeedbackController>(
+                builder: (controller) {
+                  final currentFeedback = controller.feedbacks.firstWhere(
+                    (f) => f.feedbackId == widget.feedback.feedbackId,
+                    orElse: () => widget.feedback,
+                  );
+                  final isLiked =
+                      controller.isLikedByCurrentUser(currentFeedback);
+
+                  return Column(
+                    spacing: 6,
+                    children: [
+                      GestureDetector(
+                        onTap: () =>
+                            controller.toggleLike(currentFeedback.feedbackId),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.white.withCustomOpacity(.2),
+                          ),
+                          child: SvgPicture.asset(
+                            height: 18,
+                            width: 18,
+                            fit: BoxFit.cover,
+                            colorFilter:
+                                ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                            isLiked
+                                ? AppAssets.likeThumb
+                                : AppAssets.likeBorder,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        widget.feedback.likes.length.toString(),
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                      6.vertical,
+                      GestureDetector(
+                        onTap: widget.commentSheet,
+                        child: SvgPicture.asset(
+                          colorFilter: ColorFilter.mode(
+                            AppColors.whiteColor,
+                            BlendMode.srcIn,
+                          ),
+                          AppAssets.messageFilled,
+                        ),
+                      ),
+                      Text(
+                        widget.feedback.comments.length.toString(),
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                      6.vertical,
+                      SvgPicture.asset(
+                        colorFilter: ColorFilter.mode(
+                          AppColors.whiteColor,
+                          BlendMode.srcIn,
+                        ),
+                        AppAssets.savedIcon,
+                      ),
+                      Text(
+                        counts['image'].toString(),
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                      6.vertical,
+                      GestureDetector(
+                        onTap: () => _showInfoBottomSheet(context, counts),
+                        child: SvgPicture.asset(
+                          colorFilter: ColorFilter.mode(
+                            AppColors.whiteColor,
+                            BlendMode.srcIn,
+                          ),
+                          AppAssets.info,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),

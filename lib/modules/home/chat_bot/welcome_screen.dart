@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -16,17 +13,6 @@ class WelcomeScreen extends StatefulWidget {
 
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-final AudioPlayer _audioPlayer = AudioPlayer();
-
-// ignore: unused_element
-void _playSound() async {
-  try {
-    await _audioPlayer.play(AssetSource('assets/icons/arabic_tune.mp3'));
-  } catch (e) {
-    log("Error playing sound: $e");
-  }
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
@@ -98,7 +84,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             ElevatedButton(
               onPressed: () {
-                // _playSound();
                 Get.to(() => ChatScreen());
               },
               style: ElevatedButton.styleFrom(
@@ -127,7 +112,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void dispose() {
     _animationController.dispose();
-    _audioPlayer.dispose();
     super.dispose();
   }
 }

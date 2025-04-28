@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/data/models/auth_models.dart';
+import 'package:tasteclip/modules/explore/detail/model/comment_model.dart';
 import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
 import 'package:video_player/video_player.dart';
 
@@ -268,6 +269,63 @@ class WatchFeedbackController extends GetxController {
         tasteCoin: newTasteCoin,
       );
     }
+  }
+
+  Future<void> addComment(String feedbackId, String commentText) async {
+    try {
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) return;
+
+      final user = await _getUserDetails(currentUser.uid);
+      if (user == null) return;
+
+      final commentId = _firestore.collection('comments').doc().id;
+      final newComment = CommentModel(
+        commentId: commentId,
+        userId: currentUser.uid,
+        userName: user.fullName,
+        userImage: user.profileImage ?? '',
+        comment: commentText,
+        timestamp: DateTime.now(),
+      );
+
+      await _firestore.collection('feedback').doc(feedbackId).update({
+        'comments': FieldValue.arrayUnion([newComment.toMap()])
+      });
+
+      // Update local state
+      final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+      if (index != -1) {
+        final updatedComments = List<dynamic>.from(feedbacks[index].comments)
+          ..add(newComment.toMap());
+        feedbacks[index] = feedbacks[index].copyWith(comments: updatedComments);
+      }
+    } catch (e) {
+      log('Failed to add comment: $e');
+      Get.snackbar('Error', 'Failed to add comment');
+    }
+  }
+
+  Future<void> fetchComments(String feedbackId) async {
+    try {
+      final doc = await _firestore.collection('feedback').doc(feedbackId).get();
+      if (doc.exists) {
+        final data = doc.data()!;
+        final comments = List<dynamic>.from(data['comments'] ?? []);
+
+        // Update local state
+        final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+        if (index != -1) {
+          feedbacks[index] = feedbacks[index].copyWith(comments: comments);
+        }
+      }
+    } catch (e) {
+      log('Failed to fetch comments: $e');
+    }
+  }
+
+  Future<AuthModel?> getUserDetailsFuture(String userId) async {
+    return _userCache[userId] ?? await _getUserDetails(userId);
   }
 
   bool isLikedByCurrentUser(UploadFeedbackModel feedback) {

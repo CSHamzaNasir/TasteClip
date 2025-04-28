@@ -10,6 +10,7 @@ import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/modules/explore/detail/components/comments_bottom_sheet.dart';
 import 'package:tasteclip/modules/explore/detail/components/like_interaction.dart';
 import 'package:tasteclip/modules/explore/detail/components/user_info.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
@@ -185,10 +186,15 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
               LikesInteraction(
                 feedback: widget.feedback,
                 feedbackScope: widget.feedbackScope,
+                commentSheet: () {
+                  CommentsBottomSheet(
+                    feedbackId: widget.feedback.feedbackId,
+                  ).show(context);
+                },
               ),
-              const Spacer(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0)
+                    .copyWith(bottom: 16),
                 child: SafeArea(
                   child: UserInfoWidget(
                     user: user,

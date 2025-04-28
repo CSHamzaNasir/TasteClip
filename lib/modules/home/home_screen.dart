@@ -12,9 +12,9 @@ import 'package:tasteclip/modules/auth/splash/user_controller.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
-import 'package:tasteclip/modules/home/components/drawer.dart';
+import 'package:tasteclip/modules/home/chat_bot/welcome_screen.dart';
+import 'package:tasteclip/modules/home/components/upload_visual_feedback.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
-import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
@@ -34,11 +34,11 @@ class HomeScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           key: _scaffoldKey,
-          drawer: HomeDrawer(),
+          // drawer: HomeDrawer(),
           appBar: AppBar(
             centerTitle: true,
             title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "${controller.getGreeting()} 👋",
@@ -48,8 +48,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Obx(() => Text(
                       userController.fullName.value,
-                      style: AppTextStyles.boldBodyStyle.copyWith(
-                        color: AppColors.mainColor,
+                      style: AppTextStyles.regularStyle.copyWith(
+                        color: AppColors.textColor,
+                        fontFamily: AppFonts.sandSemiBold,
                       ),
                     )),
               ],
@@ -70,96 +71,136 @@ class HomeScreen extends StatelessWidget {
               },
             ),
           ),
-          body: Obx(() {
-            if (watchFeedbackController.isLoading.value) {
-              return const Center(child: CupertinoActivityIndicator());
-            }
+          body: Stack(
+            children: [
+              Obx(() {
+                if (watchFeedbackController.isLoading.value) {
+                  return const Center(child: CupertinoActivityIndicator());
+                }
 
-            if (watchFeedbackController.feedbacks.isEmpty) {
-              return Center(
-                child: Text(
-                  "No feedbacks available",
-                  style: AppTextStyles.regularStyle.copyWith(
-                    color: AppColors.textColor,
-                  ),
-                ),
-              );
-            }
+                if (watchFeedbackController.feedbacks.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No feedbacks available",
+                      style: AppTextStyles.regularStyle.copyWith(
+                        color: AppColors.textColor,
+                      ),
+                    ),
+                  );
+                }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-                  child: Text(
-                    AppString.capturingExpMotion,
-                    style: AppTextStyles.boldBodyStyle.copyWith(
-                      color: AppColors.textColor,
-                      fontFamily: AppFonts.sandBold,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    6.vertical,
+                    TextFeedback(),
+                    UploadVisualFeedback(),
+                    6.vertical,
+                    VisualFeedback(),
+                  ],
+                );
+              }),
+              Positioned(
+                right: 20,
+                bottom: MediaQuery.of(context).size.height / 2 - 28,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => WelcomeScreen());
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(6),
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: AppColors.lightColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primaryColor.withCustomOpacity(0.4),
+                          spreadRadius: 4,
+                          blurRadius: 12,
+                          offset: Offset.zero,
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withCustomOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 6,
+                          offset: Offset.zero,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        AppAssets.jinImage,
+                      ),
                     ),
                   ),
                 ),
-                6.vertical,
-                _buildVideoFeedbacks(),
-                8.vertical,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    "Image Feedbacks",
-                    style: AppTextStyles.boldBodyStyle.copyWith(
-                      color: AppColors.textColor,
-                      fontFamily: AppFonts.sandBold,
-                    ),
-                  ),
-                ),
-                16.vertical,
-                _buildImageFeedbacks(),
-              ],
-            );
-          }),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildVideoFeedbacks() {
-    final videoFeedbacks = watchFeedbackController.feedbacks
-        .where((feedback) => feedback.category == 'video_feedback')
+class TextFeedback extends StatelessWidget {
+  TextFeedback({super.key});
+
+  final watchFeedbackController = Get.find<WatchFeedbackController>();
+
+  @override
+  Widget build(BuildContext context) {
+    final imageFeedbacks = watchFeedbackController.feedbacks
+        .where((feedback) => feedback.category == 'text_feedback')
         .toList();
 
-    if (videoFeedbacks.isEmpty) {
-      return const SizedBox.shrink();
+    if (imageFeedbacks.isEmpty) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            "No Text feedbacks available",
+            style: AppTextStyles.regularStyle.copyWith(
+              color: AppColors.textColor,
+            ),
+          ),
+        ),
+      );
     }
 
     return SizedBox(
-      height: 220,
+      height: 140,
       child: ListView.builder(
+        itemCount: imageFeedbacks.length,
         scrollDirection: Axis.horizontal,
-        itemCount: videoFeedbacks.length,
         itemBuilder: (context, index) {
-          final feedback = videoFeedbacks[index];
+          final feedback = imageFeedbacks[index];
           return GestureDetector(
             onTap: () => Get.to(() => FeedbackDetailScreen(
                   feedback: feedback,
                   feedbackScope: FeedbackScope.allFeedback,
                 )),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: FeedbackItem(
-                feedback: feedback,
-                feedbackScope: FeedbackScope.allFeedback,
-              ),
+            child: FeedbackItem(
+              feedback: feedback,
+              feedbackScope: FeedbackScope.allFeedback,
             ),
           );
         },
       ),
     );
   }
+}
 
-  Widget _buildImageFeedbacks() {
+class VisualFeedback extends StatelessWidget {
+  VisualFeedback({super.key});
+
+  final watchFeedbackController = Get.find<WatchFeedbackController>();
+
+  @override
+  Widget build(BuildContext context) {
     final imageFeedbacks = watchFeedbackController.feedbacks
-        .where((feedback) => feedback.category == 'image_feedback')
+        .where((feedback) => feedback.category != 'text_feedback')
         .toList();
 
     if (imageFeedbacks.isEmpty) {
