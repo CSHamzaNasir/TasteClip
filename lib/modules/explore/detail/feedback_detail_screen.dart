@@ -122,8 +122,6 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = controller.getUserDetails(widget.feedback.userId);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -197,7 +195,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                     .copyWith(bottom: 16),
                 child: SafeArea(
                   child: UserInfoWidget(
-                    user: user,
+                    userId: widget.feedback.userId,
                     feedback: widget.feedback,
                     controller: controller,
                   ),

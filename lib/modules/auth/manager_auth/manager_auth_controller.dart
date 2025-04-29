@@ -128,7 +128,7 @@ class ManagerAuthController extends GetxController {
         auth.signOut();
         return;
       }
-      Get.to(ChannelHomeScreen());
+      Get.to(() => ChannelHomeScreen());
 
       AppAlerts.showSnackbar(
         isSuccess: true,

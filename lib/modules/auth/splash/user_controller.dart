@@ -26,6 +26,14 @@ class UserController extends GetxController {
 
   Future<void> fetchAndStoreUserData(String userId) async {
     try {
+      // Clear existing data first
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('fullName');
+      await prefs.remove('userName');
+      await prefs.remove('userEmail');
+      await prefs.remove('userProfileImage');
+      await prefs.remove('currentUserId');
+
       currentUserId.value = userId;
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('email_user')
@@ -40,7 +48,6 @@ class UserController extends GetxController {
         userName.value = userData['userName'] ?? '';
         userProfileImage.value = userData['profileImage'] ?? '';
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('fullName', fullName.value);
         await prefs.setString('userName', userName.value);
         await prefs.setString('userEmail', userEmail.value);

@@ -15,6 +15,7 @@ import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/home/chat_bot/welcome_screen.dart';
 import 'package:tasteclip/modules/home/components/upload_visual_feedback.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
+import 'package:tasteclip/modules/profile/user_profile_controller.dart';
 import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
@@ -25,6 +26,7 @@ class HomeScreen extends StatelessWidget {
   final controller = Get.put(HomeController());
   final userController = Get.find<UserController>();
   final watchFeedbackController = Get.put(WatchFeedbackController());
+  final profileController = Get.put(UserProfileController());
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -48,7 +50,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 Obx(() => Text(
-                      userController.fullName.value,
+                      profileController.fullName.isNotEmpty
+                          ? profileController.fullName.value
+                          : "Loading...",
                       style: AppTextStyles.regularStyle.copyWith(
                         color: AppColors.textColor,
                         fontFamily: AppFonts.sandSemiBold,
@@ -61,7 +65,8 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0).copyWith(right: 12),
                 child: ProfileImageWithShimmer(
-                    imageUrl: userController.userProfileImage.value),
+                  imageUrl: profileController.profileImage.value,
+                ),
               )
             ],
             backgroundColor: AppColors.transparent,

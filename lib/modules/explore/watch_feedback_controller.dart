@@ -15,8 +15,6 @@ class WatchFeedbackController extends GetxController {
   final RxList<UploadFeedbackModel> feedbacks = <UploadFeedbackModel>[].obs;
   final RxBool isLoading = false.obs;
   final Map<String, VideoPlayerController> _videoControllers = {};
-  final Map<String, AuthModel?> _userCache = {};
-  final Map<String, String> _branchThumbnailCache = {};
   StreamSubscription<QuerySnapshot>? _feedbackSubscription;
 
   @override
@@ -29,8 +27,6 @@ class WatchFeedbackController extends GetxController {
   void onClose() {
     _feedbackSubscription?.cancel();
     _disposeVideoControllers();
-    _branchThumbnailCache.clear();
-    _userCache.clear();
     super.onClose();
   }
 
@@ -55,8 +51,6 @@ class WatchFeedbackController extends GetxController {
       feedbacks.value = await Future.wait(
         snapshot.docs.map((doc) => _processFeedbackDocument(doc)),
       );
-
-      await _precacheUserDetails();
     } catch (e) {
       log('Failed to fetch branch feedbacks: $e');
       Get.snackbar('Error', 'Failed to fetch branch feedbacks');
@@ -73,17 +67,7 @@ class WatchFeedbackController extends GetxController {
     return feedback.copyWith(branchThumbnail: thumbnail);
   }
 
-  Future<void> _precacheUserDetails() async {
-    await Future.wait(
-      feedbacks.map((f) => _getUserDetails(f.userId)),
-    );
-  }
-
   Future<String?> _getBranchThumbnail(String branchId) async {
-    if (_branchThumbnailCache.containsKey(branchId)) {
-      return _branchThumbnailCache[branchId];
-    }
-
     try {
       final querySnapshot = await _firestore
           .collection('restaurants')
@@ -126,7 +110,6 @@ class WatchFeedbackController extends GetxController {
 
         final thumbnail = branchMap['branchThumbnail'] as String?;
         if (thumbnail != null) {
-          _branchThumbnailCache[branchId] = thumbnail;
           return thumbnail;
         }
       }
@@ -138,8 +121,6 @@ class WatchFeedbackController extends GetxController {
   }
 
   Future<void> refreshFeedbacks() async {
-    _branchThumbnailCache.clear();
-    _userCache.clear();
     await fetchFeedbacks();
   }
 
@@ -166,11 +147,9 @@ class WatchFeedbackController extends GetxController {
         feedbacks.value = await Future.wait(
           snapshot.docs.map((doc) => _processFeedbackDocument(doc)),
         );
-        await _precacheUserDetails();
         _logTextFeedbackCount();
       });
 
-      await _precacheUserDetails();
       isLoading.value = false;
     } catch (e) {
       log('Failed to fetch feedbacks: $e');
@@ -190,17 +169,11 @@ class WatchFeedbackController extends GetxController {
     }
   }
 
-  Future<AuthModel?> _getUserDetails(String userId) async {
-    if (_userCache.containsKey(userId)) {
-      return _userCache[userId];
-    }
-
+  Future<AuthModel?> getUserDetails(String userId) async {
     try {
       final doc = await _firestore.collection('email_user').doc(userId).get();
       if (doc.exists) {
-        final user = AuthModel.fromMap(doc.data()!);
-        _userCache[userId] = user;
-        return user;
+        return AuthModel.fromMap(doc.data()!);
       }
       return null;
     } catch (e) {
@@ -215,8 +188,6 @@ class WatchFeedbackController extends GetxController {
       feedbacks[index] = feedbacks[index].copyWith(likes: newLikes);
     }
   }
-
-  AuthModel? getUserDetails(String userId) => _userCache[userId];
 
   Future<void> toggleLike(String feedbackId) async {
     try {
@@ -273,7 +244,7 @@ class WatchFeedbackController extends GetxController {
       final currentUser = _auth.currentUser;
       if (currentUser == null) return;
 
-      final user = await _getUserDetails(currentUser.uid);
+      final user = await getUserDetails(currentUser.uid);
       if (user == null) return;
 
       final commentId = _firestore.collection('comments').doc().id;
@@ -317,10 +288,6 @@ class WatchFeedbackController extends GetxController {
     } catch (e) {
       log('Failed to fetch comments: $e');
     }
-  }
-
-  Future<AuthModel?> getUserDetailsFuture(String userId) async {
-    return _userCache[userId] ?? await _getUserDetails(userId);
   }
 
   bool isLikedByCurrentUser(UploadFeedbackModel feedback) {

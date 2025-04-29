@@ -2,16 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
-import 'package:tasteclip/config/app_text_styles.dart';
-import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/channel/channel_home_controller.dart';
+import 'package:tasteclip/modules/channel/components/channel_home_appbar.dart';
 import 'package:tasteclip/modules/channel/components/channel_top_widget.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
+import 'package:tasteclip/modules/redeem/model/create_voucher_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 class ChannelHomeScreen extends StatelessWidget {
@@ -24,77 +22,62 @@ class ChannelHomeScreen extends StatelessWidget {
     log(channelHomeController.branchId);
     return AppBackground(
       isDefault: false,
-      child: SafeArea(
-        child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-            child: Column(
-              spacing: 16,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Scaffold(
+        body: Column(
+          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ChannelHomeAppBar(
+                onActionTap: channelHomeController.logout,
+                image: channelHomeController
+                        .managerData.value?['branchThumbnail'] ??
+                    '',
+                username:
+                    channelHomeController.managerData.value?['branchAddress'] ??
+                        ''),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Obx(() {
-                  final address = channelHomeController
-                          .managerData.value?['branchAddress'] ??
-                      'Loading...';
-                  return Row(
-                    children: [
-                      SvgPicture.asset(
-                        fit: BoxFit.cover,
-                        height: 24,
-                        width: 24,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.mainColor,
-                          BlendMode.srcIn,
-                        ),
-                        AppAssets.branchIcon,
-                      ),
-                      const SizedBox(width: 8),
-                      Flexible(
-                        child: Text(
-                          address,
-                          style: AppTextStyles.bodyStyle.copyWith(
-                            color: AppColors.mainColor,
-                            fontFamily: AppFonts.sandBold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ChannelTopWidget(
-                      title: 'Voucher',
-                      icon: AppAssets.voucherIcon,
-                    ),
-                    ChannelTopWidget(
-                      title: '   Event   ',
-                      icon: AppAssets.eventBold,
-                    ),
-                    ChannelTopWidget(
-                      title: 'Voucher',
-                      icon: AppAssets.voucherIcon,
-                    )
-                  ],
+                ChannelTopWidget(
+                  title: 'Voucher',
+                  icon: AppAssets.voucherIcon,
+                  onTap: () {
+                    Get.to(() => CreateVoucherScreen());
+                  },
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: watchFeedbackcontroller.feedbacks.length,
-                    itemBuilder: (context, index) {
-                      final feedback = watchFeedbackcontroller.feedbacks[index];
-                      return FeedbackItem(
-                        feedback: feedback,
-                        feedbackScope: FeedbackScope.branchFeedback,
-                        branchId: channelHomeController.branchId,
-                      );
-                    },
-                  ),
+                ChannelTopWidget(
+                  title: '   Event   ',
+                  icon: AppAssets.eventBold,
+                  onTap: () {
+                    Get.to(() => CreateVoucherScreen());
+                  },
                 ),
+                ChannelTopWidget(
+                  title: 'Voucher',
+                  icon: AppAssets.voucherIcon,
+                  onTap: () {
+                    Get.to(() => CreateVoucherScreen());
+                  },
+                )
               ],
             ),
-          ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ListView.builder(
+                  itemCount: watchFeedbackcontroller.feedbacks.length,
+                  itemBuilder: (context, index) {
+                    final feedback = watchFeedbackcontroller.feedbacks[index];
+                    return FeedbackItem(
+                      feedback: feedback,
+                      feedbackScope: FeedbackScope.branchFeedback,
+                      branchId: channelHomeController.branchId,
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

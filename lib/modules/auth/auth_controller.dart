@@ -1,9 +1,9 @@
-import 'package:tasteclip/core/data/models/auth_models.dart';
-import 'package:tasteclip/core/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/core/route/app_router.dart';
+import 'package:tasteclip/core/data/models/auth_models.dart';
 import 'package:tasteclip/core/data/repositories/auth_repository_impl.dart';
+import 'package:tasteclip/core/domain/repositories/auth_repository.dart';
+import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
 
 class AuthController extends GetxController {
@@ -132,29 +132,6 @@ class AuthController extends GetxController {
       update();
     }
   }
-
-  // // Google Sign-In function
-  // void signInWithGoogle() async {
-  //   try {
-  //     isLoading = true;
-  //     update();
-
-  //     final userCredential = await _authRepository.signInWithGoogle();
-  //     if (userCredential != null) {
-  //       AppAlerts.showSnackbar(
-  //           isSuccess: true, message: "Google sign-in successful!");
-  //     } else {
-  //       AppAlerts.showSnackbar(
-  //           isSuccess: false, message: "Google sign-in failed. Try again.");
-  //     }
-  //   } catch (e) {
-  //     AppAlerts.showSnackbar(
-  //         isSuccess: false, message: "Error: ${e.toString()}");
-  //   } finally {
-  //     isLoading = false;
-  //     update();
-  //   }
-  // }
 
   // Navigation functions
   void goToLoginScreen() {

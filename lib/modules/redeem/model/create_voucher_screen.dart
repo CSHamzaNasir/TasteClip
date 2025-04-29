@@ -1,10 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
+import 'package:svg_flutter/svg_flutter.dart';
+import 'package:tasteclip/config/app_assets.dart';
+import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/redeem/model/create_voucher_controller.dart';
+import 'package:tasteclip/widgets/app_background.dart';
+import 'package:tasteclip/widgets/app_button.dart';
+import 'package:tasteclip/widgets/app_feild.dart';
 
 class CreateVoucherScreen extends StatelessWidget {
   CreateVoucherScreen({super.key});
@@ -26,87 +32,95 @@ class CreateVoucherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.lightColor,
-      appBar: AppBar(
-        title: const Text('Create Voucher'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextFormField(
-                controller: controller.discountController,
-                decoration: const InputDecoration(
-                  labelText: 'Discount (e.g., 10%, \$5 off)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter discount';
-                  }
-                  return null;
-                },
+    return AppBackground(
+      isDefault: false,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Icon(
+              Icons.close,
+              color: AppColors.textColor,
+            ),
+            backgroundColor: AppColors.transparent,
+            elevation: 0,
+            title: Text(
+              "Create Voucher",
+              style: AppTextStyles.boldBodyStyle.copyWith(
+                color: AppColors.textColor,
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: controller.worthController,
-                decoration: const InputDecoration(
-                  labelText: 'Voucher Worth (e.g., \$20)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter voucher worth';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: controller.expireDateController,
-                decoration: InputDecoration(
-                  labelText: 'Expiry Date',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () => _selectDate(context),
-                  ),
-                ),
-                readOnly: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select expiry date';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              Obx(() => ElevatedButton(
-                    onPressed: controller.isLoading.value
-                        ? null
-                        : () {
-                            if (controller.discountController.text.isNotEmpty &&
-                                controller.worthController.text.isNotEmpty &&
-                                controller
-                                    .expireDateController.text.isNotEmpty) {
-                              controller.createVoucher();
-                            } else {
-                              Get.snackbar('Error', 'Please fill all fields');
-                            }
-                          },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 16,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.goldenColor,
+                          )),
+                      child: SvgPicture.asset(
+                        AppAssets.voucherIcon,
+                        height: 100,
+                        width: 100,
+                        colorFilter: ColorFilter.mode(
+                          AppColors.btnUnSelectColor,
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
-                    child: controller.isLoading.value
-                        ? const CupertinoActivityIndicator()
-                        : const Text('Create Voucher'),
-                  )),
-            ],
+                  ),
+                  Text(
+                    "Voucher Discount",
+                    style: AppTextStyles.bodyStyle.copyWith(
+                      color: AppColors.mainColor,
+                      fontFamily: AppFonts.sandSemiBold,
+                    ),
+                  ),
+                  AppFeild(
+                    hintText: "Discount (e.g., 10%, \$5 off)",
+                    hintTextColor: AppColors.btnUnSelectColor,
+                    controller: controller.discountController,
+                  ),
+                  Text(
+                    "Voucher Worth",
+                    style: AppTextStyles.bodyStyle.copyWith(
+                      color: AppColors.mainColor,
+                      fontFamily: AppFonts.sandSemiBold,
+                    ),
+                  ),
+                  AppFeild(
+                    controller: controller.worthController,
+                    hintText: "Voucher Worth (e.g., \$20)",
+                    hintTextColor: AppColors.btnUnSelectColor,
+                  ),
+                  Text(
+                    "Expiry Date",
+                    style: AppTextStyles.bodyStyle.copyWith(
+                      color: AppColors.mainColor,
+                      fontFamily: AppFonts.sandSemiBold,
+                    ),
+                  ),
+                  AppFeild(
+                    suffixImage: AppAssets.eventBold,
+                    onSuffixTap: () => _selectDate(context),
+                    controller: controller.expireDateController,
+                    hintText: "Expiry Date",
+                    hintTextColor: AppColors.btnUnSelectColor,
+                  ),
+                  AppButton(
+                      text: "Create Voucher",
+                      onPressed: controller.createVoucher)
+                ],
+              ),
+            ),
           ),
         ),
       ),
