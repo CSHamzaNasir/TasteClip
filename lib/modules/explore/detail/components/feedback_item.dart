@@ -75,6 +75,7 @@ class FeedbackItem extends StatelessWidget {
         children: [
           feedbackScope == FeedbackScope.branchFeedback
               ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       spacing: 8,
@@ -124,6 +125,14 @@ class FeedbackItem extends StatelessWidget {
                       style: AppTextStyles.lightStyle.copyWith(
                         color: AppColors.textColor,
                         fontFamily: AppFonts.sandMedium,
+                      ),
+                    ),
+                    8.vertical,
+                    Text(
+                      feedback.hashTags.map((tag) => '#$tag').join(' '),
+                      style: AppTextStyles.lightStyle.copyWith(
+                        color: Colors.blueAccent,
+                        fontFamily: AppFonts.sandSemiBold,
                       ),
                     ),
                     16.vertical,
@@ -237,7 +246,6 @@ class FeedbackItem extends StatelessWidget {
             ),
           ),
           8.vertical,
-
           Text(
             feedback.hashTags.map((tag) => '#$tag').join(' '),
             style: AppTextStyles.lightStyle.copyWith(

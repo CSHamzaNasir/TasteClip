@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg_flutter.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/config/app_enum.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/modules/channel/channel_home_screen.dart';
+import 'package:tasteclip/modules/channel/event/create_event_screen.dart';
+import 'package:tasteclip/modules/redeem/model/create_voucher_screen.dart';
 
 import '../../config/app_assets.dart';
 import '../../core/constant/app_colors.dart';
@@ -20,8 +22,8 @@ class ChannelBottomBarState extends State<ChannelBottomBar> {
 
   final List<Widget> _screens = [
     ChannelHomeScreen(),
-    ChannelHomeScreen(),
-    ChannelHomeScreen(),
+    CreateVoucherScreen(),
+    CreateEventScreen(),
     ChannelProfileScreen(
       role: UserRole.manager,
     ),

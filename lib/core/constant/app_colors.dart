@@ -8,5 +8,6 @@ class AppColors {
   static const whiteColor = Color(0xFFFFFFFF);
   static const greyColor = Color(0xFFE7EAEB);
   static const btnUnSelectColor = Color(0xFF96A0B6);
+  static const goldenColor = Color(0xFF96A0B6);
   static const Color transparent = Colors.transparent;
 }

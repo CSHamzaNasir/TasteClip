@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/route/app_router.dart';
+import 'package:tasteclip/modules/channel/channel_home_screen.dart';
 import 'package:tasteclip/utils/app_alert.dart';
-import 'package:tasteclip/modules/bottombar/channel_bottombar.dart';
 
 class ManagerAuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -128,7 +128,7 @@ class ManagerAuthController extends GetxController {
         auth.signOut();
         return;
       }
-      Get.to(ChannelBottomBar());
+      Get.to(ChannelHomeScreen());
 
       AppAlerts.showSnackbar(
         isSuccess: true,

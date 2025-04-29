@@ -128,7 +128,7 @@ class UserProfileScreen extends StatelessWidget {
                       Expanded(
                         child: AppButton(
                           text: "Logout",
-                          onPressed: () {},
+                          onPressed: controller.logout,
                           isGradient: false,
                           btnColor: AppColors.mainColor,
                         ),

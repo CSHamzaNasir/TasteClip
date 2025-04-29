@@ -15,6 +15,7 @@ import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/home/chat_bot/welcome_screen.dart';
 import 'package:tasteclip/modules/home/components/upload_visual_feedback.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
+import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
@@ -158,19 +159,28 @@ class TextFeedback extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           if (index == 0) {
-            return Container(
-              width: 120,
-              margin: const EdgeInsets.only(left: 20, right: 8),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  "Upload Text",
-                  style: AppTextStyles.regularStyle.copyWith(
-                    color: Colors.white,
-                    fontSize: 16,
+            return GestureDetector(
+              onTap: () => Get.to(
+                  () => UploadFeedbackScreen(category: FeedbackCategory.text)),
+              child: Container(
+                width: 80,
+                margin: const EdgeInsets.only(left: 20, right: 8, bottom: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.mainColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                          color: AppColors.whiteColor,
+                          style: BorderStyle.solid),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: AppColors.whiteColor,
+                    ),
                   ),
                 ),
               ),
