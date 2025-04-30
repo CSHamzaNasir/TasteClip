@@ -153,20 +153,7 @@ class RestaurantCard extends StatelessWidget {
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return Container(
-                              width: 30,
-                              height: 30,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Text(
-                                "Wait...",
-                                style:
-                                    TextStyle(fontSize: 8, color: Colors.black),
-                              ),
-                            );
+                            return CupertinoActivityIndicator();
                           },
                           errorBuilder: (context, error, stackTrace) {
                             return Container(

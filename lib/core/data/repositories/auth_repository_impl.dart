@@ -20,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      Get.to(CustomBottomBar());
+      Get.off(CustomBottomBar());
       return credential.user;
     } catch (e) {}
     return null;
@@ -38,7 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      Get.to(CustomBottomBar());
+      Get.off(CustomBottomBar());
       return credential.user;
     } catch (e) {
       log("Login error: $e");

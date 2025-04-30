@@ -34,18 +34,6 @@ class BranchesListScreen extends StatelessWidget {
       isDefault: false,
       child: SafeArea(
         child: Scaffold(
-          // appBar: AppBar(
-          //   centerTitle: true,
-          //   backgroundColor: AppColors.transparent,
-          //   elevation: 0,
-          //   title: Text(
-          //     restaurantName,
-          //     style: AppTextStyles.boldBodyStyle.copyWith(
-          //       color: AppColors.textColor,
-          //       fontFamily: AppFonts.sandBold,
-          //     ),
-          //   ),
-          // ),
           body: Obx(() {
             if (controller.isLoading.value) {
               return const Center(child: CupertinoActivityIndicator());

@@ -150,83 +150,89 @@ class UserProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Stories",
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.textColor,
-                          fontFamily: AppFonts.sandBold,
+                      if (videoFeedbacks.isNotEmpty) ...[
+                        Text(
+                          "Stories",
+                          style: AppTextStyles.bodyStyle.copyWith(
+                            color: AppColors.textColor,
+                            fontFamily: AppFonts.sandBold,
+                          ),
                         ),
-                      ),
-                      16.vertical,
-                      SizedBox(
-                        height: 150,
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            await watchFeedbackController.refreshFeedbacks();
-                          },
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: videoFeedbacks.length,
-                            itemBuilder: (context, index) {
-                              final feedback = videoFeedbacks[index];
-                              return GestureDetector(
-                                onTap: () => Get.to(() => FeedbackDetailScreen(
+                        16.vertical,
+                        SizedBox(
+                          height: 150,
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              await watchFeedbackController.refreshFeedbacks();
+                            },
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: videoFeedbacks.length,
+                              itemBuilder: (context, index) {
+                                final feedback = videoFeedbacks[index];
+                                return GestureDetector(
+                                  onTap: () =>
+                                      Get.to(() => FeedbackDetailScreen(
+                                            feedback: feedback,
+                                            feedbackScope: FeedbackScope
+                                                .currentUserFeedback,
+                                          )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 16.0),
+                                    child: FeedbackItem(
                                       feedback: feedback,
                                       feedbackScope:
                                           FeedbackScope.currentUserFeedback,
-                                    )),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 16.0),
-                                  child: FeedbackItem(
-                                    feedback: feedback,
-                                    feedbackScope:
-                                        FeedbackScope.currentUserFeedback,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      16.vertical,
-                      Text(
-                        "Photos",
-                        style: AppTextStyles.bodyStyle.copyWith(
-                          color: AppColors.textColor,
-                          fontFamily: AppFonts.sandBold,
+                        16.vertical,
+                      ],
+                      if (imageFeedbacks.isNotEmpty) ...[
+                        Text(
+                          "Photos",
+                          style: AppTextStyles.bodyStyle.copyWith(
+                            color: AppColors.textColor,
+                            fontFamily: AppFonts.sandBold,
+                          ),
                         ),
-                      ),
-                      16.vertical,
-                      SizedBox(
-                        height: 200,
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            await watchFeedbackController.refreshFeedbacks();
-                          },
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: imageFeedbacks.length,
-                            itemBuilder: (context, index) {
-                              final feedback = imageFeedbacks[index];
-                              return GestureDetector(
-                                onTap: () => Get.to(() => FeedbackDetailScreen(
+                        16.vertical,
+                        SizedBox(
+                          height: 200,
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              await watchFeedbackController.refreshFeedbacks();
+                            },
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: imageFeedbacks.length,
+                              itemBuilder: (context, index) {
+                                final feedback = imageFeedbacks[index];
+                                return GestureDetector(
+                                  onTap: () =>
+                                      Get.to(() => FeedbackDetailScreen(
+                                            feedback: feedback,
+                                            feedbackScope: FeedbackScope
+                                                .currentUserFeedback,
+                                          )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 16.0),
+                                    child: FeedbackItem(
                                       feedback: feedback,
                                       feedbackScope:
                                           FeedbackScope.currentUserFeedback,
-                                    )),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 16.0),
-                                  child: FeedbackItem(
-                                    feedback: feedback,
-                                    feedbackScope:
-                                        FeedbackScope.currentUserFeedback,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),

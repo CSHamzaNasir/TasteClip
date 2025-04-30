@@ -194,50 +194,63 @@ class WatchFeedbackController extends GetxController {
       final currentUserId = _auth.currentUser?.uid;
       if (currentUserId == null) return;
 
+      // 1. Optimistic UI update - update immediately
+      final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+      if (index == -1) return;
+
+      final currentFeedback = feedbacks[index];
+      final isLiked = currentFeedback.likes.contains(currentUserId);
+      final newLikes = List<String>.from(currentFeedback.likes);
+      final newTasteCoin = isLiked
+          ? (currentFeedback.tasteCoin - 1).clamp(0, 1000000)
+          : currentFeedback.tasteCoin + 1;
+
+      if (isLiked) {
+        newLikes.remove(currentUserId);
+      } else {
+        newLikes.add(currentUserId);
+      }
+
+      feedbacks[index] = currentFeedback.copyWith(
+        likes: newLikes,
+        tasteCoin: newTasteCoin,
+      );
+
       final feedbackRef = _firestore.collection('feedback').doc(feedbackId);
-      await _firestore.runTransaction((transaction) async {
-        final snapshot = await transaction.get(feedbackRef);
-        if (!snapshot.exists) return;
-
-        final data = snapshot.data()!;
-        final currentLikes = List<String>.from(data['likes'] ?? []);
-        final isLiked = currentLikes.contains(currentUserId);
-        final currentTasteCoin = (data['tasteCoin'] as int? ?? 0);
-
-        if (isLiked) {
-          currentLikes.remove(currentUserId);
-          transaction.update(feedbackRef, {
-            'likes': currentLikes,
-            'tasteCoin': (currentTasteCoin - 1).clamp(0, 1000000)
-          });
-        } else {
-          currentLikes.add(currentUserId);
-          transaction.update(feedbackRef,
-              {'likes': currentLikes, 'tasteCoin': currentTasteCoin + 1});
-        }
-
-        _updateLocalFeedback(feedbackId, currentLikes, isLiked);
+      await feedbackRef.update({
+        'likes': newLikes,
+        'tasteCoin': newTasteCoin,
       });
     } catch (e) {
       log('Failed to update like: $e');
+
+      final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+      if (index != -1) {
+        final currentFeedback = feedbacks[index];
+        feedbacks[index] = currentFeedback.copyWith(
+          likes: List<String>.from(currentFeedback.likes),
+          tasteCoin: currentFeedback.tasteCoin,
+        );
+      }
+
       Get.snackbar('Error', 'Failed to update like');
     }
   }
 
-  void _updateLocalFeedback(
-      String feedbackId, List<String> likes, bool isLiked) {
-    final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
-    if (index != -1) {
-      final newTasteCoin = isLiked
-          ? (feedbacks[index].tasteCoin - 1).clamp(0, 1000000)
-          : feedbacks[index].tasteCoin + 1;
+  // void updateLocalFeedback(
+  //     String feedbackId, List<String> likes, bool isLiked) {
+  //   final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+  //   if (index != -1) {
+  //     final newTasteCoin = isLiked
+  //         ? (feedbacks[index].tasteCoin - 1).clamp(0, 1000000)
+  //         : feedbacks[index].tasteCoin + 1;
 
-      feedbacks[index] = feedbacks[index].copyWith(
-        likes: likes,
-        tasteCoin: newTasteCoin,
-      );
-    }
-  }
+  //     feedbacks[index] = feedbacks[index].copyWith(
+  //       likes: likes,
+  //       tasteCoin: newTasteCoin,
+  //     );
+  //   }
+  // }
 
   Future<void> addComment(String feedbackId, String commentText) async {
     try {

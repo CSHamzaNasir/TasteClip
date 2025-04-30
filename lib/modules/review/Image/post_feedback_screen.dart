@@ -11,7 +11,6 @@ import 'package:tasteclip/utils/app_string.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
-
 import 'upload_feedback_controller.dart';
 
 class PostFeedbackScreen extends StatelessWidget {
@@ -47,11 +46,189 @@ class PostFeedbackScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         16.vertical,
-                        Text(
-                          AppString.describeYourThoughts,
-                          style: AppTextStyles.headingStyle1.copyWith(
-                            color: AppColors.mainColor,
-                            fontFamily: AppFonts.sandBold,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Cancel",
+                              style: AppTextStyles.regularStyle.copyWith(
+                                color: AppColors.btnUnSelectColor,
+                                fontFamily: AppFonts.sandBold,
+                              ),
+                            ),
+                            Text(
+                              "Post",
+                              style: AppTextStyles.regularStyle.copyWith(
+                                color: AppColors.mainColor,
+                                fontFamily: AppFonts.sandBold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: AppColors.btnUnSelectColor,
+                              )),
+                          child: GetBuilder<UploadFeedbackController>(
+                            builder: (_) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  16.vertical,
+                                  if (category == FeedbackCategory.image)
+                                    Center(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          await controller.pickImage();
+                                        },
+                                        child: Obx(
+                                          () => Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.mainColor
+                                                  .withCustomOpacity(.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: controller.selectedImage
+                                                          .value !=
+                                                      null
+                                                  ? DecorationImage(
+                                                      image: FileImage(
+                                                          controller
+                                                              .selectedImage
+                                                              .value!),
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : null,
+                                            ),
+                                            child: controller
+                                                        .selectedImage.value ==
+                                                    null
+                                                ? Icon(
+                                                    Icons.camera_alt,
+                                                    color: Colors.white,
+                                                  )
+                                                : null,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  if (category == FeedbackCategory.video)
+                                    Center(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          await controller
+                                              .showVideoSourceChoice();
+                                        },
+                                        child: Obx(
+                                          () => Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.mainColor
+                                                  .withCustomOpacity(.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: controller
+                                                        .selectedVideo.value ==
+                                                    null
+                                                ? Icon(
+                                                    Icons.videocam,
+                                                    color: Colors.white,
+                                                  )
+                                                : Icon(
+                                                    Icons.check_circle,
+                                                    color: Colors.green,
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  16.vertical,
+                                  AppFeild(
+                                    hintText: "Enter your feedback",
+                                    controller: controller.description,
+                                    feildSideClr: false,
+                                    hintTextColor: AppColors.textColor
+                                        .withCustomOpacity(.3),
+                                    feildFocusClr: true,
+                                  ),
+                                  16.vertical,
+                                  Text(
+                                    "Select Hashtags",
+                                    style: AppTextStyles.bodyStyle.copyWith(
+                                      color: AppColors.mainColor,
+                                      fontFamily: AppFonts.sandMedium,
+                                    ),
+                                  ),
+                                  8.vertical,
+                                  Wrap(
+                                    spacing: 4,
+                                    runSpacing: 0,
+                                    children: [
+                                      'Fast Food',
+                                      'Pizza',
+                                      'Chicken Dishes',
+                                      'Noodles or Pasta',
+                                      'Rice Meals',
+                                      'BBQ/Grill',
+                                      'Seafood',
+                                      'Wraps and Tacos',
+                                      'Bakery and Snacks',
+                                      'Desserts',
+                                      'Others'
+                                    ].map((hashtag) {
+                                      return Obx(() {
+                                        final isSelected = controller
+                                            .selectedHashtags
+                                            .contains(hashtag);
+                                        return FilterChip(
+                                          label: Text('#$hashtag'),
+                                          selected: isSelected,
+                                          onSelected: (selected) {
+                                            if (selected) {
+                                              controller.selectedHashtags
+                                                  .add(hashtag);
+                                            } else {
+                                              controller.selectedHashtags
+                                                  .remove(hashtag);
+                                            }
+                                          },
+                                          selectedColor: AppColors.mainColor,
+                                          checkmarkColor: Colors.white,
+                                          labelStyle: TextStyle(
+                                            color: isSelected
+                                                ? Colors.white
+                                                : AppColors.mainColor,
+                                          ),
+                                        );
+                                      });
+                                    }).toList(),
+                                  ),
+                                  16.vertical,
+                                  RatingBar.builder(
+                                    initialRating: controller.rating.value,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemSize: 30,
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: AppColors.mainColor,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      controller.rating.value = rating;
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
                         Text(
@@ -60,162 +237,6 @@ class PostFeedbackScreen extends StatelessWidget {
                             color: AppColors.mainColor,
                             fontFamily: AppFonts.sandMedium,
                           ),
-                        ),
-                        GetBuilder<UploadFeedbackController>(
-                          builder: (_) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                16.vertical,
-                                if (category == FeedbackCategory.image)
-                                  Center(
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await controller.pickImage();
-                                      },
-                                      child: Obx(
-                                        () => Container(
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.mainColor
-                                                .withCustomOpacity(.5),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            image: controller
-                                                        .selectedImage.value !=
-                                                    null
-                                                ? DecorationImage(
-                                                    image: FileImage(controller
-                                                        .selectedImage.value!),
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : null,
-                                          ),
-                                          child:
-                                              controller.selectedImage.value ==
-                                                      null
-                                                  ? Icon(
-                                                      Icons.camera_alt,
-                                                      color: Colors.white,
-                                                    )
-                                                  : null,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                if (category == FeedbackCategory.video)
-                                  Center(
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await controller
-                                            .showVideoSourceChoice();
-                                      },
-                                      child: Obx(
-                                        () => Container(
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.mainColor
-                                                .withCustomOpacity(.5),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child:
-                                              controller.selectedVideo.value ==
-                                                      null
-                                                  ? Icon(
-                                                      Icons.videocam,
-                                                      color: Colors.white,
-                                                    )
-                                                  : Icon(
-                                                      Icons.check_circle,
-                                                      color: Colors.green,
-                                                    ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                16.vertical,
-                                AppFeild(
-                                  hintText: "Enter your feedback",
-                                  controller: controller.description,
-                                  feildSideClr: false,
-                                  hintTextColor:
-                                      AppColors.textColor.withCustomOpacity(.3),
-                                  feildFocusClr: true,
-                                ),
-                                16.vertical,
-                                Text(
-                                  "Select Hashtags",
-                                  style: AppTextStyles.bodyStyle.copyWith(
-                                    color: AppColors.mainColor,
-                                    fontFamily: AppFonts.sandMedium,
-                                  ),
-                                ),
-                                8.vertical,
-                                Wrap(
-                                  spacing: 4,
-                                  runSpacing: 0,
-                                  children: [
-                                    'Fast Food',
-                                    'Pizza',
-                                    'Chicken Dishes',
-                                    'Noodles or Pasta',
-                                    'Rice Meals',
-                                    'BBQ/Grill',
-                                    'Seafood',
-                                    'Wraps and Tacos',
-                                    'Bakery and Snacks',
-                                    'Desserts',
-                                    'Others'
-                                  ].map((hashtag) {
-                                    return Obx(() {
-                                      final isSelected = controller
-                                          .selectedHashtags
-                                          .contains(hashtag);
-                                      return FilterChip(
-                                        label: Text('#$hashtag'),
-                                        selected: isSelected,
-                                        onSelected: (selected) {
-                                          if (selected) {
-                                            controller.selectedHashtags
-                                                .add(hashtag);
-                                          } else {
-                                            controller.selectedHashtags
-                                                .remove(hashtag);
-                                          }
-                                        },
-                                        selectedColor: AppColors.mainColor,
-                                        checkmarkColor: Colors.white,
-                                        labelStyle: TextStyle(
-                                          color: isSelected
-                                              ? Colors.white
-                                              : AppColors.mainColor,
-                                        ),
-                                      );
-                                    });
-                                  }).toList(),
-                                ),
-                                16.vertical,
-                                RatingBar.builder(
-                                  initialRating: controller.rating.value,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemSize: 30,
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: AppColors.mainColor,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    controller.rating.value = rating;
-                                  },
-                                ),
-                              ],
-                            );
-                          },
                         ),
                       ],
                     ),

@@ -35,7 +35,6 @@ class FeedbackItem extends StatelessWidget {
     log(feedback.category.toString());
     log(branchId.toString());
     final controller = Get.put(WatchFeedbackController());
-    final user = controller.getUserDetails(feedback.userId);
 
     if (feedback.category == 'video_feedback' && feedback.mediaUrl != null) {
       controller.initializeVideo(feedback.feedbackId, feedback.mediaUrl!);
@@ -50,16 +49,27 @@ class FeedbackItem extends StatelessWidget {
       controller.initializeVideo(feedback.feedbackId, feedback.mediaUrl!);
     }
 
-    return feedbackScope == FeedbackScope.currentUserFeedback &&
-            feedback.category == 'video_feedback'
-        ? forCurrentUserVideoFeedback(user, controller)
-        : feedbackScope == FeedbackScope.currentUserFeedback &&
-                feedback.category == 'image_feedback'
-            ? forCurrentUserImageFeedback(user, controller)
-            : feedback.category == 'image_feedback' ||
-                    feedback.category == 'video_feedback'
-                ? forVisualAllFeedback(user, controller)
-                : forTextAllFeedback(user, controller);
+    return FutureBuilder<AuthModel?>(
+      future: controller.getUserDetails(feedback.userId),
+      builder: (context, userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CupertinoActivityIndicator());
+        }
+
+        final user = userSnapshot.data;
+
+        return feedbackScope == FeedbackScope.currentUserFeedback &&
+                feedback.category == 'video_feedback'
+            ? forCurrentUserVideoFeedback(user, controller)
+            : feedbackScope == FeedbackScope.currentUserFeedback &&
+                    feedback.category == 'image_feedback'
+                ? forCurrentUserImageFeedback(user, controller)
+                : feedback.category == 'image_feedback' ||
+                        feedback.category == 'video_feedback'
+                    ? forVisualAllFeedback(user, controller)
+                    : forTextAllFeedback(user, controller);
+      },
+    );
   }
 
   Container forTextAllFeedback(
