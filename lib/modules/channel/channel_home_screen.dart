@@ -27,14 +27,15 @@ class ChannelHomeScreen extends StatelessWidget {
           spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ChannelHomeAppBar(
+            Obx(()=>ChannelHomeAppBar(
                 onActionTap: channelHomeController.logout,
                 image: channelHomeController
                         .managerData.value?['branchThumbnail'] ??
                     '',
                 username:
                     channelHomeController.managerData.value?['branchAddress'] ??
-                        ''),
+                        ''))
+            ,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -61,7 +62,8 @@ class ChannelHomeScreen extends StatelessWidget {
                 )
               ],
             ),
-            Expanded(
+
+            Obx(()=> Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ListView.builder(
@@ -76,7 +78,8 @@ class ChannelHomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-            ),
+            ))
+            ,
           ],
         ),
       ),

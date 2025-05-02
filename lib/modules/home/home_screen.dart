@@ -64,9 +64,9 @@ class HomeScreen extends StatelessWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0).copyWith(right: 12),
-                child: ProfileImageWithShimmer(
-                  imageUrl: profileController.profileImage.value,
-                ),
+                child: Obx(() => ProfileImageWithShimmer(
+                      imageUrl: profileController.profileImage.value,
+                    )),
               )
             ],
             backgroundColor: AppColors.transparent,
