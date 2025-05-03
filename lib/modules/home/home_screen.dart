@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -9,6 +8,8 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
+import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart'
+    as shimmer_widgets;
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
@@ -17,7 +18,6 @@ import 'package:tasteclip/modules/home/components/upload_visual_feedback.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
 import 'package:tasteclip/modules/review/Image/upload_feedback_screen.dart';
-import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -37,7 +37,6 @@ class HomeScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           key: _scaffoldKey,
-          // drawer: HomeDrawer(),
           appBar: AppBar(
             centerTitle: true,
             title: Column(
@@ -64,7 +63,7 @@ class HomeScreen extends StatelessWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0).copyWith(right: 12),
-                child: Obx(() => ProfileImageWithShimmer(
+                child: Obx(() => shimmer_widgets.ProfileImageWithShimmer(
                       imageUrl: profileController.profileImage.value,
                     )),
               )
@@ -83,22 +82,24 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   6.vertical,
-                  Obx(() {
-                    if (watchFeedbackController.isLoading.value) {
-                      return const Center(child: CupertinoActivityIndicator());
-                    }
-
-                    return TextFeedback();
-                  }),
+                  SizedBox(
+                    height: 140,
+                    child: Obx(() {
+                      if (watchFeedbackController.isLoading.value) {
+                        return _buildShimmerLoading(isHorizontal: true);
+                      }
+                      return TextFeedback();
+                    }),
+                  ),
                   UploadVisualFeedback(),
-                  Obx(() {
-                    if (watchFeedbackController.isLoading.value) {
-                      return const Center(child: CupertinoActivityIndicator());
-                    }
-
-                    return VisualFeedback();
-                  }),
-                  6.vertical,
+                  Expanded(
+                    child: Obx(() {
+                      if (watchFeedbackController.isLoading.value) {
+                        return _buildShimmerLoading(isHorizontal: false);
+                      }
+                      return VisualFeedback();
+                    }),
+                  ),
                 ],
               ),
               Positioned(
@@ -109,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                     Get.to(() => WelcomeScreen());
                   },
                   child: Container(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
@@ -144,6 +145,78 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildShimmerLoading({required bool isHorizontal}) {
+    if (isHorizontal) {
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 5,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemBuilder: (context, index) {
+          return Container(
+            width: 80,
+            margin: const EdgeInsets.only(right: 8, bottom: 20),
+            child: const ShimmerWidget.rectangular(
+              height: 120,
+            ),
+          );
+        },
+      );
+    } else {
+      return ListView.builder(
+        itemCount: 3,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    shimmer_widgets.ShimmerWidget.circular(
+                      width: 40,
+                      height: 40,
+                    ),
+                    8.horizontal,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const shimmer_widgets.ShimmerWidget.rectangular(
+                          height: 14,
+                          width: 120,
+                        ),
+                        4.vertical,
+                        const shimmer_widgets.ShimmerWidget.rectangular(
+                          height: 10,
+                          width: 80,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                16.vertical,
+                const shimmer_widgets.ShimmerWidget.rectangular(
+                  height: 12,
+                  width: double.infinity,
+                ),
+                8.vertical,
+                const shimmer_widgets.ShimmerWidget.rectangular(
+                  height: 12,
+                  width: 200,
+                ),
+                16.vertical,
+                const shimmer_widgets.ShimmerWidget.rectangular(
+                  height: 200,
+                  width: double.infinity,
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
 }
 
 class TextFeedback extends StatelessWidget {
@@ -157,54 +230,55 @@ class TextFeedback extends StatelessWidget {
         .where((feedback) => feedback.category == 'text_feedback')
         .toList();
 
-    return SizedBox(
-      height: 140,
-      child: ListView.builder(
-        itemCount: textFeedbacks.length + 1,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return GestureDetector(
-              onTap: () => Get.to(
-                  () => UploadFeedbackScreen(category: FeedbackCategory.text)),
-              child: Container(
-                width: 80,
-                margin: const EdgeInsets.only(left: 20, right: 8, bottom: 20),
-                decoration: BoxDecoration(
-                  color: AppColors.mainColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                          color: AppColors.whiteColor,
-                          style: BorderStyle.solid),
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      color: AppColors.whiteColor,
-                    ),
+    return ListView.builder(
+      itemCount: textFeedbacks.length + 1,
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return GestureDetector(
+            onTap: () => Get.to(
+                () => UploadFeedbackScreen(category: FeedbackCategory.text)),
+            child: Container(
+              width: 80,
+              margin: const EdgeInsets.only(right: 8, bottom: 20),
+              decoration: BoxDecoration(
+                color: AppColors.mainColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                        color: AppColors.whiteColor, style: BorderStyle.solid),
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    color: AppColors.whiteColor,
                   ),
                 ),
               ),
-            );
-          } else {
-            final feedback = textFeedbacks[index - 1];
-            return GestureDetector(
-              onTap: () => Get.to(() => FeedbackDetailScreen(
-                    feedback: feedback,
-                    feedbackScope: FeedbackScope.allFeedback,
-                  )),
+            ),
+          );
+        } else {
+          final feedback = textFeedbacks[index - 1];
+          return GestureDetector(
+            onTap: () => Get.to(() => FeedbackDetailScreen(
+                  feedback: feedback,
+                  feedbackScope: FeedbackScope.allFeedback,
+                )),
+            child: Container(
+              width: 80,
+              margin: const EdgeInsets.only(right: 8),
               child: FeedbackItem(
                 feedback: feedback,
                 feedbackScope: FeedbackScope.allFeedback,
               ),
-            );
-          }
-        },
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -221,36 +295,32 @@ class VisualFeedback extends StatelessWidget {
         .toList();
 
     if (imageFeedbacks.isEmpty) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            await watchFeedbackController.refreshFeedbacks();
-          },
-          child: ListView.builder(
-            itemCount: imageFeedbacks.length,
-            itemBuilder: (context, index) {
-              final feedback = imageFeedbacks[index];
-              return GestureDetector(
-                onTap: () => Get.to(() => FeedbackDetailScreen(
-                      feedback: feedback,
-                      feedbackScope: FeedbackScope.allFeedback,
-                    )),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: FeedbackItem(
-                    feedback: feedback,
-                    feedbackScope: FeedbackScope.allFeedback,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+    return RefreshIndicator(
+      onRefresh: () async {
+        await watchFeedbackController.refreshFeedbacks();
+      },
+      child: ListView.builder(
+        itemCount: imageFeedbacks.length,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        itemBuilder: (context, index) {
+          final feedback = imageFeedbacks[index];
+          return GestureDetector(
+            onTap: () => Get.to(() => FeedbackDetailScreen(
+                  feedback: feedback,
+                  feedbackScope: FeedbackScope.allFeedback,
+                )),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: FeedbackItem(
+                feedback: feedback,
+                feedbackScope: FeedbackScope.allFeedback,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

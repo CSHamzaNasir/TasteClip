@@ -50,32 +50,37 @@ class UploadVisualFeedback extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 8),
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.blueAccent.withCustomOpacity(.2),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  AppAssets.video,
-                  colorFilter: ColorFilter.mode(
-                    Colors.blueAccent,
-                    BlendMode.srcIn,
+          child: GestureDetector(
+            onTap: () => Get.to(() => UploadFeedbackScreen(
+                  category: FeedbackCategory.video,
+                )),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.blueAccent.withCustomOpacity(.2),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    AppAssets.video,
+                    colorFilter: ColorFilter.mode(
+                      Colors.blueAccent,
+                      BlendMode.srcIn,
+                    ),
                   ),
-                ),
-                SizedBox(width: 12),
-                Text(
-                  "Video",
-                  style: AppTextStyles.regularStyle.copyWith(
-                    color: Colors.blueAccent,
-                    fontFamily: AppFonts.sandBold,
+                  SizedBox(width: 12),
+                  Text(
+                    "Video",
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: Colors.blueAccent,
+                      fontFamily: AppFonts.sandBold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
@@ -11,10 +10,6 @@ import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_box.dart';
-import 'package:tasteclip/widgets/or_continue_with.dart';
-
-import '../../../widgets/social_button.dart';
-import '../../../widgets/under_dev.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -37,7 +32,6 @@ class RegisterScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(height: Get.height * .1),
                             Text(
                               AppString.register,
                               style: AppTextStyles.headingStyle.copyWith(
@@ -114,35 +108,12 @@ class RegisterScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            30.vertical,
-                            const OrContinueWith(
-                              isDarkMode: false,
-                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
-                20.vertical,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SocialButton(
-                      onTap: () => showUnderDevelopmentDialog(
-                          context, "This feature is under development."),
-                      title: AppString.google,
-                      icon: AppAssets.googleIcon,
-                    ),
-                    SocialButton(
-                      onTap: () => showUnderDevelopmentDialog(
-                          context, "This feature is under development."),
-                      title: AppString.guest,
-                      icon: AppAssets.guestIcon,
-                    ),
-                  ],
-                ),
-                30.vertical,
               ],
             ),
           ),

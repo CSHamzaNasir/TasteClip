@@ -11,7 +11,7 @@ import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
-import 'package:tasteclip/utils/text_shimmer.dart';
+import 'package:tasteclip/utils/text_shimmer.dart' as shimmer_widgets;
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 
@@ -36,7 +36,7 @@ class WatchFeedbackScreen extends StatelessWidget {
           ],
           leading: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: ProfileImageWithShimmer(
+            child: shimmer_widgets.ProfileImageWithShimmer(
                 imageUrl: userController.userProfileImage.value),
           ),
           centerTitle: true,

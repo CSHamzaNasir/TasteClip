@@ -38,4 +38,6 @@ class AppTextStyles {
     color: AppColors.primaryColor,
     fontFamily: AppFonts.sandSemiBold,
   );
+
+  static var headingStyle2;
 }

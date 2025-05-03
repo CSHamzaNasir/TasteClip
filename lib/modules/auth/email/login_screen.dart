@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
@@ -11,9 +10,6 @@ import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_box.dart';
-
-import '../../../widgets/social_button.dart';
-import '../../../widgets/under_dev.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -112,24 +108,6 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SocialButton(
-                      onTap: () => showUnderDevelopmentDialog(
-                          context, "This feature is under development."),
-                      title: AppString.google,
-                      icon: AppAssets.googleIcon,
-                    ),
-                    SocialButton(
-                      onTap: () => showUnderDevelopmentDialog(
-                          context, "This feature is under development."),
-                      title: AppString.guest,
-                      icon: AppAssets.guestIcon,
-                    ),
-                  ],
-                ),
-                30.vertical,
               ],
             ),
           ),

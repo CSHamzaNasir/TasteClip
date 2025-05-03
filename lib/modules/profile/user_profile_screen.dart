@@ -9,7 +9,7 @@ import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
-import 'package:tasteclip/utils/text_shimmer.dart';
+import 'package:tasteclip/utils/text_shimmer.dart' as shimmer_widgets;
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
 
@@ -60,7 +60,7 @@ class UserProfileScreen extends StatelessWidget {
                           color: AppColors.whiteColor,
                           shape: BoxShape.circle,
                         ),
-                        child: ProfileImageWithShimmer(
+                        child: shimmer_widgets.ProfileImageWithShimmer(
                           imageUrl: controller.profileImage.value,
                           radius: 40,
                         ),

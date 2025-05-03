@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -14,66 +11,56 @@ import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/core/data/models/auth_models.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
-import 'package:tasteclip/utils/text_shimmer.dart';
 import 'package:video_player/video_player.dart';
 
 class FeedbackItem extends StatelessWidget {
   final UploadFeedbackModel feedback;
   final FeedbackScope feedbackScope;
   final String? branchId;
+  final WatchFeedbackController controller;
 
-  const FeedbackItem({
+  FeedbackItem({
     super.key,
     required this.feedback,
     required this.feedbackScope,
     this.branchId,
-  });
+  }) : controller = Get.find<WatchFeedbackController>();
 
   @override
   Widget build(BuildContext context) {
-    log(feedbackScope.toString());
-    log(feedback.category.toString());
-    log(branchId.toString());
-    final controller = Get.put(WatchFeedbackController());
-
     if (feedback.category == 'video_feedback' && feedback.mediaUrl != null) {
       controller.initializeVideo(feedback.feedbackId, feedback.mediaUrl!);
     }
 
     if (feedbackScope == FeedbackScope.branchFeedback &&
         feedback.branchId != branchId) {
-      return Container();
-    }
-
-    if (feedback.category == 'video_feedback' && feedback.mediaUrl != null) {
-      controller.initializeVideo(feedback.feedbackId, feedback.mediaUrl!);
+      return const SizedBox.shrink();
     }
 
     return FutureBuilder<AuthModel?>(
       future: controller.getUserDetails(feedback.userId),
       builder: (context, userSnapshot) {
-        if (userSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CupertinoActivityIndicator());
-        }
+        if (userSnapshot.connectionState == ConnectionState.waiting) {}
 
         final user = userSnapshot.data;
+        if (user == null) {
+          return const SizedBox.shrink();
+        }
 
-        return feedbackScope == FeedbackScope.currentUserFeedback &&
-                feedback.category == 'video_feedback'
-            ? forCurrentUserVideoFeedback(user, controller)
-            : feedbackScope == FeedbackScope.currentUserFeedback &&
-                    feedback.category == 'image_feedback'
-                ? forCurrentUserImageFeedback(user, controller)
-                : feedback.category == 'image_feedback' ||
-                        feedback.category == 'video_feedback'
-                    ? forVisualAllFeedback(user, controller)
-                    : forTextAllFeedback(user, controller);
+        if (feedbackScope == FeedbackScope.currentUserFeedback) {
+          return feedback.category == 'video_feedback'
+              ? forCurrentUserVideoFeedback(user)
+              : forCurrentUserImageFeedback(user);
+        } else {
+          return feedback.category == 'text_feedback'
+              ? forTextAllFeedback(user)
+              : forVisualAllFeedback(user);
+        }
       },
     );
   }
 
-  Container forTextAllFeedback(
-      AuthModel? user, WatchFeedbackController controller) {
+  Container forTextAllFeedback(AuthModel user) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -88,16 +75,16 @@ class FeedbackItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      spacing: 8,
                       children: [
                         ProfileImageWithShimmer(
-                          imageUrl: user?.profileImage,
+                          imageUrl: user.profileImage,
                         ),
+                        8.horizontal,
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user!.fullName,
+                              user.fullName,
                               style: AppTextStyles.regularStyle.copyWith(
                                 color: AppColors.textColor,
                                 fontFamily: AppFonts.sandBold,
@@ -113,9 +100,9 @@ class FeedbackItem extends StatelessWidget {
                             )
                           ],
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Container(
-                          padding: EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               color:
@@ -153,15 +140,10 @@ class FeedbackItem extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
+                      child: _buildCachedImage(
+                        feedback.branchThumbnail!,
                         height: 110,
                         width: 80,
-                        imageUrl: feedback.branchThumbnail!,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const Center(child: CupertinoActivityIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Center(child: Icon(Icons.error)),
                       ),
                     ),
                     Positioned(
@@ -169,23 +151,7 @@ class FeedbackItem extends StatelessWidget {
                       left: 0,
                       right: 0,
                       child: Center(
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                user!.profileImage ?? '',
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                        child: _buildProfileImage(user.profileImage),
                       ),
                     ),
                   ],
@@ -195,8 +161,7 @@ class FeedbackItem extends StatelessWidget {
     );
   }
 
-  Container forVisualAllFeedback(
-      AuthModel? user, WatchFeedbackController controller) {
+  Container forVisualAllFeedback(AuthModel user) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -206,16 +171,16 @@ class FeedbackItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            spacing: 8,
             children: [
               ProfileImageWithShimmer(
-                imageUrl: user?.profileImage,
+                imageUrl: user.profileImage,
               ),
+              8.horizontal,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    user!.fullName,
+                    user.fullName,
                     style: AppTextStyles.regularStyle.copyWith(
                       color: AppColors.textColor,
                       fontFamily: AppFonts.sandBold,
@@ -230,9 +195,9 @@ class FeedbackItem extends StatelessWidget {
                   )
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Container(
-                padding: EdgeInsets.all(6),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: AppColors.primaryColor.withCustomOpacity(.1)),
@@ -264,90 +229,29 @@ class FeedbackItem extends StatelessWidget {
             ),
           ),
           8.vertical,
-          if (feedback.category != 'video_feedback')
+          if (feedback.category != 'video_feedback' &&
+              feedback.mediaUrl != null)
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: CachedNetworkImage(
-                height: 300,
-                width: double.infinity,
-                imageUrl: feedback.category == 'text_feedback'
+              child: _buildCachedImage(
+                feedback.category == 'text_feedback'
                     ? feedback.branchThumbnail!
                     : feedback.mediaUrl!,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    const Center(child: CupertinoActivityIndicator()),
-                errorWidget: (context, url, error) =>
-                    const Center(child: Icon(Icons.error)),
+                height: 300,
+                width: double.infinity,
               ),
             ),
           if (feedback.category == 'video_feedback' &&
               feedback.mediaUrl != null)
-            GetBuilder<WatchFeedbackController>(
-              builder: (controller) {
-                if (!controller.isVideoInitialized(feedback.feedbackId)) {
-                  return const Center(child: CupertinoActivityIndicator());
-                }
-                return SizedBox(
-                  height: 300,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: VideoPlayer(
-                      controller.getVideoController(feedback.feedbackId)!,
-                    ),
-                  ),
-                );
-              },
-            ),
+            _buildVideoPlayer(feedback.feedbackId),
           8.vertical,
-          Row(
-            children: [
-              if (feedback.likes.isNotEmpty)
-                Text(
-                  "Liked by ",
-                  style: AppTextStyles.regularStyle.copyWith(
-                    color: AppColors.textColor,
-                  ),
-                ),
-              if (feedback.likes.isNotEmpty)
-                FutureBuilder<AuthModel?>(
-                  future: Future.value(
-                      controller.getUserDetails(feedback.likes.last)),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text(
-                        "user",
-                        style: AppTextStyles.regularStyle.copyWith(
-                          color: AppColors.textColor,
-                          fontFamily: AppFonts.sandBold,
-                        ),
-                      );
-                    }
-                    final user = snapshot.data;
-                    return Text(
-                      user?.fullName ?? "user",
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.textColor,
-                        fontFamily: AppFonts.sandBold,
-                      ),
-                    );
-                  },
-                ),
-              if (feedback.likes.length > 1)
-                Text(
-                  " and ${feedback.likes.length - 1} others",
-                  style: AppTextStyles.regularStyle.copyWith(
-                    color: AppColors.textColor,
-                  ),
-                ),
-            ],
-          )
+          _buildLikesSection(),
         ],
       ),
     );
   }
 
-  Container forCurrentUserVideoFeedback(
-      AuthModel? user, WatchFeedbackController controller) {
+  Container forCurrentUserVideoFeedback(AuthModel user) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -359,45 +263,13 @@ class FeedbackItem extends StatelessWidget {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              GetBuilder<WatchFeedbackController>(
-                builder: (controller) {
-                  if (!controller.isVideoInitialized(feedback.feedbackId)) {
-                    return const Center(child: CupertinoActivityIndicator());
-                  }
-                  return SizedBox(
-                    height: 140,
-                    width: 100,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: VideoPlayer(
-                        controller.getVideoController(feedback.feedbackId)!,
-                      ),
-                    ),
-                  );
-                },
-              ),
+              _buildVideoPlayer(feedback.feedbackId, height: 140, width: 100),
               Positioned(
                 bottom: -20,
                 left: 0,
                 right: 0,
                 child: Center(
-                  child: Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2,
-                      ),
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                          user?.profileImage ?? '',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  child: _buildProfileImage(user.profileImage),
                 ),
               ),
             ],
@@ -407,24 +279,209 @@ class FeedbackItem extends StatelessWidget {
     );
   }
 
-  Container forCurrentUserImageFeedback(
-      AuthModel? user, WatchFeedbackController controller) {
+  Container forCurrentUserImageFeedback(AuthModel user) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: CachedNetworkImage(
+        child: _buildCachedImage(
+          feedback.mediaUrl!,
           height: 200,
           width: 200,
-          imageUrl: feedback.mediaUrl!,
-          fit: BoxFit.cover,
-          placeholder: (context, url) =>
-              const Center(child: CupertinoActivityIndicator()),
-          errorWidget: (context, url, error) =>
-              const Center(child: Icon(Icons.error)),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCachedImage(String url, {double? height, double? width}) {
+    return CachedNetworkImage(
+      height: height,
+      width: width,
+      imageUrl: url,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => const ShimmerWidget.rectangular(),
+      errorWidget: (context, url, error) => const Center(
+        child: Icon(Icons.error, color: Colors.grey),
+      ),
+    );
+  }
+
+  Widget _buildProfileImage(String? imageUrl) {
+    return Container(
+      height: 35,
+      width: 35,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white,
+          width: 2,
+        ),
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(
+            imageUrl ?? '',
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVideoPlayer(String feedbackId,
+      {double height = 300, double? width}) {
+    return GetBuilder<WatchFeedbackController>(
+      builder: (controller) {
+        if (!controller.isVideoInitialized(feedbackId)) {
+          return SizedBox(
+            height: height,
+            width: width,
+            child: const ShimmerWidget.rectangular(),
+          );
+        }
+        return SizedBox(
+          height: height,
+          width: width ?? double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: VideoPlayer(
+              controller.getVideoController(feedbackId)!,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLikesSection() {
+    if (feedback.likes.isEmpty) return const SizedBox.shrink();
+
+    return Row(
+      children: [
+        Text(
+          "Liked by ",
+          style: AppTextStyles.regularStyle.copyWith(
+            color: AppColors.textColor,
+          ),
+        ),
+        FutureBuilder<AuthModel?>(
+          future: controller.getUserDetails(feedback.likes.last),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const ShimmerWidget.rectangular(height: 14, width: 60);
+            }
+            final user = snapshot.data;
+            return Text(
+              user?.fullName ?? "user",
+              style: AppTextStyles.regularStyle.copyWith(
+                color: AppColors.textColor,
+                fontFamily: AppFonts.sandBold,
+              ),
+            );
+          },
+        ),
+        if (feedback.likes.length > 1)
+          Text(
+            " and ${feedback.likes.length - 1} others",
+            style: AppTextStyles.regularStyle.copyWith(
+              color: AppColors.textColor,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class ProfileImageWithShimmer extends StatelessWidget {
+  final String? imageUrl;
+  final double size;
+
+  const ProfileImageWithShimmer({
+    super.key,
+    this.imageUrl,
+    this.size = 40,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(size / 2),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl ?? '',
+          fit: BoxFit.cover,
+          placeholder: (context, url) => ShimmerWidget.circular(
+            width: size,
+            height: size,
+          ),
+          errorWidget: (context, url, error) => Icon(
+            Icons.person,
+            size: size * 0.6,
+            color: Colors.grey,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ShimmerWidget extends StatelessWidget {
+  final double width;
+  final double height;
+  final ShapeBorder shapeBorder;
+
+  const ShimmerWidget.rectangular({
+    super.key,
+    this.width = double.infinity,
+    this.height = double.infinity,
+  }) : shapeBorder = const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        );
+
+  const ShimmerWidget.circular({
+    super.key,
+    required this.width,
+    required this.height,
+  }) : shapeBorder = const CircleBorder();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: ShapeDecoration(
+        color: Colors.grey[300]!,
+        shape: shapeBorder,
+      ),
+      child: _buildShimmerEffect(),
+    );
+  }
+
+  Widget _buildShimmerEffect() {
+    return ShaderMask(
+      blendMode: BlendMode.srcATop,
+      shaderCallback: (bounds) {
+        return LinearGradient(
+          colors: [
+            Colors.grey[300]!,
+            Colors.grey[100]!,
+            Colors.grey[300]!,
+          ],
+          stops: const [0.1, 0.5, 0.9],
+          begin: const Alignment(-1.0, -0.5),
+          end: const Alignment(1.0, 0.5),
+          tileMode: TileMode.clamp,
+        ).createShader(bounds);
+      },
+      child: Container(
+        width: width,
+        height: height,
+        color: Colors.grey[300],
       ),
     );
   }

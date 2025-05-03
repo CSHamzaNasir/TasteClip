@@ -9,8 +9,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
-import 'package:tasteclip/core/constant/app_colors.dart';
-import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
 import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
 
@@ -20,12 +18,40 @@ class UploadFeedbackController extends GetxController {
   Rx<File?> selectedVideo = Rx<File?>(null);
   RxBool isLoading = false.obs;
   RxDouble rating = 0.0.obs;
+  final Rx<File?> billImage = Rx<File?>(null);
+  final RxBool isFormComplete = RxBool(false);
+
+  Future<void> pickBillImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      billImage.value = File(image.path);
+      updateFormCompleteness(FeedbackCategory.image);
+    }
+  }
+
+  void updateFormCompleteness(FeedbackCategory category) {
+    bool isBasicInfoComplete = rating.value > 0 && description.text.isNotEmpty;
+
+    bool isMediaValid = true;
+    if (category == FeedbackCategory.image) {
+      isMediaValid = selectedImage.value != null;
+    } else if (category == FeedbackCategory.video) {
+      isMediaValid = selectedVideo.value != null;
+    }
+
+    bool isBillValid = billImage.value != null;
+
+    isFormComplete.value = isBasicInfoComplete && isMediaValid && isBillValid;
+  }
 
   Future<void> pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
+      updateFormCompleteness(FeedbackCategory.image);
     }
   }
 
@@ -33,6 +59,7 @@ class UploadFeedbackController extends GetxController {
     final pickedFile = await ImagePicker().pickVideo(source: source);
     if (pickedFile != null) {
       selectedVideo.value = File(pickedFile.path);
+      updateFormCompleteness(FeedbackCategory.video);
     }
   }
 
@@ -86,6 +113,30 @@ class UploadFeedbackController extends GetxController {
         return;
       }
 
+      if (billImage.value == null) {
+        log("Bill image is required!");
+        Get.snackbar(
+          'Error!',
+          'Please upload your bill for proof',
+          icon: Icon(Icons.error),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red.withCustomOpacity(0.9),
+          colorText: Colors.white,
+          borderRadius: 10,
+          margin: const EdgeInsets.all(10),
+          duration: const Duration(seconds: 3),
+        );
+        isLoading.value = false;
+        return;
+      }
+
+      String billFileName = "bill_${DateTime.now().millisecondsSinceEpoch}.jpg";
+      Reference billStorageRef =
+          FirebaseStorage.instance.ref().child('userBillImages/$billFileName');
+      UploadTask billUploadTask = billStorageRef.putFile(billImage.value!);
+      TaskSnapshot billSnapshot = await billUploadTask;
+      String billImageUrl = await billSnapshot.ref.getDownloadURL();
+
       String? mediaUrl;
       String categoryString;
 
@@ -133,6 +184,7 @@ class UploadFeedbackController extends GetxController {
         branchName: branchName,
         description: description,
         rating: rating,
+        billImageUrl: billImageUrl,
         mediaUrl: mediaUrl,
         category: categoryString,
         branchId: branchId,
@@ -150,10 +202,10 @@ class UploadFeedbackController extends GetxController {
         'Your feedback has been uploaded successfully.',
         icon: Icon(
           Icons.verified,
-          color: AppColors.lightColor,
+          color: Colors.white,
         ),
         snackPosition: SnackPosition.TOP,
-        backgroundColor: AppColors.mainColor.withCustomOpacity(0.9),
+        backgroundColor: Colors.green.withCustomOpacity(0.9),
         colorText: Colors.white,
         borderRadius: 10,
         margin: const EdgeInsets.all(10),
@@ -185,10 +237,7 @@ class UploadFeedbackController extends GetxController {
     rating.value = 0.0;
     selectedImage.value = null;
     selectedVideo.value = null;
+    billImage.value = null;
     selectedHashtags.clear();
-  }
-
-  void goToUserScreen() {
-    Get.toNamed(AppRouter.loginScreen);
   }
 }

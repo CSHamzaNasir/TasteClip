@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -39,7 +40,6 @@ class LikesInteractionState extends State<LikesInteraction> {
   late Future<Map<String, int>> _feedbackCountsFuture;
   late Future<AuthModel?> _userFuture;
 
-  // Local state for instant UI updates
   late bool _isLiked;
   late int _likeCount;
   late int _commentCount;
@@ -50,7 +50,6 @@ class LikesInteractionState extends State<LikesInteraction> {
     _feedbackCountsFuture = _fetchUserFeedbackCounts(widget.feedback.userId);
     _userFuture = controller.getUserDetails(widget.feedback.userId);
 
-    // Initialize local state
     _isLiked = controller.isLikedByCurrentUser(widget.feedback);
     _likeCount = widget.feedback.likes.length;
     _commentCount = widget.feedback.comments.length;
@@ -222,32 +221,31 @@ class LikesInteractionState extends State<LikesInteraction> {
                     color: AppColors.btnUnSelectColor,
                   ),
                   16.vertical,
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => widget.feedbackScope ==
-                              FeedbackScope.currentUserFeedback
-                          ? Get.to(
-                              () => RedeemCoinScreen(feedback: widget.feedback))
-                          : Navigator.pop(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.mainColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          // padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                      ),
-                      child: Text(
-                        widget.feedbackScope ==
-                                FeedbackScope.currentUserFeedback
-                            ? 'Redeem Coin'
-                            : 'Go to profile',
-                        style: AppTextStyles.boldBodyStyle.copyWith(
-                          color: AppColors.whiteColor,
-                        ),
-                      ),
-                    ),
-                  )
+                  widget.feedbackScope == FeedbackScope.currentUserFeedback
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => widget.feedbackScope ==
+                                    FeedbackScope.currentUserFeedback
+                                ? Get.to(() =>
+                                    RedeemCoinScreen(feedback: widget.feedback))
+                                : Navigator.pop(context),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, 55),
+                              backgroundColor: AppColors.mainColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              'Redeem Coin',
+                              style: AppTextStyles.boldBodyStyle.copyWith(
+                                color: AppColors.whiteColor,
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()
                 ],
               ),
             );
@@ -279,10 +277,8 @@ class LikesInteractionState extends State<LikesInteraction> {
                 Column(
                   spacing: 6,
                   children: [
-                    // Like Button
                     GestureDetector(
                       onTap: () async {
-                        // Immediate UI update
                         setState(() {
                           _isLiked = !_isLiked;
                           _likeCount =
@@ -293,7 +289,6 @@ class LikesInteractionState extends State<LikesInteraction> {
                           await controller
                               .toggleLike(widget.feedback.feedbackId);
                         } catch (e) {
-                          // Revert if error occurs
                           setState(() {
                             _isLiked = !_isLiked;
                             _likeCount =
@@ -326,10 +321,7 @@ class LikesInteractionState extends State<LikesInteraction> {
                         color: AppColors.whiteColor,
                       ),
                     ),
-
                     6.vertical,
-
-                    // Comment Button
                     GestureDetector(
                       onTap: widget.commentSheet,
                       child: SvgPicture.asset(
@@ -346,27 +338,24 @@ class LikesInteractionState extends State<LikesInteraction> {
                         color: AppColors.whiteColor,
                       ),
                     ),
-
                     6.vertical,
-
-                    // Saved Icon
-                    SvgPicture.asset(
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.whiteColor,
-                        BlendMode.srcIn,
+                    GestureDetector(
+                      onTap: _showReportDialog,
+                      child: SvgPicture.asset(
+                        colorFilter: const ColorFilter.mode(
+                          AppColors.whiteColor,
+                          BlendMode.srcIn,
+                        ),
+                        AppAssets.reportIcon,
                       ),
-                      AppAssets.savedIcon,
                     ),
                     Text(
-                      counts['image'].toString(),
+                      "report",
                       style: AppTextStyles.regularStyle.copyWith(
                         color: AppColors.whiteColor,
                       ),
                     ),
-
                     6.vertical,
-
-                    // Info Button
                     GestureDetector(
                       onTap: () => _showInfoBottomSheet(context, counts),
                       child: SvgPicture.asset(
@@ -377,11 +366,163 @@ class LikesInteractionState extends State<LikesInteraction> {
                         AppAssets.info,
                       ),
                     ),
+                    Text(
+                      "info",
+                      style: AppTextStyles.regularStyle.copyWith(
+                        color: AppColors.whiteColor,
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
           );
         });
+  }
+
+  void _showReportDialog() {
+    final reportController = TextEditingController();
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.textColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Text(
+          'Report Feedback',
+          style: AppTextStyles.boldBodyStyle.copyWith(
+            color: AppColors.whiteColor,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Please specify the reason for reporting this feedback',
+              style: AppTextStyles.regularStyle.copyWith(
+                color: AppColors.whiteColor.withCustomOpacity(0.8),
+              ),
+            ),
+            16.vertical,
+            TextField(
+              controller: reportController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: 'Enter reason...',
+                hintStyle: AppTextStyles.regularStyle.copyWith(
+                  color: AppColors.whiteColor.withCustomOpacity(0.5),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: AppColors.whiteColor.withCustomOpacity(0.3),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: AppColors.whiteColor.withCustomOpacity(0.3),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: AppColors.mainColor,
+                  ),
+                ),
+              ),
+              style: AppTextStyles.regularStyle.copyWith(
+                color: AppColors.whiteColor,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.regularStyle.copyWith(
+                color: AppColors.whiteColor,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.mainColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: () async {
+              if (reportController.text.trim().isEmpty) {
+                Get.snackbar(
+                  'Error',
+                  'Please enter a reason for reporting',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+                return;
+              }
+
+              try {
+                final currentUser = FirebaseAuth.instance.currentUser;
+                if (currentUser == null) return;
+
+                // Create report data with client-side timestamp
+                final reportData = {
+                  'userId': currentUser.uid,
+                  'reason': reportController.text.trim(),
+                  'timestamp': DateTime.now().toIso8601String(),
+                };
+
+                // First, get the current document
+                final doc = await FirebaseFirestore.instance
+                    .collection('feedback')
+                    .doc(widget.feedback.feedbackId)
+                    .get();
+
+                final List<dynamic> existingReports =
+                    doc.data()?['report'] ?? [];
+
+                existingReports.add(reportData);
+
+                await FirebaseFirestore.instance
+                    .collection('feedback')
+                    .doc(widget.feedback.feedbackId)
+                    .update({
+                  'report': existingReports,
+                });
+
+                Get.back();
+                Get.snackbar(
+                  'Success',
+                  'Report submitted successfully',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.green,
+                  colorText: Colors.white,
+                );
+              } catch (e) {
+                log('Error submitting report: $e');
+                Get.snackbar(
+                  'Error',
+                  'Failed to submit report',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+              }
+            },
+            child: Text(
+              'Submit',
+              style: AppTextStyles.boldBodyStyle.copyWith(
+                color: AppColors.whiteColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

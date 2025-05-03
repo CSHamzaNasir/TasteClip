@@ -152,7 +152,6 @@
 				CAE760D9055871906711C125 /* Pods-RunnerTests.release.xcconfig */,
 				6CDDF15593B1AE1E208EC4DE /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

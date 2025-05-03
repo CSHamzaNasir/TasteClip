@@ -61,6 +61,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
         createdAt: DateTime.now(),
         comments: [],
         branchId: '',
+        billImageUrl: '',
       ),
     );
 

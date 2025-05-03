@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ChannelHomeController extends GetxController {
   final List<Map<String, String>> mealCategories = [
@@ -29,11 +28,52 @@ class ChannelHomeController extends GetxController {
     fetchInitialData();
   }
 
+// Add these to your ChannelHomeController
+  var textFeedbackCount = 0.obs;
+  var imageFeedbackCount = 0.obs;
+  var videoFeedbackCount = 0.obs;
+
+  Future<void> fetchFeedbackCounts() async {
+    try {
+      final branchId = auth.currentUser?.uid;
+      if (branchId == null) return;
+
+      final snapshot = await firestore
+          .collection('feedback')
+          .where('branchId', isEqualTo: branchId)
+          .get();
+
+      int textCount = 0;
+      int imageCount = 0;
+      int videoCount = 0;
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final category = data['category']?.toString() ?? '';
+
+        if (category == 'text_feedback') {
+          textCount++;
+        } else if (category == 'image_feedback') {
+          imageCount++;
+        } else if (category == 'video_feedback') {
+          videoCount++;
+        }
+      }
+
+      textFeedbackCount.value = textCount;
+      imageFeedbackCount.value = imageCount;
+      videoFeedbackCount.value = videoCount;
+    } catch (e) {
+      log('Error fetching feedback counts: $e');
+    }
+  }
+
+// Call this in your fetchInitialData method
   Future<void> fetchInitialData() async {
     try {
       isLoading(true);
       await fetchManagerData();
-      await fetchBranchFeedback();
+      await fetchFeedbackCounts(); // Add this line
     } catch (e) {
       AppAlerts.showSnackbar(
           isSuccess: false, message: "Failed to load data: $e");
@@ -71,51 +111,6 @@ class ChannelHomeController extends GetxController {
     } catch (e) {
       managerData.value = null;
       rethrow;
-    }
-  }
-
-  Future<void> fetchBranchFeedback() async {
-    try {
-      QuerySnapshot restaurantQuery =
-          await firestore.collection('restaurants').get();
-      List<Map<String, dynamic>> allFeedback = [];
-
-      for (var restaurantDoc in restaurantQuery.docs) {
-        List<dynamic> branches = restaurantDoc['branches'] ?? [];
-
-        for (var branch in branches) {
-          if (branch.containsKey('imageFeedback')) {
-            List<dynamic> feedbacks = branch['imageFeedback'] ?? [];
-
-            for (var feedback in feedbacks) {
-              DateTime createdAt;
-              if (feedback['created_at'] is Timestamp) {
-                createdAt = (feedback['created_at'] as Timestamp).toDate();
-              } else if (feedback['created_at'] is String) {
-                createdAt =
-                    DateTime.tryParse(feedback['created_at']) ?? DateTime.now();
-              } else {
-                createdAt = DateTime.now();
-              }
-
-              allFeedback.add({
-                "branch": branch['branchAddress'] ?? 'Unknown branch',
-                "channelName": branch['channelName'] ?? '',
-                "branchThumbnail": branch['branchThumbnail'] ?? '',
-                "image_title": feedback['image_title'] ?? '',
-                "imageUrl": feedback['imageUrl'] ?? '',
-                "rating": feedback['rating']?.toString() ?? '0',
-                "created_at": timeago.format(createdAt),
-              });
-            }
-          }
-        }
-      }
-      feedbackList.assignAll(allFeedback);
-    } catch (e) {
-      feedbackList.clear();
-      AppAlerts.showSnackbar(
-          isSuccess: false, message: "Failed to load feedback: $e");
     }
   }
 

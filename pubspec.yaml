@@ -57,6 +57,7 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_rating_bar: ^4.0.1
   audioplayers: ^6.4.0
+  timezone: ^0.10.1
 
 dev_dependencies:
   flutter_test:

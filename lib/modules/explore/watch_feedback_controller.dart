@@ -1,5 +1,6 @@
+// ignore_for_file: empty_catches
+
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,13 @@ class WatchFeedbackController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final RxList<UploadFeedbackModel> feedbacks = <UploadFeedbackModel>[].obs;
   final RxBool isLoading = false.obs;
+
+  final Map<String, AuthModel> _userCache = {};
+
+  final Map<String, String?> _thumbnailCache = {};
+
   final Map<String, VideoPlayerController> _videoControllers = {};
+
   StreamSubscription<QuerySnapshot>? _feedbackSubscription;
 
   @override
@@ -48,13 +55,13 @@ class WatchFeedbackController extends GetxController {
           .orderBy('createdAt', descending: true)
           .get();
 
-      feedbacks.value = await Future.wait(
+      final processedFeedbacks = await Future.wait(
         snapshot.docs.map((doc) => _processFeedbackDocument(doc)),
       );
+
+      feedbacks.value = processedFeedbacks;
+      isLoading.value = false;
     } catch (e) {
-      log('Failed to fetch branch feedbacks: $e');
-      Get.snackbar('Error', 'Failed to fetch branch feedbacks');
-    } finally {
       isLoading.value = false;
     }
   }
@@ -63,12 +70,24 @@ class WatchFeedbackController extends GetxController {
       QueryDocumentSnapshot doc) async {
     final feedback =
         UploadFeedbackModel.fromMap(doc.data() as Map<String, dynamic>);
-    final thumbnail = await _getBranchThumbnail(feedback.branchId);
+
+    String? thumbnail;
+    if (_thumbnailCache.containsKey(feedback.branchId)) {
+      thumbnail = _thumbnailCache[feedback.branchId];
+    } else {
+      thumbnail = await _getBranchThumbnail(feedback.branchId);
+      _thumbnailCache[feedback.branchId] = thumbnail;
+    }
+
     return feedback.copyWith(branchThumbnail: thumbnail);
   }
 
   Future<String?> _getBranchThumbnail(String branchId) async {
     try {
+      if (_thumbnailCache.containsKey(branchId)) {
+        return _thumbnailCache[branchId];
+      }
+
       final querySnapshot = await _firestore
           .collection('restaurants')
           .where('branches.branchId', isEqualTo: branchId)
@@ -76,7 +95,10 @@ class WatchFeedbackController extends GetxController {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        return _extractThumbnailFromDoc(querySnapshot.docs.first, branchId);
+        final thumbnail =
+            _extractThumbnailFromDoc(querySnapshot.docs.first, branchId);
+        _thumbnailCache[branchId] = thumbnail;
+        return thumbnail;
       }
 
       final allRestaurants =
@@ -84,12 +106,15 @@ class WatchFeedbackController extends GetxController {
 
       for (final doc in allRestaurants.docs) {
         final thumbnail = _extractThumbnailFromDoc(doc, branchId);
-        if (thumbnail != null) return thumbnail;
+        if (thumbnail != null) {
+          _thumbnailCache[branchId] = thumbnail;
+          return thumbnail;
+        }
       }
 
+      _thumbnailCache[branchId] = null;
       return null;
     } catch (e) {
-      log('Error fetching branch thumbnail: $e');
       return null;
     }
   }
@@ -108,16 +133,30 @@ class WatchFeedbackController extends GetxController {
         final branchMap = branch as Map<String, dynamic>;
         if (branchMap['branchId'] != branchId) continue;
 
-        final thumbnail = branchMap['branchThumbnail'] as String?;
-        if (thumbnail != null) {
-          return thumbnail;
-        }
+        return branchMap['branchThumbnail'] as String?;
       }
       return null;
     } catch (e) {
-      log('Error extracting thumbnail: $e');
       return null;
     }
+  }
+
+  Map<String, int> getFeedbackCountsByBranch(String branchId) {
+    final branchFeedbacks =
+        feedbacks.where((f) => f.branchId == branchId).toList();
+
+    return {
+      'text':
+          branchFeedbacks.where((f) => f.category == 'text_feedback').length,
+      'image':
+          branchFeedbacks.where((f) => f.category == 'image_feedback').length,
+      'video':
+          branchFeedbacks.where((f) => f.category == 'video_feedback').length,
+    };
+  }
+
+  int getTotalFeedbackCountForBranch(String branchId) {
+    return feedbacks.where((f) => f.branchId == branchId).length;
   }
 
   Future<void> refreshFeedbacks() async {
@@ -135,49 +174,42 @@ class WatchFeedbackController extends GetxController {
           .limit(100)
           .get();
 
-      feedbacks.value = await Future.wait(
+      final processedFeedbacks = await Future.wait(
         snapshot.docs.map((doc) => _processFeedbackDocument(doc)),
       );
+
+      feedbacks.value = processedFeedbacks;
+      isLoading.value = false;
 
       _feedbackSubscription = _firestore
           .collection('feedback')
           .orderBy('createdAt', descending: true)
           .snapshots()
           .listen((snapshot) async {
-        feedbacks.value = await Future.wait(
+        final updatedFeedbacks = await Future.wait(
           snapshot.docs.map((doc) => _processFeedbackDocument(doc)),
         );
-        _logTextFeedbackCount();
+        feedbacks.value = updatedFeedbacks;
       });
-
-      isLoading.value = false;
     } catch (e) {
-      log('Failed to fetch feedbacks: $e');
-      Get.snackbar('Error', 'Failed to fetch feedbacks');
       isLoading.value = false;
-    }
-  }
-
-  void _logTextFeedbackCount() {
-    final currentUserId = _auth.currentUser?.uid;
-    if (currentUserId != null) {
-      final textFeedbackCount = feedbacks
-          .where(
-              (f) => f.category == 'text_feedback' && f.userId == currentUserId)
-          .length;
-      log('Number of text feedbacks by current user: $textFeedbackCount');
     }
   }
 
   Future<AuthModel?> getUserDetails(String userId) async {
+    if (_userCache.containsKey(userId)) {
+      return _userCache[userId];
+    }
+
     try {
       final doc = await _firestore.collection('email_user').doc(userId).get();
       if (doc.exists) {
-        return AuthModel.fromMap(doc.data()!);
+        final user = AuthModel.fromMap(doc.data()!);
+        _userCache[userId] = user;
+        return user;
       }
       return null;
     } catch (e) {
-      log('Error fetching user details: $e');
       return null;
     }
   }
@@ -186,6 +218,7 @@ class WatchFeedbackController extends GetxController {
     final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
     if (index != -1) {
       feedbacks[index] = feedbacks[index].copyWith(likes: newLikes);
+      update();
     }
   }
 
@@ -194,7 +227,6 @@ class WatchFeedbackController extends GetxController {
       final currentUserId = _auth.currentUser?.uid;
       if (currentUserId == null) return;
 
-      // 1. Optimistic UI update - update immediately
       final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
       if (index == -1) return;
 
@@ -215,6 +247,7 @@ class WatchFeedbackController extends GetxController {
         likes: newLikes,
         tasteCoin: newTasteCoin,
       );
+      update();
 
       final feedbackRef = _firestore.collection('feedback').doc(feedbackId);
       await feedbackRef.update({
@@ -222,8 +255,6 @@ class WatchFeedbackController extends GetxController {
         'tasteCoin': newTasteCoin,
       });
     } catch (e) {
-      log('Failed to update like: $e');
-
       final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
       if (index != -1) {
         final currentFeedback = feedbacks[index];
@@ -231,26 +262,10 @@ class WatchFeedbackController extends GetxController {
           likes: List<String>.from(currentFeedback.likes),
           tasteCoin: currentFeedback.tasteCoin,
         );
+        update();
       }
-
-      Get.snackbar('Error', 'Failed to update like');
     }
   }
-
-  // void updateLocalFeedback(
-  //     String feedbackId, List<String> likes, bool isLiked) {
-  //   final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
-  //   if (index != -1) {
-  //     final newTasteCoin = isLiked
-  //         ? (feedbacks[index].tasteCoin - 1).clamp(0, 1000000)
-  //         : feedbacks[index].tasteCoin + 1;
-
-  //     feedbacks[index] = feedbacks[index].copyWith(
-  //       likes: likes,
-  //       tasteCoin: newTasteCoin,
-  //     );
-  //   }
-  // }
 
   Future<void> addComment(String feedbackId, String commentText) async {
     try {
@@ -279,11 +294,9 @@ class WatchFeedbackController extends GetxController {
         final updatedComments = List<dynamic>.from(feedbacks[index].comments)
           ..add(newComment.toMap());
         feedbacks[index] = feedbacks[index].copyWith(comments: updatedComments);
+        update();
       }
-    } catch (e) {
-      log('Failed to add comment: $e');
-      Get.snackbar('Error', 'Failed to add comment');
-    }
+    } catch (e) {}
   }
 
   Future<void> fetchComments(String feedbackId) async {
@@ -296,11 +309,10 @@ class WatchFeedbackController extends GetxController {
         final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
         if (index != -1) {
           feedbacks[index] = feedbacks[index].copyWith(comments: comments);
+          update();
         }
       }
-    } catch (e) {
-      log('Failed to fetch comments: $e');
-    }
+    } catch (e) {}
   }
 
   bool isLikedByCurrentUser(UploadFeedbackModel feedback) {
@@ -311,21 +323,26 @@ class WatchFeedbackController extends GetxController {
   Future<void> initializeVideo(String feedbackId, String videoUrl) async {
     if (_videoControllers.containsKey(feedbackId)) return;
 
-    // ignore: deprecated_member_use
-    final controller = VideoPlayerController.network(videoUrl);
-    _videoControllers[feedbackId] = controller;
-    await controller.initialize();
+    try {
+      // ignore: deprecated_member_use
+      final controller = VideoPlayerController.network(videoUrl);
+      _videoControllers[feedbackId] = controller;
+      await controller.initialize();
+      update();
+    } catch (e) {}
   }
 
   void toggleVideoPlayback(String feedbackId) {
     final controller = _videoControllers[feedbackId];
     if (controller != null) {
       controller.value.isPlaying ? controller.pause() : controller.play();
+      update();
     }
   }
 
   bool isVideoInitialized(String feedbackId) =>
-      _videoControllers.containsKey(feedbackId);
+      _videoControllers.containsKey(feedbackId) &&
+      _videoControllers[feedbackId]!.value.isInitialized;
 
   bool isVideoPlaying(String feedbackId) =>
       _videoControllers[feedbackId]?.value.isPlaying ?? false;

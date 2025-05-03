@@ -162,21 +162,22 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
       body: Stack(
         children: [
           Positioned.fill(child: _buildMediaContent()),
-          widget.feedback.category == 'text_feedback'
-              ? Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withCustomOpacity(0.6),
-                        Colors.black.withCustomOpacity(0.3),
-                        Colors.black.withCustomOpacity(0.6),
-                      ],
-                    ),
-                  ),
-                )
-              : SizedBox.shrink(),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.transparent,
+                    Colors.black.withCustomOpacity(0.7),
+                  ],
+                  stops: [0.0, 0.6, 1.0],
+                ),
+              ),
+            ),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -190,14 +191,26 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                   ).show(context);
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                    .copyWith(bottom: 16),
-                child: SafeArea(
-                  child: UserInfoWidget(
-                    userId: widget.feedback.userId,
-                    feedback: widget.feedback,
-                    controller: controller,
+              Container(
+                padding: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withCustomOpacity(0.5),
+                    ],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: SafeArea(
+                    child: UserInfoWidget(
+                      userId: widget.feedback.userId,
+                      feedback: widget.feedback,
+                      controller: controller,
+                    ),
                   ),
                 ),
               ),

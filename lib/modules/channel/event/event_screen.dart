@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
@@ -25,49 +26,106 @@ class AllEventsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
         elevation: 0,
+        centerTitle: false,
         title: Text(
           'Events',
           style: AppTextStyles.headingStyle1.copyWith(
-              color: AppColors.textColor, fontFamily: AppFonts.sandBold),
+            color: AppColors.textColor,
+            fontFamily: AppFonts.sandBold,
+            fontSize: 28,
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search, color: AppColors.textColor),
+            onPressed: () {
+              // Implement search functionality
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.filter_list, color: AppColors.textColor),
+            onPressed: () {
+              // Implement filter functionality
+            },
+          ),
+        ],
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CupertinoActivityIndicator());
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CupertinoActivityIndicator(),
+                16.vertical,
+                Text(
+                  'Loading events...',
+                  style: AppTextStyles.regularStyle.copyWith(
+                    color: AppColors.textColor.withCustomOpacity(0.7),
+                  ),
+                ),
+              ],
+            ),
+          );
         }
 
         if (controller.event.isEmpty) {
-          return const Center(child: Text('No events found'));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.event_busy,
+                  size: 64,
+                  color: AppColors.mainColor.withCustomOpacity(0.5),
+                ),
+                16.vertical,
+                Text(
+                  'No events found',
+                  style: AppTextStyles.headingStyle.copyWith(
+                    color: AppColors.textColor,
+                  ),
+                ),
+                8.vertical,
+                Text(
+                  'Check back later for upcoming events',
+                  style: AppTextStyles.regularStyle.copyWith(
+                    color: AppColors.textColor.withCustomOpacity(0.7),
+                  ),
+                ),
+              ],
+            ),
+          );
         }
 
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              decoration: BoxDecoration(
+                color: AppColors.mainColor.withCustomOpacity(0.05),
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: Row(
                 children: [
                   Expanded(
                     child: GestureDetector(
                       onTap: () => _selectedTab.value = 0,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: _selectedTab.value == 0
-                                  ? AppColors.mainColor
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                          ),
+                          color: _selectedTab.value == 0
+                              ? AppColors.mainColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: Center(
                           child: Text(
                             "Interested",
                             style: AppTextStyles.bodyStyle.copyWith(
                               color: _selectedTab.value == 0
-                                  ? AppColors.mainColor
-                                  : AppColors.textColor.withCustomOpacity(0.5),
+                                  ? AppColors.whiteColor
+                                  : AppColors.textColor,
                               fontFamily: AppFonts.sandSemiBold,
                             ),
                           ),
@@ -79,24 +137,20 @@ class AllEventsScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => _selectedTab.value = 1,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: _selectedTab.value == 1
-                                  ? AppColors.mainColor
-                                  : Colors.transparent,
-                              width: 2,
-                            ),
-                          ),
+                          color: _selectedTab.value == 1
+                              ? AppColors.mainColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: Center(
                           child: Text(
                             "All Events",
                             style: AppTextStyles.bodyStyle.copyWith(
                               color: _selectedTab.value == 1
-                                  ? AppColors.mainColor
-                                  : AppColors.textColor.withCustomOpacity(0.5),
+                                  ? AppColors.whiteColor
+                                  : AppColors.textColor,
                               fontFamily: AppFonts.sandSemiBold,
                             ),
                           ),
@@ -120,10 +174,36 @@ class AllEventsScreen extends StatelessWidget {
 
                 if (filteredEvents.isEmpty) {
                   return Center(
-                    child: Text(
-                      _selectedTab.value == 0
-                          ? 'No interested events'
-                          : 'No events to show',
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          _selectedTab.value == 0
+                              ? Icons.favorite_border
+                              : Icons.event_note,
+                          size: 48,
+                          color: AppColors.mainColor.withCustomOpacity(0.5),
+                        ),
+                        16.vertical,
+                        Text(
+                          _selectedTab.value == 0
+                              ? 'No interested events'
+                              : 'No events to show',
+                          style: AppTextStyles.headingStyle.copyWith(
+                            color: AppColors.textColor,
+                          ),
+                        ),
+                        8.vertical,
+                        Text(
+                          _selectedTab.value == 0
+                              ? 'Mark events as interested to see them here'
+                              : 'Check back later for new events',
+                          style: AppTextStyles.regularStyle.copyWith(
+                            color: AppColors.textColor.withCustomOpacity(0.7),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   );
                 }
@@ -165,137 +245,273 @@ class EventCard extends StatelessWidget {
     required this.isInterested,
   });
 
+  String _formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) return 'TBD';
+    return DateFormat('MMM d, yyyy • h:mm a').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<EventController>();
 
     return Container(
-      height: 400,
+      height: 380,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: AppColors.mainColor.withCustomOpacity(.2),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.mainColor.withCustomOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.only(bottom: 20),
       child: Stack(
         children: [
+          // Background image
           Positioned.fill(
-            child: CachedNetworkImage(
-              imageUrl: event.branchImage,
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  const Center(child: CupertinoActivityIndicator()),
-              errorWidget: (context, url, error) =>
-                  const Center(child: Icon(Icons.error)),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 180,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36),
-                  bottomRight: Radius.circular(36),
+            child: Hero(
+              tag: 'event-image-${event.id}',
+              child: CachedNetworkImage(
+                imageUrl: event.branchImage,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  color: AppColors.mainColor.withCustomOpacity(0.1),
+                  child: const Center(child: CupertinoActivityIndicator()),
                 ),
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Colors.black.withCustomOpacity(0.7),
-                    Colors.transparent,
-                  ],
+                errorWidget: (context, url, error) => Container(
+                  color: AppColors.mainColor.withCustomOpacity(0.1),
+                  child: const Center(child: Icon(Icons.error)),
                 ),
               ),
             ),
           ),
+
+          // Gradient overlay
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withCustomOpacity(0.8),
+                    Colors.black.withCustomOpacity(0.5),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
+            ),
+          ),
+
+          // Content
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Top row with discount badge
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        '${event.discount}% OFF',
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    if (isInterested)
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withCustomOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.favorite,
+                          color: AppColors.primaryColor,
+                          size: 20,
+                        ),
+                      ),
+                  ],
+                ),
+
                 const Spacer(),
+
+                // Restaurant name
+                Text(
+                  event.restaurantName.toUpperCase(),
+                  style: AppTextStyles.regularStyle.copyWith(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+
+                8.vertical,
+
+                // Event name
                 Text(
                   event.eventName,
                   style: AppTextStyles.headingStyle1.copyWith(
                     color: AppColors.whiteColor,
                     fontFamily: AppFonts.sandSemiBold,
+                    fontSize: 24,
                   ),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                8.vertical,
+
+                16.vertical,
+
+                // Location row
                 Row(
-                  spacing: 8,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.white.withCustomOpacity(.2),
+                        color: Colors.white.withCustomOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: SvgPicture.asset(
-                        height: 18,
-                        width: 18,
+                        height: 16,
+                        width: 16,
                         fit: BoxFit.cover,
                         colorFilter: const ColorFilter.mode(
                             Colors.white, BlendMode.srcIn),
                         AppAssets.locIcon,
                       ),
                     ),
-                    Text(event.eventLocation,
-                        style: AppTextStyles.regularStyle
-                            .copyWith(color: AppColors.whiteColor))
+                    12.horizontal,
+                    Expanded(
+                      child: Text(
+                        event.eventLocation,
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor.withCustomOpacity(0.9),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
-                8.vertical,
+
+                12.vertical,
+
+                // Date/time row
                 Row(
-                  spacing: 8,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.white.withCustomOpacity(.2),
+                        color: Colors.white.withCustomOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: SvgPicture.asset(
-                        height: 18,
-                        width: 18,
+                        height: 16,
+                        width: 16,
                         fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.white, BlendMode.srcIn),
                         AppAssets.eventBold,
                       ),
                     ),
-                    Text(event.startTime.toString(),
-                        style: AppTextStyles.regularStyle
-                            .copyWith(color: AppColors.whiteColor))
+                    12.horizontal,
+                    Expanded(
+                      child: Text(
+                        _formatDateTime(event.startTime),
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor.withCustomOpacity(0.9),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
-                if (!isInterested) ...[
-                  16.vertical,
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () => controller.toggleInterest(event),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          'Interested',
-                          style: AppTextStyles.regularStyle.copyWith(
-                            color: AppColors.whiteColor,
-                            fontWeight: FontWeight.bold,
+
+                20.vertical,
+
+                // Interested button or view details
+                if (!isInterested)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => controller.toggleInterest(event),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.favorite_border,
+                                  color: AppColors.whiteColor,
+                                  size: 18,
+                                ),
+                                8.horizontal,
+                                Text(
+                                  'I\'m Interested',
+                                  style: AppTextStyles.regularStyle.copyWith(
+                                    color: AppColors.whiteColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
+                  )
+                else
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withCustomOpacity(0.2),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_forward,
+                                color: AppColors.whiteColor,
+                                size: 18,
+                              ),
+                              8.horizontal,
+                              Text(
+                                'View Details',
+                                style: AppTextStyles.regularStyle.copyWith(
+                                  color: AppColors.whiteColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
               ],
             ),
           ),

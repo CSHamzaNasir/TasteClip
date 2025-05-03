@@ -37,10 +37,7 @@ class CreateVoucherScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            leading: Icon(
-              Icons.close,
-              color: AppColors.textColor,
-            ),
+            automaticallyImplyLeading: false,
             backgroundColor: AppColors.transparent,
             elevation: 0,
             title: Text(

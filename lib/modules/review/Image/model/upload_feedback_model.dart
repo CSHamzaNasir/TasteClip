@@ -16,6 +16,10 @@ class UploadFeedbackModel {
   final String branchId;
   final String? branchThumbnail;
   final List<String> hashTags;
+  final String billImageUrl;
+  final bool isSeen;
+  final bool isApproved;
+  final List<Map<String, dynamic>> report; // New field
 
   UploadFeedbackModel({
     required this.feedbackId,
@@ -25,6 +29,7 @@ class UploadFeedbackModel {
     required this.branchName,
     required this.description,
     required this.rating,
+    required this.billImageUrl,
     this.mediaUrl,
     this.branchThumbnail,
     required this.category,
@@ -33,6 +38,9 @@ class UploadFeedbackModel {
     this.likes = const [],
     this.tasteCoin = 0,
     this.hashTags = const [],
+    this.isSeen = false,
+    this.isApproved = false,
+    this.report = const [], // Default empty list
   });
 
   UploadFeedbackModel copyWith({
@@ -51,6 +59,10 @@ class UploadFeedbackModel {
     List<String>? likes,
     int? tasteCoin,
     List<String>? hashTags,
+    String? billImageUrl,
+    bool? isSeen,
+    bool? isApproved,
+    List<Map<String, dynamic>>? report, // New copyWith field
   }) {
     return UploadFeedbackModel(
       feedbackId: feedbackId ?? this.feedbackId,
@@ -59,6 +71,7 @@ class UploadFeedbackModel {
       branchName: branchName ?? this.branchName,
       description: description ?? this.description,
       rating: rating ?? this.rating,
+      billImageUrl: billImageUrl ?? this.billImageUrl,
       mediaUrl: mediaUrl ?? this.mediaUrl,
       category: category ?? this.category,
       createdAt: createdAt ?? this.createdAt,
@@ -68,6 +81,9 @@ class UploadFeedbackModel {
       branchId: branchId ?? this.branchId,
       branchThumbnail: branchThumbnail ?? this.branchThumbnail,
       hashTags: hashTags ?? this.hashTags,
+      isSeen: isSeen ?? this.isSeen,
+      isApproved: isApproved ?? this.isApproved,
+      report: report ?? this.report,
     );
   }
 
@@ -88,6 +104,10 @@ class UploadFeedbackModel {
       'tasteCoin': tasteCoin,
       'branchId': branchId,
       'hashTags': hashTags,
+      'billImageUrl': billImageUrl,
+      'isSeen': isSeen,
+      'isApproved': isApproved,
+      'report': report,
     };
   }
 
@@ -101,6 +121,7 @@ class UploadFeedbackModel {
       branchThumbnail: map['branchThumbnail'] ?? '',
       description: map['description'] ?? '',
       rating: map['rating']?.toDouble() ?? 0.0,
+      billImageUrl: map['billImageUrl'] ?? '',
       mediaUrl: map['mediaUrl'],
       category: map['category'] ?? '',
       createdAt: map['createdAt'] is Timestamp
@@ -110,6 +131,9 @@ class UploadFeedbackModel {
       likes: List<String>.from(map['likes'] ?? []),
       tasteCoin: map['tasteCoin'] ?? 0,
       hashTags: List<String>.from(map['hashTags'] ?? []),
+      isSeen: map['isSeen'] ?? false,
+      isApproved: map['isApproved'] ?? false,
+      report: List<Map<String, dynamic>>.from(map['report'] ?? []),
     );
   }
 }
