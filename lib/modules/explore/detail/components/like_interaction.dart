@@ -35,24 +35,82 @@ class LikesInteraction extends StatefulWidget {
 
 class LikesInteractionState extends State<LikesInteraction> {
   final controller = Get.find<WatchFeedbackController>();
-  final userProfileController = Get.find<UserProfileController>();
+  final userProfileController = Get.put(UserProfileController());
 
   late Future<Map<String, int>> _feedbackCountsFuture;
   late Future<AuthModel?> _userFuture;
 
-  late bool _isLiked;
-  late int _likeCount;
-  late int _commentCount;
+  bool _isLiked = false;
+  int _likeCount = 0;
+  int _commentCount = 0;
+  bool _isLikeActionInProgress = false;
 
   @override
   void initState() {
     super.initState();
+    _initializeData();
+    controller.addListener(_updateCounts);
+
+    controller.addListener(_updateLikeState);
+  }
+
+  void _updateCounts() {
+    final updatedFeedback = controller.feedbacks.firstWhere(
+      (f) => f.feedbackId == widget.feedback.feedbackId,
+      orElse: () => widget.feedback,
+    );
+
+    if (mounted) {
+      setState(() {
+        _isLiked = controller.isLikedByCurrentUser(updatedFeedback);
+        _likeCount = updatedFeedback.likes.length;
+        _commentCount = updatedFeedback.comments.length;
+      });
+    }
+  }
+
+  void _initializeData() {
     _feedbackCountsFuture = _fetchUserFeedbackCounts(widget.feedback.userId);
     _userFuture = controller.getUserDetails(widget.feedback.userId);
 
-    _isLiked = controller.isLikedByCurrentUser(widget.feedback);
-    _likeCount = widget.feedback.likes.length;
-    _commentCount = widget.feedback.comments.length;
+    final currentFeedback = controller.feedbacks.firstWhere(
+      (f) => f.feedbackId == widget.feedback.feedbackId,
+      orElse: () => widget.feedback,
+    );
+
+    _isLiked = controller.isLikedByCurrentUser(currentFeedback);
+    _likeCount = currentFeedback.likes.length;
+    _commentCount = currentFeedback.comments.length;
+  }
+
+  @override
+  void didUpdateWidget(LikesInteraction oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.feedback.feedbackId != widget.feedback.feedbackId) {
+      _initializeData();
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_updateCounts);
+
+    controller.removeListener(_updateLikeState);
+    super.dispose();
+  }
+
+  void _updateLikeState() {
+    final updatedFeedback = controller.feedbacks.firstWhere(
+      (f) => f.feedbackId == widget.feedback.feedbackId,
+      orElse: () => widget.feedback,
+    );
+
+    if (mounted) {
+      setState(() {
+        _isLiked = controller.isLikedByCurrentUser(updatedFeedback);
+        _likeCount = updatedFeedback.likes.length;
+      });
+    }
   }
 
   Future<Map<String, int>> _fetchUserFeedbackCounts(String userId) async {
@@ -91,6 +149,157 @@ class LikesInteractionState extends State<LikesInteraction> {
         'video': 0,
       };
     }
+  }
+
+  Future<void> _handleLike() async {
+    if (_isLikeActionInProgress) return;
+    _isLikeActionInProgress = true;
+
+    final previousIsLiked = _isLiked;
+    final previousLikeCount = _likeCount;
+
+    setState(() {
+      _isLiked = !_isLiked;
+      _likeCount = _isLiked ? _likeCount + 1 : _likeCount - 1;
+    });
+
+    try {
+      await controller.toggleLike(widget.feedback.feedbackId);
+
+      // Explicitly update the taste coin value
+      final freshFeedback =
+          await controller.getFreshFeedback(widget.feedback.feedbackId);
+      if (mounted) {
+        setState(() {
+          _isLiked = controller.isLikedByCurrentUser(freshFeedback);
+          _likeCount = freshFeedback.likes.length;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLiked = previousIsLiked;
+        _likeCount = previousLikeCount;
+      });
+
+      Get.snackbar(
+        'Error',
+        'Failed to update like',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      _isLikeActionInProgress = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, int>>(
+      future: _feedbackCountsFuture,
+      builder: (context, snapshot) {
+        final counts = snapshot.data ?? {'text': 0, 'image': 0, 'video': 0};
+
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.greyColor.withCustomOpacity(.3),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              bottomLeft: Radius.circular(16),
+            ),
+          ),
+          child: Column(
+            spacing: 6,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                spacing: 6,
+                children: [
+                  GestureDetector(
+                    onTap: _handleLike,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white.withCustomOpacity(.2),
+                      ),
+                      child: SvgPicture.asset(
+                        height: 18,
+                        width: 18,
+                        fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
+                        _isLiked ? AppAssets.likeThumb : AppAssets.likeBorder,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    _likeCount.toString(),
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                  6.vertical,
+                  GestureDetector(
+                    onTap: widget.commentSheet,
+                    child: SvgPicture.asset(
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.whiteColor,
+                        BlendMode.srcIn,
+                      ),
+                      AppAssets.message,
+                    ),
+                  ),
+                  Text(
+                    _commentCount.toString(),
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                  6.vertical,
+                  GestureDetector(
+                    onTap: _showReportDialog,
+                    child: SvgPicture.asset(
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.whiteColor,
+                        BlendMode.srcIn,
+                      ),
+                      AppAssets.reportIcon,
+                    ),
+                  ),
+                  Text(
+                    "report",
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                  6.vertical,
+                  GestureDetector(
+                    onTap: () => _showInfoBottomSheet(context, counts),
+                    child: SvgPicture.asset(
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.whiteColor,
+                        BlendMode.srcIn,
+                      ),
+                      AppAssets.info,
+                    ),
+                  ),
+                  Text(
+                    "info",
+                    style: AppTextStyles.regularStyle.copyWith(
+                      color: AppColors.whiteColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _showInfoBottomSheet(BuildContext context, Map<String, int> counts) {
@@ -231,7 +440,7 @@ class LikesInteractionState extends State<LikesInteraction> {
                                     RedeemCoinScreen(feedback: widget.feedback))
                                 : Navigator.pop(context),
                             style: ElevatedButton.styleFrom(
-                              minimumSize: Size(double.infinity, 55),
+                              minimumSize: const Size(double.infinity, 55),
                               backgroundColor: AppColors.mainColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -245,7 +454,7 @@ class LikesInteractionState extends State<LikesInteraction> {
                             ),
                           ),
                         )
-                      : SizedBox.shrink()
+                      : const SizedBox.shrink()
                 ],
               ),
             );
@@ -253,131 +462,6 @@ class LikesInteractionState extends State<LikesInteraction> {
         );
       },
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, int>>(
-        future: _feedbackCountsFuture,
-        builder: (context, snapshot) {
-          final counts = snapshot.data ?? {'text': 0, 'image': 0, 'video': 0};
-
-          return Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                color: AppColors.greyColor.withCustomOpacity(.3),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
-                )),
-            child: Column(
-              spacing: 6,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  spacing: 6,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          _isLiked = !_isLiked;
-                          _likeCount =
-                              _isLiked ? _likeCount + 1 : _likeCount - 1;
-                        });
-
-                        try {
-                          await controller
-                              .toggleLike(widget.feedback.feedbackId);
-                        } catch (e) {
-                          setState(() {
-                            _isLiked = !_isLiked;
-                            _likeCount =
-                                _isLiked ? _likeCount + 1 : _likeCount - 1;
-                          });
-                          log('Error toggling like: $e');
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white.withCustomOpacity(.2),
-                        ),
-                        child: SvgPicture.asset(
-                          height: 18,
-                          width: 18,
-                          fit: BoxFit.cover,
-                          colorFilter: const ColorFilter.mode(
-                            Colors.white,
-                            BlendMode.srcIn,
-                          ),
-                          _isLiked ? AppAssets.likeThumb : AppAssets.likeBorder,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      _likeCount.toString(),
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.whiteColor,
-                      ),
-                    ),
-                    6.vertical,
-                    GestureDetector(
-                      onTap: widget.commentSheet,
-                      child: SvgPicture.asset(
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.whiteColor,
-                          BlendMode.srcIn,
-                        ),
-                        AppAssets.message,
-                      ),
-                    ),
-                    Text(
-                      _commentCount.toString(),
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.whiteColor,
-                      ),
-                    ),
-                    6.vertical,
-                    GestureDetector(
-                      onTap: _showReportDialog,
-                      child: SvgPicture.asset(
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.whiteColor,
-                          BlendMode.srcIn,
-                        ),
-                        AppAssets.reportIcon,
-                      ),
-                    ),
-                    Text(
-                      "report",
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.whiteColor,
-                      ),
-                    ),
-                    6.vertical,
-                    GestureDetector(
-                      onTap: () => _showInfoBottomSheet(context, counts),
-                      child: SvgPicture.asset(
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.whiteColor,
-                          BlendMode.srcIn,
-                        ),
-                        AppAssets.info,
-                      ),
-                    ),
-                    Text(
-                      "info",
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.whiteColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        });
   }
 
   void _showReportDialog() {
@@ -426,7 +510,7 @@ class LikesInteractionState extends State<LikesInteraction> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: AppColors.mainColor,
                   ),
                 ),
@@ -470,14 +554,12 @@ class LikesInteractionState extends State<LikesInteraction> {
                 final currentUser = FirebaseAuth.instance.currentUser;
                 if (currentUser == null) return;
 
-                // Create report data with client-side timestamp
                 final reportData = {
                   'userId': currentUser.uid,
                   'reason': reportController.text.trim(),
                   'timestamp': DateTime.now().toIso8601String(),
                 };
 
-                // First, get the current document
                 final doc = await FirebaseFirestore.instance
                     .collection('feedback')
                     .doc(widget.feedback.feedbackId)

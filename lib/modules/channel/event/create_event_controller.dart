@@ -1,14 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:tasteclip/modules/channel/event/model/event_model.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:tasteclip/modules/channel/event/model/event_model.dart';
 
 class EventController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

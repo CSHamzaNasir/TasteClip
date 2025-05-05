@@ -25,9 +25,8 @@ class RestaurantListScreen extends StatelessWidget {
         elevation: 0,
         title: Text(
           "All Restaurant",
-          style: AppTextStyles.bodyStyle.copyWith(
+          style: AppTextStyles.headingStyle1.copyWith(
             color: AppColors.textColor,
-            fontFamily: AppFonts.sandMedium,
           ),
         ),
       ),
@@ -71,6 +70,7 @@ class RestaurantCard extends StatelessWidget {
             ));
       },
       child: Container(
+        margin: EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
@@ -100,12 +100,6 @@ class RestaurantCard extends StatelessWidget {
                         color: AppColors.textColor,
                       ),
                     ),
-                    Text(
-                      "Last update 2 min ago",
-                      style: AppTextStyles.regularStyle.copyWith(
-                        color: AppColors.textColor,
-                      ),
-                    ),
                   ],
                 ),
                 const Spacer(),
@@ -122,7 +116,7 @@ class RestaurantCard extends StatelessWidget {
             ),
             16.vertical,
             Text(
-              "Total Feedback: 12",
+              "Click to check feedback",
               style: AppTextStyles.bodyStyle.copyWith(
                 color: AppColors.textColor,
                 fontFamily: AppFonts.sandMedium,

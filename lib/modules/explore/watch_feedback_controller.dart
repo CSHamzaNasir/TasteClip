@@ -1,6 +1,5 @@
-// ignore_for_file: empty_catches
-
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,7 @@ import 'package:video_player/video_player.dart';
 class WatchFeedbackController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final RxList<UploadFeedbackModel> feedbacks = <UploadFeedbackModel>[].obs;
+  RxList<UploadFeedbackModel> feedbacks = <UploadFeedbackModel>[].obs;
   final RxBool isLoading = false.obs;
 
   final Map<String, AuthModel> _userCache = {};
@@ -214,28 +213,28 @@ class WatchFeedbackController extends GetxController {
     }
   }
 
-  void updateFeedbackLike(String feedbackId, List<String> newLikes) {
-    final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
-    if (index != -1) {
-      feedbacks[index] = feedbacks[index].copyWith(likes: newLikes);
-      update();
-    }
-  }
-
   Future<void> toggleLike(String feedbackId) async {
-    try {
-      final currentUserId = _auth.currentUser?.uid;
-      if (currentUserId == null) return;
+    final currentUserId = _auth.currentUser?.uid;
+    if (currentUserId == null) return;
 
-      final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
-      if (index == -1) return;
+    final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
+    if (index == -1) return;
+
+    try {
+      final feedbackDoc =
+          await _firestore.collection('feedback').doc(feedbackId).get();
+      if (!feedbackDoc.exists) return;
 
       final currentFeedback = feedbacks[index];
-      final isLiked = currentFeedback.likes.contains(currentUserId);
-      final newLikes = List<String>.from(currentFeedback.likes);
-      final newTasteCoin = isLiked
-          ? (currentFeedback.tasteCoin - 1).clamp(0, 1000000)
-          : currentFeedback.tasteCoin + 1;
+      final serverLikes = List<String>.from(feedbackDoc.data()?['likes'] ?? []);
+      final isLiked = serverLikes.contains(currentUserId);
+
+      final newLikes = List<String>.from(serverLikes);
+      final currentTasteCoin = feedbackDoc.data()?['tasteCoin'] ?? 0;
+      final newTasteCoin =
+          isLiked ? currentTasteCoin - 1 : currentTasteCoin + 1;
+
+      final clampedTasteCoin = newTasteCoin.clamp(0, 1000000);
 
       if (isLiked) {
         newLikes.remove(currentUserId);
@@ -243,27 +242,52 @@ class WatchFeedbackController extends GetxController {
         newLikes.add(currentUserId);
       }
 
+      await feedbackDoc.reference.update({
+        'likes': newLikes,
+        'tasteCoin': clampedTasteCoin,
+      });
+
       feedbacks[index] = currentFeedback.copyWith(
         likes: newLikes,
-        tasteCoin: newTasteCoin,
+        tasteCoin: clampedTasteCoin,
       );
       update();
-
-      final feedbackRef = _firestore.collection('feedback').doc(feedbackId);
-      await feedbackRef.update({
-        'likes': newLikes,
-        'tasteCoin': newTasteCoin,
-      });
     } catch (e) {
+      log('Error toggling like: $e');
+      await refreshFeedbackData();
+      rethrow;
+    }
+  }
+
+  Future<UploadFeedbackModel> getFreshFeedback(String feedbackId) async {
+    try {
+      final doc = await _firestore.collection('feedback').doc(feedbackId).get();
+      if (!doc.exists) throw Exception('Feedback not found');
+
+      final freshFeedback = UploadFeedbackModel.fromMap(doc.data()!);
+
       final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
       if (index != -1) {
-        final currentFeedback = feedbacks[index];
-        feedbacks[index] = currentFeedback.copyWith(
-          likes: List<String>.from(currentFeedback.likes),
-          tasteCoin: currentFeedback.tasteCoin,
-        );
+        feedbacks[index] = freshFeedback;
         update();
       }
+
+      return freshFeedback;
+    } catch (e) {
+      log('Error getting fresh feedback: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> refreshFeedbackData() async {
+    try {
+      final snapshot = await _firestore.collection('feedback').get();
+      feedbacks.value = snapshot.docs
+          .map((doc) => UploadFeedbackModel.fromMap(doc.data()))
+          .toList();
+      update();
+    } catch (e) {
+      log('Error refreshing feedback data: $e');
     }
   }
 
@@ -275,6 +299,19 @@ class WatchFeedbackController extends GetxController {
       final user = await getUserDetails(currentUser.uid);
       if (user == null) return;
 
+      final feedbackDoc =
+          await _firestore.collection('feedback').doc(feedbackId).get();
+      if (!feedbackDoc.exists) return;
+
+      final existingComments =
+          (feedbackDoc.data()?['comments'] as List<dynamic>?)
+                  ?.map((e) => CommentModel.fromMap(e))
+                  .toList() ??
+              [];
+
+      final hasUserCommentedBefore =
+          existingComments.any((comment) => comment.userId == currentUser.uid);
+
       final commentId = _firestore.collection('comments').doc().id;
       final newComment = CommentModel(
         commentId: commentId,
@@ -285,18 +322,35 @@ class WatchFeedbackController extends GetxController {
         timestamp: DateTime.now(),
       );
 
+      final currentTasteCoin = feedbackDoc.data()?['tasteCoin'] ?? 0;
+      final newTasteCoin =
+          hasUserCommentedBefore ? currentTasteCoin : currentTasteCoin + 3;
+
+      // Update Firestore first
       await _firestore.collection('feedback').doc(feedbackId).update({
-        'comments': FieldValue.arrayUnion([newComment.toMap()])
+        'comments': FieldValue.arrayUnion([newComment.toMap()]),
+        'tasteCoin': newTasteCoin,
       });
 
+      // Then get the fresh state from Firestore to ensure consistency
+      final updatedDoc =
+          await _firestore.collection('feedback').doc(feedbackId).get();
+      final updatedFeedback = UploadFeedbackModel.fromMap(updatedDoc.data()!);
+
+      // Update local state with the fresh data
       final index = feedbacks.indexWhere((f) => f.feedbackId == feedbackId);
       if (index != -1) {
-        final updatedComments = List<dynamic>.from(feedbacks[index].comments)
-          ..add(newComment.toMap());
-        feedbacks[index] = feedbacks[index].copyWith(comments: updatedComments);
-        update();
+        feedbacks[index] = updatedFeedback;
       }
-    } catch (e) {}
+      update();
+    } catch (e) {
+      log('Error adding comment: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to add comment',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 
   Future<void> fetchComments(String feedbackId) async {
@@ -312,7 +366,9 @@ class WatchFeedbackController extends GetxController {
           update();
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      log("message");
+    }
   }
 
   bool isLikedByCurrentUser(UploadFeedbackModel feedback) {
@@ -329,7 +385,9 @@ class WatchFeedbackController extends GetxController {
       _videoControllers[feedbackId] = controller;
       await controller.initialize();
       update();
-    } catch (e) {}
+    } catch (e) {
+      log("message");
+    }
   }
 
   void toggleVideoPlayback(String feedbackId) {

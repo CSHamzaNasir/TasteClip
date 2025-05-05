@@ -6,13 +6,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
 
-class ChannelHomeController extends GetxController {
-  final List<Map<String, String>> mealCategories = [
-    {"image": "assets/images/breakfast.png", "title": "Breakfast"},
-    {"image": "assets/images/lunch.png", "title": "Lunch"},
-    {"image": "assets/images/dinner.png", "title": "Dinner"},
-  ];
-
+class ChannelHomeController extends GetxController { 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 

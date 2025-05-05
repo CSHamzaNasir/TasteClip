@@ -14,6 +14,7 @@ import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/home/chat_bot/welcome_screen.dart';
+import 'package:tasteclip/modules/home/components/drawer.dart';
 import 'package:tasteclip/modules/home/components/upload_visual_feedback.dart';
 import 'package:tasteclip/modules/home/home_controller.dart';
 import 'package:tasteclip/modules/profile/user_profile_controller.dart';
@@ -36,6 +37,7 @@ class HomeScreen extends StatelessWidget {
       isDefault: false,
       child: SafeArea(
         child: Scaffold(
+          drawer: HomeDrawer(),
           key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: true,
@@ -268,9 +270,8 @@ class TextFeedback extends StatelessWidget {
                   feedback: feedback,
                   feedbackScope: FeedbackScope.allFeedback,
                 )),
-            child: Container(
-              width: 80,
-              margin: const EdgeInsets.only(right: 8),
+            child: SizedBox(
+              width: 300,
               child: FeedbackItem(
                 feedback: feedback,
                 feedbackScope: FeedbackScope.allFeedback,

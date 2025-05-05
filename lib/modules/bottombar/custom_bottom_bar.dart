@@ -58,40 +58,83 @@ class CustomBottomBarState extends State<CustomBottomBar> {
               bottom: 12,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 36),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: List.generate(
-                        _selectedIcons.length,
-                        (index) => GestureDetector(
-                          onTap: () => _onItemTapped(index),
-                          child: Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: _selectedIndex == index
-                                  ? AppColors.primaryColor.withCustomOpacity(.2)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: SvgPicture.asset(
-                              height: 24,
-                              width: 24,
-                              fit: BoxFit.cover,
-                              _selectedIndex == index
-                                  ? _selectedIcons[index]
-                                  : _unselectedIcons[index],
-                              colorFilter: ColorFilter.mode(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withCustomOpacity(0.15),
+                        blurRadius: 20,
+                        spreadRadius: 0,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteColor,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: Colors.grey.withCustomOpacity(0.2),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withCustomOpacity(0.1),
+                            offset: Offset(0, 4),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                          BoxShadow(
+                            color: Colors.white.withCustomOpacity(0.7),
+                            offset: Offset(-4, -4),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: List.generate(
+                          _selectedIcons.length,
+                          (index) => GestureDetector(
+                            onTap: () => _onItemTapped(index),
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: _selectedIndex == index
+                                    ? AppColors.primaryColor
+                                        .withCustomOpacity(.2)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: _selectedIndex == index
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.primaryColor
+                                              .withCustomOpacity(0.3),
+                                          offset: Offset(0, 4),
+                                          blurRadius: 10,
+                                          spreadRadius: 2,
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              child: SvgPicture.asset(
+                                height: 24,
+                                width: 24,
+                                fit: BoxFit.cover,
                                 _selectedIndex == index
-                                    ? AppColors.mainColor
-                                    : Colors.grey,
-                                BlendMode.srcIn,
+                                    ? _selectedIcons[index]
+                                    : _unselectedIcons[index],
+                                colorFilter: ColorFilter.mode(
+                                  _selectedIndex == index
+                                      ? AppColors.mainColor
+                                      : Colors.grey,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                           ),

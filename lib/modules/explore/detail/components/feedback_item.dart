@@ -135,26 +135,183 @@ class FeedbackItem extends StatelessWidget {
                     16.vertical,
                   ],
                 )
-              : Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: _buildCachedImage(
-                        feedback.branchThumbnail!,
-                        height: 110,
-                        width: 80,
-                      ),
+              : Container(
+                  height: 118,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.mainColor.withCustomOpacity(.08),
+                        AppColors.primaryColor.withCustomOpacity(.05),
+                      ],
                     ),
-                    Positioned(
-                      bottom: -20,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: _buildProfileImage(user.profileImage),
-                      ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.primaryColor.withCustomOpacity(.15),
                     ),
-                  ],
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.mainColor.withCustomOpacity(.05),
+                        blurRadius: 8,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+                  child: Stack(
+                    children: [
+                      // Decorative element
+                      Positioned(
+                        right: -15,
+                        top: -15,
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            
+                            shape: BoxShape.circle,
+                            color:
+                                AppColors.primaryColor.withCustomOpacity(.08),
+                          ),
+                        ),
+                      ),
+                      // Main content
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.primaryColor
+                                      .withCustomOpacity(.2),
+                                  width: 2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.mainColor
+                                        .withCustomOpacity(.1),
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: ProfileImageWithShimmer(
+                                imageUrl: user.profileImage,
+                                size: 36,
+                              ),
+                            ),
+                            8.horizontal,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            user.fullName,
+                                            style: AppTextStyles.regularStyle
+                                                .copyWith(
+                                              color: AppColors.textColor,
+                                              fontFamily: AppFonts.sandBold,
+                                            ),
+                                          ),
+                                          Text(
+                                            '@${feedback.branchName}',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: false,
+                                            style: AppTextStyles.lightStyle
+                                                .copyWith(
+                                              color: AppColors.textColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.mainColor
+                                              .withCustomOpacity(.15),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Text(
+                                          controller
+                                              .formatDate(feedback.createdAt),
+                                          style:
+                                              AppTextStyles.lightStyle.copyWith(
+                                            fontSize: 10,
+                                            color: AppColors.textColor
+                                                .withCustomOpacity(.6),
+                                            fontFamily: AppFonts.sandSemiBold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.whiteColor
+                                          .withCustomOpacity(.7),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: AppColors.primaryColor
+                                            .withCustomOpacity(.1),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(6),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryColor
+                                                .withCustomOpacity(.1),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            AppAssets.message,
+                                            height: 12,
+                                            width: 12,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        8.horizontal,
+                                        Expanded(
+                                          child: Text(
+                                            feedback.description,
+                                            style: AppTextStyles.lightStyle
+                                                .copyWith(
+                                              color: AppColors.textColor,
+                                              fontFamily: AppFonts.sandSemiBold,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
         ],
       ),

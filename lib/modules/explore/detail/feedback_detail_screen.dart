@@ -32,13 +32,33 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
   late final WatchFeedbackController controller;
   late VideoPlayerController _videoController;
   bool _isVideoInitialized = false;
-
+  late int _currentTasteCoin;
+  late UploadFeedbackModel _currentFeedback;
   @override
   void initState() {
     super.initState();
-    controller = Get.find<WatchFeedbackController>();
+    controller = Get.put(WatchFeedbackController());
+    _currentFeedback = widget.feedback;
+    _currentTasteCoin = _currentFeedback.tasteCoin;
+
+    controller.addListener(_updateFeedbackState);
+
     if (widget.feedback.category == 'video_feedback') {
       _initializeVideoPlayer();
+    }
+  }
+
+  void _updateFeedbackState() {
+    final updatedFeedback = controller.feedbacks.firstWhere(
+      (f) => f.feedbackId == _currentFeedback.feedbackId,
+      orElse: () => _currentFeedback,
+    );
+
+    if (mounted && updatedFeedback != _currentFeedback) {
+      setState(() {
+        _currentFeedback = updatedFeedback;
+        _currentTasteCoin = updatedFeedback.tasteCoin;
+      });
     }
   }
 
@@ -130,7 +150,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 18.0, left: 8, right: 12),
             child: Text(
-              widget.feedback.tasteCoin.toString(),
+              _currentTasteCoin.toString(),
               style: AppTextStyles.regularStyle.copyWith(
                 color: AppColors.whiteColor,
                 fontSize: 16,
@@ -188,6 +208,18 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 commentSheet: () {
                   CommentsBottomSheet(
                     feedbackId: widget.feedback.feedbackId,
+                    onCommentAdded: () {
+                      controller
+                          .getFreshFeedback(widget.feedback.feedbackId)
+                          .then((freshFeedback) {
+                        if (mounted) {
+                          setState(() {
+                            _currentFeedback = freshFeedback;
+                            _currentTasteCoin = freshFeedback.tasteCoin;
+                          });
+                        }
+                      });
+                    },
                   ).show(context);
                 },
               ),

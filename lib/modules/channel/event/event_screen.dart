@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
@@ -35,20 +36,6 @@ class AllEventsScreen extends StatelessWidget {
             fontSize: 28,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: AppColors.textColor),
-            onPressed: () {
-              // Implement search functionality
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.filter_list, color: AppColors.textColor),
-            onPressed: () {
-              // Implement filter functionality
-            },
-          ),
-        ],
       ),
       body: Obx(() {
         if (controller.isLoading.value) {

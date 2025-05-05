@@ -30,6 +30,7 @@ class AppAssets {
   static const String likeBorder = "assets/images/like_border.svg";
   static const String chatBg = "assets/images/chat_bg.svg";
   static const String jinImage = "assets/images/jin_image.png";
+  static const String nofeedbackFound = "assets/images/no_feedback.svg";
 
   //icons
   static const String googleIcon = "assets/icons/google-icon.svg";

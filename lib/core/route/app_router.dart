@@ -9,9 +9,7 @@ import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
 import 'package:tasteclip/modules/channel/channel_home_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_screen.dart';
 import 'package:tasteclip/modules/home/home_screen.dart';
-import 'package:tasteclip/modules/home/restaurant/restaurant_list_screen.dart';
-import 'package:tasteclip/modules/notification/notification_screen.dart';
-import 'package:tasteclip/modules/profile/profile_detail/profile_detail_screen.dart';
+import 'package:tasteclip/modules/home/restaurant/restaurant_list_screen.dart'; 
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
 import 'package:tasteclip/modules/setting/legal/legal_screen.dart';
 import 'package:tasteclip/modules/setting/setting_profile_screen.dart';
@@ -44,9 +42,7 @@ class AppRouter {
   static const allRestaurantScreen = "/allRestaurantScreen";
   static const channelProfileEditScreen = "/channelProfileEditScreen";
   static const userProfileEditScreen = "/userProfileEditScreen";
-  static const profileDetailScreen = "/profileDetailScreen";
-  static const watchFeedbackScreen = "/watchFeedbackScreen";
-  static const notificationScreen = "/notificationScreen";
+  static const watchFeedbackScreen = "/watchFeedbackScreen"; 
   static const settingScreen = "/settingScreen";
   static const settingProfileScreen = "/settingProfileScreen";
   static const legalScreen = "/legalScreen";
@@ -146,23 +142,12 @@ class AppRouter {
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
-      name: profileDetailScreen,
-      page: () => ProfileDetailScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    GetPage(
       name: watchFeedbackScreen,
       page: () => WatchFeedbackScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
     ),
-    GetPage(
-      name: notificationScreen,
-      page: () => NotificationScreen(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
+ 
     GetPage(
       name: settingScreen,
       page: () => SettingScreen(),

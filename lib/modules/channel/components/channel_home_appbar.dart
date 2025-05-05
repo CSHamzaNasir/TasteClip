@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
-import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/widgets/app_feild.dart';
+import 'package:tasteclip/modules/auth/manager_auth/manager_profile/manager_profile_update.dart';
 
 class ChannelHomeAppBar extends StatelessWidget {
   final String? image;
@@ -41,11 +41,15 @@ class ChannelHomeAppBar extends StatelessWidget {
           Row(
             spacing: 16,
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundImage: image != null
-                    ? NetworkImage(image!)
-                    : AssetImage(AppAssets.branchIcon),
+              GestureDetector(
+                onTap: () => Get.to(() => UpdateBranchImageScreen()),
+                child: CircleAvatar(
+                  backgroundColor: AppColors.primaryColor,
+                  radius: 24,
+                  backgroundImage: image != null
+                      ? NetworkImage(image!)
+                      : AssetImage(AppAssets.dummyImg),
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,14 +93,14 @@ class ChannelHomeAppBar extends StatelessWidget {
               )
             ],
           ),
-          AppFeild(
-            hintText: "Search Any Feedback...",
-            isSearchField: true,
-            radius: 50,
-            height: 50,
-            prefixImage: AppAssets.search,
-            hintTextColor: AppColors.greyColor.withCustomOpacity(.6),
-          ),
+          // AppFeild(
+          //   hintText: "Search Any Feedback...",
+          //   isSearchField: true,
+          //   radius: 50,
+          //   height: 50,
+          //   prefixImage: AppAssets.search,
+          //   hintTextColor: AppColors.greyColor.withCustomOpacity(.6),
+          // ),
         ],
       ),
     );

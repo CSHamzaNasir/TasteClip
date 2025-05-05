@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class EventDetailScreen extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(left: 16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withCustomOpacity(0.3),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -67,7 +69,7 @@ class EventDetailScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(right: 16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withCustomOpacity(0.3),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -104,9 +106,9 @@ class EventDetailScreen extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.4),
-                          Colors.black.withOpacity(0.0),
-                          Colors.black.withOpacity(0.6),
+                          Colors.black.withCustomOpacity(0.4),
+                          Colors.black.withCustomOpacity(0.0),
+                          Colors.black.withCustomOpacity(0.6),
                         ],
                         stops: const [0.0, 0.5, 1.0],
                       ),
@@ -158,7 +160,7 @@ class EventDetailScreen extends StatelessWidget {
                               Shadow(
                                 offset: const Offset(0, 1),
                                 blurRadius: 3.0,
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withCustomOpacity(0.5),
                               ),
                             ],
                           ),
@@ -186,7 +188,7 @@ class EventDetailScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.mainColor.withOpacity(0.08),
+                          color: AppColors.mainColor.withCustomOpacity(0.08),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -202,7 +204,8 @@ class EventDetailScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: AppColors.mainColor.withOpacity(0.1),
+                                color:
+                                    AppColors.mainColor.withCustomOpacity(0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: SvgPicture.asset(
@@ -243,7 +246,7 @@ class EventDetailScreen extends StatelessWidget {
                                       style:
                                           AppTextStyles.regularStyle.copyWith(
                                         color: AppColors.textColor
-                                            .withOpacity(0.7),
+                                            .withCustomOpacity(0.7),
                                         fontSize: 13,
                                       ),
                                     ),
@@ -265,7 +268,8 @@ class EventDetailScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: AppColors.mainColor.withOpacity(0.1),
+                                color:
+                                    AppColors.mainColor.withCustomOpacity(0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: SvgPicture.asset(
@@ -302,8 +306,8 @@ class EventDetailScreen extends StatelessWidget {
                                   Text(
                                     '${event.branchName}, ${event.restaurantName}',
                                     style: AppTextStyles.regularStyle.copyWith(
-                                      color:
-                                          AppColors.textColor.withOpacity(0.7),
+                                      color: AppColors.textColor
+                                          .withCustomOpacity(0.7),
                                       fontSize: 13,
                                     ),
                                   ),
@@ -324,7 +328,8 @@ class EventDetailScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: AppColors.mainColor.withOpacity(0.1),
+                                color:
+                                    AppColors.mainColor.withCustomOpacity(0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -396,10 +401,10 @@ class EventDetailScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.mainColor.withOpacity(0.05),
+                      color: AppColors.mainColor.withCustomOpacity(0.05),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: AppColors.mainColor.withOpacity(0.1),
+                        color: AppColors.mainColor.withCustomOpacity(0.1),
                       ),
                     ),
                     child: Row(
@@ -408,7 +413,7 @@ class EventDetailScreen extends StatelessWidget {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: AppColors.mainColor.withOpacity(0.2),
+                            color: AppColors.mainColor.withCustomOpacity(0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Center(
@@ -440,7 +445,8 @@ class EventDetailScreen extends StatelessWidget {
                               Text(
                                 event.branchName,
                                 style: AppTextStyles.regularStyle.copyWith(
-                                  color: AppColors.textColor.withOpacity(0.7),
+                                  color: AppColors.textColor
+                                      .withCustomOpacity(0.7),
                                 ),
                               ),
                             ],
@@ -463,7 +469,7 @@ class EventDetailScreen extends StatelessWidget {
           color: AppColors.whiteColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withCustomOpacity(0.05),
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -475,7 +481,7 @@ class EventDetailScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.mainColor.withOpacity(0.1),
+                  color: AppColors.mainColor.withCustomOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -491,7 +497,7 @@ class EventDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     decoration: BoxDecoration(
                       color: isInterested
-                          ? AppColors.mainColor.withOpacity(0.1)
+                          ? AppColors.mainColor.withCustomOpacity(0.1)
                           : AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(16),
                       border: isInterested

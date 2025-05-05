@@ -42,8 +42,8 @@ class PostFeedbackScreen extends StatelessWidget {
                 body: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0)
+                          .copyWith(top: 56),
                       child: Row(
                         children: [
                           Expanded(
@@ -277,7 +277,6 @@ class PostFeedbackScreen extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              10.vertical,
                               GestureDetector(
                                 onTap: () async {
                                   await controller.pickBillImage();
@@ -337,7 +336,8 @@ class PostFeedbackScreen extends StatelessWidget {
                                                     controller.billImage.value =
                                                         null;
                                                     controller
-                                                        .updateFormCompleteness(category);
+                                                        .updateFormCompleteness(
+                                                            category);
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.all(4),
@@ -393,7 +393,6 @@ class PostFeedbackScreen extends StatelessWidget {
                                 fontSize: 14,
                               ),
                             ),
-                            8.vertical,
                             if (category == FeedbackCategory.image)
                               GestureDetector(
                                 onTap: () async {
@@ -458,7 +457,8 @@ class PostFeedbackScreen extends StatelessWidget {
                                                     controller.selectedImage
                                                         .value = null;
                                                     controller
-                                                        .updateFormCompleteness(category);
+                                                        .updateFormCompleteness(
+                                                            category);
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.all(4),
@@ -567,7 +567,8 @@ class PostFeedbackScreen extends StatelessWidget {
                                                     controller.selectedVideo
                                                         .value = null;
                                                     controller
-                                                        .updateFormCompleteness(category);
+                                                        .updateFormCompleteness(
+                                                            category);
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.all(4),

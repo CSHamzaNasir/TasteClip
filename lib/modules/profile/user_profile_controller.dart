@@ -18,10 +18,11 @@ class UserProfileController extends GetxController {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  RxString email = ''.obs;
-  RxString fullName = ''.obs;
-  RxString profileImage = ''.obs;
-  RxString userName = ''.obs;
+  final RxString uid = ''.obs;
+  final RxString fullName = ''.obs;
+  final RxString userName = ''.obs;
+  final RxString email = ''.obs;
+  final RxString profileImage = ''.obs;
 
   @override
   void onInit() {
@@ -34,7 +35,7 @@ class UserProfileController extends GetxController {
     try {
       final user = auth.currentUser;
       if (user == null) return;
- 
+
       final textCount = await firestore
           .collection('feedback')
           .where('userId', isEqualTo: user.uid)
@@ -76,10 +77,6 @@ class UserProfileController extends GetxController {
 
   void goToEditProfileScreen() {
     Get.toNamed(AppRouter.userProfileEditScreen);
-  }
-
-  void goToProfileDetailScreen() {
-    Get.toNamed(AppRouter.profileDetailScreen);
   }
 
   void goToSettingScreen() {

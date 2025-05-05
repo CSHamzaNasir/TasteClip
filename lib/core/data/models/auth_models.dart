@@ -6,12 +6,15 @@ class AuthModel {
   final String userName;
   final String email;
   final String? profileImage;
+  final String? fcmToken;
+
   AuthModel({
     required this.uid,
     required this.fullName,
     required this.userName,
     required this.email,
     this.profileImage,
+    this.fcmToken,
   });
 
   AuthModel copyWith({
@@ -20,6 +23,7 @@ class AuthModel {
     String? userName,
     String? email,
     String? profileImage,
+    String? fcmToken,
   }) {
     return AuthModel(
       uid: uid ?? this.uid,
@@ -27,6 +31,7 @@ class AuthModel {
       userName: userName ?? this.userName,
       email: email ?? this.email,
       profileImage: profileImage ?? this.profileImage,
+      fcmToken: fcmToken ?? this.fcmToken,
     );
   }
 
@@ -37,6 +42,7 @@ class AuthModel {
       'userName': userName,
       'email': email,
       'profileImage': profileImage,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -46,8 +52,8 @@ class AuthModel {
       fullName: map['fullName'] as String,
       userName: map['userName'] as String,
       email: map['email'] as String,
-      profileImage:
-          map['profileImage'] != null ? map['profileImage'] as String : null,
+      profileImage: map['profileImage'] != null ? map['profileImage'] as String : null,
+      fcmToken: map['fcmToken'] != null ? map['fcmToken'] as String : null,
     );
   }
 
@@ -58,7 +64,7 @@ class AuthModel {
 
   @override
   String toString() {
-    return 'AuthModel(uid: $uid, fullName: $fullName, userName: $userName, email: $email, profileImage: $profileImage)';
+    return 'AuthModel(uid: $uid, fullName: $fullName, userName: $userName, email: $email, profileImage: $profileImage, fcmToken: $fcmToken)';
   }
 
   @override
@@ -69,7 +75,8 @@ class AuthModel {
         other.fullName == fullName &&
         other.userName == userName &&
         other.email == email &&
-        other.profileImage == profileImage;
+        other.profileImage == profileImage &&
+        other.fcmToken == fcmToken;
   }
 
   @override
@@ -78,6 +85,7 @@ class AuthModel {
         fullName.hashCode ^
         userName.hashCode ^
         email.hashCode ^
-        profileImage.hashCode;
+        profileImage.hashCode ^
+        fcmToken.hashCode;
   }
 }

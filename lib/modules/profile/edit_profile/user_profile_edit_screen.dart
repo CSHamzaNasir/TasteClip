@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/widgets/app_background.dart';
+import 'package:tasteclip/widgets/app_feild.dart';
 import 'package:tasteclip/widgets/custom_appbar.dart';
 
 import '../../../widgets/app_button.dart';
@@ -21,7 +23,7 @@ class UserProfileEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      isLight: true,
+      isDefault: false,
       child: Scaffold(
         appBar: CustomAppBar(title: "Edit Profile"),
         body: Padding(
@@ -38,6 +40,8 @@ class UserProfileEditScreen extends StatelessWidget {
                 },
                 child: Obx(
                   () => CircleAvatar(
+                    backgroundColor:
+                        AppColors.primaryColor.withCustomOpacity(.5),
                     radius: 50,
                     backgroundImage: profileImage.value != null
                         ? FileImage(profileImage.value!)
@@ -46,48 +50,57 @@ class UserProfileEditScreen extends StatelessWidget {
                             : null),
                     child: profileImage.value == null &&
                             controller.profileImage.isEmpty
-                        ? const Icon(Icons.camera_alt, size: 50)
+                        ? Icon(Icons.account_circle_outlined,
+                            size: 50,
+                            color: AppColors.mainColor.withCustomOpacity(.8))
                         : null,
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              TextField(
+              AppFeild(
+                hintText: 'Username',
                 controller: controller.userNameController,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
-              const SizedBox(height: 16),
-              TextField(
+              AppFeild(
+                hintText: 'Full name',
                 controller: controller.fullNameController,
-                decoration: InputDecoration(
-                  labelText: 'Full name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
               const SizedBox(height: 16),
               Obx(
-                () => controller.isLoading.value
-                    ? SpinKitThreeBounce(
-                        color: AppColors.textColor,
-                        size: 25.0,
-                      )
-                    : AppButton(
-                        text: "Save",
-                        onPressed: () async {
-                          await controller.updateProfile(
-                            updatedUserName: controller.userNameController.text,
-                            updatedFullName: controller.fullNameController.text,
-                            imageFile: profileImage.value,
-                          );
-                        },
-                      ),
+                () {
+                  return controller.isLoading.value
+                      ? SpinKitThreeBounce(
+                          color: AppColors.textColor,
+                          size: 25.0,
+                        )
+                      : AppButton(
+                          text: "Save",
+                          onPressed: () async {
+                            if (controller.userNameController.text
+                                    .trim()
+                                    .isEmpty ||
+                                controller.fullNameController.text
+                                    .trim()
+                                    .isEmpty) {
+                              Get.snackbar(
+                                'Missing Fields',
+                                'Please fill in all required fields.',
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                              return;
+                            }
+
+                            await controller.updateProfile(
+                              updatedUserName:
+                                  controller.userNameController.text.trim(),
+                              updatedFullName:
+                                  controller.fullNameController.text.trim(),
+                              imageFile: profileImage.value,
+                            );
+                          });
+                },
               ),
             ],
           ),

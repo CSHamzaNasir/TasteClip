@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
 import 'package:tasteclip/modules/home/restaurant/branches/components/restaurant_branch_header.dart';
@@ -80,10 +81,17 @@ class BranchesListScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final feedback =
                                 watchFeedbackcontroller.feedbacks[index];
-                            return FeedbackItem(
-                              feedback: feedback,
-                              feedbackScope: FeedbackScope.branchFeedback,
-                              branchId: selectedBranch.value?['branchId'] ?? '',
+                            return GestureDetector(
+                              onTap: () => Get.to(() => FeedbackDetailScreen(
+                                    feedback: feedback,
+                                    feedbackScope: FeedbackScope.allFeedback,
+                                  )),
+                              child: FeedbackItem(
+                                feedback: feedback,
+                                feedbackScope: FeedbackScope.branchFeedback,
+                                branchId:
+                                    selectedBranch.value?['branchId'] ?? '',
+                              ),
                             );
                           },
                         ),

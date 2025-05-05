@@ -4,7 +4,6 @@ import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/modules/auth/splash/user_controller.dart';
-import 'package:tasteclip/modules/home/chat_bot/welcome_screen.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -52,40 +51,40 @@ class HomeDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Text feedback'),
-                // SvgPicture.asset(AppAssets.rightArrowIcon),
-              ],
-            ),
-            onTap: () {
-              // Get.to(() => CompletedOrdersScreen());
-            },
-          ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Restaurant feedback'),
-                // SvgPicture.asset(AppAssets.rightArrowIcon),
-              ],
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Find best bite'),
-                // SvgPicture.asset(AppAssets.rightArrowIcon),
-              ],
-            ),
-            onTap: () {
-              Get.to(() => const WelcomeScreen());
-            },
-          ),
+          // ListTile(
+          //   title: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text('Text feedback'),
+          //       // SvgPicture.asset(AppAssets.rightArrowIcon),
+          //     ],
+          //   ),
+          //   onTap: () {
+          //     // Get.to(() => CompletedOrdersScreen());
+          //   },
+          // ),
+          // ListTile(
+          //   title: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text('Restaurant feedback'),
+          //       // SvgPicture.asset(AppAssets.rightArrowIcon),
+          //     ],
+          //   ),
+          //   onTap: () {},
+          // ),
+          // ListTile(
+          //   title: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text('Find best bite'),
+          //       // SvgPicture.asset(AppAssets.rightArrowIcon),
+          //     ],
+          //   ),
+          //   onTap: () {
+          //     Get.to(() => const WelcomeScreen());
+          //   },
+          // ),
         ],
       ),
     );

@@ -57,6 +57,13 @@ class RestaurantBranchHeader extends StatelessWidget {
                         height: 60,
                         width: 60,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.apartment,
+                            size: 60,
+                            color: AppColors.primaryColor.withCustomOpacity(.5),
+                          );
+                        },
                       ),
                     ),
                   ),

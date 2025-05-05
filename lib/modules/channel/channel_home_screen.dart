@@ -2,14 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_enum.dart';
+import 'package:tasteclip/config/app_text_styles.dart';
+import 'package:tasteclip/config/extensions/space_extensions.dart';
+import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/modules/channel/channel_home_controller.dart';
 import 'package:tasteclip/modules/channel/components/channel_home_appbar.dart';
 import 'package:tasteclip/modules/channel/components/channel_top_widget.dart';
 import 'package:tasteclip/modules/channel/components/feedback_count.dart';
 import 'package:tasteclip/modules/channel/event/create_event_screen.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
 import 'package:tasteclip/modules/redeem/model/create_voucher_screen.dart';
 import 'package:tasteclip/widgets/app_background.dart';
@@ -68,6 +73,10 @@ class ChannelHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log((channelHomeController.textFeedbackCount.value +
+            channelHomeController.imageFeedbackCount.value +
+            channelHomeController.videoFeedbackCount.value)
+        .toString());
     log(channelHomeController.branchId);
     return AppBackground(
       isDefault: false,
@@ -96,7 +105,7 @@ class ChannelHomeScreen extends StatelessWidget {
                   },
                 ),
                 ChannelTopWidget(
-                  title: 'Event',
+                  title: '    Event   ',
                   icon: AppAssets.eventBold,
                   count: null,
                   onTap: () {
@@ -115,7 +124,35 @@ class ChannelHomeScreen extends StatelessWidget {
                     ))
               ],
             ),
-            Obx(() => Expanded(
+            Obx(() {
+              if (channelHomeController.textFeedbackCount.value +
+                      channelHomeController.imageFeedbackCount.value +
+                      channelHomeController.videoFeedbackCount.value ==
+                  0) {
+                return Center(
+                  child: Column(
+                    spacing: 16,
+                    children: [
+                      100.vertical,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: SvgPicture.asset(
+                          height: 150,
+                          AppAssets.nofeedbackFound,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Text(
+                        "No Feedback found!",
+                        style: AppTextStyles.bodyStyle.copyWith(
+                          color: AppColors.mainColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: ListView.builder(
@@ -123,15 +160,23 @@ class ChannelHomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final feedback =
                             watchFeedbackcontroller.feedbacks[index];
-                        return FeedbackItem(
-                          feedback: feedback,
-                          feedbackScope: FeedbackScope.branchFeedback,
-                          branchId: channelHomeController.branchId,
+                        return GestureDetector(
+                          onTap: () => Get.to(() => FeedbackDetailScreen(
+                                feedback: feedback,
+                                feedbackScope: FeedbackScope.allFeedback,
+                              )),
+                          child: FeedbackItem(
+                            feedback: feedback,
+                            feedbackScope: FeedbackScope.branchFeedback,
+                            branchId: channelHomeController.branchId,
+                          ),
                         );
                       },
                     ),
                   ),
-                )),
+                );
+              }
+            }),
           ],
         ),
       ),

@@ -326,28 +326,31 @@ class RedeemCoinScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                         color: isRedeeming
                             ? AppColors.textColor.withCustomOpacity(0.5)
-                            : AppColors.mainColor,
+                            : voucher.buyers.containsKey(
+                                    _controller.auth.currentUser?.uid)
+                                ? AppColors.textColor.withCustomOpacity(0.3)
+                                : AppColors.mainColor,
                       ),
                       child: Row(
                         children: [
                           Text(
-                            "Redeem ${voucher.worth}",
+                            voucher.buyers.containsKey(
+                                    _controller.auth.currentUser?.uid)
+                                ? "Already Redeemed"
+                                : "Redeem ${voucher.worth}",
                             style: AppTextStyles.regularStyle.copyWith(
                               color: AppColors.whiteColor,
                             ),
                           ),
-                          const SizedBox(width: 6),
-                          SvgPicture.asset(
-                            AppAssets.coinLogo,
-                            height: 20,
-                            width: 20,
-                            colorFilter: ColorFilter.mode(
-                              isRedeeming
-                                  ? AppColors.whiteColor.withCustomOpacity(0.7)
-                                  : AppColors.whiteColor,
-                              BlendMode.srcIn,
+                          if (!voucher.buyers.containsKey(
+                              _controller.auth.currentUser?.uid)) ...[
+                            const SizedBox(width: 6),
+                            SvgPicture.asset(
+                              AppAssets.coinLogo,
+                              height: 20,
+                              width: 20,
                             ),
-                          ),
+                          ],
                         ],
                       ),
                     ),

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
+import 'package:tasteclip/modules/auth/splash/splash_screen.dart';
 
 class UserProfileEditController extends GetxController {
   final userNameController = TextEditingController();
@@ -19,7 +20,18 @@ class UserProfileEditController extends GetxController {
   RxString userName = ''.obs;
   RxString fullName = ''.obs;
   RxString profileImage = ''.obs;
-  RxBool isLoading = false.obs; // Add this line
+  RxBool isLoading = false.obs;
+
+  RxBool get isFormValid =>
+      (userNameController.text.isNotEmpty && fullNameController.text.isNotEmpty)
+          .obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    userNameController.addListener(update);
+    fullNameController.addListener(update);
+  }
 
   Future<void> updateProfile({
     required String updatedUserName,
@@ -27,7 +39,7 @@ class UserProfileEditController extends GetxController {
     File? imageFile,
   }) async {
     try {
-      isLoading.value = true; // Set loading to true
+      isLoading.value = true;
       final user = auth.currentUser;
       if (user != null) {
         String? imageUrl;
@@ -44,7 +56,6 @@ class UserProfileEditController extends GetxController {
           'profileImage': imageUrl ?? profileImage.value,
         });
 
-        // Update local variables
         userName.value = updatedUserName;
         fullName.value = updatedFullName;
         if (imageUrl != null) profileImage.value = imageUrl;
@@ -63,6 +74,7 @@ class UserProfileEditController extends GetxController {
           margin: const EdgeInsets.all(10),
           duration: const Duration(seconds: 3),
         );
+        Get.to(() => SplashScreen());
       }
     } catch (e) {
       log('Error updating profile: $e');
@@ -75,14 +87,6 @@ class UserProfileEditController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  }
-
-  void goToEditProfile() {
-    Get.toNamed('/edit-profile');
-  }
-
-  void goToRoleScreen() {
-    Get.toNamed('/role-screen');
   }
 
   @override

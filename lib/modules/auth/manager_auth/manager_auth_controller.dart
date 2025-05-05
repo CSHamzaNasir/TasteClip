@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/route/app_router.dart';
+import 'package:tasteclip/modules/auth/manager_auth/manager_approval_screen.dart';
 import 'package:tasteclip/modules/channel/channel_home_screen.dart';
 import 'package:tasteclip/utils/app_alert.dart';
 
@@ -16,6 +17,8 @@ class ManagerAuthController extends GetxController {
   final restaurantNameController = TextEditingController();
   final branchAddressController = TextEditingController();
 
+  var isLoading = false.obs;
+
   @override
   void dispose() {
     super.dispose();
@@ -27,6 +30,7 @@ class ManagerAuthController extends GetxController {
 
   Future<void> registerManager() async {
     try {
+      isLoading.value = true;
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: businessEmailController.text.trim(),
         password: passkeyController.text.trim(),
@@ -68,14 +72,21 @@ class ManagerAuthController extends GetxController {
           isSuccess: true,
           message: "Successfully registered. Awaiting approval.",
         );
+        Get.off(() => ManagerApprovalScreen(
+              status: ManagerApprovalStatus.pending,
+            ));
       }
     } catch (e) {
       AppAlerts.showSnackbar(isSuccess: false, message: e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> loginManager() async {
     try {
+      isLoading.value = true;
+
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: businessEmailController.text.trim(),
         password: passkeyController.text.trim(),
@@ -128,14 +139,30 @@ class ManagerAuthController extends GetxController {
         auth.signOut();
         return;
       }
-      Get.off(() => ChannelHomeScreen());
 
+      int status = branchData['status'] ?? 0;
+
+      if (status == 0) {
+        Get.off(() => ManagerApprovalScreen(
+              status: ManagerApprovalStatus.pending,
+            ));
+        return;
+      } else if (status == 2) {
+        Get.off(() => ManagerApprovalScreen(
+              status: ManagerApprovalStatus.rejected,
+            ));
+        return;
+      }
+
+      Get.off(() => ChannelHomeScreen());
       AppAlerts.showSnackbar(
         isSuccess: true,
         message: "Successfully Logged In",
       );
     } catch (e) {
       AppAlerts.showSnackbar(isSuccess: false, message: e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 
