@@ -17,13 +17,13 @@ class FeedbackItem extends StatelessWidget {
   final UploadFeedbackModel feedback;
   final FeedbackScope feedbackScope;
   final String? branchId;
-  final WatchFeedbackController controller;
+  final WatchFeedbackController controller; 
 
   FeedbackItem({
     super.key,
     required this.feedback,
     required this.feedbackScope,
-    this.branchId,
+    this.branchId, 
   }) : controller = Get.find<WatchFeedbackController>();
 
   @override
@@ -161,7 +161,6 @@ class FeedbackItem extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 2, vertical: 4),
                   child: Stack(
                     children: [
-                      // Decorative element
                       Positioned(
                         right: -15,
                         top: -15,
@@ -169,14 +168,12 @@ class FeedbackItem extends StatelessWidget {
                           height: 60,
                           width: 60,
                           decoration: BoxDecoration(
-                            
                             shape: BoxShape.circle,
                             color:
                                 AppColors.primaryColor.withCustomOpacity(.08),
                           ),
                         ),
                       ),
-                      // Main content
                       Padding(
                         padding: EdgeInsets.all(16),
                         child: Row(

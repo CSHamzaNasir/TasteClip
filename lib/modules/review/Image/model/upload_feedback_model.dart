@@ -19,7 +19,7 @@ class UploadFeedbackModel {
   final String billImageUrl;
   final bool isSeen;
   final bool isApproved;
-  final List<Map<String, dynamic>> report; // New field
+  final List<Map<String, dynamic>> report; 
 
   UploadFeedbackModel({
     required this.feedbackId,
@@ -40,7 +40,7 @@ class UploadFeedbackModel {
     this.hashTags = const [],
     this.isSeen = false,
     this.isApproved = false,
-    this.report = const [], // Default empty list
+    this.report = const [], 
   });
 
   UploadFeedbackModel copyWith({
@@ -62,7 +62,7 @@ class UploadFeedbackModel {
     String? billImageUrl,
     bool? isSeen,
     bool? isApproved,
-    List<Map<String, dynamic>>? report, // New copyWith field
+    List<Map<String, dynamic>>? report, 
   }) {
     return UploadFeedbackModel(
       feedbackId: feedbackId ?? this.feedbackId,

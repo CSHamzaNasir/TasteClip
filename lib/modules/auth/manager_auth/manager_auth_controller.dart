@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/core/route/app_router.dart';
-import 'package:tasteclip/modules/auth/manager_auth/manager_approval_screen.dart';
+import 'package:tasteclip/modules/auth/manager_auth/approval/manager_approval_screen.dart'; 
 import 'package:tasteclip/modules/channel/channel_home_screen.dart';
 import 'package:tasteclip/utils/app_alert.dart';
 
@@ -46,6 +46,7 @@ class ManagerAuthController extends GetxController {
         "status": 0,
         "branchThumbnail": "",
         "channelName": "",
+        "rejectionMessage": "",
         "createdAt": DateTime.now(),
       };
 

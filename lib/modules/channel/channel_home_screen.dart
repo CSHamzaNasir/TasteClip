@@ -13,6 +13,7 @@ import 'package:tasteclip/modules/channel/components/channel_home_appbar.dart';
 import 'package:tasteclip/modules/channel/components/channel_top_widget.dart';
 import 'package:tasteclip/modules/channel/components/feedback_count.dart';
 import 'package:tasteclip/modules/channel/event/create_event_screen.dart';
+import 'package:tasteclip/modules/channel/report/manager_report_screen.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
@@ -112,16 +113,26 @@ class ChannelHomeScreen extends StatelessWidget {
                     Get.to(() => CreateEventScreen());
                   },
                 ),
-                Obx(() => ChannelTopWidget(
-                      title: 'Feedback',
-                      icon: AppAssets.branchIcon,
-                      count: channelHomeController.textFeedbackCount.value +
-                          channelHomeController.imageFeedbackCount.value +
-                          channelHomeController.videoFeedbackCount.value,
-                      onTap: () {
-                        _openFeedbackBottomSheet(context);
-                      },
-                    ))
+                Obx(
+                  () => ChannelTopWidget(
+                    title: 'Feedback',
+                    icon: AppAssets.branchIcon,
+                    count: channelHomeController.textFeedbackCount.value +
+                        channelHomeController.imageFeedbackCount.value +
+                        channelHomeController.videoFeedbackCount.value,
+                    onTap: () {
+                      _openFeedbackBottomSheet(context);
+                    },
+                  ),
+                ),
+                ChannelTopWidget(
+                  title: 'Support',
+                  icon: AppAssets.supportIcon,
+                  count: null,
+                  onTap: () {
+                    Get.to(() => ManagerReportsScreen());
+                  },
+                ),
               ],
             ),
             Obx(() {
@@ -162,6 +173,7 @@ class ChannelHomeScreen extends StatelessWidget {
                             watchFeedbackcontroller.feedbacks[index];
                         return GestureDetector(
                           onTap: () => Get.to(() => FeedbackDetailScreen(
+                                userRole: UserRole.manager,
                                 feedback: feedback,
                                 feedbackScope: FeedbackScope.allFeedback,
                               )),

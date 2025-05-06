@@ -6,7 +6,7 @@ import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
 import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
 import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
-import 'package:tasteclip/modules/home/restaurant/branches/branch_detail/branch_detail_controller.dart';
+import 'package:tasteclip/modules/home/restaurant/branches/branch_detail_controller.dart'; 
 import 'package:tasteclip/modules/home/restaurant/branches/components/restaurant_branch_header.dart';
 import 'package:tasteclip/widgets/app_background.dart';
 

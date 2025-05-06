@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// ignore: depend_on_referenced_packages
+
 import 'package:intl/intl.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:tasteclip/config/app_assets.dart';
@@ -257,7 +257,7 @@ class EventCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 20),
       child: Stack(
         children: [
-          // Background image
+          
           Positioned.fill(
             child: Hero(
               tag: 'event-image-${event.id}',
@@ -276,7 +276,7 @@ class EventCard extends StatelessWidget {
             ),
           ),
 
-          // Gradient overlay
+          
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -294,13 +294,13 @@ class EventCard extends StatelessWidget {
             ),
           ),
 
-          // Content
+          
           Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top row with discount badge
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -337,7 +337,7 @@ class EventCard extends StatelessWidget {
 
                 const Spacer(),
 
-                // Restaurant name
+                
                 Text(
                   event.restaurantName.toUpperCase(),
                   style: AppTextStyles.regularStyle.copyWith(
@@ -349,7 +349,7 @@ class EventCard extends StatelessWidget {
 
                 8.vertical,
 
-                // Event name
+                
                 Text(
                   event.eventName,
                   style: AppTextStyles.headingStyle1.copyWith(
@@ -363,7 +363,7 @@ class EventCard extends StatelessWidget {
 
                 16.vertical,
 
-                // Location row
+                
                 Row(
                   children: [
                     Container(
@@ -397,7 +397,7 @@ class EventCard extends StatelessWidget {
 
                 12.vertical,
 
-                // Date/time row
+                
                 Row(
                   children: [
                     Container(
@@ -431,7 +431,7 @@ class EventCard extends StatelessWidget {
 
                 20.vertical,
 
-                // Interested button or view details
+                
                 if (!isInterested)
                   Row(
                     children: [

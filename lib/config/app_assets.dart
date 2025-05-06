@@ -33,15 +33,11 @@ class AppAssets {
   static const String nofeedbackFound = "assets/images/no_feedback.svg";
 
   //icons
-  static const String googleIcon = "assets/icons/google-icon.svg";
-  static const String mailIcon = "assets/icons/mail-icon.svg";
+  static const String googleIcon = "assets/icons/google-icon.svg"; 
   static const String errorIcon = "assets/icons/error-icon.svg";
   static const String successIcon = "assets/icons/success-icon.svg";
-  static const String guestIcon = "assets/icons/guest-icon.svg";
-  static const String fileIcon = "assets/icons/file.png";
-  static const String imageIcon = "assets/icons/image.png";
-  static const String videoIcon = "assets/icons/video.png";
-  static const String shineStar = "assets/icons/multiplestar.png";
+  static const String guestIcon = "assets/icons/guest-icon.svg"; 
+  static const String imageIcon = "assets/icons/image.png";  
   static const String filterIcon = "assets/icons/filter-icon.svg";
   static const String homeBold = "assets/icons/home-bold.svg";
   static const String eventBold = "assets/icons/event-bold.svg";
@@ -82,4 +78,6 @@ class AppAssets {
   static const String branchRegIcon = "assets/icons/branch_reg.svg";
   static const String branchBoldIcon = "assets/icons/branch_bold.svg";
   static const String reportIcon = "assets/icons/report_icon.svg";
+  static const String billIcon = "assets/icons/bill_icon.svg";
+  static const String supportIcon = "assets/icons/support_chat.svg";
 }

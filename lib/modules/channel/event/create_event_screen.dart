@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
+
 
 import 'dart:io';
 
@@ -204,7 +204,7 @@ class CreateEventScreen extends StatelessWidget {
                                 initialTime: TimeOfDay.now(),
                               );
                               if (time != null) {
-                                // Store the time in 24-hour format to avoid parsing issues
+                                
                                 _controller.startTimeController.text =
                                     '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                               }

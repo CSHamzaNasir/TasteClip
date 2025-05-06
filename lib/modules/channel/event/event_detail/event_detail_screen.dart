@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +46,7 @@ class EventDetailScreen extends StatelessWidget {
       backgroundColor: AppColors.whiteColor,
       body: CustomScrollView(
         slivers: [
-          // App Bar with Image
+          
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
@@ -78,7 +78,7 @@ class EventDetailScreen extends StatelessWidget {
                     color: AppColors.whiteColor,
                   ),
                   onPressed: () {
-                    // Share functionality
+                    
                   },
                 ),
               ),
@@ -87,7 +87,7 @@ class EventDetailScreen extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Event Image
+                  
                   Hero(
                     tag: 'event-image-${event.id}',
                     child: CachedNetworkImage(
@@ -99,7 +99,7 @@ class EventDetailScreen extends StatelessWidget {
                           const Center(child: Icon(Icons.error)),
                     ),
                   ),
-                  // Gradient Overlay
+                  
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -114,7 +114,7 @@ class EventDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Bottom content
+                  
                   Positioned(
                     bottom: 20,
                     left: 20,
@@ -122,7 +122,7 @@ class EventDetailScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Discount badge
+                        
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
@@ -139,7 +139,7 @@ class EventDetailScreen extends StatelessWidget {
                           ),
                         ),
                         12.vertical,
-                        // Restaurant name
+                        
                         Text(
                           event.restaurantName.toUpperCase(),
                           style: AppTextStyles.regularStyle.copyWith(
@@ -149,7 +149,7 @@ class EventDetailScreen extends StatelessWidget {
                           ),
                         ),
                         8.vertical,
-                        // Event name
+                        
                         Text(
                           event.eventName,
                           style: AppTextStyles.headingStyle1.copyWith(
@@ -173,14 +173,14 @@ class EventDetailScreen extends StatelessWidget {
             ),
           ),
 
-          // Content
+          
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Event Details Card
+                  
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -197,7 +197,7 @@ class EventDetailScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Date and Time
+                        
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -261,7 +261,7 @@ class EventDetailScreen extends StatelessWidget {
                         const Divider(),
                         16.vertical,
 
-                        // Location
+                        
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -321,7 +321,7 @@ class EventDetailScreen extends StatelessWidget {
                         const Divider(),
                         16.vertical,
 
-                        // Interested Users
+                        
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -368,7 +368,7 @@ class EventDetailScreen extends StatelessWidget {
 
                   24.vertical,
 
-                  // About this event
+                  
                   Text(
                     "About this event",
                     style: AppTextStyles.bodyStyle.copyWith(
@@ -388,7 +388,7 @@ class EventDetailScreen extends StatelessWidget {
 
                   24.vertical,
 
-                  // Hosted by
+                  
                   Text(
                     "Hosted by",
                     style: AppTextStyles.bodyStyle.copyWith(

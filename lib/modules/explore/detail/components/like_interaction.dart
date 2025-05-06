@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
@@ -24,8 +26,10 @@ class LikesInteraction extends StatefulWidget {
     required this.feedback,
     required this.feedbackScope,
     required this.commentSheet,
+    this.userRole,
   });
   final FeedbackScope feedbackScope;
+  final UserRole? userRole;
   final UploadFeedbackModel feedback;
   final VoidCallback commentSheet;
 
@@ -166,7 +170,6 @@ class LikesInteractionState extends State<LikesInteraction> {
     try {
       await controller.toggleLike(widget.feedback.feedbackId);
 
-      // Explicitly update the taste coin value
       final freshFeedback =
           await controller.getFreshFeedback(widget.feedback.feedbackId);
       if (mounted) {
@@ -261,17 +264,21 @@ class LikesInteractionState extends State<LikesInteraction> {
                   ),
                   6.vertical,
                   GestureDetector(
-                    onTap: _showReportDialog,
+                    onTap: widget.userRole == UserRole.manager
+                        ? showBillDialog
+                        : _showReportDialog,
                     child: SvgPicture.asset(
                       colorFilter: const ColorFilter.mode(
                         AppColors.whiteColor,
                         BlendMode.srcIn,
                       ),
-                      AppAssets.reportIcon,
+                      widget.userRole == UserRole.manager
+                          ? AppAssets.billIcon
+                          : AppAssets.reportIcon,
                     ),
                   ),
                   Text(
-                    "report",
+                    widget.userRole == UserRole.manager ? "Bill" : "Report",
                     style: AppTextStyles.regularStyle.copyWith(
                       color: AppColors.whiteColor,
                     ),
@@ -288,7 +295,7 @@ class LikesInteractionState extends State<LikesInteraction> {
                     ),
                   ),
                   Text(
-                    "info",
+                    "Info",
                     style: AppTextStyles.regularStyle.copyWith(
                       color: AppColors.whiteColor,
                     ),
@@ -558,6 +565,8 @@ class LikesInteractionState extends State<LikesInteraction> {
                   'userId': currentUser.uid,
                   'reason': reportController.text.trim(),
                   'timestamp': DateTime.now().toIso8601String(),
+                  'status': ReportStatus.pending.toString(),
+                  'sender': UserRole.manager.value
                 };
 
                 final doc = await FirebaseFirestore.instance
@@ -604,6 +613,180 @@ class LikesInteractionState extends State<LikesInteraction> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void showBillDialog() {
+    final reportController = TextEditingController();
+    bool isReporting = false;
+
+    Get.dialog(
+      StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: AppColors.textColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(
+              isReporting ? 'Report Feedback' : 'Branch Bill',
+              style: AppTextStyles.boldBodyStyle.copyWith(
+                color: AppColors.whiteColor,
+              ),
+            ),
+            content: isReporting
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Please specify the reason for reporting this feedback',
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor.withCustomOpacity(0.8),
+                        ),
+                      ),
+                      16.vertical,
+                      TextField(
+                        controller: reportController,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          hintText: 'Enter reason...',
+                          hintStyle: AppTextStyles.regularStyle.copyWith(
+                            color: AppColors.whiteColor.withCustomOpacity(0.5),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color:
+                                  AppColors.whiteColor.withCustomOpacity(0.3),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color:
+                                  AppColors.whiteColor.withCustomOpacity(0.3),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: AppColors.mainColor,
+                            ),
+                          ),
+                        ),
+                        style: AppTextStyles.regularStyle.copyWith(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ],
+                  )
+                : CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: widget.feedback.billImageUrl,
+                    placeholder: (context, url) => const Center(
+                        child: CupertinoActivityIndicator(
+                      color: AppColors.whiteColor,
+                    )),
+                    errorWidget: (context, url, error) => Center(
+                        child: Icon(
+                      Icons.error,
+                      color: AppColors.whiteColor,
+                    )),
+                  ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Text(
+                  'Cancel',
+                  style: AppTextStyles.regularStyle.copyWith(
+                    color: AppColors.whiteColor,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.mainColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () async {
+                  if (isReporting) {
+                    if (reportController.text.trim().isEmpty) {
+                      Get.snackbar(
+                        'Error',
+                        'Please enter a reason for reporting',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                      return;
+                    }
+
+                    try {
+                      final currentUser = FirebaseAuth.instance.currentUser;
+                      if (currentUser == null) return;
+
+                      final reportData = {
+                        'userId': currentUser.uid,
+                        'reason': reportController.text.trim(),
+                        'timestamp': DateTime.now().toIso8601String(),
+                        'status': ReportStatus.pending.toString(),
+                        'sender': UserRole.manager.value
+                      };
+
+                      final doc = await FirebaseFirestore.instance
+                          .collection('feedback')
+                          .doc(widget.feedback.feedbackId)
+                          .get();
+
+                      final List<dynamic> existingReports =
+                          doc.data()?['report'] ?? [];
+
+                      existingReports.add(reportData);
+
+                      await FirebaseFirestore.instance
+                          .collection('feedback')
+                          .doc(widget.feedback.feedbackId)
+                          .update({
+                        'report': existingReports,
+                      });
+
+                      Get.back();
+                      Get.snackbar(
+                        'Success',
+                        'Report submitted successfully',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.green,
+                        colorText: Colors.white,
+                      );
+                    } catch (e) {
+                      log('Error submitting report: $e');
+                      Get.snackbar(
+                        'Error',
+                        'Failed to submit report',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                    }
+                  } else {
+                    setState(() {
+                      isReporting = true;
+                    });
+                  }
+                },
+                child: Text(
+                  isReporting ? 'Submit' : 'Report',
+                  style: AppTextStyles.boldBodyStyle.copyWith(
+                    color: AppColors.whiteColor,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

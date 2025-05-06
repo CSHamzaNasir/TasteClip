@@ -9,6 +9,17 @@ enum FeedbackCategory {
   video,
 }
 
+extension UserRoleExtension on UserRole {
+  String get value {
+    switch (this) {
+      case UserRole.user:
+        return 'user';
+      case UserRole.manager:
+        return 'manager';
+    }
+  }
+}
+
 enum FeedbackScope {
   branchFeedback,
   allFeedback,
@@ -32,4 +43,9 @@ extension FeedbackCategoryExtension on FeedbackCategory {
 enum FeedImageStoryHome {
   yes,
   no,
+}
+
+enum ReportStatus {
+  pending,
+  solved,
 }

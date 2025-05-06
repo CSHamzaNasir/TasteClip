@@ -17,7 +17,8 @@ class CommentsBottomSheet extends StatefulWidget {
 
   const CommentsBottomSheet({
     super.key,
-    required this.feedbackId, this.onCommentAdded,
+    required this.feedbackId,
+    this.onCommentAdded,
   });
 
   Future<T?> show<T>(BuildContext context) {
@@ -40,8 +41,9 @@ class CommentsBottomSheet extends StatefulWidget {
 }
 
 class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
-   final TextEditingController _commentController = TextEditingController();
-  final WatchFeedbackController _controller = Get.find<WatchFeedbackController>();
+  final TextEditingController _commentController = TextEditingController();
+  final WatchFeedbackController _controller =
+      Get.find<WatchFeedbackController>();
   late UploadFeedbackModel _feedback;
   final FocusNode _commentFocusNode = FocusNode();
 
@@ -87,24 +89,22 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     }
   }
 
- // In _CommentsBottomSheetState's _addComment method:
-Future<void> _addComment() async {
-  if (_commentController.text.trim().isEmpty) return;
+  Future<void> _addComment() async {
+    if (_commentController.text.trim().isEmpty) return;
 
-  await _controller.addComment(
-    widget.feedbackId,
-    _commentController.text.trim(),
-  );
-  _commentController.clear();
-  
-  if (widget.onCommentAdded != null) {
-    widget.onCommentAdded!();
+    await _controller.addComment(
+      widget.feedbackId,
+      _commentController.text.trim(),
+    );
+    _commentController.clear();
+
+    if (widget.onCommentAdded != null) {
+      widget.onCommentAdded!();
+    }
+
+    // ignore: use_build_context_synchronously
+    FocusScope.of(context).unfocus();
   }
-  
-  // Close the keyboard after submitting
-  // ignore: use_build_context_synchronously
-  FocusScope.of(context).unfocus();
-}
 
   @override
   Widget build(BuildContext context) {

@@ -20,9 +20,13 @@ import 'package:video_player/video_player.dart';
 class FeedbackDetailScreen extends StatefulWidget {
   final UploadFeedbackModel feedback;
   final FeedbackScope feedbackScope;
+  final UserRole? userRole;
 
   const FeedbackDetailScreen(
-      {super.key, required this.feedback, required this.feedbackScope});
+      {super.key,
+      required this.feedback,
+      required this.feedbackScope,
+      this.userRole});
 
   @override
   State<FeedbackDetailScreen> createState() => _FeedbackDetailScreenState();
@@ -203,6 +207,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
             children: [
               const Spacer(),
               LikesInteraction(
+                userRole: widget.userRole,
                 feedback: widget.feedback,
                 feedbackScope: widget.feedbackScope,
                 commentSheet: () {
