@@ -93,6 +93,7 @@ class HomeScreen extends StatelessWidget {
                       return TextFeedback();
                     }),
                   ),
+                  8.vertical,
                   UploadVisualFeedback(),
                   Expanded(
                     child: Obx(() {

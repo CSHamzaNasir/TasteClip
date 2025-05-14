@@ -91,16 +91,11 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ),
                 16.horizontal,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      restaurant['restaurantName'],
-                      style: AppTextStyles.boldBodyStyle.copyWith(
-                        color: AppColors.textColor,
-                      ),
-                    ),
-                  ],
+                Text(
+                  restaurant['restaurantName'],
+                  style: AppTextStyles.boldBodyStyle.copyWith(
+                    color: AppColors.textColor,
+                  ),
                 ),
                 const Spacer(),
                 SvgPicture.asset(

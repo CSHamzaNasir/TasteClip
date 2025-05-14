@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/core/route/app_router.dart';
 import 'package:tasteclip/utils/app_alert.dart';
 
-class ChannelHomeController extends GetxController { 
+class ChannelHomeController extends GetxController {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -22,7 +22,6 @@ class ChannelHomeController extends GetxController {
     fetchInitialData();
   }
 
-// Add these to your ChannelHomeController
   var textFeedbackCount = 0.obs;
   var imageFeedbackCount = 0.obs;
   var videoFeedbackCount = 0.obs;
@@ -62,12 +61,11 @@ class ChannelHomeController extends GetxController {
     }
   }
 
-// Call this in your fetchInitialData method
   Future<void> fetchInitialData() async {
     try {
       isLoading(true);
       await fetchManagerData();
-      await fetchFeedbackCounts(); // Add this line
+      await fetchFeedbackCounts();
     } catch (e) {
       AppAlerts.showSnackbar(
           isSuccess: false, message: "Failed to load data: $e");

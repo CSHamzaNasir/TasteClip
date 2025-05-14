@@ -17,13 +17,13 @@ class FeedbackItem extends StatelessWidget {
   final UploadFeedbackModel feedback;
   final FeedbackScope feedbackScope;
   final String? branchId;
-  final WatchFeedbackController controller; 
+  final WatchFeedbackController controller;
 
   FeedbackItem({
     super.key,
     required this.feedback,
     required this.feedbackScope,
-    this.branchId, 
+    this.branchId,
   }) : controller = Get.find<WatchFeedbackController>();
 
   @override
@@ -132,11 +132,10 @@ class FeedbackItem extends StatelessWidget {
                         fontFamily: AppFonts.sandSemiBold,
                       ),
                     ),
-                    16.vertical,
                   ],
                 )
               : Container(
-                  height: 118,
+                  height: 130,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
