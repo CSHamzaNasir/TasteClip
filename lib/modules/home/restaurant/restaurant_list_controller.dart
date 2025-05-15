@@ -35,7 +35,7 @@ class RestaurantListController extends GetxController {
           "restaurantId": doc.id,
           "restaurantName": doc['restaurantName'] ?? 'Unknown Restaurant',
           "branches": doc['branches'] ?? [],
-          "branchAddress": doc['branchAddress'] ?? ["Branch Address"],
+          // "branchAddress": doc['branchAddress'] ?? ["Branch Address"],
         };
       }).toList());
     } catch (e) {

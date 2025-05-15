@@ -30,7 +30,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
   List<Map<String, dynamic>> _branches = [];
   List<Map<String, dynamic>> _filteredBranches = [];
   String? _selectedBranch;
-  String? _selectedBranchId; // Add this to store branchId
+  String? _selectedBranchId; 
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -48,7 +48,7 @@ class SelectBranchSheetImageState extends State<SelectBranchSheetImage> {
               .map((branch) => {
                     'name': branch['branchAddress'],
                     'id': branch[
-                        'branchId'], // Assuming you have branchId in your document
+                        'branchId'],  
                   })
               .toList();
           _filteredBranches = List.from(_branches);
