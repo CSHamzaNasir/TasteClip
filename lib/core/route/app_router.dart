@@ -1,25 +1,25 @@
 import 'package:get/get.dart';
-import 'package:tasteclip/modules/auth/change_password/forget_password_screen.dart';
-import 'package:tasteclip/modules/auth/email/login_screen.dart';
-import 'package:tasteclip/modules/auth/manager_auth/manager_auth_screen.dart';
-import 'package:tasteclip/modules/auth/manager_auth/manager_login_screen.dart';
+import 'package:tasteclip/modules/auth/manager_auth/screens/forget_password_screen.dart';
+import 'package:tasteclip/modules/auth/user_auth/screens/login_screen.dart';
+import 'package:tasteclip/modules/auth/manager_auth/screens/manager_auth_screen.dart';
+import 'package:tasteclip/modules/auth/manager_auth/screens/manager_login_screen.dart';
 import 'package:tasteclip/modules/auth/role/role_screen.dart';
-import 'package:tasteclip/modules/auth/splash/splash_screen.dart';
-import 'package:tasteclip/modules/auth/user_auth/user_auth_screen.dart';
-import 'package:tasteclip/modules/channel/channel_home_screen.dart';
-import 'package:tasteclip/modules/explore/watch_feedback_screen.dart';
-import 'package:tasteclip/modules/home/home_screen.dart';
-import 'package:tasteclip/modules/home/restaurant/restaurant_list_screen.dart'; 
+import 'package:tasteclip/modules/auth/splash/screens/splash_screen.dart';
+import 'package:tasteclip/modules/auth/user_auth/screens/user_auth_screen.dart';
+import 'package:tasteclip/modules/channel/screens/channel_home_screen.dart';
+import 'package:tasteclip/modules/explore/screens/watch_feedback_screen.dart';
+import 'package:tasteclip/modules/home/screens/home_screen.dart';
+import 'package:tasteclip/modules/home/modules/restaurant/screens/restaurant_list_screen.dart'; 
 import 'package:tasteclip/modules/profile/user_profile_screen.dart';
-import 'package:tasteclip/modules/setting/legal/legal_screen.dart';
-import 'package:tasteclip/modules/setting/setting_profile_screen.dart';
-import 'package:tasteclip/modules/setting/setting_screen.dart';
+import 'package:tasteclip/modules/setting/screens/legal_screen.dart';
+import 'package:tasteclip/modules/setting/screens/setting_profile_screen.dart';
+import 'package:tasteclip/modules/setting/screens/setting_screen.dart';
 
-import '../../modules/auth/email/register_screen.dart';
-import '../../modules/auth/manager_auth/manager_register_screen.dart';
-import '../../modules/auth/splash/onboarding/onboarding_screen.dart';
-import '../../modules/channel/edit_profile/channel_profile_edit_screen.dart';
-import '../../modules/profile/edit_profile/user_profile_edit_screen.dart';
+import '../../modules/auth/user_auth/screens/register_screen.dart';
+import '../../modules/auth/manager_auth/screens/manager_register_screen.dart';
+import '../../modules/auth/splash/screens/onboarding_screen.dart';
+import '../../modules/channel/screens/channel_profile_edit_screen.dart';
+import '../../modules/profile/screens/user_profile_edit_screen.dart';
 
 class AppRouter {
   static const splashScreen = "/splashScreen";

@@ -6,7 +6,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:tasteclip/core/data/models/auth_models.dart';
 import 'package:tasteclip/core/domain/repositories/auth_repository.dart';
-import 'package:tasteclip/modules/bottombar/custom_bottom_bar.dart';
+import 'package:tasteclip/modules/bottombar/components/custom_bottom_bar.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/modules/auth/splash/user_controller.dart';
+import 'package:tasteclip/modules/auth/splash/controller/local_user_controller.dart';
 import 'package:tasteclip/utils/text_shimmer.dart';
 
 class HomeDrawer extends StatelessWidget {

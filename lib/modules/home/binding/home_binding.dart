@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:tasteclip/modules/auth/splash/user_controller.dart';
-import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
-import 'package:tasteclip/modules/home/home_controller.dart';
+import 'package:tasteclip/modules/auth/splash/controller/local_user_controller.dart';
+import 'package:tasteclip/modules/explore/controllers/watch_feedback_controller.dart';
+import 'package:tasteclip/modules/home/controllers/home_controller.dart';
 
 class HomeBinding extends Bindings {
   @override

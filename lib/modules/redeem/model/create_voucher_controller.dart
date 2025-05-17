@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasteclip/modules/redeem/model/voucher_model.dart';
-import 'package:tasteclip/modules/review/Image/model/upload_feedback_model.dart';
+import 'package:tasteclip/modules/feedback/model/upload_feedback_model.dart';
 
 class VoucherController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

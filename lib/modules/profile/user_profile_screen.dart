@@ -9,11 +9,11 @@ import 'package:tasteclip/config/app_enum.dart';
 import 'package:tasteclip/config/extensions/space_extensions.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
 import 'package:tasteclip/core/data/models/auth_models.dart';
-import 'package:tasteclip/modules/explore/detail/components/feedback_item.dart';
-import 'package:tasteclip/modules/explore/detail/feedback_detail_screen.dart';
-import 'package:tasteclip/modules/explore/watch_feedback_controller.dart';
-import 'package:tasteclip/modules/profile/edit_profile/user_profile_edit_screen.dart';
-import 'package:tasteclip/modules/profile/user_profile_controller.dart';
+import 'package:tasteclip/modules/explore/components/feedback_item.dart';
+import 'package:tasteclip/modules/explore/controllers/watch_feedback_controller.dart';
+import 'package:tasteclip/modules/explore/screens/feedback_detail_screen.dart';
+import 'package:tasteclip/modules/profile/controllers/user_profile_controller.dart';
+import 'package:tasteclip/modules/profile/screens/user_profile_edit_screen.dart';
 import 'package:tasteclip/utils/text_shimmer.dart' as shimmer_widgets;
 import 'package:tasteclip/widgets/app_background.dart';
 import 'package:tasteclip/widgets/app_button.dart';
@@ -194,11 +194,14 @@ class UserProfileScreen extends StatelessWidget {
                                     feedbackScope:
                                         FeedbackScope.currentUserFeedback,
                                   )),
-                              child: SizedBox(
-                                width: 300,
-                                child: FeedbackItem(
-                                  feedback: feedback,
-                                  feedbackScope: FeedbackScope.allFeedback,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: SizedBox(
+                                  width: 300,
+                                  child: FeedbackItem(
+                                    feedback: feedback,
+                                    feedbackScope: FeedbackScope.allFeedback,
+                                  ),
                                 ),
                               ),
                             );

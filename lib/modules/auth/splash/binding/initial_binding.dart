@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:tasteclip/modules/auth/splash/user_controller.dart';
+import 'package:tasteclip/modules/auth/splash/controller/local_user_controller.dart';
 
 class InitialBinding extends Bindings {
   @override

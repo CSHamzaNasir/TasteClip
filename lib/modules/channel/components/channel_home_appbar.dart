@@ -5,7 +5,7 @@ import 'package:tasteclip/config/app_assets.dart';
 import 'package:tasteclip/config/app_text_styles.dart';
 import 'package:tasteclip/core/constant/app_colors.dart';
 import 'package:tasteclip/core/constant/app_fonts.dart';
-import 'package:tasteclip/modules/auth/manager_auth/manager_profile/manager_profile_update.dart';
+import 'package:tasteclip/modules/auth/manager_auth/screens/manager_profile_update.dart';
 
 class ChannelHomeAppBar extends StatelessWidget {
   final String? image;
@@ -93,14 +93,6 @@ class ChannelHomeAppBar extends StatelessWidget {
               )
             ],
           ),
-          
-          
-          
-          
-          
-          
-          
-          
         ],
       ),
     );
