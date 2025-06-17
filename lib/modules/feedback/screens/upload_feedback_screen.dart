@@ -280,7 +280,7 @@ class UploadFeedbackScreen extends StatelessWidget {
                             showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
+                              backgroundColor: Colors.white,
                               builder: (context) => SelectRestaurantSheetImage(
                                   category: category),
                             );

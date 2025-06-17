@@ -95,54 +95,59 @@ class ChannelHomeScreen extends StatelessWidget {
                 username:
                     channelHomeController.managerData.value?['branchAddress'] ??
                         '')),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ChannelTopWidget(
-                  title: 'Voucher',
-                  icon: AppAssets.voucherIcon,
-                  count: null,
-                  onTap: () {
-                    Get.to(() => CreateVoucherScreen());
-                  },
-                ),
-                ChannelTopWidget(
-                  title: 'Event',
-                  icon: AppAssets.eventBold,
-                  count: null,
-                  onTap: () {
-                    Get.to(() => CreateEventScreen());
-                  },
-                ),
-                ChannelTopWidget(
-                  title: 'Bill',
-                  icon: AppAssets.billIcon,
-                  count: null,
-                  onTap: () {
-                    Get.to(() => UpdateBranchBillScreen());
-                  },
-                ),
-                Obx(
-                  () => ChannelTopWidget(
-                    title: 'Feedback',
-                    icon: AppAssets.branchIcon,
-                    count: channelHomeController.textFeedbackCount.value +
-                        channelHomeController.imageFeedbackCount.value +
-                        channelHomeController.videoFeedbackCount.value,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                spacing: 16,
+                children: [
+                  8.horizontal,
+                  ChannelTopWidget(
+                    title: 'Voucher',
+                    icon: AppAssets.voucherIcon,
+                    count: null,
                     onTap: () {
-                      _openFeedbackBottomSheet(context);
+                      Get.to(() => CreateVoucherScreen());
                     },
                   ),
-                ),
-                ChannelTopWidget(
-                  title: 'Support',
-                  icon: AppAssets.supportIcon,
-                  count: null,
-                  onTap: () {
-                    Get.to(() => ManagerReportsScreen());
-                  },
-                ),
-              ],
+                  ChannelTopWidget(
+                    title: 'Event',
+                    icon: AppAssets.eventBold,
+                    count: null,
+                    onTap: () {
+                      Get.to(() => CreateEventScreen());
+                    },
+                  ),
+                  ChannelTopWidget(
+                    title: 'Bill',
+                    icon: AppAssets.billIcon,
+                    count: null,
+                    onTap: () {
+                      Get.to(() => UpdateBranchBillScreen());
+                    },
+                  ),
+                  Obx(
+                    () => ChannelTopWidget(
+                      title: 'Feedback',
+                      icon: AppAssets.branchIcon,
+                      count: channelHomeController.textFeedbackCount.value +
+                          channelHomeController.imageFeedbackCount.value +
+                          channelHomeController.videoFeedbackCount.value,
+                      onTap: () {
+                        _openFeedbackBottomSheet(context);
+                      },
+                    ),
+                  ),
+                  ChannelTopWidget(
+                    title: 'Support',
+                    icon: AppAssets.supportIcon,
+                    count: null,
+                    onTap: () {
+                      Get.to(() => ManagerReportsScreen());
+                    },
+                  ),
+                  8.horizontal,
+                ],
+              ),
             ),
             Obx(() {
               if (channelHomeController.textFeedbackCount.value +

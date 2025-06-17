@@ -20,113 +20,97 @@ class ChannelTopWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        splashColor: AppColors.primaryColor.withCustomOpacity(0.1),
-        highlightColor: AppColors.primaryColor.withCustomOpacity(0.05),
-        child: Ink(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: AppColors.primaryColor.withCustomOpacity(0.4),
-              width: 1.5,
-            ),
-            borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.lightColor,
-                AppColors.mainColor.withCustomOpacity(0.08),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.mainColor.withCustomOpacity(0.08),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 120,
+        height: 100,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: AppColors.primaryColor.withCustomOpacity(0.2),
+            width: 1,
           ),
-          child: Stack(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withCustomOpacity(0.15),
-                      shape: BoxShape.circle,
-                    ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withCustomOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withCustomOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
                     child: SvgPicture.asset(
                       icon,
-                      height: 24,
-                      width: 24,
+                      height: 20,
+                      width: 20,
                       colorFilter: ColorFilter.mode(
-                        AppColors.mainColor,
+                        AppColors.primaryColor,
                         BlendMode.srcIn,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    title,
-                    style: AppTextStyles.regularStyle.copyWith(
-                      color: AppColors.mainColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  title,
+                  style: AppTextStyles.regularStyle.copyWith(
+                    color: AppColors.mainColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
                   ),
-                ],
-              ),
-              if (count != null && count! > 0)
-                Positioned(
-                  top: -1,
-                  right: -0,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.whiteColor,
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withCustomOpacity(0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            if (count != null && count! > 0)
+              Positioned(
+                top: -4,
+                right: -0,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
                     ),
-                    constraints: const BoxConstraints(
-                      minWidth: 22,
-                      minHeight: 22,
-                    ),
-                    child: Center(
-                      child: Text(
-                        count! > 99 ? '99+' : count.toString(),
-                        style: AppTextStyles.regularStyle.copyWith(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
+                  ),
+                  constraints: const BoxConstraints(
+                    minWidth: 18,
+                    minHeight: 18,
+                  ),
+                  child: Center(
+                    child: Text(
+                      count! > 99 ? '99+' : count.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
